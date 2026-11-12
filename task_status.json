@@ -176,142 +176,182 @@
     {
       "part": "2",
       "ask": "Active subscribers over time",
-      "status": "partial",
+      "status": "done",
       "where": [
-        "sql/05_fct_user_month.sql"
+        "#p2",
+        "reports/04_metrics.md",
+        "sql/08_metrics.sql"
       ],
-      "notes": "Table ready (fct_user_month), no report"
+      "notes": ""
     },
     {
       "part": "2",
       "ask": "New vs renewing vs reactivated",
-      "status": "partial",
+      "status": "done",
       "where": [
-        "sql/05_fct_user_month.sql"
+        "#p2",
+        "reports/04_metrics.md"
       ],
-      "notes": "Table ready, no report"
+      "notes": ""
     },
     {
       "part": "2",
       "ask": "Monthly churn rate",
-      "status": "partial",
+      "status": "done",
       "where": [
-        "sql/05_fct_user_month.sql"
+        "#p2",
+        "reports/04_metrics.md"
       ],
-      "notes": "Table ready, no report"
+      "notes": ""
     },
     {
       "part": "2",
       "ask": "ARPU, other revenue measures, discount depth",
-      "status": "partial",
+      "status": "done",
       "where": [
-        "sql/05_fct_user_month.sql"
+        "#p2",
+        "reports/04_metrics.md"
       ],
-      "notes": "Table ready, no report"
+      "notes": ""
     },
     {
       "part": "2",
       "ask": "Define each metric precisely + flag series not to trust",
-      "status": "todo",
-      "where": [],
-      "notes": ""
+      "status": "done",
+      "where": [
+        "#p2",
+        "reports/04_metrics.md"
+      ],
+      "notes": "Definitions + \"What we don't trust\""
     },
     {
       "part": "3",
       "ask": "Choose (a) churn drivers or (b) free trials and price points",
-      "status": "todo",
-      "where": [],
-      "notes": ""
+      "status": "done",
+      "where": [
+        "#p3",
+        "reports/05_deep_dive.md"
+      ],
+      "notes": "Chose (a) churn drivers"
     },
     {
       "part": "3",
       "ask": "Analysis, with confounding discussed",
-      "status": "todo",
-      "where": [],
-      "notes": ""
+      "status": "done",
+      "where": [
+        "#p3",
+        "reports/05_deep_dive.md",
+        "sql/09_deep_dive.sql"
+      ],
+      "notes": "Compared within same auto-renew and plan length"
     },
     {
       "part": "3",
       "ask": "What to act on",
-      "status": "todo",
-      "where": [],
+      "status": "done",
+      "where": [
+        "#p3a-act",
+        "reports/05_deep_dive.md"
+      ],
       "notes": ""
     },
     {
       "part": "4",
       "ask": "Answer the four questions; say which can't be answered yet",
-      "status": "todo",
-      "where": [],
-      "notes": ""
+      "status": "done",
+      "where": [
+        "#p4"
+      ],
+      "notes": "On the site; no file in reports/ yet"
     },
     {
       "part": "4",
       "ask": "Three recommendations: impact, confidence, what would change my mind",
-      "status": "todo",
-      "where": [],
-      "notes": ""
+      "status": "done",
+      "where": [
+        "#p4"
+      ],
+      "notes": "On the site; no file in reports/ yet"
     },
     {
       "part": "5a",
       "ask": "Unit of randomization and eligibility",
-      "status": "todo",
-      "where": [],
+      "status": "done",
+      "where": [
+        "#p5a",
+        "reports/06_ab_test.md"
+      ],
       "notes": ""
     },
     {
       "part": "5a",
       "ask": "Primary metric and guardrail metrics",
-      "status": "todo",
-      "where": [],
+      "status": "done",
+      "where": [
+        "#p5a",
+        "reports/06_ab_test.md"
+      ],
       "notes": ""
     },
     {
       "part": "5a",
       "ask": "Sample size from baselines in this data",
-      "status": "todo",
-      "where": [],
+      "status": "done",
+      "where": [
+        "#p5a",
+        "reports/06_ab_test.md"
+      ],
       "notes": ""
     },
     {
       "part": "5a",
       "ask": "Duration + handling annual plans' delayed retention",
-      "status": "todo",
-      "where": [],
+      "status": "done",
+      "where": [
+        "#p5a",
+        "reports/06_ab_test.md"
+      ],
       "notes": ""
     },
     {
       "part": "5a",
       "ask": "Optional: SQL to analyze the test",
-      "status": "todo",
-      "where": [],
-      "notes": "Optional"
+      "status": "done",
+      "where": [
+        "reports/06_ab_test.md"
+      ],
+      "notes": "Section 7"
     },
     {
       "part": "5b",
       "ask": "Tools used, and for what",
-      "status": "partial",
+      "status": "done",
       "where": [
-        "reports/01_data_quality.md"
+        "#p5b",
+        "reports/07_ai_log.md"
       ],
-      "notes": "Content exists, no file in reports/ yet"
+      "notes": ""
     },
     {
       "part": "5b",
       "ask": "Key prompts, or a sample",
-      "status": "partial",
+      "status": "done",
       "where": [
+        "#p5b",
+        "reports/07_ai_log.md",
         "reports/gemini_review_prompt_1a.md"
       ],
-      "notes": "Content exists, no file in reports/ yet"
+      "notes": ""
     },
     {
       "part": "5b",
       "ask": "At least 2 cases where the AI was wrong, how caught, what changed",
-      "status": "partial",
+      "status": "done",
       "where": [
-        "reports/01_data_quality.md"
+        "#p5b",
+        "reports/07_ai_log.md"
       ],
-      "notes": "End of 1a report; move to own file"
+      "notes": ""
     },
     {
       "part": "Hand-in",
@@ -374,7 +414,7 @@
       "where": [
         "reports/"
       ],
-      "notes": "Data quality only so far"
+      "notes": "5 of 6; executive summary (Part 4) is on the site only"
     }
   ]
 }

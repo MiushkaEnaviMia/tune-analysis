@@ -1,6 +1,6 @@
 -- 01_data_quality.sql
 -- Part 1a: reproducible data-quality profiling of the four raw files.
--- Input : raw_users, raw_transactions (both exports, with src_file / src_row lineage), raw_churn_labels
+-- Input : raw_users, base_transactions (both exports, with src_file / src_row lineage), raw_churn_labels
 -- Output: dq_summary          one row per check: rows, users, % of table  (feeds reports/01_data_quality.md)
 --         dq_examples_*       real example rows per issue
 --         reports/01_dq_examples_*.csv  (paste-ready for Google Sheets)
@@ -13,7 +13,7 @@
 CREATE OR REPLACE VIEW t AS
 SELECT user_id, payment_method, payment_plan_days, list_price, amount_paid, is_auto_renew,
        transacted_at, expires_at, is_cancel, src_file, src_row
-FROM raw_transactions;
+FROM base_transactions;
 
 -- "Core" event = user, day, method, plan, amount, cancel flag. n_core = how many rows share that core in one file.
 -- n_core > 1 with different expiries = "stacked" passes (issue T24), not versions of one event.

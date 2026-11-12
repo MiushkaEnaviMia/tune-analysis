@@ -1,6 +1,6 @@
 -- 04_dim_user.sql
 -- Part 1b, step 3: one row per user.
--- Input : raw_users, raw_churn_labels, stg_transactions, fct_subscription
+-- Input : stg_users (cleaned users.csv), raw_churn_labels, stg_transactions, fct_subscription
 -- Output: dim_user
 -- Grain : one user_id that appears ANYWHERE (users.csv OR transactions OR churn labels).
 --   Why not users.csv only: 109,330 transacting users (18% of them) are missing from the registry
@@ -12,7 +12,7 @@
 CREATE OR REPLACE TABLE dim_user AS
 WITH
 ids AS (
-  SELECT user_id FROM raw_users
+  SELECT user_id FROM stg_users
   UNION SELECT user_id FROM stg_transactions
   UNION SELECT user_id FROM raw_churn_labels),
 
@@ -56,24 +56,19 @@ SELECT
   (u.user_id IS NOT NULL)::TINYINT                              AS is_in_users,       -- T23 / L5
   (tx.user_id IS NOT NULL)::TINYINT                             AS has_transactions,
   (l.user_id IS NOT NULL)::TINYINT                              AS has_churn_label,
-  -- registry attributes, cleaned
+  -- registry attributes, already cleaned in stg_users (02_stg_users.sql). Users missing from
+  -- users.csv get 'Unknown' / 'unknown' here, like a missing value in the registry.
   u.city,
-  coalesce(u.acquisition_channel::VARCHAR, 'Unknown')           AS acquisition_channel,
-  u.age                                                         AS age_raw,
-  CASE WHEN u.age BETWEEN 4 AND 92 THEN u.age END               AS age,                    -- U11: outside 4-92 -> NULL (U1-U4)
-  CASE WHEN u.age BETWEEN 4 AND 17  THEN '4-17'
-       WHEN u.age BETWEEN 18 AND 24 THEN '18-24'
-       WHEN u.age BETWEEN 25 AND 34 THEN '25-34'
-       WHEN u.age BETWEEN 35 AND 44 THEN '35-44'
-       WHEN u.age BETWEEN 45 AND 92 THEN '45-92'
-       ELSE 'Unknown' END                                       AS age_band,
-  coalesce(u.gender, 'unknown')                                 AS gender,                 -- U5: own segment, no imputation
-  strptime(u.registered_at::VARCHAR, '%Y%m%d')::DATE            AS registered_date,
-  (u.registered_at > 20170331)::TINYINT                         AS flag_registered_after_data_end,   -- U7
-  (strptime(u.registered_at::VARCHAR, '%Y%m%d')::DATE > tx.first_tx_date)::TINYINT
-                                                                AS flag_registered_after_first_tx,   -- U8
+  coalesce(u.acquisition_channel, 'Unknown')                    AS acquisition_channel,
+  u.age_raw,
+  u.age,                                                                                   -- U11: outside 4-92 -> NULL
+  coalesce(u.age_band, 'Unknown')                               AS age_band,
+  coalesce(u.gender, 'unknown')                                 AS gender,                 -- U5
+  u.registered_date,
+  u.flag_registered_after_data_end,                                                        -- U7
+  (u.registered_date > tx.first_tx_date)::TINYINT               AS flag_registered_after_first_tx,   -- U8 (needs transactions)
   -- tenure: starts at the earlier of registration and first transaction (U8 safe)
-  least(strptime(u.registered_at::VARCHAR, '%Y%m%d')::DATE, tx.first_tx_date) AS tenure_start_date,
+  least(u.registered_date, tx.first_tx_date)                    AS tenure_start_date,
   -- transaction-derived fields
   tx.first_tx_date,
   tx.last_tx_date,
@@ -83,7 +78,7 @@ SELECT
   tx.last_payment_method,
   sub.first_period_date,
   sub.first_paid_date,
-  date_diff('day', strptime(u.registered_at::VARCHAR, '%Y%m%d')::DATE, sub.first_paid_date) AS days_registration_to_first_paid,
+  date_diff('day', u.registered_date, sub.first_paid_date)     AS days_registration_to_first_paid,
   sub.first_plan_days,
   sub.first_plan_tier,
   sub.first_price_type,
@@ -113,7 +108,7 @@ SELECT
   -- tenure in days, from first period to the end of the last one (capped at data end)
   date_diff('day', sub.first_period_date, least(sub.current_end_date, DATE '2017-03-31')) AS subscribed_span_days
 FROM ids i
-LEFT JOIN raw_users u        USING (user_id)
+LEFT JOIN stg_users u        USING (user_id)
 LEFT JOIN raw_churn_labels l USING (user_id)
 LEFT JOIN tx                 USING (user_id)
 LEFT JOIN sub                USING (user_id);

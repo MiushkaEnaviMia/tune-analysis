@@ -1,6 +1,6 @@
 -- 02_stg_transactions.sql
 -- Part 1b, step 1: the cleaned EVENT layer.
--- Input : raw_transactions (both exports, with src_file / src_row lineage; see 00_load_raw.sql)
+-- Input : base_transactions (both exports, with src_file / src_row lineage; see 00_union_exports.sql)
 -- Output: ref_price_plan   price -> plan-length lookup learned from rows that DO carry plan metadata
 --         stg_transactions one row per real billing event (dedup + conflict-resolved), typed DATEs,
 --                          cleaned values, and one flag per rule applied
@@ -17,7 +17,7 @@
 CREATE OR REPLACE TABLE ref_price_plan AS
 WITH k AS (
   SELECT amount_paid, payment_plan_days, count(*) AS n
-  FROM raw_transactions
+  FROM base_transactions
   WHERE payment_plan_days > 0 AND amount_paid > 0 AND is_cancel = 0
   GROUP BY 1, 2)
 SELECT amount_paid,
@@ -44,7 +44,7 @@ raw AS (
                                      amount_paid, is_cancel, src_file) AS n_core,
          count(DISTINCT expires_at) OVER (PARTITION BY user_id, transacted_at, payment_method, payment_plan_days,
                                                         amount_paid, is_cancel, src_file) AS n_core_exp
-  FROM raw_transactions r),
+  FROM base_transactions r),
 
 -- T4: the same event in both exports (one-to-one match on the event core; stacks excluded,
 -- because they match many-to-many). export_2 is the later snapshot, so it wins; the
@@ -169,9 +169,9 @@ FROM clean;
 -- Expect: rows = raw - 832 (T7) - 747 (T4); event_id and (user_id, event_seq) unique;
 -- no NULL dates; no non-cancel expiry before its transaction; every T9 row has a plan.
 SELECT
-  (SELECT count(*) FROM raw_transactions)                                       AS raw_rows,
+  (SELECT count(*) FROM base_transactions)                                       AS raw_rows,
   count(*)                                                                      AS stg_rows,
-  (SELECT count(*) FROM raw_transactions) - count(*)                            AS rows_removed,
+  (SELECT count(*) FROM base_transactions) - count(*)                            AS rows_removed,
   count(*) - count(DISTINCT event_id)                                           AS dup_event_id,
   count(*) - count(DISTINCT (user_id, event_seq))                               AS dup_user_seq,
   count(*) FILTER (WHERE transacted_date IS NULL OR expires_date IS NULL)       AS null_dates,

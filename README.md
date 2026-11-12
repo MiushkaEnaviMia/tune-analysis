@@ -34,13 +34,18 @@ Optional:
 
 | Script | Builds | One row is |
 |---|---|---|
-| `sql/00_load_raw.sql` | `raw_users`, `raw_transactions`, `raw_churn_labels` | a row of the CSV, as delivered (plus `src_file` / `src_row` lineage) |
+| `sql/00_load_raw.sql` | `raw_users`, `raw_transactions_export_1`, `raw_transactions_export_2`, `raw_churn_labels` | a row of the CSV, exactly as delivered (one table per file) |
+| `sql/00_union_exports.sql` | `base_transactions` | a row of either export, values unchanged, plus `src_file` / `src_row` lineage |
 | `sql/01_data_quality.sql` | `dq_summary`, `dq_examples_*`, `dq_export_profile`, `dq_t9_by_month`, `dq_exp_0331_by_tx` | one data-quality check / example row |
 | `sql/02_stg_transactions.sql` | `ref_price_plan`, `stg_transactions` | a price point; a real billing event (deduplicated, conflicts resolved) |
+| `sql/02_stg_users.sql` | `stg_users` | a row of users.csv, cleaned (age 4-92 else NULL, gender 'unknown', typed dates) |
 | `sql/03_fct_subscription.sql` | `fct_subscription` | a subscription period (a purchase and the cancels that follow it) |
 | `sql/04_dim_user.sql` | `dim_user` | a user seen anywhere (registry, transactions or labels) |
 | `sql/05_fct_user_month.sql` | `fct_user_month` | a user in a calendar month with access, a payment or a churn |
 | `sql/06_churn_validation.sql` | `churn_mar17`, `churn_confusion`, `churn_disagreement` | a user in the March-2017 churn cohort or labelled; one outcome × label cell; one disagreement group |
+| `sql/07_fct_cohort.sql` | `fct_cohort` | a start-month cohort in one month since its start |
+| `sql/08_metrics.sql` | `mart_metrics_month`, `mart_churn_windows` | a calendar month; a month × churn window |
+| `sql/09_deep_dive.sql` | `mart_renewal_decisions`, `mart_churn_drivers`, `mart_churn_factor_summary`, `mart_churn_method_quarter`, `mart_churn_plan_monthly` | Part 3 churn-driver tables |
 | `py/01_dq_outputs.py` | `reports/01_data_quality.{md,xlsx,html}`, `reports/01_dq_*.csv` | Part 1a report, generated from `dq_summary` |
 
 Each SQL file starts with a header that states its input, output, grain and the rules it applies.

@@ -87,6 +87,11 @@ a.code{color:var(--accent);font-family:var(--mono);text-decoration:none}a.code:h
 .lin-wrap{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}
 @media (max-width:1380px){.lin-wrap{grid-template-columns:minmax(0,1fr)}}
 .dag{overflow:auto;padding:8px}
+.layers{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch}
+.layers .ly{flex:1 1 150px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:grid;gap:4px;align-content:start;position:relative}
+.layers .ly b{font-size:var(--fs-label);letter-spacing:.06em;color:var(--navy)}
+.layers .ly span{font-size:var(--fs-small);color:var(--muted)}
+.layers .ly .n{font-style:normal;position:absolute;top:8px;right:10px;font-size:var(--fs-label);color:var(--muted)}
 .dag svg{display:block}
 .node{cursor:pointer}
 .node rect.box{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
@@ -366,11 +371,21 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <p class="lede">How the clean tables are built from the raw files. Click a table to see what it holds and where its data comes from and goes to.</p>
       <div class="legend"><span><i class="sw" style="background:var(--src)"></i>Source file</span><span><i class="sw" style="background:var(--raw)"></i>Raw table (as delivered)</span><span><i class="sw" style="background:var(--clean)"></i>Clean table</span><span>Arrows: data flows left to right</span></div>
     </div>
+    <div class="card lin-sec" style="gap:10px"><h2>How the database is built</h2><p>Six layers, in this order. Each one only reads the layers before it. <span class='mono'>churn_labels</span> needs no cleaning (no duplicates, no invalid values), so it is used as delivered.</p><div class="layers"><div class="ly"><i class="n">1 →</i><b>RAW</b><span>Each file copied as-is, one table per file.</span></div><div class="ly"><i class="n">2 →</i><b>BASE</b><span>The two transaction exports combined, plus <span class='mono'>src_file</span> / <span class='mono'>src_row</span>.</span></div><div class="ly"><i class="n">3 →</i><b>DATA QUALITY CHECK</b><span>Measures the problems. Fixes nothing.</span></div><div class="ly"><i class="n">4 →</i><b>STAGING</b><span>Cleans the data: <span class='mono'>stg_transactions</span>, <span class='mono'>stg_users</span>.</span></div><div class="ly"><i class="n">5 →</i><b>SUBSCRIPTIONS</b><span>Events become subscription periods: <span class='mono'>fct_subscription</span>.</span></div><div class="ly"><i class="n">6</i><b>MARTS</b><span>Tables ready for the questions: <span class='mono'>dim_user</span>, <span class='mono'>fct_user_month</span>, <span class='mono'>fct_cohort</span>, <span class='mono'>mart_*</span>.</span></div></div></div>
     <div class="lin-wrap">
       <div class="card dag" id="dag"></div>
       <aside class="card side" id="lin-side"><p class="lede">Select a table on the map.</p></aside>
     </div>
     <div class="lin-doc">
+    <div class="card lin-sec"><h2>Build steps and why each one sits where it does</h2><div class="scroll"><table class="grid"><thead><tr><th>Step</th><th>Script</th><th>Table(s)</th><th>What it does</th><th>Why here</th></tr></thead><tbody>
+    <tr><td>RAW</td><td class="mono">00_load_raw.sql</td><td class="l"><code class='mono'>raw_users</code>, <code class='mono'>raw_transactions_export_1</code>, <code class='mono'>raw_transactions_export_2</code>, <code class='mono'>raw_churn_labels</code></td><td class="l">One table per CSV, exactly as delivered</td><td class="l">The untouched copy everything can be checked against. Nothing is decided here</td></tr>
+    <tr><td>BASE</td><td class="mono">00_union_exports.sql</td><td class="l"><code class='mono'>base_transactions</code></td><td class="l">Combines the two exports, adds <code class='mono'>src_file</code> / <code class='mono'>src_row</code>. No value changed, no row removed</td><td class="l">Neither export is complete alone (T1-T3), and the duplicate / conflict rules need both side by side. Kept apart from RAW so RAW stays 1:1 with the files</td></tr>
+    <tr><td>Data quality</td><td class="mono">01_data_quality.sql</td><td class="l"><code class='mono'>dq_summary</code>, <code class='mono'>dq_examples_*</code></td><td class="l">Measures every issue; fixes nothing</td><td class="l">Must see the data before cleaning, duplicates included, to count them</td></tr>
+    <tr><td>STAGING</td><td class="mono">02_stg_transactions.sql, 02_stg_users.sql</td><td class="l"><code class='mono'>ref_price_plan</code>, <code class='mono'>stg_transactions</code>, <code class='mono'>stg_users</code></td><td class="l">All cleaning. Transactions: dedup (T7, T4), typed dates, filled plan days, fixed expiries, one flag per rule, fixed event order. Users: age outside 4-92 → NULL, missing gender → 'unknown', typed registration date. Churn labels need no cleaning (no duplicates, no invalid values) and are used as delivered</td><td class="l">One place per file for every cleaning rule. Must come before anything that counts, or duplicates would be counted twice</td></tr>
+    <tr><td>SUBSCRIPTIONS</td><td class="mono">03_fct_subscription.sql</td><td class="l"><code class='mono'>fct_subscription</code></td><td class="l">Turns events into subscription periods and episodes</td><td class="l">The brief's questions are about subscriptions (plan, cancel, upgrade, churn), not single events. Needs clean, ordered events first</td></tr>
+    <tr><td>USERS</td><td class="mono">04_dim_user.sql</td><td class="l"><code class='mono'>dim_user</code></td><td class="l">One row per user seen anywhere: cleaned attributes from <code class='mono'>stg_users</code> plus summaries</td><td class="l">Needs <code class='mono'>fct_subscription</code> for first plan, episodes and lifetime paid. Rules that need both users and transactions (registration after first payment, U8) live here</td></tr>
+    <tr><td>MARTS</td><td class="mono">05, 07, 08, 09</td><td class="l"><code class='mono'>fct_user_month</code>, <code class='mono'>fct_cohort</code>, <code class='mono'>mart_*</code></td><td class="l">Monthly panel, cohort curves, metrics and churn drivers</td><td class="l">Built last from the clean tables, so every metric uses the same definitions</td></tr>
+    </tbody></table></div><p class="note">Each step only reads tables built by earlier steps, and each script ends with a validation query.</p></div>
     <div class="card lin-sec"><h2>What 1b asks for, and where it is</h2><div class="scroll"><table class="grid"><thead><tr><th>Asked in the brief</th><th>Where in the clean layer</th></tr></thead><tbody>
     <tr><td class="l">dim_user: one row per user, cleaned attributes, derived fields</td><td class="l"><code class='mono'>dim_user</code>: 1,800,905 users (every user seen anywhere). Cleaned: <code class='mono'>age</code>, <code class='mono'>age_band</code>, <code class='mono'>gender</code>, <code class='mono'>registered_date</code>. Derived: <code class='mono'>first_paid_date</code>, <code class='mono'>n_episodes</code>, <code class='mono'>lifetime_paid</code>, <code class='mono'>is_payer</code>, <code class='mono'>ever_annual</code>, <code class='mono'>status_at_data_end</code> and more</td></tr>
     <tr><td class="l">Subscription table, one row per period or episode, grain explained</td><td class="l"><code class='mono'>fct_subscription</code>: 5,501,434 periods (one purchase each) with <code class='mono'>episode_id</code> (748,144 episodes). Why: see “Grain” below</td></tr>
@@ -383,7 +398,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     <tr><td class="l">Cancelled</td><td class="l"><code class='mono'>is_cancelled</code>, <code class='mono'>cancel_date</code></td></tr>
     <tr><td class="l">Upgrade or downgrade vs the previous period</td><td class="l"><code class='mono'>change_vs_prev</code> (free_to_paid, paid_to_free, upgrade, downgrade, price_up, price_down, same)</td></tr>
     <tr><td class="l">Rules for duplicates, overlapping or conflicting rows, cancellations, implausible values</td><td class="l">“Cleaning rules” below (20 rules)</td></tr>
-    <tr><td class="l">Reproducible SQL</td><td class="l"><code class='mono'>sql/02_stg_transactions.sql</code> … <code class='mono'>sql/05_fct_user_month.sql</code>, plus the cohort table <code class='mono'>sql/07_fct_cohort.sql</code>, run by <code class='mono'>run_all.py</code>; two full runs give identical tables</td></tr>
+    <tr><td class="l">Reproducible SQL</td><td class="l"><code class='mono'>sql/00_load_raw.sql</code>, <code class='mono'>sql/00_union_exports.sql</code>, <code class='mono'>sql/02_stg_transactions.sql</code> … <code class='mono'>sql/05_fct_user_month.sql</code>, plus the cohort table <code class='mono'>sql/07_fct_cohort.sql</code>, run by <code class='mono'>run_all.py</code>; two full runs give identical tables</td></tr>
     </tbody></table></div></div>
     <div class="card lin-sec"><h2>Grain: one row per subscription period</h2>
     
@@ -395,7 +410,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     </tbody></table></div>
     <p class="note">Key fact behind the dates: <code class="mono">expires_at</code> is the membership expiry after the event, not the plan’s own end. An early renewal stacks its days on top of the old expiry, so each period also gets non-overlapping <code class="mono">covered_start</code> / <code class="mono">covered_end</code> (0 overlaps). A new episode starts when the gap after expiry is more than 30 days.</p></div>
     <div class="card lin-sec"><h2>Cleaning rules</h2><p>Covers duplicates (2), rows in both exports and conflicting versions (1, 3–6), cancellations (7, 11, 12) and implausible or missing values (8, 13–19). “Issue” is the check ID from 1a; “Script” is the SQL file number.</p><div class="scroll"><table class="grid"><thead><tr><th>#</th><th>Rule</th><th>Issue</th><th>Rows affected</th><th>Script</th></tr></thead><tbody>
-    <tr><td>1</td><td class="l">Union both exports; they are split on expiry, not on date. Keep src_file / src_row for lineage</td><td>T1-T3</td><td class="l">89,728 old purchases live only in export_2</td><td>00, 02</td></tr>
+    <tr><td>1</td><td class="l">Union both exports in a separate step (base_transactions); they are split on expiry, not on date. Add src_file / src_row for lineage; the raw tables stay exactly as delivered</td><td>T1-T3</td><td class="l">89,728 old purchases live only in export_2</td><td>00_union</td></tr>
     <tr><td>2</td><td class="l">Drop exact copies of a whole row inside one export; keep the lowest src_row</td><td>T7</td><td class="l">832 removed</td><td>02</td></tr>
     <tr><td>3</td><td class="l">Same event in both exports (one-to-one match on user, day, method, plan, amount, cancel): export_2 wins; the export_1 expiry is kept as <code class="mono">expires_at_asof_feb</code></td><td>T4</td><td class="l">747 export_1 rows removed, <code class="mono">flag_conflict_resolved</code></td><td>02</td></tr>
     <tr><td>4</td><td class="l">Different events on the same user and day are all kept (no dedup on user + day)</td><td>T6, T8</td><td class="l"><code class="mono">flag_same_day_multi</code>, <code class="mono">flag_same_day_both_exports</code></td><td>02</td></tr>
@@ -411,9 +426,9 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     <tr><td>14</td><td class="l">Expiry more than 2 years past the data end: kept and flagged (mostly long stacks)</td><td>T19</td><td class="l">1,738</td><td>02</td></tr>
     <tr><td>15</td><td class="l">Paid above list price: discount floored at 0, flagged</td><td>T10</td><td class="l">13</td><td>02</td></tr>
     <tr><td>16</td><td class="l">Revenue = amount_paid on purchases only. Cancel rows carry an amount (160,720 rows, 23.2M) that is the cancelled plan's price, not a payment; kept in stg for audit</td><td>—</td><td class="l">—</td><td>03</td></tr>
-    <tr><td>17</td><td class="l">Age outside 4-92 → NULL; age_band includes 'Unknown'. No imputation</td><td>U1-U4, U11</td><td class="l">1,136,998</td><td>04</td></tr>
-    <tr><td>18</td><td class="l">Gender missing → 'unknown', its own segment</td><td>U5</td><td class="l">1,106,850</td><td>04</td></tr>
-    <tr><td>19</td><td class="l">Registration after the data end or after the first transaction: kept and flagged; tenure starts at the earlier of registration and first transaction</td><td>U7, U8</td><td class="l">13,756 + 26</td><td>04</td></tr>
+    <tr><td>17</td><td class="l">Age outside 4-92 → NULL; age_band includes 'Unknown'. No imputation</td><td>U1-U4, U11</td><td class="l">1,136,998</td><td>02_stg_users</td></tr>
+    <tr><td>18</td><td class="l">Gender missing → 'unknown', its own segment</td><td>U5</td><td class="l">1,106,850</td><td>02_stg_users</td></tr>
+    <tr><td>19</td><td class="l">Registration after the data end or after the first transaction: kept and flagged; tenure starts at the earlier of registration and first transaction</td><td>U7, U8</td><td class="l">13,756 + 26</td><td>U7: 02_stg_users; U8: 04</td></tr>
     <tr><td>20</td><td class="l">Left-censoring: data starts 2015-01-01, so the 133,585 users first seen in Jan 2015 may have subscribed earlier. Their "new" is flagged (<code class="mono">flag_first_seen_jan2015</code>); Jan-2015 new counts must not be read as acquisition</td><td>—</td><td class="l">133,585</td><td>04</td></tr>
     </tbody></table></div></div>
     <div class="card lin-sec"><h2>Validation checks (all pass)</h2><div class="scroll"><table class="grid"><thead><tr><th>Check</th><th>Result</th></tr></thead><tbody>
@@ -1340,9 +1355,9 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
     </header>
 
     <div class="cx-kpis">
-      <div class="card cx-kpi blue"><b>7</b><h3>Confirmed AI Mistakes</h3><span>3 from Gemini, 4 from Claude, each one changed the work</span></div>
-      <div class="card cx-kpi orange"><b>4 of 7</b><h3>Caught by Me</h3><span>Numbers or rankings that didn't make sense, pushed back on</span></div>
-      <div class="card cx-kpi grey"><b>3 of 7</b><h3>Caught by Checking the Data</h3><span>Claude re-ran the claim in DuckDB and the data said no</span></div>
+      <div class="card cx-kpi blue"><b>9</b><h3>Confirmed AI Mistakes</h3><span>3 from Gemini, 6 from Claude, each one changed the work</span></div>
+      <div class="card cx-kpi orange"><b>6 of 9</b><h3>Caught by Me</h3><span>Numbers or rankings that didn't make sense, pushed back on</span></div>
+      <div class="card cx-kpi grey"><b>3 of 9</b><h3>Caught by Checking the Data</h3><span>Claude re-ran the claim in DuckDB and the data said no</span></div>
     </div>
 
     <div class="cx-bottom">
@@ -1378,15 +1393,17 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
       <h2 class="p5-t or">Where the AI was wrong</h2>
       <p class="p5-so">The costliest error was Claude's own (#5): it would have deleted about 10,800 real purchases as duplicates. <b>Most errors were caught because a number looked too neat or a ranking ignored the brief.</b></p>
       <div class="scroll"><table class="cx-tbl">
-        <thead><tr><th>#</th><th>Tool</th><th>What it got wrong</th><th>Caught by</th><th>What changed</th></tr></thead>
+        <thead><tr><th>#</th><th>Tool</th><th>What it got wrong</th><th>Why that was wrong</th><th>What we did instead</th><th>Caught by</th></tr></thead>
         <tbody>
-          <tr><td class="c">1</td><td class="c"><span class="tag g">Gemini</span></td><td>Reported a renewal spike on day 31 (17.5%; real 0.35%) and 33.4% churn (real 43.5%), with an invented "card declined" reason. It had read only part of the data.</td><td class="c"><span class="tag u">Me</span></td><td>The day-31 jump looked wrong. Claude re-ran it on the full data; Gemini admitted it used a partial file. Since then every second opinion is re-run on the full data.</td></tr>
-          <tr><td class="c">2</td><td class="c"><span class="tag g">Gemini</span></td><td>"All 109,330 users missing from <span class="mono">users.csv</span> are paying users."</td><td class="c"><span class="tag a">Claude</span></td><td>Re-run in DuckDB: only 53,023 ever paid. Issue sized on payers (8.3% of revenue).</td></tr>
-          <tr><td class="c">3</td><td class="c"><span class="tag g">Gemini</span></td><td>Explained ages 106 and 112 with the Taiwan (ROC) calendar.</td><td class="c"><span class="tag a">Claude</span></td><td>Most age-106 users registered in 2014–15, and 112 matches no recent ROC year. Story rejected.</td></tr>
-          <tr><td class="c">4</td><td class="c"><span class="tag c">Claude</span></td><td>"Plan type doesn't change the churn window."</td><td class="c"><span class="tag u">Me</span></td><td>Split by plan: auto-renew users 97% back by day 1, people paying by hand about 37%. Renewal timing is now checked per plan type before fixing the window.</td></tr>
-          <tr class="hi"><td class="c">5</td><td class="c"><span class="tag c">Claude</span></td><td>Counted 11,560 "conflicting versions" between the two exports by matching user + day, which is not a unique key.</td><td class="c"><span class="tag a">Claude</span></td><td>Real conflicts: 747. Keeping it would have dropped about 10,800 real, separate purchases as duplicates.</td></tr>
-          <tr><td class="c">6</td><td class="c"><span class="tag c">Claude</span></td><td>Kept billing's churn labels at Medium and defended "export split stays #1" without re-reading the brief's ranking rule.</td><td class="c"><span class="tag u">Me</span></td><td>The labels are likely the churn number the CEO already saw. Moved to Critical, now issue #1.</td></tr>
-          <tr><td class="c">7</td><td class="c"><span class="tag c">Claude</span></td><td>Inconsistent ranking: 2015 missing plan length under-rated (39.7% of users active Mar – Oct 2015), and early renewals (578,644 rows) missing from the list.</td><td class="c"><span class="tag u">Me</span><br><small>by asking</small></td><td>Plan length moved to Critical; early renewals added at High (first rated Medium, then corrected).</td></tr>
+          <tr><td class="c">1</td><td class="c"><span class="tag g">Gemini</span></td><td>Reported a renewal spike on day 31 (17.5%; real 0.35%) and 33.4% churn (real 43.5%), with an invented "card declined" reason.</td><td>It had read only part of the data. Kept, we would have set the churn window around a spike that does not exist and reported churn about 10 points too low.</td><td>Claude re-ran it on the full data in DuckDB; Gemini then admitted it used a partial file. Since then every second opinion is re-run on the full data before we use it.</td><td class="c"><span class="tag u">Me</span></td></tr>
+          <tr><td class="c">2</td><td class="c"><span class="tag g">Gemini</span></td><td>"All 109,330 users missing from <span class="mono">users.csv</span> are paying users."</td><td>Only 53,023 of them ever paid. Kept, the issue would have looked about twice as big as it is.</td><td>Sized the issue on paying users and reported their share of revenue (8.3%).</td><td class="c"><span class="tag a">Claude</span></td></tr>
+          <tr><td class="c">3</td><td class="c"><span class="tag g">Gemini</span></td><td>Explained ages 106 and 112 with the Taiwan (ROC) calendar.</td><td>Most age-106 users registered in 2014-15, and 112 matches no recent ROC year. Kept, we would have "corrected" ages with a made-up rule.</td><td>Rejected the story. Impossible ages are handled by the cleaning rule in <span class="mono">stg_users</span>.</td><td class="c"><span class="tag a">Claude</span></td></tr>
+          <tr><td class="c">4</td><td class="c"><span class="tag c">Claude</span></td><td>"Plan type doesn't change the churn window."</td><td>It does: auto-renew users were 97% back by day 1, people paying by hand about 37%. One window chosen without checking could count slow manual payers as churned.</td><td>Renewal timing is checked per plan type before fixing the window. The 30-day window, with 32 and 45-day checks, follows from that.</td><td class="c"><span class="tag u">Me</span></td></tr>
+          <tr class="hi"><td class="c">5</td><td class="c"><span class="tag c">Claude</span></td><td>Counted 11,560 "conflicting versions" between the two exports by matching user + day, which is not a unique key.</td><td>Real conflicts: 747. Kept, about 10,800 real, separate purchases would have been dropped as duplicates. The costliest mistake.</td><td>Match on the whole event (user, day, method, plan, amount, cancel). Only true one-to-one matches count as the same event.</td><td class="c"><span class="tag a">Claude</span></td></tr>
+          <tr><td class="c">6</td><td class="c"><span class="tag c">Claude</span></td><td>Kept billing's churn labels at Medium and defended "export split stays #1" without re-reading the brief's ranking rule.</td><td>The brief ranks by impact on leadership's answers, and the labels are likely the churn number the CEO already saw. At Medium, the biggest risk would have been hidden.</td><td>Re-read the brief. Labels moved to Critical, now issue #1.</td><td class="c"><span class="tag u">Me</span></td></tr>
+          <tr><td class="c">7</td><td class="c"><span class="tag c">Claude</span></td><td>Inconsistent ranking: 2015 missing plan length under-rated, and early renewals (578,644 rows) missing from the list.</td><td>Missing plan length touches 39.7% of users active Mar-Oct 2015. Kept, the list would have under-stated two problems that change the churn and plan answers.</td><td>Plan length moved to Critical; early renewals added at High (first rated Medium, then corrected).</td><td class="c"><span class="tag u">Me</span><br><small>by asking</small></td></tr>
+          <tr><td class="c">8</td><td class="c"><span class="tag c">Claude</span></td><td>Loaded both exports straight into one "raw" table and added <span class="mono">src_file</span> / <span class="mono">src_row</span> at load.</td><td>Not a wrong number, a design flaw: the raw layer mixed loading with modelling (combining files, adding columns), so it could no longer be checked 1:1 against the files.</td><td>Split into exact raw tables (<span class="mono">raw_transactions_export_1</span>, <span class="mono">_2</span>), one per file, plus a separate step, <span class="mono">base_transactions</span> (<span class="mono">sql/00_union_exports.sql</span>), that combines them and adds lineage. Every downstream table was checked identical before and after.</td><td class="c"><span class="tag u">Me</span><br><small>by asking</small></td></tr>
+          <tr><td class="c">9</td><td class="c"><span class="tag c">Claude</span></td><td>Put only the transactions through STAGING; the users file was cleaned inside <span class="mono">dim_user</span>.</td><td>Not a wrong number, a design flaw: cleaning was split between two layers, so STAGING was not "the one place where cleaning happens".</td><td>New <span class="mono">stg_users</span> table holds all user cleaning; <span class="mono">dim_user</span> reads it. Every other table checked identical.</td><td class="c"><span class="tag u">Me</span><br><small>by asking</small></td></tr>
         </tbody>
       </table></div>
       <h3 style="margin-top:6px">Cases 6–7 in detail: the AI's original 1a ranking vs the final one</h3>
@@ -1702,17 +1719,23 @@ const mb = (b) => (b / 1e6).toFixed(1) + " MB";
 const catalog = await (await fetch("catalog.json")).json();
 const T = Object.fromEntries(catalog.tables.map((t) => [t.name, t]));
 
-const BUILT_BY = { raw_users: "sql/00_load_raw.sql", raw_transactions: "sql/00_load_raw.sql", raw_churn_labels: "sql/00_load_raw.sql",
-  ref_price_plan: "sql/02_stg_transactions.sql", stg_transactions: "sql/02_stg_transactions.sql", fct_subscription: "sql/03_fct_subscription.sql",
+const BUILT_BY = { raw_users: "sql/00_load_raw.sql", raw_transactions_export_1: "sql/00_load_raw.sql", raw_transactions_export_2: "sql/00_load_raw.sql", base_transactions: "sql/00_union_exports.sql", raw_churn_labels: "sql/00_load_raw.sql",
+  ref_price_plan: "sql/02_stg_transactions.sql", stg_transactions: "sql/02_stg_transactions.sql", stg_users: "sql/02_stg_users.sql", fct_subscription: "sql/03_fct_subscription.sql",
   dim_user: "sql/04_dim_user.sql", fct_user_month: "sql/05_fct_user_month.sql", fct_cohort: "sql/07_fct_cohort.sql",
-  churn_mar17: "sql/06_churn_validation.sql", churn_confusion: "sql/06_churn_validation.sql", churn_disagreement: "sql/06_churn_validation.sql" };
+  churn_mar17: "sql/06_churn_validation.sql", churn_confusion: "sql/06_churn_validation.sql", churn_disagreement: "sql/06_churn_validation.sql",
+  mart_churn_windows: "sql/08_metrics.sql", mart_metrics_month: "sql/08_metrics.sql",
+  mart_renewal_decisions: "sql/09_deep_dive.sql", mart_churn_drivers: "sql/09_deep_dive.sql", mart_churn_factor_summary: "sql/09_deep_dive.sql",
+  mart_churn_method_quarter: "sql/09_deep_dive.sql", mart_churn_plan_monthly: "sql/09_deep_dive.sql" };
 const REPO = "https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/";
 const codeLink = (f) => f ? `<a class="code" href="${REPO}${f}" target="_blank" rel="noopener" title="Open the SQL on GitHub">${f} ↗</a>` : "-";
-const KEY = { raw_users: "none (user_id should be unique)", raw_transactions: "none (src_row added at load)", raw_churn_labels: "user_id",
-  ref_price_plan: "amount_paid", stg_transactions: "event_id (= src_row)", fct_subscription: "subscription_id",
-  dim_user: "user_id", fct_user_month: "user_id, month", fct_cohort: "cohort_month, months_since_start", churn_mar17: "user_id", churn_confusion: "our_outcome", churn_disagreement: "bucket" };
+const KEY = { raw_users: "none (user_id should be unique)", raw_transactions_export_1: "none (exact copy of the file)", raw_transactions_export_2: "none (exact copy of the file)", base_transactions: "src_row (added in this step)", raw_churn_labels: "user_id",
+  ref_price_plan: "amount_paid", stg_transactions: "event_id (= src_row)", stg_users: "user_id", fct_subscription: "subscription_id",
+  dim_user: "user_id", fct_user_month: "user_id, month", fct_cohort: "cohort_month, months_since_start", churn_mar17: "user_id", churn_confusion: "our_outcome", churn_disagreement: "bucket",
+  mart_churn_windows: "month, window_days", mart_metrics_month: "month", mart_renewal_decisions: "subscription_id", mart_churn_drivers: "factor, segment",
+  mart_churn_factor_summary: "factor", mart_churn_method_quarter: "quarter, grp", mart_churn_plan_monthly: "plan_length" };
 const ISSUES = { raw_users: "U1-U11: age 0 or out of range, gender missing, registration after data end",
-  raw_transactions: "T1-T24: exports split on expiry, duplicates, conflicting versions, missing plan length, odd expiry dates",
+  raw_transactions_export_1: "T1-T24 (checked on base_transactions)", raw_transactions_export_2: "T1-T24 (checked on base_transactions)",
+  base_transactions: "T1-T24: exports split on expiry, duplicates, conflicting versions, missing plan length, odd expiry dates",
   raw_churn_labels: "L4-L7: labels don't match a naive 'due in March' population" };
 
 // ---------------- tabs ----------------
@@ -1787,21 +1810,34 @@ $("#ov-tables tbody").innerHTML = catalog.tables.map((t) =>
   `<tr><td class="mono">${t.name}</td><td><span class="pill ${t.layer}">${t.layer === "raw" ? "Broken (raw)" : "Clean"}</span></td><td>${esc(t.grain)}</td><td class="num">${fmt(t.rows)}</td><td>${codeLink(BUILT_BY[t.name])}</td></tr>`).join("");
 
 // ---------------- lineage map ----------------
-const SOURCES = { "users.csv": ["raw_users"], "transactions_export_1.csv": ["raw_transactions"], "transactions_export_2.csv": ["raw_transactions"], "churn_labels.csv": ["raw_churn_labels"] };
+const SOURCES = { "users.csv": ["raw_users"], "transactions_export_1.csv": ["raw_transactions_export_1"], "transactions_export_2.csv": ["raw_transactions_export_2"], "churn_labels.csv": ["raw_churn_labels"] };
 const EDGES = [
   ...Object.entries(SOURCES).flatMap(([s, ts]) => ts.map((t) => [s, t])),
-  ["raw_transactions", "ref_price_plan"], ["raw_transactions", "stg_transactions"], ["ref_price_plan", "stg_transactions"],
+  ["raw_transactions_export_1", "base_transactions"], ["raw_transactions_export_2", "base_transactions"],
+  ["base_transactions", "ref_price_plan"], ["base_transactions", "stg_transactions"], ["ref_price_plan", "stg_transactions"],
   ["stg_transactions", "fct_subscription"], ["fct_subscription", "dim_user"], ["stg_transactions", "dim_user"],
-  ["raw_users", "dim_user"], ["raw_churn_labels", "dim_user"], ["fct_subscription", "fct_user_month"],
+  ["raw_users", "stg_users"], ["stg_users", "dim_user"], ["raw_churn_labels", "dim_user"], ["fct_subscription", "fct_user_month"],
   ["dim_user", "fct_cohort"], ["fct_user_month", "fct_cohort"],
+  ["stg_transactions", "churn_mar17"], ["dim_user", "churn_mar17"], ["raw_churn_labels", "churn_mar17"],
+  ["churn_mar17", "churn_confusion"], ["churn_mar17", "churn_disagreement"],
+  ["fct_subscription", "mart_churn_windows"], ["fct_user_month", "mart_metrics_month"], ["fct_subscription", "mart_metrics_month"], ["mart_churn_windows", "mart_metrics_month"],
+  ["fct_subscription", "mart_renewal_decisions"], ["dim_user", "mart_renewal_decisions"],
+  ["mart_renewal_decisions", "mart_churn_drivers"], ["mart_renewal_decisions", "mart_churn_method_quarter"], ["mart_renewal_decisions", "mart_churn_plan_monthly"],
+  ["mart_churn_drivers", "mart_churn_factor_summary"],
 ];
+// Which part of the brief an analysis table belongs to (shown on its box).
+const PART = { fct_cohort: "1b", churn_mar17: "1c", churn_confusion: "1c", churn_disagreement: "1c", mart_churn_windows: "2", mart_metrics_month: "2",
+  mart_renewal_decisions: "3", mart_churn_drivers: "3", mart_churn_factor_summary: "3", mart_churn_method_quarter: "3", mart_churn_plan_monthly: "3" };
 const COLS = [
   { title: "SOURCE FILES", nodes: Object.keys(SOURCES) },
-  { title: "RAW", nodes: ["raw_users", "raw_transactions", "raw_churn_labels"] },
-  { title: "STAGING", nodes: ["ref_price_plan", "stg_transactions"] },
+  { title: "RAW", nodes: ["raw_users", "raw_transactions_export_1", "raw_transactions_export_2", "raw_churn_labels"] },
+  { title: "BASE", nodes: ["base_transactions"] },
+  { title: "STAGING", nodes: ["stg_users", "ref_price_plan", "stg_transactions"] },
   { title: "SUBSCRIPTIONS", nodes: ["fct_subscription"] },
   { title: "MARTS", nodes: ["dim_user", "fct_user_month"] },
-  { title: "COHORTS", nodes: ["fct_cohort"] },
+  { title: "ANALYSIS · STEP 1", nodes: ["churn_mar17", "fct_cohort", "mart_renewal_decisions", "mart_churn_windows"] },
+  { title: "ANALYSIS · STEP 2", nodes: ["churn_confusion", "churn_disagreement", "mart_churn_drivers", "mart_churn_method_quarter", "mart_churn_plan_monthly", "mart_metrics_month"] },
+  { title: "ANALYSIS · STEP 3", nodes: ["mart_churn_factor_summary"] },
 ];
 const NW = 188, NH = 50, CW = 206, RH = 84, TOP = 34;
 const pos = {};
@@ -1822,7 +1858,7 @@ EDGES.forEach(([a, b]) => {
 svg = svg.replace("<svg", "<svg") + "";
 COLS.flatMap((c) => c.nodes).forEach((n) => {
   const p = pos[n], t = T[n];
-  const sub = t ? `${fmt(t.rows)} rows` : "CSV file";
+  const sub = t ? `${PART[n] ? "Part " + PART[n] + " · " : ""}${fmt(t.rows)} rows` : "CSV file";
   svg += `<g class="node" data-n="${n}" tabindex="0" role="button" aria-label="${n}"><rect class="box" x="${p.x}" y="${p.y}" width="${NW}" height="${NH}" rx="8"/>` +
     `<rect class="bar" x="${p.x}" y="${p.y}" width="6" height="${NH}" rx="3" fill="${color[kind(n)]}"/>` +
     `<text x="${p.x + 16}" y="${p.y + 21}">${n.length > 26 ? n.slice(0, 25) + "…" : n}</text><text class="sub" x="${p.x + 16}" y="${p.y + 38}">${sub}</text></g>`;
@@ -1872,7 +1908,7 @@ const MODES = {
 select user_id, payment_method, payment_plan_days, list_price, amount_paid,
        is_auto_renew, transacted_at, expires_at, is_cancel, src_file,
        count(*) as copies
-from raw_transactions
+from base_transactions
 group by all
 having count(*) > 1
 order by copies desc
@@ -1891,7 +1927,7 @@ order by users desc;` },
       { label: "Missing plan length by month", sql: `-- Paid rows with plan length and list price both 0 (T9), by month
 select strftime(strptime(transacted_at::varchar, '%Y%m%d'), '%Y-%m') as month,
        count(*) as rows_missing_plan
-from raw_transactions
+from base_transactions
 where payment_plan_days = 0 and list_price = 0 and amount_paid > 0
 group by 1
 order by 1;` },
@@ -1900,7 +1936,7 @@ select case when expires_at = 19700101 then '1970-01-01 placeholder'
             when expires_at < 20150101 then 'before 2015'
             when expires_at > 20190331 then 'after 2019-03-31' end as problem,
        count(*) as rows, min(expires_at) as earliest, max(expires_at) as latest
-from raw_transactions
+from base_transactions
 where expires_at = 19700101 or expires_at < 20150101 or expires_at > 20190331
 group by 1;` },
       { label: "Which export holds what", sql: `-- The two exports are split on expiry date, not on transaction date (T1-T3)
@@ -1908,7 +1944,7 @@ select src_file,
        count(*) as rows,
        min(transacted_at) as first_tx, max(transacted_at) as last_tx,
        max(expires_at) filter (where expires_at < 20190331) as last_expiry
-from raw_transactions
+from base_transactions
 group by src_file
 order by src_file;` },
     ] },
@@ -1943,7 +1979,7 @@ from stg_transactions
 where user_id = 'u_81713676e69ce5f2'
 order by event_seq;` },
       { label: "Broken vs clean row counts", sql: `-- How many raw rows each cleaning step removed
-select 'raw_transactions' as table_name, count(*) as rows from raw_transactions
+select 'base_transactions (both exports)' as table_name, count(*) as rows from base_transactions
 union all select 'stg_transactions', count(*) from stg_transactions
 union all select 'fct_subscription (purchases)', count(*) from fct_subscription;` },
     ] },

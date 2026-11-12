@@ -127,9 +127,9 @@ ISSUES = [
       "Aug 2016 - Feb 2017 sit in export_2 (Q4).",
   qs=["Q1", "Q4"],
   sql="-- export_2 rows bought before March 2017 (lost if export_2 is read as 'March only')\n"
-      "SELECT * FROM raw_transactions WHERE src_file = 2 AND transacted_at < 20170301;\n"
+      "SELECT * FROM base_transactions WHERE src_file = 2 AND transacted_at < 20170301;\n"
       "-- proof of the split: export_1 never expires after 2017-03-31\n"
-      "SELECT src_file, max(expires_at), count(*) FILTER (WHERE expires_at > 20170331) FROM raw_transactions GROUP BY 1;",
+      "SELECT src_file, max(expires_at), count(*) FILTER (WHERE expires_at > 20170331) FROM base_transactions GROUP BY 1;",
   alts=[dict(name="Incremental append: export_1 + March rows of export_2",
              desc="Standard monthly-load pattern: export_1 is history, export_2 is the new month; append export_2 rows with transacted_at >= 2017-03-01.",
              cost="Lowest (filtered append)", storage="Lowest", speed="Fastest; fits a daily/monthly incremental job",
@@ -154,7 +154,7 @@ ISSUES = [
       "It ranks below the Critical issues because it does not lose rows by itself (revenue and actives come from transactions), "
       "but any join to users silently changes both the totals and the churn answer.",
   qs=["Q1", "Q2"],
-  sql="SELECT * FROM raw_transactions\nWHERE user_id NOT IN (SELECT user_id FROM raw_users);",
+  sql="SELECT * FROM base_transactions\nWHERE user_id NOT IN (SELECT user_id FROM raw_users);",
   alts=[dict(name="Decoupled reporting",
              desc="Revenue, actives and ARPU from transactions only (no join); demographic cuts run separately on the {T23_pu_rest}% of users found in the registry.",
              cost="None extra", storage="None", speed="Fast; no join on the revenue path",
@@ -177,7 +177,7 @@ ISSUES = [
       "they create no subscription period, so that share of the base vanishes from the 2015 trend (Q1). Left as is, 2015 also shows 0-day plans, a negative discount (paid > list) and broken ARPU per plan. That corrupts the 2015 "
       "baseline for the trend (Q1), price points (Q3) and plan mix (Q4).",
   qs=["Q1", "Q3", "Q4"],
-  sql="SELECT * FROM raw_transactions\nWHERE payment_plan_days = 0 AND list_price = 0 AND amount_paid > 0;",
+  sql="SELECT * FROM base_transactions\nWHERE payment_plan_days = 0 AND list_price = 0 AND amount_paid > 0;",
   alts=[dict(name="Price-to-plan lookup",
              desc="Map amount_paid to the plan sold at that price in the same period (149 -> 30 days, 1,788 -> 410 days ...); list_price = amount_paid; flag.",
              cost="One small mapping table + join", storage="+1 lookup table, +1 flag", speed="Seconds",
@@ -197,7 +197,7 @@ ISSUES = [
   why="Counted as paying subscribers, they inflate the active base and deflate ARPU (Q1). They are also the treatment group "
       "for the trial analysis (Q3), so they must be identifiable.",
   qs=["Q1", "Q3"],
-  sql="SELECT * FROM raw_transactions\nWHERE is_cancel = 0 AND amount_paid = 0 AND list_price > 0;",
+  sql="SELECT * FROM base_transactions\nWHERE is_cancel = 0 AND amount_paid = 0 AND list_price > 0;",
   alts=[dict(name="Separate fact_trial table",
              desc="Move zero-paid rows out of the subscription fact into their own trial table; subscriptions stay paid-only.",
              cost="One extra table build", storage="+1 table (same rows, moved)", speed="Seconds; paid queries need no filter",
@@ -241,7 +241,7 @@ ISSUES = [
        "Related: T13 = {T13} rows with 0 plan days; the free ones among them are already in T12.",
   why="Same risk as T11, on more users ({T12_u} vs {T11_u}): they inflate the subscriber count and are part of the trial story (Q3).",
   qs=["Q1", "Q3"],
-  sql="SELECT * FROM raw_transactions\nWHERE is_cancel = 0 AND amount_paid = 0 AND list_price = 0;",
+  sql="SELECT * FROM base_transactions\nWHERE is_cancel = 0 AND amount_paid = 0 AND list_price = 0;",
   alts=[dict(name="Back-fill list_price from the plan's standard price",
              desc="Give each row the standard price of its plan length, so it becomes a 100%-discount row like T11 and all trials share one discount metric.",
              cost="One join to a price table", storage="None", speed="Seconds",
@@ -260,7 +260,7 @@ ISSUES = [
        "the user keeps access until then.",
   why="If cancels are ignored, the period runs to the original expiry, so churn timing (Q2) and monthly actives (Q1) are wrong.",
   qs=["Q1", "Q2"],
-  sql="SELECT * FROM raw_transactions\nWHERE is_cancel = 1 AND expires_at < transacted_at AND expires_at <> 19700101;",
+  sql="SELECT * FROM base_transactions\nWHERE is_cancel = 1 AND expires_at < transacted_at AND expires_at <> 19700101;",
   alts=[dict(name="Effective end = cancel transacted_at",
              desc="A cancel ends the period on the day it happens; expires_at on cancel rows is ignored.",
              cost="Lowest (no date logic)", storage="+1 flag", speed="Seconds",
@@ -279,7 +279,7 @@ ISSUES = [
   why="Deduplicating on (user, day) would delete real upgrades and downgrades (Q3, Q4). Ordering same-day events at random "
       "makes results change between runs (this happened once and was fixed).",
   qs=["Q3", "Q4"],
-  sql="SELECT * FROM raw_transactions\nQUALIFY count(*) OVER (PARTITION BY user_id, transacted_at, src_file) > 1;",
+  sql="SELECT * FROM base_transactions\nQUALIFY count(*) OVER (PARTITION BY user_id, transacted_at, src_file) > 1;",
   alts=[dict(name="Aggregate to one row per user-day",
              desc="Grain = (user_id, day): sum amount_paid, max expires_at, cancel wins if any row is a cancel.",
              cost="One GROUP BY", storage="-{F_sd_rows_less} rows", speed="Fast; simple unique key",
@@ -369,7 +369,7 @@ ISSUES = [
   what="An epoch zero date stands in for 'unknown'. {F_t17_m17}% are payment_method 17 rows with no price; {F_t17_paid} rows are paid.",
   why="Taken literally, the period would end 47 years before it started.",
   qs=["Q1"],
-  sql="SELECT * FROM raw_transactions\nWHERE expires_at = 19700101;",
+  sql="SELECT * FROM base_transactions\nWHERE expires_at = 19700101;",
   alts=[dict(name="Exclude from period building",
              desc="Keep the rows for revenue, but they create no subscription period.",
              cost="One filter", storage="None", speed="Fast",
@@ -385,7 +385,7 @@ ISSUES = [
   what="Not explained by cancellation. {F_t16_m24}% are payment_method 24, mostly 30-day plans in 2015: a provider-specific bug.",
   why="Creates negative-length periods, so actives are understated.",
   qs=["Q1"],
-  sql="SELECT * FROM raw_transactions\nWHERE is_cancel = 0 AND expires_at < transacted_at AND expires_at <> 19700101;",
+  sql="SELECT * FROM base_transactions\nWHERE is_cancel = 0 AND expires_at < transacted_at AND expires_at <> 19700101;",
   alts=[dict(name="Zero-length period (expires_at = transacted_at) + flag",
              desc="Conservative: grant no access we cannot prove.",
              cost="One CASE", storage="+1 flag", speed="Seconds",
@@ -401,7 +401,7 @@ ISSUES = [
   what="{F_t18_cx} of these are cancel rows (valid: a cancel moved the expiry back); {F_t18_ncx} are non-cancel rows.",
   why="Only the non-cancel rows are wrong; they would create periods that end before they start.",
   qs=["Q1"],
-  sql="SELECT * FROM raw_transactions\nWHERE expires_at < 20150101 AND expires_at <> 19700101;",
+  sql="SELECT * FROM base_transactions\nWHERE expires_at < 20150101 AND expires_at <> 19700101;",
   alts=[dict(name="Generic validity window on expires_at",
              desc="One rule for every row: expires_at outside 2015-01-01 .. 2019-03-31 becomes NULL and is derived from plan days.",
              cost="One CASE", storage="+1 flag", speed="Seconds",
@@ -417,7 +417,7 @@ ISSUES = [
   what="{F_t19_30r} of these are 30-day plans, for {F_t19_30u} users with about 10 rows each, consistent with stacked prepaid months (T24).",
   why="These users look 'active' until 2023-2026. Before 2017-03-31 the impact is nil; it matters only for forward-looking metrics.",
   qs=["Q1"],
-  sql="SELECT * FROM raw_transactions\nWHERE expires_at > 20190331;",
+  sql="SELECT * FROM base_transactions\nWHERE expires_at > 20190331;",
   alts=[dict(name="Recompute as transacted_at + plan_days",
              desc="Override billing's value with the row's own plan length.",
              cost="One CASE", storage="None", speed="Seconds",
@@ -433,7 +433,7 @@ ISSUES = [
   what="Identical in every column, including the expiry (only src_row differs). Extra copies carry {F_t7_rev} in amount_paid.",
   why="Double counts revenue and renewals. Tiny effect.",
   qs=["Q1"],
-  sql="-- returns only the extra copies (first copy = lowest src_row is kept)\nSELECT * FROM raw_transactions\nQUALIFY row_number() OVER (PARTITION BY user_id, payment_method, payment_plan_days, list_price,\n  amount_paid, is_auto_renew, transacted_at, expires_at, is_cancel, src_file ORDER BY src_row) > 1;",
+  sql="-- returns only the extra copies (first copy = lowest src_row is kept)\nSELECT * FROM base_transactions\nQUALIFY row_number() OVER (PARTITION BY user_id, payment_method, payment_plan_days, list_price,\n  amount_paid, is_auto_renew, transacted_at, expires_at, is_cancel, src_file ORDER BY src_row) > 1;",
   alts=[dict(name="Keep as real double charges",
              desc="Treat each copy as a provider retry that really charged the user (refunds are not in the data).",
              cost="None", storage="+{T7} rows", speed="-",
@@ -449,7 +449,7 @@ ISSUES = [
   what="For example, a cancel of a 30-day plan in export_1 and a new 270-day plan in export_2 on the same day (an upgrade).",
   why="A (user, day) dedup across the files would delete the upgrade (Q4).",
   qs=["Q4"],
-  sql="SELECT * FROM raw_transactions JOIN x_keys_complementary USING (user_id, transacted_at);",
+  sql="SELECT * FROM base_transactions JOIN x_keys_complementary USING (user_id, transacted_at);",
   alts=[dict(name="Snapshot replace on (user, day)",
              desc="For any (user_id, day) present in both files, the newer export (export_2) replaces export_1's rows.",
              cost="One anti-join", storage="Smaller", speed="Fast; the usual 'newer snapshot replaces older' merge",
@@ -482,7 +482,7 @@ ISSUES = [
   what="A handful of rows paid more than list price (for example list 119, paid 149).",
   why="Produces a negative discount. Negligible size.",
   qs=["Q3"],
-  sql="SELECT * FROM raw_transactions\nWHERE list_price > 0 AND amount_paid > list_price;",
+  sql="SELECT * FROM base_transactions\nWHERE list_price > 0 AND amount_paid > list_price;",
   alts=[dict(name="Treat list_price as stale: list_price = amount_paid",
              desc="Assume the price list lagged a price increase.",
              cost="One CASE", storage="+1 flag", speed="Seconds", loss="Low: rewrites a source field on a guess"),
@@ -615,7 +615,7 @@ CORRECTIONS = [
 # LEGEND: a short plain-English name for every check ID, and every view / term used in the text.
 # The full definition of each check is dq_summary.check_name (from the SQL). Rendered at the top of md, html and xlsx.
 # ---------------------------------------------------------------------------
-PREFIX = [("T", "transactions", "both billing exports, loaded together as raw_transactions"),
+PREFIX = [("T", "transactions", "both billing exports, combined as base_transactions"),
           ("U", "users", "the user registry, users.csv (raw_users)"),
           ("L", "churn_labels", "billing's churn labels for March 2017, churn_labels.csv (raw_churn_labels)")]
 SEV_DEF = [("Critical", "If ignored, a headline answer is wrong (e.g. the active base or annual-plan counts)."),
@@ -648,10 +648,11 @@ SHORT = {
 }
 TERMS = [
  ("export_1, export_2", "The two billing files, transactions_export_1.csv and transactions_export_2.csv. Same columns; their overlap was undocumented."),
- ("raw_users, raw_transactions, raw_churn_labels", "The raw files loaded into DuckDB unchanged (both exports go into raw_transactions)."),
- ("src_file", "Which export a transaction row came from: 1 or 2. Added at load."),
- ("src_row", "The row's position at load. A stable ID for each raw row, used to trace it and to break ties."),
- ("t", "View: raw_transactions with the business columns plus src_file and src_row."),
+ ("raw_users, raw_transactions_export_1, raw_transactions_export_2, raw_churn_labels", "The four files loaded into DuckDB unchanged: one table per file, same rows and columns."),
+ ("base_transactions", "Both exports combined in one table (sql/00_union_exports.sql), values unchanged, plus src_file and src_row. The checks on transactions run on this table."),
+ ("src_file", "Which export a transaction row came from: 1 or 2. Added in base_transactions."),
+ ("src_row", "The row's position: export_1 rows in file order, then export_2. A stable ID that traces each row back to its file and line, and breaks ties."),
+ ("t", "View: base_transactions with the business columns plus src_file and src_row."),
  ("event core", "user_id, transacted_at, payment_method, payment_plan_days, amount_paid, is_cancel. Rows with the same core describe the same purchase."),
  ("t_core", "View: t plus n_core = how many rows in the same file share the event core."),
  ("x_core_match", "View: export_1 rows matched to export_2 rows on the event core."),
@@ -691,8 +692,8 @@ def expand(text, seen):
 summ = {r[0]: dict(zip(["id", "tbl", "name", "rows", "users", "pct_rows", "pct_users"], r))
         for r in con.sql("SELECT * FROM dq_summary").fetchall()}
 totals = dict(users=con.sql("SELECT count(*) FROM raw_users").fetchone()[0],
-              tx_rows=con.sql("SELECT count(*) FROM raw_transactions").fetchone()[0],
-              tx_users=con.sql("SELECT count(DISTINCT user_id) FROM raw_transactions").fetchone()[0],
+              tx_rows=con.sql("SELECT count(*) FROM base_transactions").fetchone()[0],
+              tx_users=con.sql("SELECT count(DISTINCT user_id) FROM base_transactions").fetchone()[0],
               labels=con.sql("SELECT count(*) FROM raw_churn_labels").fetchone()[0])
 passed = [s for s in summ.values() if s["rows"] == 0]
 f = lambda n: f"{n:,}"
@@ -1238,15 +1239,16 @@ legend_checks = "".join(
 legend_terms = "".join(f'<tr id="term-{n}"><td class="mono"><b>{E(a)}</b></td><td class="lft">{L(b)}</td></tr>' for n, (a, b) in enumerate(TERMS))
 legend_cards = (
     '<div class="howto">'
-    '<div class="howto-c"><h3>Severity</h3><dl>'
+    '<div class="howto-c"><h3>Severity</h3><p>How much an issue changes the answers leadership asked for.</p><dl>'
     + "".join(f'<dt><span class="pill sev-{k_.lower()}">{k_}</span></dt><dd>{E(v_)}</dd>' for k_, v_ in SEV_DEF) + "</dl></div>"
-    '<div class="howto-c"><h3>Type and Fix</h3><dl>'
+    '<div class="howto-c"><h3>Type and Fix</h3><p>What kind of problem it is, and how much of it the clean layer repairs.</p><dl>'
     + "".join(f'<dt><span class="kind {"kind-b" if k_ == BUG else "kind-g"}">{k_}</span></dt><dd>{E(v_)}</dd>' for k_, v_ in KIND_DEF)
     + "".join(f"<dt>Fix: {k_}</dt><dd>{E(v_)}</dd>" for k_, v_ in FIX_DEF) + "</dl></div>"
-    '<div class="howto-c"><h3>Questions and IDs</h3><dl>'
-    + "".join(f"<dt>{k_}</dt><dd>{E(v_)}</dd>" for k_, v_ in Q.items())
-    + '<dt>T, U, L</dt><dd>Check IDs in <span class="mono">sql/01_data_quality.sql</span> (transactions, users, churn_labels). Hover for the meaning.</dd>'
-    + "<dt>A / B</dt><dd>Two realistic fixes per issue; B is chosen.</dd></dl></div></div>")
+    '<div class="howto-c"><h3>Short codes</h3><p>The codes used in the ranked table and the issue cards.</p><dl>'
+    + "<dt>Q1-Q4</dt><dd>The brief's four leadership questions: " + ", ".join(f"{k_} {E(v_)}" for k_, v_ in Q.items()) + ".</dd>"
+    + "<dt>T, U, L</dt><dd>A check ID. The letter is the file it checks: T = transactions, U = users, L = churn_labels. Hover an ID to see what it checks.</dd>"
+    + "<dt>A / B</dt><dd>The two fixes we considered for each issue. B is the one we chose.</dd></dl></div></div>"
+    + '<p class="tnote">Every check ID and every term used in the text is listed in the <a href="#glossary">Glossary</a> at the end of the page.</p>')
 rev_rows = "".join(f"<tr><td>{E(a)}</td><td><span class=verdict-tag>{E(b)}</span></td><td>{L(c)}</td></tr>" for a, b, c in REVIEW)
 corr = "".join(f"<li>{L(c)}</li>" for c in CORRECTIONS)
 tot_rows = (f"<tr><td>users</td><td class=num>{f(totals['users'])}</td><td class=num>{f(totals['users'])}</td></tr>"
@@ -1422,11 +1424,7 @@ Every number is computed from DuckDB at build time, and every detection query is
 <section><h2>Raw tables</h2><div class="scroll totals"><table><thead><tr><th>Table</th><th>Rows</th><th>Users</th></tr></thead><tbody>{tot_rows}</tbody></table></div></section>
 <section id="legend"><h2>How to read this report</h2>
 {legend_cards}
-<details class="legend" id="legend-checks"><summary>Legend: all {len(LEGEND_ORDER)} check IDs, with short name and exact definition</summary>
-<div class="scroll"><table class="legend-t"><thead><tr><th>Check</th><th>Table</th><th>Short name (used in the text)</th><th>Definition (what the SQL counts)</th><th>Rows</th><th>Status</th></tr></thead>
-<tbody>{legend_checks}</tbody></table></div></details>
-<details class="legend" id="legend-terms"><summary>Legend: names, views and terms used in the text ({len(TERMS)})</summary>
-<div class="scroll"><table class="legend-t"><thead><tr><th>Name</th><th>Meaning</th></tr></thead><tbody>{legend_terms}</tbody></table></div></details></section>
+</section>
 <section><h2>Ranked issues</h2>
 <p class="tnote"><b>What the rank is based on:</b> severity, i.e. how much the answers to the four leadership questions (Q1-Q4) would change if the issue were ignored, as the brief asks. Within the same severity, Data Bugs come first, because they cannot be fully fixed.
 <span class="hk"><i class="hk-b"></i>Asked in the brief</span><span class="hk"><i class="hk-a"></i>Added by us</span></p>
@@ -1440,6 +1438,12 @@ Every number is computed from DuckDB at build time, and every detection query is
 <div class="scroll"><table class="review"><thead><tr><th>Claim</th><th>Verdict</th><th>Evidence (from SQL)</th></tr></thead><tbody>{rev_rows}</tbody></table></div></details></section>
 <section><h2>Corrections to earlier assumptions</h2><p class="lede">Mistakes we made and fixed along the way, including AI mistakes (also in the 5b AI log).</p>
 <details class="legend"><summary>Show the {len(CORRECTIONS)} corrections</summary><ol class="corr">{corr}</ol></details></section>
+<section id="glossary"><h2>Glossary</h2><p class="lede">Look up any check ID or term used above. Clicking an ID anywhere on the page opens this list at that row.</p>
+<details class="legend" id="legend-checks"><summary>Check IDs ({len(LEGEND_ORDER)}): short name and what the SQL counts</summary>
+<div class="scroll"><table class="legend-t"><thead><tr><th>Check</th><th>Table</th><th>Short name (used in the text)</th><th>Definition (what the SQL counts)</th><th>Rows</th><th>Status</th></tr></thead>
+<tbody>{legend_checks}</tbody></table></div></details>
+<details class="legend" id="legend-terms"><summary>Terms ({len(TERMS)}): file, table and view names used in the text</summary>
+<div class="scroll"><table class="legend-t"><thead><tr><th>Name</th><th>Meaning</th></tr></thead><tbody>{legend_terms}</tbody></table></div></details></section>
 <footer>Generated by py/01_dq_outputs.py from tune.duckdb (sql/01_data_quality.sql). Machine-readable copy of every number on this page: the JSON block with id "dq-data".</footer>"""
 
 body_html = english

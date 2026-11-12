@@ -1,11 +1,27 @@
 # Part 1b: Clean Layer and Data Model
 
-Built by `sql/02_stg_transactions.sql` → `03_fct_subscription.sql` → `04_dim_user.sql` → `05_fct_user_month.sql` (→ `07_fct_cohort.sql`, a cohort roll-up of the panel), run in order by `run_all.py` from the raw CSVs in `data/` (the whole pipeline runs in about 20 s). Each script ends with a validation SELECT. Two consecutive runs give identical table fingerprints, so the build is deterministic. Issue codes (T4, T9, U11, L5 …) refer to `reports/01_data_quality.md`.
+Built by `sql/00_load_raw.sql` → `00_union_exports.sql` → `02_stg_transactions.sql` + `02_stg_users.sql` → `03_fct_subscription.sql` → `04_dim_user.sql` → `05_fct_user_month.sql` (→ `07_fct_cohort.sql`, a cohort roll-up of the panel), run in order by `run_all.py` from the raw CSVs in `data/` (the whole pipeline runs in about 20 s). Each script ends with a validation SELECT. Two consecutive runs give identical table fingerprints, so the build is deterministic. Issue codes (T4, T9, U11, L5 …) refer to `reports/01_data_quality.md`.
+
+## Build steps and why each one sits where it does
+
+| Step | Script | Table(s) | What it does | Why here |
+|:---:|:---:|:---:|:---:|:---:|
+| RAW | `00_load_raw.sql` | `raw_users`, `raw_transactions_export_1`, `raw_transactions_export_2`, `raw_churn_labels` | One table per CSV, exactly as delivered | The untouched copy everything can be checked against. Nothing is decided here |
+| BASE | `00_union_exports.sql` | `base_transactions` | Combines the two exports, adds `src_file` / `src_row`. No value changed, no row removed | Neither export is complete alone (T1-T3), and the duplicate / conflict rules need both side by side. Kept apart from RAW so RAW stays 1:1 with the files |
+| Data quality | `01_data_quality.sql` | `dq_summary`, `dq_examples_*` | Measures every issue; fixes nothing | Must see the data before cleaning, duplicates included, to count them |
+| STAGING | `02_stg_transactions.sql`, `02_stg_users.sql` | `ref_price_plan`, `stg_transactions`, `stg_users` | All cleaning. Transactions: dedup (T7, T4), typed dates, filled plan days, fixed expiries, one flag per rule, fixed event order. Users: age outside 4-92 → NULL, missing gender → 'unknown', typed registration date. Churn labels need no cleaning (no duplicates, no invalid values) and are used as delivered | One place per file for every cleaning rule. Must come before anything that counts, or duplicates would be counted twice |
+| SUBSCRIPTIONS | `03_fct_subscription.sql` | `fct_subscription` | Turns events into subscription periods and episodes | The brief's questions are about subscriptions (plan, cancel, upgrade, churn), not single events. Needs clean, ordered events first |
+| USERS | `04_dim_user.sql` | `dim_user` | One row per user seen anywhere: cleaned attributes from `stg_users` plus summaries | Needs `fct_subscription` for first plan, episodes and lifetime paid. Rules that need both users and transactions (registration after first payment, U8) live here |
+| MARTS | `05`, `07`, `08`, `09` | `fct_user_month`, `fct_cohort`, `mart_*` | Monthly panel, cohort curves, metrics and churn drivers | Built last from the clean tables, so every metric uses the same definitions |
+
+Each step only reads tables built by earlier steps, and each script ends with a validation query.
 
 ## Tables at a glance
 
 | Table | Grain (one row = …) | Key | Rows | Purpose |
 |:---:|:---:|:---:|:---:|:---:|
+| base_transactions | one row of either export | src_row | 5,727,342 | Both exports combined (`sql/00_union_exports.sql`), values unchanged, plus `src_file` and `src_row`. The raw tables `raw_transactions_export_1` / `_2` stay identical to the files |
+| stg_users | one row of users.csv | user_id | 1,691,575 | Cleaned registry: age 4-92 else NULL, age_band, gender 'unknown' if missing, typed registered_date, flag_registered_after_data_end |
 | ref_price_plan | one price | amount_paid | 47 | Price → plan-length lookup, used to fill in missing plan days (T9) |
 | stg_transactions | one real billing event | event_id (= src_row) | 5,725,763 | Deduplicated, conflict-resolved events with typed dates and one flag per rule |
 | fct_subscription | one subscription period (one purchase plus the cancels that follow it) | subscription_id (= src_row of the purchase) | 5,501,434 | Plan, price, discount, auto-renew, cancel, change vs previous, new/renewal/reactivation, episode |
@@ -24,6 +40,7 @@ erDiagram
     stg_transactions ||--o| fct_subscription : "event_id = subscription_id (purchases)"
     fct_subscription }o--|| episode : "episode_id (derived, one GROUP BY)"
     ref_price_plan ||--o{ stg_transactions : "amount_paid (T9 imputation)"
+    stg_users ||--o| dim_user : "user_id (registry attributes)"
     raw_churn_labels |o--|| dim_user : "user_id (has_churn_label)"
 
     dim_user {
@@ -156,7 +173,7 @@ The key fact about this billing system: **`expires_at` is the membership expiry 
 
 | # | Rule | Issue | Rows affected | Where |
 |:---:|:---:|:---:|:---:|:---:|
-| 1 | Union both exports; they are split on expiry, not on date. Keep src_file / src_row for lineage | T1-T3 | 89,728 old purchases live only in export_2 | 00, 02 |
+| 1 | Union both exports in a separate step (`base_transactions`); they are split on expiry, not on date. Add src_file / src_row for lineage; the raw tables stay as delivered | T1-T3 | 89,728 old purchases live only in export_2 | 00_union_exports |
 | 2 | Drop exact copies of a whole row inside one export; keep the lowest src_row | T7 | 832 removed | 02 |
 | 3 | Same event in both exports (one-to-one match on user, day, method, plan, amount, cancel): export_2 wins; the export_1 expiry is kept as `expires_at_asof_feb` | T4 | 747 export_1 rows removed, `flag_conflict_resolved` | 02 |
 | 4 | Different events on the same user and day are all kept (no dedup on user + day) | T6, T8 | `flag_same_day_multi`, `flag_same_day_both_exports` | 02 |
@@ -172,9 +189,9 @@ The key fact about this billing system: **`expires_at` is the membership expiry 
 | 14 | Expiry more than 2 years past the data end: kept and flagged (mostly long stacks) | T19 | 1,738 | 02 |
 | 15 | Paid above list price: discount floored at 0, flagged | T10 | 13 | 02 |
 | 16 | Revenue = amount_paid on purchases only. Cancel rows carry an amount (160,720 rows, 23.2M) that is the cancelled plan's price, not a payment; kept in stg for audit | — | — | 03 |
-| 17 | Age outside 4-92 → NULL; age_band includes 'Unknown'. No imputation | U1-U4, U11 | 1,136,998 | 04 |
-| 18 | Gender missing → 'unknown', its own segment | U5 | 1,106,850 | 04 |
-| 19 | Registration after the data end or after the first transaction: kept and flagged; tenure starts at the earlier of registration and first transaction | U7, U8 | 13,756 + 26 | 04 |
+| 17 | Age outside 4-92 → NULL; age_band includes 'Unknown'. No imputation | U1-U4, U11 | 1,136,998 | 02_stg_users |
+| 18 | Gender missing → 'unknown', its own segment | U5 | 1,106,850 | 02_stg_users |
+| 19 | Registration after the data end or after the first transaction: kept and flagged; tenure starts at the earlier of registration and first transaction | U7, U8 | 13,756 + 26 | U7: 02_stg_users; U8: 04 |
 | 20 | Left-censoring: data starts 2015-01-01, so the 133,585 users first seen in Jan 2015 may have subscribed earlier. Their "new" is flagged (`flag_first_seen_jan2015`); Jan-2015 new counts must not be read as acquisition | — | 133,585 | 04 |
 
 ### Change from the Part 1a decision (T9)
