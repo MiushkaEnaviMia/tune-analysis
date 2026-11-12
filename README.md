@@ -42,6 +42,7 @@ Optional:
 ## 2. What I'd do with more time
 
 - **Part 3b:** free trials and price points, the deep dive we did not choose.
+- **Go deeper on the validation checks** on [tab 1b.1](https://miushkaenavimia.github.io/tune-analysis/#lineage): more checks per table, run automatically after every build.
 - **Test the SQL explorer properly:** every table, large results, phones and slow browsers.
 - **Go deeper on the engineering base layers** (RAW, BASE, STAGING), with automated tests at each step.
 - **Check that the model structure is the most efficient one:** table sizes, views vs tables, query speed.

@@ -124,6 +124,10 @@ erDiagram
 
 The period is the unit the business sells and prices, so discount, plan length, auto-renew and upgrade/downgrade live naturally on it. Episodes are what churn is about, so every period carries `episode_id`, `episode_start_date`, `episode_end_date` and `episode_outcome`.
 
+- **Why Period + episode_id:** monthly revenue, ARPU and discounts (Part 2) by month and period to period; every period compared to the previous one for Upgrade / Downgrade, as the brief asks; `episode_id` still identifies reactivation (`Reactivated`) and the start of a new subscription run.
+- **Trade-off:** a bigger table (5,501,434 periods vs 748,144 episodes), and the length of a whole run needs `GROUP BY user_id, episode_id` instead of one ready row.
+- **Why we still chose it:** aggregation is one-way (lossless vs lossy): Period + `episode_id` rolls up to Episode with one GROUP BY, but an Episode table cannot rebuild the monthly detail or plan changes. With `episode_id` on the table and DuckDB, the extra detail costs little in size and run time; choosing Episode would force a rebuild from the raw layer.
+
 **3. fct_user_month: sparse user × month panel.** A row exists only when the user had access on at least one day, paid, or churned that month. A dense grid of 605,802 transacting users × 27 months would be about 16M rows, mostly zeros that every metric filters out anyway.
 
 **4. dim_user: every user seen anywhere.** 109,330 transacting users (18%) are missing from users.csv (T23), and labelled users missing from it churn at 5.2% vs 9.4% (L5). An inner join would drop a lower-churn group and bias the churn drivers. They stay, with `is_in_users = 0` and 'Unknown' attributes.

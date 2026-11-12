@@ -97,6 +97,16 @@ a.code{color:var(--accent);font-family:var(--mono);text-decoration:none}a.code:h
 .layers .ly span.why{color:var(--fg);border-top:1px solid var(--line);padding-top:6px;margin-top:2px}
 .layers .ly .n{font-style:normal;position:absolute;top:8px;right:10px;font-size:var(--fs-label);color:var(--muted)}
 .dag svg{display:block}
+.dag-col{display:grid;gap:8px;min-width:0}
+.dag-tg{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:var(--fs-small);color:var(--muted)}
+.two-t{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px 20px}
+.two-t>div{display:grid;gap:6px;align-content:start;border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--surface)}
+.two-t h3{margin:0;font-size:var(--fs-h3);color:var(--navy)}.two-t p{margin:0}
+.rules{max-width:1100px}
+.ctag{display:inline-block;font-size:var(--fs-label);font-weight:700;padding:1px 8px;border-radius:999px;white-space:nowrap}
+.ctag.duplicates{background:#e8eefc;color:#2a4fb0}.ctag.overlapping{background:#f1e8fb;color:#6b3aa8}
+.ctag.cancellations{background:#fdf1e3;color:#a35a0b}.ctag.implausible{background:#fdeaea;color:#b03a3a}
+
 .node{cursor:pointer}
 .node rect.box{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
 .node rect.bar{stroke:none}
@@ -145,12 +155,22 @@ a.code{color:var(--accent);font-family:var(--mono);text-decoration:none}a.code:h
 .ov-map td.l{text-align:left}
 .ov-map .muted{color:var(--muted);font-size:var(--fs-small)}
 .ov .label{margin-bottom:0}
+.ov-readme{display:grid;gap:8px;background:var(--accent-soft);border:1px solid var(--line);border-radius:14px;padding:16px 18px 18px}
+.ov-band{margin:0;font-size:var(--fs-h2);color:var(--navy);display:flex;gap:10px;align-items:center}
+.ov-rm-note{margin:0 0 4px;color:var(--muted);font-size:var(--fs-small)}
+.ov-readme .label{margin-top:6px}
+.ov-time{width:fit-content}
+
 .rerun ul{margin:0;padding-left:20px;display:grid;gap:6px}
 
 details.fold>summary{cursor:pointer;list-style:none;display:grid;gap:4px}
 details.fold>summary::-webkit-details-marker{display:none}
 details.fold>summary h2::after{content:"Show ▾";margin-left:auto;font-size:var(--fs-small);font-weight:600;color:var(--accent)}
 details.fold[open]>summary h2::after{content:"Hide ▴"}
+details.card.lin-sec.fold>summary{padding:0;font-size:inherit;color:inherit}
+details.card.lin-sec.fold>div{padding:0}
+.fold-in{display:grid;gap:16px;min-width:0}
+.fold-in>.p2-chart-card,.fold-in>.p3-card,.fold-in>.cx-panel,.fold-in>.p4-fig,.fold-in.p3-lim{padding:0;border:0;box-shadow:none;background:none}
 details.fold>summary span{color:var(--muted);font-size:var(--fs-table);padding-left:16px}.lin-sec .note{color:var(--muted);font-size:var(--fs-small)}
 .lin-sec ul{margin:0;padding-left:20px;display:grid;gap:6px;max-width:100ch}
 .lin-sec td.l{text-align:left}
@@ -264,7 +284,7 @@ table.cx-tbl{border-collapse:collapse;width:100%;font-size:var(--fs-table)}
 .cx-tbl th{background:var(--navy);color:var(--on-dark);padding:10px 14px;font-size:var(--fs-label);letter-spacing:.04em;text-transform:uppercase}
 .cx-tbl td{padding:9px 14px;border-bottom:1px solid var(--line)}
 .cx-tbl td.num{text-align:center;white-space:nowrap}
-.cx-lim{font-size:var(--fs-body)}.cx-lim ul{margin:6px 0 0;padding-left:20px;display:grid;gap:4px}
+.cx-lim{font-size:var(--fs-body)}.cx-lim ul,ul.cx-lim{margin:6px 0 0;padding-left:20px;display:grid;gap:4px}
 .cx-src{color:var(--muted);font-size:var(--fs-small)}
 
 /* task & status */
@@ -355,46 +375,36 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
   <section class="view ov" id="view-overview" hidden>
     <div class="card ov-hero">
       <h1>Tune subscription analysis</h1>
-      <p class="ov-pitch">Two years of messy billing exports, turned into clear answers for the CEO and the Head of Growth</p>
-      <div class="ov-chips">
-        <span><i>🔍</i>21 data issues found, sized and fixed</span>
-        <span><i>🧱</i>A clean, tested data model you can query live</span>
-        <span><i>📈</i>Monthly metrics, churn drivers, 3 recommendations</span>
-      </div>
+      <p class="ov-pitch">This project is the Data Analytics Lead take-home submission on Tune, a language-learning subscription app. It analyzes raw 2015–2017 billing data in DuckDB, from data preparation and metric definitions to answering four questions on growth, churn, pricing, and annual plans. In this Introduction tab, you can navigate each part of the analysis alongside the README setup guide</p>
     </div>
-    <div class="ov-grid">
-      <div class="ov-main">
-        <div class="label">🗺️ Where each part of the brief lives</div>
+    <div class="ov-main">
+      <div class="label">🗺️ Where each part of the brief lives</div>
         <div class="card scroll ov-map"><table class="grid"><thead><tr><th>Part</th><th>What</th><th>On this site</th><th>Report</th></tr></thead><tbody><tr class="grp"><td colspan="4">🧱 Part 1 · Data engineering</td></tr><tr><td><b>1a</b></td><td class="l">Data quality: 21 issues, ranked by impact</td><td><button class="linkbtn" data-go="dq">1a →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/01_data_quality.md" target="_blank" rel="noopener">01_data_quality.md ↗</a></td></tr><tr><td><b>1b</b></td><td class="l">Clean layer: table map, cleaning rules, SQL on every table</td><td><button class="linkbtn" data-go="lineage">1b.1 · 1b.2 →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/02_data_model.md" target="_blank" rel="noopener">02_data_model.md ↗</a></td></tr><tr><td><b>1c</b></td><td class="l">Billing's churn labels checked against our rule</td><td><button class="linkbtn" data-go="churn">1c →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/03_churn_validation.md" target="_blank" rel="noopener">03_churn_validation.md ↗</a></td></tr><tr class="grp"><td colspan="4">📈 Part 2 · Core metrics</td></tr><tr><td><b>2</b></td><td class="l">Active, new, renewing, reactivated, churn, ARPU, discounts</td><td><button class="linkbtn" data-go="p2-active">Part 2 →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/04_metrics.md" target="_blank" rel="noopener">04_metrics.md ↗</a></td></tr><tr class="grp"><td colspan="4">🔍 Part 3 · Deep dive (one of two)</td></tr><tr><td><b>3a</b></td><td class="l">Churn drivers: what matters, what only looks like it</td><td><button class="linkbtn" data-go="p3a">Part 3 →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/05_deep_dive.md" target="_blank" rel="noopener">05_deep_dive.md ↗</a></td></tr><tr class="skip"><td><b>3b</b></td><td class="l">Free trials and price points</td><td><span class="muted">Not chosen</span></td><td><span class="muted">-</span></td></tr><tr class="grp"><td colspan="4">🎯 Part 4 · Executive summary</td></tr><tr><td><b>4</b></td><td class="l">Four answers and three recommendations</td><td><button class="linkbtn" data-go="p4">Part 4 →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/08_executive_summary.md" target="_blank" rel="noopener">08_executive_summary.md ↗</a></td></tr><tr class="grp"><td colspan="4">🧪 Part 5 · Experiment and AI</td></tr><tr><td><b>5a</b></td><td class="l">Annual-plan A/B test design</td><td><button class="linkbtn" data-go="p5a">5a →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/06_ab_test.md" target="_blank" rel="noopener">06_ab_test.md ↗</a></td></tr><tr><td><b>5b</b></td><td class="l">How AI was used, and where it was wrong</td><td><button class="linkbtn" data-go="p5b">5b →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/07_ai_log.md" target="_blank" rel="noopener">07_ai_log.md ↗</a></td></tr></tbody></table></div>
-      </div>
-      <div class="ov-side">
-        <div class="label">❓ The four leadership questions</div>
-        <div class="card ov-qs"><ul><li><b>Q1</b><span>How healthy is the subscriber base, and how is it trending?</span><em class="st ok">Answered</em></li><li><b>Q2</b><span>What drives churn?</span><em class="st ok">Answered</em></li><li><b>Q3</b><span>Did the free trials and price points work?</span><em class="st pt">Partly</em></li><li><b>Q4</b><span>Should we push annual plans harder?</span><em class="st pt">Partly</em></li></ul><button class="linkbtn" data-go="p4">See the answers in Part 4 →</button></div>
-        <div class="label">⏱️ Time spent</div>
-        <div class="card ov-time"><b>~5 hours</b></div>
-      </div>
     </div>
-    <div>
-      <div class="label">🛠️ With more time</div>
+    <div class="ov-readme">
+      <h2 class="ov-band">📄 README</h2>
+      <p class="ov-rm-note">The same three sections as <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis#readme" target="_blank" rel="noopener">README.md ↗</a> in the repository</p>
+      <div class="label">▶️ 1. How to run it end to end</div>
+      <div class="card rerun">
+        <p>All code is in the <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis" target="_blank" rel="noopener">GitHub repository</a>: numbered SQL scripts in <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/tree/main/sql" target="_blank" rel="noopener">sql/</a>, Python steps in <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/tree/main/py" target="_blank" rel="noopener">py/</a>, reports in <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/tree/main/reports" target="_blank" rel="noopener">reports/</a>. To rebuild everything from the raw CSVs:</p>
+        <ol>
+          <li>Clone the repository and run <code>pip install duckdb openpyxl</code> (Python 3.9+)</li>
+          <li>Put <code>users.csv</code>, <code>transactions_export_1.csv</code>, <code>transactions_export_2.csv</code> and <code>churn_labels.csv</code> in <code>data/</code> at the repository root</li>
+          <li>Run <code>python run_all.py</code> from the repository root. It runs every <code>sql/NN_*.sql</code> in order into <code>tune.duckdb</code> (~20 s), then every <code>py/NN_*.py</code>, which rewrites the Part 1a reports</li>
+        </ol>
+        <p>The repository holds no <code>data/</code> folder and no database: all paths are relative, so the scripts run on your own copy of the CSVs</p>
+      </div>
+      <div class="label">🛠️ 2. What I'd do with more time</div>
       <div class="card rerun"><ul>
         <li><b>Part 3b:</b> free trials and price points, the deep dive we did not choose</li>
+        <li><b>Go deeper on the validation checks</b> on <button class="linkbtn" data-go="lineage">tab 1b.1 →</button>: more checks per table, run automatically after every build</li>
         <li><b>Test the SQL explorer properly:</b> every table, large results, phones and slow browsers</li>
         <li><b>Go deeper on the engineering base layers</b> (RAW, BASE, STAGING), with automated tests at each step</li>
         <li><b>Check that the model structure is the most efficient one:</b> table sizes, views vs tables, query speed</li>
         <li><b>Close the data gaps:</b> April 2017 transactions and a full user export</li>
       </ul></div>
-    </div>
-    <div>
-      <div class="label">▶️ Run it end to end</div>
-      <div class="card rerun">
-        <p>All code is in the <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis" target="_blank" rel="noopener">GitHub repository</a>: numbered SQL scripts in <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/tree/main/sql" target="_blank" rel="noopener">sql/</a>, report generator in <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/tree/main/py" target="_blank" rel="noopener">py/</a>, reports in <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/tree/main/reports" target="_blank" rel="noopener">reports/</a>. To rebuild everything from the raw CSVs:</p>
-        <ol>
-          <li>Clone the repository and run <code>pip install duckdb openpyxl</code> (Python 3.9+)</li>
-          <li>Put <code>users.csv</code>, <code>transactions_export_1.csv</code>, <code>transactions_export_2.csv</code> and <code>churn_labels.csv</code> in <code>data/</code>.</li>
-          <li>Run <code>python run_all.py</code> from the repository root. It builds <code>tune.duckdb</code> and rewrites the reports</li>
-        </ol>
-        <p>Details in the <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis#readme" target="_blank" rel="noopener">README</a></p>
-      </div>
+      <div class="label">⏱️ 3. Time spent</div>
+      <div class="card ov-time"><b>~5 hours</b></div>
     </div>
   </section>
 
@@ -408,60 +418,69 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     <div style="display:grid;gap:6px">
       <h1>Data model</h1>
       <p class="lede">How the clean tables are built from the raw files. Click a table to see what it holds and where its data comes from and goes to.</p>
-      <div class="legend"><span><i class="sw" style="background:var(--src)"></i>Source file</span><span><i class="sw" style="background:var(--raw)"></i>Raw table (as delivered)</span><span><i class="sw" style="background:var(--clean)"></i>Clean table</span><span>Arrows: data flows left to right</span></div>
+      <div class="legend"><span><i class="sw" style="background:var(--src)"></i>Source file</span><span><i class="sw" style="background:var(--raw)"></i>Raw table (as delivered)</span><span><i class="sw" style="background:var(--clean)"></i>Clean table</span><span>Arrows: data flows top to bottom</span></div>
     </div>
-    <div class="card lin-sec" style="gap:10px"><h2>How the database is built, and why in this order</h2><p>Six layers, in this order. Each one only reads the layers before it. <span class='mono'>churn_labels</span> needs no cleaning (no duplicates, no invalid values), so it is used as delivered.</p><div class="layers"><div class="ly"><i class="n">1 →</i><b>RAW</b><span>Each file copied as-is, one table per file</span><span class="why">Why first: the untouched copy everything is checked against</span></div><div class="ly"><i class="n">2 →</i><b>BASE</b><span>The two transaction exports combined, plus <span class='mono'>src_file</span> / <span class='mono'>src_row</span></span><span class="why">Why separate: neither export is complete alone, and RAW stays 1:1 with the files</span></div><div class="ly"><i class="n">3 →</i><b>DATA QUALITY CHECK</b><span>Measures the problems, fixes nothing</span><span class="why">Why before cleaning: duplicates must be counted before they are removed</span></div><div class="ly"><i class="n">4 →</i><b>STAGING</b><span>Cleans the data: <span class='mono'>stg_transactions</span>, <span class='mono'>stg_users</span></span><span class="why">Why here: one place for every cleaning rule, before anything is counted</span></div><div class="ly"><i class="n">5 →</i><b>SUBSCRIPTIONS</b><span>Events become subscription periods: <span class='mono'>fct_subscription</span></span><span class="why">Why here: the brief asks about subscriptions, not single events</span></div><div class="ly"><i class="n">6</i><b>MARTS</b><span>Tables ready for the questions: <span class='mono'>dim_user</span>, <span class='mono'>fct_user_month</span>, <span class='mono'>fct_cohort</span>, <span class='mono'>mart_*</span></span><span class="why">Why last: every metric uses the same clean definitions</span></div></div></div>
+    <div class="card lin-sec" style="gap:10px"><h2>How the database is built, and why in this order</h2><p>Six layers, in this order. Each one only reads the layers before it. <span class='mono'>churn_labels</span> needs no cleaning (no duplicates, no invalid values), so it is used as delivered.</p><div class="layers"><div class="ly"><i class="n">1 →</i><b>RAW</b><span>Each file copied as-is, one table per file</span><span class="why">Why first: the untouched copy everything is checked against</span></div><div class="ly"><i class="n">2 →</i><b>BASE</b><span>The two transaction exports combined, plus <span class='mono'>src_file</span> / <span class='mono'>src_row</span></span><span class="why">Why separate: neither export is complete alone, and RAW stays 1:1 with the files</span></div><div class="ly"><i class="n">3 →</i><b>DATA QUALITY CHECK</b><span>Measures the problems, fixes nothing</span><span class="why">Why before cleaning: duplicates must be counted before they are removed</span></div><div class="ly"><i class="n">4 →</i><b>STAGING</b><span>Cleans the data: <span class='mono'>stg_transactions</span>, <span class='mono'>stg_users</span></span><span class="why">Why here: one place for every cleaning rule, before anything is counted</span></div><div class="ly"><i class="n">5 →</i><b>SUBSCRIPTIONS</b><span>Events become subscription periods: <span class='mono'>fct_subscription</span></span><span class="why">Why here: the brief asks about subscriptions, not single events</span></div><div class="ly"><i class="n">6</i><b>USERS</b><span>One row per user: <span class='mono'>dim_user</span></span><span class="why">Why last: it needs every source, and its derived fields come from the subscriptions</span></div></div></div>
     <div class="lin-wrap">
-      <div class="card dag" id="dag"></div>
+      <div class="dag-col"><div class="card dag" id="dag"></div><div class="dag-tg"><button type="button" class="btn" id="dag-more" aria-expanded="false">+ Show downstream marts</button><span>Parts 1c, 2 and 3 tables built on <span class="mono">dim_user</span> and <span class="mono">fct_subscription</span></span></div></div>
       <aside class="card side" id="lin-side"><p class="lede">Select a table on the map</p></aside>
     </div>
     <div class="lin-doc">
-    <details class="card lin-sec fold"><summary><h2>What 1b asks for, and where it is</h2><span>Every item the brief lists for 1b, and the table or field that holds it</span></summary><div class="scroll"><table class="grid"><thead><tr><th>Asked in the brief</th><th>Where in the clean layer</th></tr></thead><tbody>
-    <tr><td class="l">dim_user: one row per user, cleaned attributes, derived fields</td><td class="l"><code class='mono'>dim_user</code>: 1,800,905 users (every user seen anywhere). Cleaned: <code class='mono'>age</code>, <code class='mono'>age_band</code>, <code class='mono'>gender</code>, <code class='mono'>registered_date</code>. Derived: <code class='mono'>first_paid_date</code>, <code class='mono'>n_episodes</code>, <code class='mono'>lifetime_paid</code>, <code class='mono'>is_payer</code>, <code class='mono'>ever_annual</code>, <code class='mono'>status_at_data_end</code> and more</td></tr>
-    <tr><td class="l">Subscription table, one row per period or episode, grain explained</td><td class="l"><code class='mono'>fct_subscription</code>: 5,501,434 periods (one purchase each) with <code class='mono'>episode_id</code> (748,144 episodes). Why: see “Grain” below</td></tr>
-    <tr><td class="l">Start and end dates</td><td class="l"><code class='mono'>start_date</code>, <code class='mono'>end_date</code> (plus <code class='mono'>covered_start</code>, <code class='mono'>covered_end</code>)</td></tr>
-    <tr><td class="l">Plan length</td><td class="l"><code class='mono'>plan_days</code>, <code class='mono'>plan_tier</code></td></tr>
-    <tr><td class="l">List price</td><td class="l"><code class='mono'>list_price</code></td></tr>
-    <tr><td class="l">Amount paid</td><td class="l"><code class='mono'>amount_paid</code></td></tr>
-    <tr><td class="l">Discount</td><td class="l"><code class='mono'>discount_amount</code>, <code class='mono'>discount_pct</code></td></tr>
-    <tr><td class="l">Auto-renew</td><td class="l"><code class='mono'>is_auto_renew</code></td></tr>
-    <tr><td class="l">Cancelled</td><td class="l"><code class='mono'>is_cancelled</code>, <code class='mono'>cancel_date</code></td></tr>
-    <tr><td class="l">Upgrade or downgrade vs the previous period</td><td class="l"><code class='mono'>change_vs_prev</code> (free_to_paid, paid_to_free, upgrade, downgrade, price_up, price_down, same)</td></tr>
-    <tr><td class="l">Rules for duplicates, overlapping or conflicting rows, cancellations, implausible values</td><td class="l">“Cleaning rules” below (20 rules)</td></tr>
-    <tr><td class="l">Reproducible SQL</td><td class="l"><code class='mono'>sql/00_load_raw.sql</code>, <code class='mono'>sql/00_union_exports.sql</code>, <code class='mono'>sql/02_stg_transactions.sql</code> … <code class='mono'>sql/05_fct_user_month.sql</code>, plus the cohort table <code class='mono'>sql/07_fct_cohort.sql</code>, run by <code class='mono'>run_all.py</code>; two full runs give identical tables</td></tr>
-    </tbody></table></div></details>
-    <div class="card lin-sec"><h2>Grain: one row per subscription period</h2>
-    
-    <p>The period is the unit the business sells and prices, so discount, plan length, auto-renew and upgrade/downgrade live naturally on it. Episodes are what churn is about, so every period carries <code class="mono">episode_id</code>, <code class="mono">episode_start_date</code>, <code class="mono">episode_end_date</code> and <code class="mono">episode_outcome</code>.</p>
+    <div class="card lin-sec"><h2>The two clean tables</h2>
+    <div class="two-t">
+    <div><h3 class="mono">dim_user</h3><p>One row per user: 1,800,905 users (every user seen in the registry, the transactions or the labels)</p><p>Cleaned: <code class='mono'>age</code>, <code class='mono'>age_band</code>, <code class='mono'>gender</code>, <code class='mono'>registered_date</code></p><p>Derived: <code class='mono'>first_paid_date</code>, <code class='mono'>n_episodes</code>, <code class='mono'>lifetime_paid</code>, <code class='mono'>is_payer</code>, <code class='mono'>ever_annual</code>, <code class='mono'>status_at_data_end</code></p></div>
+    <div><h3 class="mono">fct_subscription</h3><p>One row per subscription period (one purchase and the cancels that follow it): 5,501,434 periods in 748,144 episodes</p><p>Fields: <code class='mono'>start_date</code>, <code class='mono'>end_date</code>, <code class='mono'>plan_days</code>, <code class='mono'>list_price</code>, <code class='mono'>amount_paid</code>, <code class='mono'>discount_amount</code>, <code class='mono'>is_auto_renew</code>, <code class='mono'>is_cancelled</code></p><p>Derived: <code class='mono'>episode_id</code>, <code class='mono'>change_vs_prev</code> (upgrade, downgrade, free_to_paid…), <code class='mono'>covered_start</code> / <code class='mono'>covered_end</code></p></div>
+    </div>
+    <p class="note">Built by <code class='mono'>sql/00_load_raw.sql</code> … <code class='mono'>sql/04_dim_user.sql</code>, run in order by <code class='mono'>run_all.py</code>; two full runs give identical tables</p></div>
+    <div class="card lin-sec"><h2>Grain: Period + episode_id</h2>
+    <p class="lede">Chosen: <code class="mono">fct_subscription</code> has one row per billing period, and every row carries <code class="mono">episode_id</code></p>
+    <h3>Why Period + episode_id</h3>
+    <ul>
+    <li>Monthly revenue, ARPU and discounts (Part 2): shows how much money came in each month and how price or discount changed from period to period</li>
+    <li>Plan changes (Upgrade / Downgrade): every billing period can be compared to the previous one, as the brief asks</li>
+    <li>Keeps the Episode advantage: <code class="mono">episode_id</code> identifies reactivation (<code class="mono">Reactivated</code>) and when a new subscription run starts</li>
+    </ul>
+    <h3>Trade-off</h3>
+    <ul>
+    <li>Bigger table: 5,501,434 periods instead of 748,144 episodes</li>
+    <li>The length of a whole subscription run needs <code class="mono">GROUP BY user_id, episode_id</code> instead of reading one ready row</li>
+    </ul>
+    <h3>Why we still chose it</h3>
+    <ul>
+    <li>One-way aggregation (lossless vs lossy): from Period + <code class="mono">episode_id</code> you can always go up to Episode with a simple GROUP BY; collapsing to Episode first deletes the monthly detail and plan changes, and they cannot be rebuilt from that table</li>
+    <li>Low running cost vs lost flexibility: with <code class="mono">episode_id</code> ready on the table and a modern engine (DuckDB), keeping the detail costs little (size, run time); choosing Episode would force rebuilding the model from the raw layer</li>
+    </ul>
+    <h3>Options compared</h3>
     <div class="scroll"><table class="grid"><thead><tr><th>Option</th><th>One row =</th><th>Keeps the plan sold (Q3/Q4)</th><th>Revenue sums exactly</th><th>Churn / reactivation</th><th>Verdict</th></tr></thead><tbody>
     <tr><td>A: Episode</td><td>one continuous membership</td><td>No: a 30-day → annual switch is averaged away</td><td>Yes</td><td>Natural</td><td>Kept as a derived level (episode_id)</td></tr>
     <tr><td>B: Period (purchase) + episode_id</td><td>one purchase and its cancels</td><td>Yes</td><td>Yes (reconciles to 0)</td><td>One GROUP BY on episode_id</td><td><b>Chosen</b></td></tr>
     <tr><td>C: User-day</td><td>one day of access</td><td>No</td><td>Only by allocation</td><td>Natural</td><td>Too big; no plan detail</td></tr>
     </tbody></table></div>
-    <p class="note">Key fact behind the dates: <code class="mono">expires_at</code> is the membership expiry after the event, not the plan’s own end. An early renewal stacks its days on top of the old expiry, so each period also gets non-overlapping <code class="mono">covered_start</code> / <code class="mono">covered_end</code> (0 overlaps). A new episode starts when the gap after expiry is more than 30 days.</p></div>
-    <details class="card lin-sec fold"><summary><h2>Cleaning rules</h2><span>20 rules: duplicates, rows in both exports, cancellations, missing or impossible values</span></summary><p>Covers duplicates (2), rows in both exports and conflicting versions (1, 3–6), cancellations (7, 11, 12) and implausible or missing values (8, 13–19). “Issue” is the check ID from 1a; “Script” is the SQL file number.</p><div class="scroll"><table class="grid"><thead><tr><th>#</th><th>Rule</th><th>Issue</th><th>Rows affected</th><th>Script</th></tr></thead><tbody>
-    <tr><td>1</td><td class="l">Union both exports in a separate step (base_transactions); they are split on expiry, not on date. Add src_file / src_row for lineage; the raw tables stay exactly as delivered</td><td>T1-T3</td><td class="l">89,728 old purchases live only in export_2</td><td>00_union</td></tr>
-    <tr><td>2</td><td class="l">Drop exact copies of a whole row inside one export; keep the lowest src_row</td><td>T7</td><td class="l">832 removed</td><td>02</td></tr>
-    <tr><td>3</td><td class="l">Same event in both exports (one-to-one match on user, day, method, plan, amount, cancel): export_2 wins; the export_1 expiry is kept as <code class="mono">expires_at_asof_feb</code></td><td>T4</td><td class="l">747 export_1 rows removed, <code class="mono">flag_conflict_resolved</code></td><td>02</td></tr>
-    <tr><td>4</td><td class="l">Different events on the same user and day are all kept (no dedup on user + day)</td><td>T6, T8</td><td class="l"><code class="mono">flag_same_day_multi</code>, <code class="mono">flag_same_day_both_exports</code></td><td>02</td></tr>
-    <tr><td>5</td><td class="l">Stacked purchases (same purchase repeated on one day, each extending expiry) are kept as separate purchases; the period end is the latest expiry</td><td>T24</td><td class="l">36,452 rows, <code class="mono">flag_stacked</code></td><td>02, 03</td></tr>
-    <tr><td>6</td><td class="l">Same-day order (<code class="mono">event_seq</code>): cancel first, then purchases, then expiry ascending, then src_row. The "last event of the day" is the purchase with the latest expiry. Without a full tie-break key, a churn count moved between runs (28,506 vs 28,322)</td><td>T8</td><td class="l">All users</td><td>02</td></tr>
-    <tr><td>7</td><td class="l">Exception to rule 6: a cancel on the user's first purchase day has no earlier plan to cancel, so it applies to that purchase</td><td>T8</td><td class="l">5,866 cancels (4,761 bought and cancelled on the same day)</td><td>03</td></tr>
-    <tr><td>8</td><td class="l">Missing plan days and list price on paid rows (Mar-Oct 2015): plan days from the price lookup (a price counts only if one plan covers ≥ 90% of its rows, e.g. 149 → 30 d at 94%, 1,788 → 410 d at 98%); snapped date span as fallback; list_price = amount_paid (discount 0)</td><td>T9</td><td class="l">214,188 rows: 213,935 by price, 253 by dates, 0 unresolved</td><td>02</td></tr>
-    <tr><td>9</td><td class="l">Free rows are kept: <code class="mono">is_free = 1</code>, <code class="mono">price_type</code> = free_trial_discount (list &gt; 0) or free_unpriced (list = 0). Every metric can split paid vs free</td><td>T11, T12</td><td class="l">79,575 + 163,152</td><td>02</td></tr>
-    <tr><td>10</td><td class="l">Zero-plan-day rows that are not T9 create no subscription period (kept in stg)</td><td>T13</td><td class="l">3,204</td><td>02, 03</td></tr>
-    <tr><td>11</td><td class="l">Cancel: the cancel row's expiry becomes the period's end date, floored at its start; <code class="mono">is_cancelled = 1</code>. A cancel with the 1970 placeholder ends on its own date</td><td>T14, T15</td><td class="l">213,766 periods cancelled</td><td>02, 03</td></tr>
-    <tr><td>12</td><td class="l">Cancels with no earlier purchase (plans bought before 2015 that we never see) are orphans and change nothing</td><td>T14</td><td class="l">7,415</td><td>03</td></tr>
-    <tr><td>13</td><td class="l">Non-cancel expiry missing (1970-01-01) or before the purchase: expiry = purchase date + plan days</td><td>T16, T17, T18</td><td class="l">1,691 rows, <code class="mono">flag_expiry_epoch</code>, <code class="mono">flag_expiry_before_tx</code></td><td>02</td></tr>
-    <tr><td>14</td><td class="l">Expiry more than 2 years past the data end: kept and flagged (mostly long stacks)</td><td>T19</td><td class="l">1,738</td><td>02</td></tr>
-    <tr><td>15</td><td class="l">Paid above list price: discount floored at 0, flagged</td><td>T10</td><td class="l">13</td><td>02</td></tr>
-    <tr><td>16</td><td class="l">Revenue = amount_paid on purchases only. Cancel rows carry an amount (160,720 rows, 23.2M) that is the cancelled plan's price, not a payment; kept in stg for audit</td><td>—</td><td class="l">—</td><td>03</td></tr>
-    <tr><td>17</td><td class="l">Age outside 4-92 → NULL; age_band includes 'Unknown'. No imputation</td><td>U1-U4, U11</td><td class="l">1,136,998</td><td>02_stg_users</td></tr>
-    <tr><td>18</td><td class="l">Gender missing → 'unknown', its own segment</td><td>U5</td><td class="l">1,106,850</td><td>02_stg_users</td></tr>
-    <tr><td>19</td><td class="l">Registration after the data end or after the first transaction: kept and flagged; tenure starts at the earlier of registration and first transaction</td><td>U7, U8</td><td class="l">13,756 + 26</td><td>U7: 02_stg_users; U8: 04</td></tr>
-    <tr><td>20</td><td class="l">Left-censoring: data starts 2015-01-01, so the 133,585 users first seen in Jan 2015 may have subscribed earlier. Their "new" is flagged (<code class="mono">flag_first_seen_jan2015</code>); Jan-2015 new counts must not be read as acquisition</td><td>—</td><td class="l">133,585</td><td>04</td></tr>
-    </tbody></table></div></details>
-    <details class="card lin-sec fold"><summary><h2>Validation checks (all pass)</h2><span>Row counts, keys and revenue all reconcile</span></summary><div class="scroll"><table class="grid"><thead><tr><th>Check</th><th>Result</th></tr></thead><tbody>
+    <p class="note">Key fact behind the dates: <code class="mono">expires_at</code> is the membership expiry after the event, not the plan’s own end. An early renewal stacks its days on top of the old expiry, so each period also gets non-overlapping <code class="mono">covered_start</code> / <code class="mono">covered_end</code> (0 overlaps). A new episode starts when the gap after expiry is more than 30 days</p></div>
+    <div class="card lin-sec"><h2>Cleaning rules</h2><p>One rule per 1a issue, in the same order as the 1a ranked table. Type = the brief's four groups: duplicates, overlapping or conflicting rows, cancellations, implausible values</p><div class="scroll"><table class="grid rules"><thead><tr><th>1a #</th><th>Check</th><th>Rule</th><th>Rows affected</th><th>Type</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">L6</td><td class="l">Billing labels kept as delivered; churn is rebuilt with the brief's rule and compared in 1c</td><td class="l">26,126 users</td><td><span class="ctag overlapping">Overlapping</span></td></tr>
+<tr><td>2</td><td class="mono">T9</td><td class="l">Missing plan days and list price (Mar-Oct 2015): plan days from the price lookup, dates as fallback, <code class='mono'>list_price</code> = <code class='mono'>amount_paid</code></td><td class="l">214,188 rows</td><td><span class="ctag implausible">Implausible</span></td></tr>
+<tr><td>3</td><td class="mono">T2</td><td class="l">Both exports unioned into <code class='mono'>base_transactions</code> with <code class='mono'>src_file</code> / <code class='mono'>src_row</code>; they are split on expiry, not on date</td><td class="l">89,728 old purchases only in export_2</td><td><span class="ctag overlapping">Overlapping</span></td></tr>
+<tr><td>4</td><td class="mono">T23</td><td class="l"><code class='mono'>dim_user</code> covers every user ID seen anywhere; users missing from users.csv get <code class='mono'>is_in_users</code> = 0 and 'Unknown' attributes</td><td class="l">109,330 users</td><td><span class="ctag implausible">Implausible</span></td></tr>
+<tr><td>5</td><td class="mono">U11</td><td class="l">Age outside 4-92 set to NULL; <code class='mono'>age_band</code> has 'Unknown'; no imputation</td><td class="l">1,136,998</td><td><span class="ctag implausible">Implausible</span></td></tr>
+<tr><td>6</td><td class="mono">U5</td><td class="l">Missing gender set to 'unknown', its own segment</td><td class="l">1,106,850</td><td><span class="ctag implausible">Implausible</span></td></tr>
+<tr><td>7</td><td class="mono">T11</td><td class="l">Free trials and 100% discounts kept with <code class='mono'>is_free</code> = 1, <code class='mono'>price_type</code> = free_trial_discount</td><td class="l">79,575</td><td><span class="ctag implausible">Implausible</span></td></tr>
+<tr><td>8</td><td class="mono">T12, T13</td><td class="l">Free rows with no price kept with <code class='mono'>is_free</code> = 1 (free_unpriced); other zero-plan-day rows create no period</td><td class="l">163,152; 3,204 no period</td><td><span class="ctag implausible">Implausible</span></td></tr>
+<tr><td>9</td><td class="mono">T25</td><td class="l">Early renewals stack on the old expiry: <code class='mono'>expires_at</code> is the period end, and <code class='mono'>covered_start</code> / <code class='mono'>covered_end</code> never overlap</td><td class="l">578,644 rows; 0 overlaps</td><td><span class="ctag overlapping">Overlapping</span></td></tr>
+<tr><td>10</td><td class="mono">T15, T14</td><td class="l">A cancel ends the period at its expiry (floored at the start), <code class='mono'>is_cancelled</code> = 1; its amount is not revenue; cancels with no earlier purchase change nothing</td><td class="l">213,766 periods cancelled; 7,415 orphan cancels</td><td><span class="ctag cancellations">Cancellations</span></td></tr>
+<tr><td>11</td><td class="mono">T8</td><td class="l">All same-day events kept, in a fixed order (cancel, purchase, expiry, src_row); a cancel on the first purchase day applies to that purchase</td><td class="l">151,025 rows; 5,866 first-day cancels</td><td><span class="ctag cancellations">Cancellations</span></td></tr>
+<tr><td>12</td><td class="mono">T24</td><td class="l">Stacked purchases (same purchase repeated on one day) kept as separate purchases; the period ends at the latest expiry</td><td class="l">36,452 rows, <code class='mono'>flag_stacked</code></td><td><span class="ctag duplicates">Duplicates</span></td></tr>
+<tr><td>13</td><td class="mono">T17</td><td class="l">Expiry missing (1970-01-01) on a purchase: expiry = purchase date + plan days, flagged</td><td class="l">457</td><td><span class="ctag implausible">Implausible</span></td></tr>
+<tr><td>14</td><td class="mono">T16</td><td class="l">Purchase expiry before the purchase date: expiry = purchase date + plan days, flagged</td><td class="l">1,287</td><td><span class="ctag implausible">Implausible</span></td></tr>
+<tr><td>15</td><td class="mono">T18</td><td class="l">Expiry in 2007-2014: cancels keep it (it sets the end); non-cancel rows get a derived expiry</td><td class="l">207 non-cancel rows</td><td><span class="ctag implausible">Implausible</span></td></tr>
+<tr><td>16</td><td class="mono">T19</td><td class="l">Expiry more than 2 years past the data end: kept and flagged</td><td class="l">1,738</td><td><span class="ctag implausible">Implausible</span></td></tr>
+<tr><td>17</td><td class="mono">T7</td><td class="l">Exact copies of a whole row inside one export dropped; the lowest src_row is kept</td><td class="l">832 removed</td><td><span class="ctag duplicates">Duplicates</span></td></tr>
+<tr><td>18</td><td class="mono">U7, U8</td><td class="l">Registration after the data end or after the first transaction: kept and flagged; tenure starts at the earlier date</td><td class="l">13,756 + 26</td><td><span class="ctag implausible">Implausible</span></td></tr>
+<tr><td>19</td><td class="mono">T10</td><td class="l">Paid above list price: discount floored at 0, flagged</td><td class="l">13</td><td><span class="ctag implausible">Implausible</span></td></tr>
+<tr><td>20</td><td class="mono">T4</td><td class="l">Same event in both exports: export_2 wins; the export_1 expiry is kept as <code class='mono'>expires_at_asof_feb</code></td><td class="l">747 export_1 rows removed</td><td><span class="ctag duplicates">Duplicates</span></td></tr>
+<tr><td>21</td><td class="mono">T6</td><td class="l">Different events of the same user and day split across the exports: both kept and ordered by the same-day rule</td><td class="l">1,780</td><td><span class="ctag overlapping">Overlapping</span></td></tr>
+    </tbody></table></div></div>
+    <details class="card lin-sec fold"><summary><h2>+ Validation checks</h2><span>All 10 pass: row counts, keys and revenue reconcile</span></summary><div class="scroll"><table class="grid"><thead><tr><th>Check</th><th>Result</th></tr></thead><tbody>
     <tr><td class="l">stg rows = raw − exact copies − superseded export_1 rows</td><td>5,727,342 − 832 − 747 = 5,725,763 ✓</td></tr>
     <tr><td class="l">event_id unique; (user_id, event_seq) unique</td><td>0 duplicates ✓</td></tr>
     <tr><td class="l">Non-cancel expiry before purchase after cleaning</td><td>0 ✓</td></tr>
@@ -473,8 +492,8 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     <tr><td class="l">Reactivations in fct_user_month = later episodes in fct_subscription</td><td>147,477 = 748,144 − 600,667 ✓</td></tr>
     <tr><td class="l">Two full runs give identical table fingerprints</td><td>✓</td></tr>
     </tbody></table></div></details>
-    <div class="card lin-sec"><h2>Known limits</h2><ul><li>The same-day order (cancel before purchase) is a rule, not a fact: the files have no timestamp or event ID. It is documented, deterministic and has one data-driven exception (rule 7)</li><li>T16/T17 derived expiries use purchase date + plan days. For an early renewal the true expiry would be later; this affects 1,691 rows</li><li>March-2017 churn is censored by construction (the 30-day window needs April data). Billing's labels use April data we don't have; Part 1c deals with that</li><li>Cancel-row amounts (rule 16) are interpreted, not documented. If billing confirms they are refunds, revenue needs a negative adjustment</li></ul>
-    <p class="note">Full write-up, including the T9 change from 1a and a critique of an alternative star schema: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/02_data_model.md" target="_blank" rel="noopener">reports/02_data_model.md ↗</a></p></div>
+    <details class="card lin-sec fold"><summary><h2>+ Known limits</h2><span>What the rules cannot settle</span></summary><ul><li>The same-day order (cancel before purchase) is a rule, not a fact: the files have no timestamp or event ID. It is documented, deterministic and has one data-driven exception (a cancel on the first purchase day, issue 11)</li><li>T16/T17 derived expiries use purchase date + plan days. For an early renewal the true expiry would be later; this affects 1,691 rows</li><li>March-2017 churn is censored by construction (the 30-day window needs April data). Billing's labels use April data we don't have; Part 1c deals with that</li><li>Cancel-row amounts (160,720 rows, 23.2M) are read as the cancelled plan's price, not a payment: interpreted, not documented. If billing confirms they are refunds, revenue needs a negative adjustment</li><li>Left-censoring: data starts 2015-01-01, so the 133,585 users first seen in Jan 2015 may have subscribed earlier. Their "new" is flagged (<code class="mono">flag_first_seen_jan2015</code>); Jan-2015 new counts must not be read as acquisition</li></ul>
+    <p class="note">Full write-up, including the T9 change from 1a and a critique of an alternative star schema: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/02_data_model.md" target="_blank" rel="noopener">reports/02_data_model.md ↗</a></p></details>
     </div>
   </section>
 
@@ -522,9 +541,18 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       </div>
     </div>
 
-    <details class="card cx-more">
-      <summary>Show full technical breakdown &amp; data limitations (13 groups)</summary>
-      <div class="cx-more-in">
+    <div class="card cx-panel">
+      <h2 class="cx-h">What this data cannot tell us</h2>
+      <ul class="cx-lim">
+          <li>What happened in April to the 10,740 (4.4%) users whose 30-day window crossed 2017-03-31</li>
+          <li>Whether April refunds reversed any March renewals</li>
+          <li>Billing's exact SQL/code logic (only inferred from label patterns)</li>
+          <li>Whether <span class="mono">expires_at</span> is inclusive (last day of access) or exclusive (first day without access), affecting March-1 expiries</li>
+      </ul>
+    </div>
+
+    <details class="card lin-sec fold"><summary><h2>+ Full breakdown (13 groups)</h2><span>Every labelled or March user, by how our result compares with billing's label</span></summary>
+      <div class="fold-in">
         <p class="cx-explain"><b>What this table shows:</b> every user who is in billing's labels or in our March group, split into 13 groups by how our result compares with billing's label.
           <b>Users</b> = how many (% of the 241,665 labelled users). <b>Label Churn %</b> = share of the group that billing marked as churned.
           <b>Why it matters:</b> the two "Match" rows are where we agree; most other rows are the 4 billing errors above, and they explain why we don't use the labels.</p>
@@ -546,15 +574,6 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
             <tr><td>In our group, missing on March 1</td><td class="num">6,065 (2.7% of ours)</td><td class="num">-</td><td>Only 4.8% of March-1 expiries were labelled</td></tr>
           </tbody>
         </table></div>
-        <div class="cx-lim">
-          <b>What this data cannot tell us:</b>
-          <ul>
-            <li>What happened in April to the 10,740 (4.4%) users whose 30-day window crossed 2017-03-31</li>
-            <li>Whether April refunds reversed any March renewals</li>
-            <li>Billing's exact SQL/code logic (only inferred from label patterns)</li>
-            <li>Whether <span class="mono">expires_at</span> is inclusive (last day of access) or exclusive (first day without access), affecting March-1 expiries</li>
-          </ul>
-        </div>
         <p class="cx-src">Code: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/sql/06_churn_validation.sql" target="_blank" rel="noopener">sql/06_churn_validation.sql ↗</a> · Full write-up: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/03_churn_validation.md" target="_blank" rel="noopener">reports/03_churn_validation.md ↗</a> · Tables in Explorer: <span class="mono">churn_mar17</span>, <span class="mono">churn_confusion</span>, <span class="mono">churn_disagreement</span></p>
       </div>
     </details>
@@ -611,7 +630,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <div class="p2-plot" id="p2-ch-active"></div>
     </div>
     <div class="p2-def"><b>Definition</b> A <b>paying subscriber</b> in a month = a user with at least one day of <b>paid</b> access in that month (<span class="mono">is_active_paid = 1</span>). Free-trial days don't count. The dashed line also counts free days (<span class="mono">is_active = 1</span>)</div>
-    <details class="card"><summary>Monthly numbers</summary><div><div class="scroll"><table class="grid" id="p2-tb-active"></table></div></div></details>
+    <details class="card lin-sec fold"><summary><h2>+ Monthly numbers</h2></summary><div class="fold-in"><div class="scroll"><table class="grid" id="p2-tb-active"></table></div></div></details>
     <p class="cx-src">SQL: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/sql/08_metrics.sql" target="_blank" rel="noopener">sql/08_metrics.sql ↗</a> · Report: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/04_metrics.md" target="_blank" rel="noopener">reports/04_metrics.md ↗</a></p>
   </section>
 
@@ -636,7 +655,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <p class="p2-axisnote">Renewing = 100% − new − reactivated (shown in the table)</p>
     </div>
     <div class="p2-def"><b>Definitions</b> (every paying subscriber is exactly one): <b>New</b> = their first-ever subscription starts this month. <b>Reactivated</b> = they come back more than 30 days after their last subscription expired. <b>Renewing</b> = everyone else: renewed, or still inside a multi-month or annual plan</div>
-    <details class="card"><summary>Monthly numbers</summary><div><div class="scroll"><table class="grid" id="p2-tb-flow"></table></div><p class="p2-axisnote">Red rows: not trusted, see <i>What we don't trust</i></p></div></details>
+    <details class="card lin-sec fold"><summary><h2>+ Monthly numbers</h2></summary><div class="fold-in"><div class="scroll"><table class="grid" id="p2-tb-flow"></table></div><p class="p2-axisnote">Red rows: not trusted, see <i>What we don't trust</i></p></div></details>
     <p class="cx-src">SQL: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/sql/08_metrics.sql" target="_blank" rel="noopener">sql/08_metrics.sql ↗</a> · Report: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/04_metrics.md" target="_blank" rel="noopener">reports/04_metrics.md ↗</a></p>
   </section>
 
@@ -660,7 +679,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <div class="p2-plot" id="p2-ch-churn"></div>
     </div>
     <div class="p2-def"><b>Definition</b> <b>Monthly churn rate</b> = paying subscribers whose subscription ended this month and who bought nothing within 30 days, ÷ paying subscribers on the first day of the month. "Ended" = the membership expiry date falls in the month. Users who only ever had a free trial are counted apart, not as churn</div>
-    <details class="card"><summary>Monthly numbers</summary><div><div class="scroll"><table class="grid" id="p2-tb-churn"></table></div><p class="p2-axisnote">Red rows: not trusted, see <i>What we don't trust</i></p></div></details>
+    <details class="card lin-sec fold"><summary><h2>+ Monthly numbers</h2></summary><div class="fold-in"><div class="scroll"><table class="grid" id="p2-tb-churn"></table></div><p class="p2-axisnote">Red rows: not trusted, see <i>What we don't trust</i></p></div></details>
     <p class="cx-src">SQL: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/sql/08_metrics.sql" target="_blank" rel="noopener">sql/08_metrics.sql ↗</a> (<span class="mono">mart_churn_windows</span>) · Report: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/04_metrics.md" target="_blank" rel="noopener">reports/04_metrics.md ↗</a></p>
   </section>
 
@@ -693,22 +712,22 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
         <p class="p2-axisnote">Millions of local currency units</p>
       </div>
     </div>
-    <div class="cx-two">
-      <div class="card p2-chart-card">
+    <div class="card p2-chart-card">
         <h2 class="p2-ct">Paid discounts ended in late 2015</h2>
         <p class="p2-cc">In early 2015 about <b>1 in 10</b> paid purchases got ~20% off (1.6% of list price overall). From November 2015 it is close to <b>zero</b>.</p>
         <div class="p2-legend" id="p2-lg-disc"></div>
         <div class="p2-plot" id="p2-ch-disc"></div>
-      </div>
-      <div class="card p2-chart-card">
+    </div>
+    <div class="p2-def"><b>Definitions</b> <b>Recognised revenue</b> = each payment spread evenly over its plan days; a month gets the days that fall in it (an annual plan counts ~1/12 a month). <b>ARPU</b> = recognised revenue ÷ paying subscribers. <b>Cash ARPU</b> = money taken in the month ÷ paying subscribers. <b>Discount depth</b> = total discount ÷ total list price, over paid purchases only. Free trials (100% off) are counted as <b>free starts</b>.</div>
+    <details class="card lin-sec fold"><summary><h2>+ Free-trial starts</h2></summary><div class="fold-in">
+      <div class="p2-chart-card">
         <h2 class="p2-ct">Free trials replaced discounts</h2>
         <p class="p2-cc">Two big waves: <b>42,743</b> free starts in Jun 2015 and <b>58,821</b> in Oct–Nov 2016. Whether they paid off is Part 3b.</p>
         <div class="p2-legend" id="p2-lg-free"></div>
         <div class="p2-plot" id="p2-ch-free"></div>
       </div>
-    </div>
-    <div class="p2-def"><b>Definitions</b> <b>Recognised revenue</b> = each payment spread evenly over its plan days; a month gets the days that fall in it (an annual plan counts ~1/12 a month). <b>ARPU</b> = recognised revenue ÷ paying subscribers. <b>Cash ARPU</b> = money taken in the month ÷ paying subscribers. <b>Discount depth</b> = total discount ÷ total list price, over paid purchases only. Free trials (100% off) are counted as <b>free starts</b>.</div>
-    <details class="card"><summary>Monthly numbers</summary><div><div class="scroll"><table class="grid" id="p2-tb-arpu"></table></div><p class="p2-axisnote">Red rows: not trusted, see <i>What we don't trust</i></p></div></details>
+    </div></details>
+    <details class="card lin-sec fold"><summary><h2>+ Monthly numbers</h2></summary><div class="fold-in"><div class="scroll"><table class="grid" id="p2-tb-arpu"></table></div><p class="p2-axisnote">Red rows: not trusted, see <i>What we don't trust</i></p></div></details>
     <p class="cx-src">SQL: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/sql/08_metrics.sql" target="_blank" rel="noopener">sql/08_metrics.sql ↗</a> · Report: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/04_metrics.md" target="_blank" rel="noopener">reports/04_metrics.md ↗</a></p>
   </section>
 
@@ -719,12 +738,6 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     </div></header>
     <div class="cx-bottom">
       <p><b>Bottom line:</b> Two churn spikes (~14%) are <b>billing gaps</b>, not lost customers: 98–99% of those users came back. Read churn as <b>3–5%</b>, skip January 2015, and don't report March 2017 churn.</p>
-    </div>
-    <div class="card p2-chart-card">
-      <h2 class="p2-ct">The same users "churn" and "reactivate" months later</h2>
-      <p class="p2-cc">Each churn spike is mirrored by a reactivation spike: <b>17,208</b> users lost in Apr 2015 came back in Jun 2015, and <b>16,047</b> users of payment method 39 lost in Mar 2016 came back in Jul 2016. That pattern points to billing, not to customers deciding to leave.</p>
-      <div class="p2-legend" id="p2-lg-trust"></div>
-      <div class="p2-plot" id="p2-ch-trust"></div>
     </div>
     <div class="card"><div class="scroll"><table class="grid">
       <thead><tr><th>Series · month</th><th>What is wrong</th><th>Evidence</th><th>What we did</th></tr></thead>
@@ -739,6 +752,14 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
         <tr><td>"All active users"</td><td class="l">Free-trial waves inflate it by up to 46,000</td><td class="l">Jun 2015, Oct–Nov 2016</td><td class="l">Headline counts paying subscribers only</td></tr>
         <tr><td>ARPU · month to month</td><td class="l">Follows days in the month (Feb lower, 31-day months higher)</td><td class="l">Feb 2017: 114 vs Mar 2017: 133</td><td class="l">Compare years, not single months</td></tr>
       </tbody></table></div></div>
+    <details class="card lin-sec fold"><summary><h2>+ Churn vs reactivation chart</h2></summary><div class="fold-in">
+    <div class="p2-chart-card">
+      <h2 class="p2-ct">The same users "churn" and "reactivate" months later</h2>
+      <p class="p2-cc">Each churn spike is mirrored by a reactivation spike: <b>17,208</b> users lost in Apr 2015 came back in Jun 2015, and <b>16,047</b> users of payment method 39 lost in Mar 2016 came back in Jul 2016. That pattern points to billing, not to customers deciding to leave.</p>
+      <div class="p2-legend" id="p2-lg-trust"></div>
+      <div class="p2-plot" id="p2-ch-trust"></div>
+    </div>
+    </div></details>
     <p class="cx-src">SQL: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/sql/08_metrics.sql" target="_blank" rel="noopener">sql/08_metrics.sql ↗</a> · Report: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/04_metrics.md" target="_blank" rel="noopener">reports/04_metrics.md ↗</a></p>
   </section>
   <script>
@@ -980,24 +1001,30 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <p class="cx-note">Tenure = months since the user's first paid subscription. Users who paid before 2015 show a shorter tenure than they really have.</p>
     </div>
 
-    <div class="card p3-card">
+    <details class="card lin-sec fold"><summary><h2>+ Plan length: per renewal vs per month</h2></summary><div class="fold-in">
+      <div class="p3-card">
       <h2 class="p3-ct">Long plans lose more per renewal, far less per month</h2>
       <p class="p3-cc">All long plans are paid manually, so we compare manual payers only. A 12-month plan loses <b>30.7%</b> at renewal, but that renewal comes once a year: <b>2.7% a month</b>, vs <b>18.5% a month</b> on manual 30-day plans. Plan length only looks bad when you count renewals, not months.</p>
       <div class="p3-lg" id="p3-lg-plan"></div>
       <div class="p3-plot" id="p3-ch-plan"></div>
       <p class="cx-note">Per month = 1 − (1 − churn per renewal)<sup>30 / plan days</sup>. People who choose a yearly plan may be more committed to begin with, so this is not proof that annual plans keep people (see Part 5a test).</p>
     </div>
+    </div></details>
 
-    <div class="card p3-card">
+    <details class="card lin-sec fold"><summary><h2>+ Payment-provider incident (method 39)</h2></summary><div class="fold-in">
+      <div class="p3-card">
       <h2 class="p3-ct">One payment-provider incident, not a customer trend</h2>
       <p class="p3-cc">Payment method 39 lost <b>47%</b> of renewals in Q1 2016 and <b>84%</b> in Q2, then fell back to <b>2%</b>, like every other auto-renew method. 97% of those users came back by July 2016 (Part 2). We left these <b>39,323</b> renewals out of the factor ranking above.</p>
       <div class="p3-lg" id="p3-lg-pm"></div>
       <div class="p3-plot" id="p3-ch-pm"></div>
     </div>
+    </div></details>
 
-    <div class="p3-def"><b>How we measured</b> One row per <b>paid renewal that came due</b>: a paid subscription period whose expiry falls between 1 Jan 2016 and 1 Mar 2017 (<span class="mono">mart_renewal_decisions</span>, 3,035,012 rows; 2,995,689 after removing the incident). <b>Churned</b> = no new purchase within 30 days of expiry (the brief's rule; early renewal counts as staying). <b>Fair comparison</b> = the churn a group would have with the average auto-renew and plan mix (observed ÷ expected × 4.6%). Free trials and cancellations are not used as drivers: a trial ending is a conversion, and a cancellation <i>is</i> the churn</div>
+    <details class="card lin-sec fold"><summary><h2>+ How we measured</h2></summary><div class="fold-in">
+      <div class="p3-def">One row per <b>paid renewal that came due</b>: a paid subscription period whose expiry falls between 1 Jan 2016 and 1 Mar 2017 (<span class="mono">mart_renewal_decisions</span>, 3,035,012 rows; 2,995,689 after removing the incident). <b>Churned</b> = no new purchase within 30 days of expiry (the brief's rule; early renewal counts as staying). <b>Fair comparison</b> = the churn a group would have with the average auto-renew and plan mix (observed ÷ expected × 4.6%). Free trials and cancellations are not used as drivers: a trial ending is a conversion, and a cancellation <i>is</i> the churn</div>
+    </div></details>
 
-    <details class="card"><summary>All groups (table)</summary><div>
+    <details class="card lin-sec fold"><summary><h2>+ All groups (table)</h2></summary><div class="fold-in">
       <div class="scroll"><table class="grid" id="p3-tb"></table></div>
       <p class="cx-note">Fair comparison = churn with the average auto-renew and plan mix. Empty cells: no renewals in that group.</p>
     </div></details>
@@ -1048,15 +1075,14 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
           <li><b>Discouraging long plans</b> They lose more per renewal but far less per month (<b>2.7%</b> vs <b>18.5%</b>). Whether annual plans truly keep people is the Part 5a test</li>
         </ul>
       </div>
-      <div class="card p3-lim">
-        <h2>What this analysis cannot tell us</h2>
+      <details class="card lin-sec fold"><summary><h2>+ What this analysis cannot tell us</h2></summary><div class="fold-in p3-lim">
         <ul>
           <li><b>Cause, not just pattern</b> This is observational data: only a test proves that switching auto-renew on lowers churn</li>
           <li><b>Why people leave</b> We see no app usage, so we cannot tell lost interest from a failed card</li>
           <li><b>Age and gender</b> are missing for about two thirds of users, and city 1 looks like a default value</li>
           <li><b>March 2017 expiries</b> are left out: their 30-day window runs past the end of the data</li>
         </ul>
-      </div>
+      </div></details>
     </div>
     <p class="cx-src">SQL: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/sql/09_deep_dive.sql" target="_blank" rel="noopener">sql/09_deep_dive.sql ↗</a> · Report: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/05_deep_dive.md" target="_blank" rel="noopener">reports/05_deep_dive.md ↗</a></p>
   </section>
@@ -1297,46 +1323,21 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <p class="cx-note" style="text-align:center">Two-sided test, 5% false-alarm rate, 80% power. Users per group = 2 × (1.96 + 0.84)² × SD² ÷ change². 12-month revenue per subscriber: 1,318 on average (SD 607); auto-renew 1,361 (SD 562); pays by hand 1,097 (SD 762).</p>
     </div>
 
-    <div class="cx-two">
-      <div class="card cx-panel">
-        <h2 class="p5-t te">Who is still paying a year later?</h2>
-        <p class="p5-so">Half of the people who pay by hand are gone within a year. Annual buyers renew at 69%. <b>The offer has the most to win with people who pay by hand</b></p>
-        <div class="cx-bars">
-          <div class="cx-bar"><div class="cx-bl"><span><b>30-day, auto-renew</b> <small>(still paying after 12 months)</small></span><b class="num">79.9%</b></div><i class="c2" style="--w:79.9%"></i></div>
-          <div class="cx-bar"><div class="cx-bl"><span><b>Annual plan</b> <small>(renews at end of plan)</small></span><b class="num">69.0%</b></div><i style="--w:69%"></i></div>
-          <div class="cx-bar"><div class="cx-bl"><span><b>30-day, pays by hand</b> <small>(still paying after 12 months)</small></span><b class="num">49.3%</b></div><i class="c3" style="--w:49.3%"></i></div>
-        </div>
-        <p class="cx-note">30-day groups: 225,158 subscribers with a paid expiry in Jan – Mar 2016. Annual: 20,981 annual plans ending Jan 2016 – Jan 2017. Annual buyers chose the plan themselves, so 69% is an upper guess for discount takers.</p>
-      </div>
-      <div class="card cx-panel">
-        <h2 class="p5-t">Timeline: cash now, retention later</h2>
-        <p class="p5-so">An annual plan pays up front, and its buyers can't churn for a year. So month-1 revenue proves nothing. <b>We read "earned" revenue first and real cash at month 12</b></p>
-        <ol class="p5-tl">
-          <li><b class="w">Month 1</b><div>Enrol<span>Every 30-day subscriber passes renewal once</span></div></li>
-          <li><b class="w">Months 1–2</b><div>Take-up, renewal guardrail, refunds<span>Stop early if renewal drops</span></div></li>
-          <li class="key"><b class="w">Month 3</b><div>Go / no-go, per payer type<span>Earned revenue: each payment spread over the days it covers (an annual counts 1/12 a month). The rest of the year projected from the control group</span></div></li>
-          <li class="key"><b class="w">Month 12</b><div>Final read: actual 12-month cash, both groups<span>Confirm or reverse the month-3 call</span></div></li>
-          <li><b class="w">Month 13–14</b><div>Do annual buyers renew?<span>Compare with 69.0% today. Keep a 10% holdout with no offer until then</span></div></li>
-        </ol>
-      </div>
+    <div class="card cx-panel">
+      <h2 class="p5-t">Timeline: cash now, retention later</h2>
+      <p class="p5-so">An annual plan pays up front, and its buyers can't churn for a year. So month-1 revenue proves nothing. <b>We read "earned" revenue first and real cash at month 12</b></p>
+      <ol class="p5-tl">
+        <li><b class="w">Month 1</b><div>Enrol<span>Every 30-day subscriber passes renewal once</span></div></li>
+        <li><b class="w">Months 1–2</b><div>Take-up, renewal guardrail, refunds<span>Stop early if renewal drops</span></div></li>
+        <li class="key"><b class="w">Month 3</b><div>Go / no-go, per payer type<span>Earned revenue: each payment spread over the days it covers (an annual counts 1/12 a month). The rest of the year projected from the control group</span></div></li>
+        <li class="key"><b class="w">Month 12</b><div>Final read: actual 12-month cash, both groups<span>Confirm or reverse the month-3 call</span></div></li>
+        <li><b class="w">Month 13–14</b><div>Do annual buyers renew?<span>Compare with 69.0% today. Keep a 10% holdout with no offer until then</span></div></li>
+      </ol>
     </div>
 
-    <details class="card cx-more">
-      <summary>Show baselines, analysis SQL &amp; limits</summary>
-      <div class="cx-more-in">
-        <div class="scroll"><table class="cx-tbl">
-          <thead><tr><th>Baseline</th><th>All</th><th>Auto-renew</th><th>Pays by hand</th></tr></thead>
-          <tbody>
-            <tr><td>Eligible subscribers per month (Oct 2016 – Jan 2017)</td><td class="num">233,800</td><td class="num">210,200 (89.9%)</td><td class="num">23,600 (10.1%)</td></tr>
-            <tr><td>Renew within 30 days of expiry (same months)</td><td class="num">96.3%</td><td class="num">97.9%</td><td class="num">82.0%</td></tr>
-            <tr><td>Switch to annual today, no offer (2016)</td><td class="num">0.13%</td><td class="num">-</td><td class="num">0.7%</td></tr>
-            <tr><td>12-month revenue per subscriber (Q1 2016)</td><td class="num">1,318</td><td class="num">1,361</td><td class="num">1,097</td></tr>
-            <tr><td>Still paying 12 months later</td><td class="num">74.9%</td><td class="num">79.9%</td><td class="num">49.3%</td></tr>
-            <tr class="hi"><td>Users per group to detect a 2% change</td><td class="num">8,310</td><td class="num">6,684</td><td class="num">18,910</td></tr>
-            <tr class="hi"><td>Users per group to detect a 3% change</td><td class="num">3,693</td><td class="num">2,971</td><td class="num">8,405</td></tr>
-          </tbody>
-        </table></div>
-        <p><b>Analysis SQL</b> (clean layer + a hypothetical <span class="mono">experiment_assignments(user_id, variant, assigned_at)</span> table; tested on a fake assignment):</p>
+    <div class="card cx-panel">
+      <h2 class="cx-h">Analysis SQL</h2>
+      <p>Runs on the clean layer + a hypothetical <span class="mono">experiment_assignments(user_id, variant, assigned_at)</span> table; tested on a fake assignment):</p>
 <pre>with a as (
   select e.user_id, e.variant, e.assigned_at::date as d0, max(s.is_auto_renew) as is_auto_renew
   from experiment_assignments e
@@ -1362,17 +1363,44 @@ select t.is_auto_renew, t.n n_treat, c.n n_ctrl, t.take_up, c.renewal ctrl_renew
        (t.cash - c.cash) / sqrt(t.v / t.n + c.v / c.n) as z_score,   -- |z| &gt; 1.96 = significant
        t.earned_90d - c.earned_90d as earned_90d_diff
 from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatment' and c.variant = 'control';</pre>
+    </div>
+
+    <details class="card lin-sec fold"><summary><h2>+ Baselines</h2></summary><div class="fold-in">
+        <div class="scroll"><table class="cx-tbl">
+          <thead><tr><th>Baseline</th><th>All</th><th>Auto-renew</th><th>Pays by hand</th></tr></thead>
+          <tbody>
+            <tr><td>Eligible subscribers per month (Oct 2016 – Jan 2017)</td><td class="num">233,800</td><td class="num">210,200 (89.9%)</td><td class="num">23,600 (10.1%)</td></tr>
+            <tr><td>Renew within 30 days of expiry (same months)</td><td class="num">96.3%</td><td class="num">97.9%</td><td class="num">82.0%</td></tr>
+            <tr><td>Switch to annual today, no offer (2016)</td><td class="num">0.13%</td><td class="num">-</td><td class="num">0.7%</td></tr>
+            <tr><td>12-month revenue per subscriber (Q1 2016)</td><td class="num">1,318</td><td class="num">1,361</td><td class="num">1,097</td></tr>
+            <tr><td>Still paying 12 months later</td><td class="num">74.9%</td><td class="num">79.9%</td><td class="num">49.3%</td></tr>
+            <tr class="hi"><td>Users per group to detect a 2% change</td><td class="num">8,310</td><td class="num">6,684</td><td class="num">18,910</td></tr>
+            <tr class="hi"><td>Users per group to detect a 3% change</td><td class="num">3,693</td><td class="num">2,971</td><td class="num">8,405</td></tr>
+          </tbody>
+        </table></div>
+    </div></details>
+    <details class="card lin-sec fold"><summary><h2>+ Who is still paying a year later</h2></summary><div class="fold-in">
+      <div class="cx-panel">
+        <h2 class="p5-t te">Who is still paying a year later?</h2>
+        <p class="p5-so">Half of the people who pay by hand are gone within a year. Annual buyers renew at 69%. <b>The offer has the most to win with people who pay by hand</b></p>
+        <div class="cx-bars">
+          <div class="cx-bar"><div class="cx-bl"><span><b>30-day, auto-renew</b> <small>(still paying after 12 months)</small></span><b class="num">79.9%</b></div><i class="c2" style="--w:79.9%"></i></div>
+          <div class="cx-bar"><div class="cx-bl"><span><b>Annual plan</b> <small>(renews at end of plan)</small></span><b class="num">69.0%</b></div><i style="--w:69%"></i></div>
+          <div class="cx-bar"><div class="cx-bl"><span><b>30-day, pays by hand</b> <small>(still paying after 12 months)</small></span><b class="num">49.3%</b></div><i class="c3" style="--w:49.3%"></i></div>
+        </div>
+        <p class="cx-note">30-day groups: 225,158 subscribers with a paid expiry in Jan – Mar 2016. Annual: 20,981 annual plans ending Jan 2016 – Jan 2017. Annual buyers chose the plan themselves, so 69% is an upper guess for discount takers.</p>
+      </div>
+    </div></details>
+    <details class="card lin-sec fold"><summary><h2>+ Limits</h2></summary><div class="fold-in">
         <div class="cx-lim">
-          <b>Limits:</b>
           <ul>
             <li>Baselines come from 2016; prices and the payer mix may have moved since</li>
             <li>We can't see app usage, so we can't tell whether annual buyers stay because they learn more or because they prepaid</li>
             <li>The 69.0% annual renewal comes from people who chose annual on their own; discount takers may renew less</li>
           </ul>
         </div>
+    </div></details>
         <p class="cx-src">Full write-up with the baseline queries: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/06_ab_test.md" target="_blank" rel="noopener">reports/06_ab_test.md ↗</a></p>
-      </div>
-    </details>
   </section>
 
   <section class="view cx p5" id="view-p5b" hidden>
@@ -1395,28 +1423,28 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
       <p><b>Main rule:</b> one AI can check another, but <b>the data decides</b>. No AI claim went in before a DuckDB query confirmed it.</p>
     </div>
 
-    <div class="cx-two">
-      <div class="card cx-panel">
-        <h2 class="cx-h">Tools and what each did</h2>
-        <div class="scroll"><table class="cx-tbl">
-          <thead><tr><th>Tool</th><th>Used for</th></tr></thead>
-          <tbody>
-            <tr><td><b>Claude</b><br><small>Claude Code, desktop app</small></td><td>Main analyst: profiling queries, the DuckDB pipeline (<span class="mono">sql/00</span>–<span class="mono">06</span>), clean layer, churn check, report generators, this site. Ran every query on the real database</td></tr>
-            <tr><td><b>Gemini</b></td><td>Second opinion: critical review of the 1a data-quality findings and of the renewal-window analysis</td></tr>
-            <tr><td><b>NotebookLM</b></td><td>Debrief prep pack built from the reports, to rehearse explaining the choices</td></tr>
-          </tbody>
-        </table></div>
-      </div>
-      <div class="card cx-panel">
-        <h2 class="cx-h">How I worked with them</h2>
-        <ul class="p5-ul">
-          <li><b>Check, don't trust</b> Every Gemini claim was re-run in DuckDB before it went in</li>
-          <li><b>No typed numbers</b> Report numbers are computed by SQL at build time</li>
-          <li><b>Query = count</b> If the query listing an issue returns a different number of rows than the check counting it, the build flags it</li>
-          <li><b>Brief first</b> Severity = how much an issue changes leadership's answers. Re-read before ranking</li>
-          <li><b>Same input, same output</b> Two runs of <span class="mono">run_all.py</span> give identical files</li>
-        </ul>
-      </div>
+    <div class="card cx-panel">
+      <h2 class="cx-h">Tools and what each did</h2>
+      <div class="scroll"><table class="cx-tbl">
+        <thead><tr><th>Tool</th><th>Used for</th></tr></thead>
+        <tbody>
+          <tr><td><b>Claude</b><br><small>Claude Code, desktop app</small></td><td>Main analyst: profiling queries, the DuckDB pipeline (<span class="mono">sql/00</span>–<span class="mono">06</span>), clean layer, churn check, report generators, this site. Ran every query on the real database</td></tr>
+          <tr><td><b>Gemini</b></td><td>Second opinion: critical review of the 1a data-quality findings and of the renewal-window analysis</td></tr>
+          <tr><td><b>NotebookLM</b></td><td>Debrief prep pack built from the reports, to rehearse explaining the choices</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="card cx-panel">
+      <h2 class="cx-h">Representative prompts</h2>
+      <p class="cx-explain">Paraphrased from the chat (originally in Hebrew), except #1, which is a file in the repo</p>
+      <ol class="p5-ul">
+        <li><b>Critical review (Gemini):</b> "You are a senior data analyst reviewing someone else's data-quality report. Be critical and specific. Do not praise. If you cannot verify a claim without the data, say so." <span class="mono">reports/gemini_review_prompt_1a.md</span></li>
+        <li>"Re-run Gemini's renewal-by-day numbers on the full data in DuckDB, using both export files."</li>
+        <li>"Break the days-to-renewal curve down by plan type and by auto-renew vs paying by hand. Show % of returners by day."</li>
+        <li>"Rank the issues by how much they affect the four leadership questions, not by how many rows they touch."</li>
+        <li>"Implement billing's churn definition on the clean layer and compare it with <span class="mono">churn_labels.csv</span>. Explain every disagreement group."</li>
+      </ol>
     </div>
 
     <div class="card cx-panel">
@@ -1436,7 +1464,11 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
           <tr><td class="c">9</td><td class="c"><span class="tag c">Claude</span></td><td>Put only the transactions through STAGING; the users file was cleaned inside <span class="mono">dim_user</span>.</td><td>Not a wrong number, a design flaw: cleaning was split between two layers, so STAGING was not "the one place where cleaning happens"</td><td>New <span class="mono">stg_users</span> table holds all user cleaning; <span class="mono">dim_user</span> reads it. Every other table checked identical</td><td class="c"><span class="tag u">Me</span><br><small>by asking</small></td></tr>
         </tbody>
       </table></div>
-      <h3 style="margin-top:6px">Cases 6–7 in detail: the AI's original 1a ranking vs the final one</h3>
+      <p class="cx-note">Also caught by Claude itself (smaller): a loader bug that left the file path in every row; a tie-break that changed label counts between runs; a first duplicate fix that still over-counted (1,561 rows instead of 747). All listed in <span class="mono">py/01_dq_outputs.py</span>.</p>
+    </div>
+
+    <details class="card lin-sec fold"><summary><h2>+ Cases 6–7 in detail</h2></summary><div class="fold-in">
+      <p>The AI's original 1a ranking vs the final one</p>
       <div class="scroll"><table class="cx-tbl"><thead><tr><th>Issue</th><th>AI's original rank</th><th>Final rank</th></tr></thead><tbody>
         <tr><td>Billing&#39;s churn labels</td><td class="c">10 · Medium</td><td class="c">1 · Critical</td></tr>
         <tr><td>2015 paid rows missing plan length</td><td class="c">3 · High</td><td class="c">2 · Critical</td></tr>
@@ -1446,23 +1478,17 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
         <tr><td>Early renewals</td><td class="c">not listed</td><td class="c">9 · High</td></tr>
       </tbody></table></div>
       <p class="cx-note">Original = the first version uploaded to GitHub; only issues that moved are shown</p>
-      <p class="cx-note">Also caught by Claude itself (smaller): a loader bug that left the file path in every row; a tie-break that changed label counts between runs; a first duplicate fix that still over-counted (1,561 rows instead of 747). All listed in <span class="mono">py/01_dq_outputs.py</span>.</p>
-    </div>
-
-    <details class="card cx-more">
-      <summary>Show representative prompts</summary>
-      <div class="cx-more-in">
-        <p class="cx-explain">Paraphrased from the chat (originally in Hebrew), except #1, which is a file in the repo</p>
-        <ol class="p5-ul">
-          <li><b>Critical review (Gemini):</b> "You are a senior data analyst reviewing someone else's data-quality report. Be critical and specific. Do not praise. If you cannot verify a claim without the data, say so." <span class="mono">reports/gemini_review_prompt_1a.md</span></li>
-          <li>"Re-run Gemini's renewal-by-day numbers on the full data in DuckDB, using both export files."</li>
-          <li>"Break the days-to-renewal curve down by plan type and by auto-renew vs paying by hand. Show % of returners by day."</li>
-          <li>"Rank the issues by how much they affect the four leadership questions, not by how many rows they touch."</li>
-          <li>"Implement billing's churn definition on the clean layer and compare it with <span class="mono">churn_labels.csv</span>. Explain every disagreement group."</li>
-        </ol>
-        <p class="cx-src">Full log: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/07_ai_log.md" target="_blank" rel="noopener">reports/07_ai_log.md ↗</a></p>
-      </div>
-    </details>
+    </div></details>
+    <details class="card lin-sec fold"><summary><h2>+ How I worked with the tools</h2></summary><div class="fold-in">
+      <ul class="p5-ul">
+        <li><b>Check, don't trust</b> Every Gemini claim was re-run in DuckDB before it went in</li>
+        <li><b>No typed numbers</b> Report numbers are computed by SQL at build time</li>
+        <li><b>Query = count</b> If the query listing an issue returns a different number of rows than the check counting it, the build flags it</li>
+        <li><b>Brief first</b> Severity = how much an issue changes leadership's answers. Re-read before ranking</li>
+        <li><b>Same input, same output</b> Two runs of <span class="mono">run_all.py</span> give identical files</li>
+      </ul>
+        </div></details>
+      <p class="cx-src">Full log: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/07_ai_log.md" target="_blank" rel="noopener">reports/07_ai_log.md ↗</a></p>
   </section>
 
   <!-- EXPLORER -->
@@ -1550,12 +1576,6 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
       <div class="card p4-kpi" style="--k:#ea580c"><b>2.9%</b><span>of payers are new each month in 2017 (3.9% in 2016)</span></div>
       <div class="card p4-kpi" style="--k:#7c3aed"><b>−10%</b><span>revenue per paying user, 133 (2015) → 120 (2017)</span></div>
     </div>
-    <div class="card p4-fig" style="--ct:#2563eb">
-      <h2>Paying subscribers more than doubled, but the curve is flattening</h2>
-      <p class="so">Strong growth through 2016, slower since autumn 2016. Supports question 1: the base is healthy, but new-payer growth needs attention.</p>
-      <div id="p4-ch-subs"></div>
-      <div class="p4-lg"><span><i style="background:#2563eb"></i>Paying subscribers (≥ 1 paid day in the month)</span><span><i style="background:#ea580c"></i>Dips after billing gaps (May 2015, Apr 2016)</span></div>
-    </div>
     <div class="p4-qs">
       <div class="card p4-q">
         <h3>1 · How healthy is the base? <span class="p4-st yes">Answered</span></h3>
@@ -1596,12 +1616,22 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
         </ul>
       </div>
     </div>
-    <div class="card p4-fig" style="--ct:#0891b2">
+    <details class="card lin-sec fold"><summary><h2>+ Chart: paying subscribers</h2></summary><div class="fold-in">
+    <div class="p4-fig" style="--ct:#2563eb">
+      <h2>Paying subscribers more than doubled, but the curve is flattening</h2>
+      <p class="so">Strong growth through 2016, slower since autumn 2016. Supports question 1: the base is healthy, but new-payer growth needs attention.</p>
+      <div id="p4-ch-subs"></div>
+      <div class="p4-lg"><span><i style="background:#2563eb"></i>Paying subscribers (≥ 1 paid day in the month)</span><span><i style="background:#ea580c"></i>Dips after billing gaps (May 2015, Apr 2016)</span></div>
+    </div>
+    </div></details>
+    <details class="card lin-sec fold"><summary><h2>+ Chart: churn drivers</h2></summary><div class="fold-in">
+    <div class="p4-fig" style="--ct:#0891b2">
       <h2>Auto-renew and the first renewal drive churn; age, city and channel mostly do not</h2>
       <p class="so">Gap between the highest- and lowest-churn group, before and after comparing people with the same auto-renew setting and plan length. Supports question 2 and recommendations 1–2.</p>
       <div id="p4-ch-drivers"></div>
       <div class="p4-lg"><span><i style="background:#cbd5e1"></i>Gap as it looks</span><span><i style="background:#0891b2"></i>Gap after a fair comparison</span></div>
     </div>
+    </div></details>
     <p class="src">Sources: <span class="mono">reports/04_metrics.md</span> (table <span class="mono">mart_metrics_month</span>), <span class="mono">reports/05_deep_dive.md</span> (table <span class="mono">mart_churn_factor_summary</span>), <span class="mono">reports/03_churn_validation.md</span>. Paying subscriber = at least one paid day in the month; churn = our 30-day rule, not <span class="mono">churn_labels.csv</span>.</p>
   </section>
 
@@ -1609,12 +1639,6 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
     <div style="display:grid;gap:6px">
       <h1>4 · Three recommendations</h1>
       <p class="lede">Each with the impact we expect, how sure we are, and what would change our mind. Together: up to ~13,000 subscribers kept a year (~4% of the 303,000 paying base), if each lands as estimated.</p>
-    </div>
-    <div class="card p4-fig" style="--ct:#ea580c">
-      <h2>Two churn spikes were payment failures, not users leaving</h2>
-      <p class="so">Apr 2015 and Mar 2016 jump to about 14%; almost all of those users bought again 2–4 months later. Supports recommendation 3.</p>
-      <div id="p4-ch-churn"></div>
-      <div class="p4-lg"><span><i style="background:#2563eb"></i>Monthly churn rate (30-day rule)</span><span><i style="background:#ea580c"></i>Billing gap: users came back later</span><span><i style="background:#94a3b8"></i>December: many renew on day 31–32</span></div>
     </div>
     <div class="p4-recs">
       <div class="card p4-rec" style="--rc:#2563eb">
@@ -1645,6 +1669,14 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
         </dl>
       </div>
     </div>
+    <details class="card lin-sec fold"><summary><h2>+ Chart: churn spikes</h2></summary><div class="fold-in">
+    <div class="p4-fig" style="--ct:#ea580c">
+      <h2>Two churn spikes were payment failures, not users leaving</h2>
+      <p class="so">Apr 2015 and Mar 2016 jump to about 14%; almost all of those users bought again 2–4 months later. Supports recommendation 3.</p>
+      <div id="p4-ch-churn"></div>
+      <div class="p4-lg"><span><i style="background:#2563eb"></i>Monthly churn rate (30-day rule)</span><span><i style="background:#ea580c"></i>Billing gap: users came back later</span><span><i style="background:#94a3b8"></i>December: many renew on day 31–32</span></div>
+    </div>
+    </div></details>
     <p class="src">Not worth acting on: targeting by age (1.3×), city or channel (1.7–2.1×), or discouraging long plans. Before any churn review, use our validated 30-day rule, not <span class="mono">churn_labels.csv</span> (13.4% of labels wrong). Source: <span class="mono">reports/05_deep_dive.md</span>.</p>
   </section>
 
@@ -1854,51 +1886,66 @@ const EDGES = [
 // Which part of the brief an analysis table belongs to (shown on its box).
 const PART = { fct_cohort: "1b", churn_mar17: "1c", churn_confusion: "1c", churn_disagreement: "1c", mart_churn_windows: "2", mart_metrics_month: "2",
   mart_renewal_decisions: "3", mart_churn_drivers: "3", mart_churn_factor_summary: "3", mart_churn_method_quarter: "3", mart_churn_plan_monthly: "3" };
-const COLS = [
+// 1b layers are shown by default; the marts and analysis steps are behind "+ Show downstream marts".
+const COLS_1B = [
   { title: "SOURCE FILES", nodes: Object.keys(SOURCES) },
   { title: "RAW", nodes: ["raw_users", "raw_transactions_export_1", "raw_transactions_export_2", "raw_churn_labels"] },
   { title: "BASE", nodes: ["base_transactions"] },
   { title: "STAGING", nodes: ["stg_users", "ref_price_plan", "stg_transactions"] },
   { title: "SUBSCRIPTIONS", nodes: ["fct_subscription"] },
-  { title: "MARTS", nodes: ["dim_user", "fct_user_month"] },
+  { title: "USERS", nodes: ["dim_user"] },
+];
+const COLS_DOWN = [
+  { title: "MARTS", nodes: ["fct_user_month"] },
   { title: "ANALYSIS · STEP 1", nodes: ["churn_mar17", "fct_cohort", "mart_renewal_decisions", "mart_churn_windows"] },
   { title: "ANALYSIS · STEP 2", nodes: ["churn_confusion", "churn_disagreement", "mart_churn_drivers", "mart_churn_method_quarter", "mart_churn_plan_monthly", "mart_metrics_month"] },
   { title: "ANALYSIS · STEP 3", nodes: ["mart_churn_factor_summary"] },
 ];
 // Top-to-bottom layout: one row per layer, so the map fits the page width (the SVG scales down if needed).
 const NW = 176, NH = 50, GAP = 14, RH = 92, LBL = 128, TOP = 8;
-const pos = {};
-const maxN = Math.max(...COLS.map((c) => c.nodes.length));
-const W = LBL + maxN * (NW + GAP), H = TOP + COLS.length * RH - (RH - NH) + 8;
-COLS.forEach((c, i) => {
-  const off = LBL + ((maxN - c.nodes.length) * (NW + GAP)) / 2;
-  c.nodes.forEach((n, j) => (pos[n] = { x: off + j * (NW + GAP), y: TOP + i * RH }));
-});
+const maxOf = (cols) => Math.max(...cols.map((c) => c.nodes.length));
 const kind = (n) => (T[n] ? T[n].layer : "src");
 const color = { src: "var(--src)", raw: "var(--raw)", clean: "var(--clean)" };
-let svg = `<svg width="100%" viewBox="0 0 ${W} ${H}" style="max-width:${W}px" role="img" aria-label="Table lineage map">`;
-COLS.forEach((c, i) => {
-  const words = c.title.split(" · ");
-  svg += `<text class="colhead" x="0" y="${TOP + i * RH + (words.length > 1 ? 20 : 29)}">${words[0]}</text>` + (words[1] ? `<text class="colhead" x="0" y="${TOP + i * RH + 36}">${words[1]}</text>` : "");
-});
-EDGES.forEach(([a, b]) => {
-  const p = pos[a], q = pos[b], x1 = p.x + NW / 2, y1 = p.y + NH, x2 = q.x + NW / 2, y2 = q.y, my = (y1 + y2) / 2;
-  svg += `<path class="edge" data-a="${a}" data-b="${b}" d="M${x1},${y1} C${x1},${my} ${x2},${my} ${x2},${y2 - 6}" marker-end="url(#arr)"/>`;
-});
-svg = svg.replace("<svg", "<svg") + "";
-COLS.flatMap((c) => c.nodes).forEach((n) => {
-  const p = pos[n], t = T[n];
-  const sub = t ? `${PART[n] ? "Part " + PART[n] + " · " : ""}${fmt(t.rows)} rows` : "CSV file";
-  svg += `<g class="node" data-n="${n}" tabindex="0" role="button" aria-label="${n}"><rect class="box" x="${p.x}" y="${p.y}" width="${NW}" height="${NH}" rx="8"/>` +
-    `<rect class="bar" x="${p.x}" y="${p.y}" width="6" height="${NH}" rx="3" fill="${color[kind(n)]}"/>` +
-    `<text x="${p.x + 16}" y="${p.y + 21}">${n.length > 26 ? n.slice(0, 25) + "…" : n}</text><text class="sub" x="${p.x + 16}" y="${p.y + 38}">${sub}</text></g>`;
-});
-svg += `<defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/></marker></defs></svg>`;
-$("#dag").innerHTML = svg;
+let VEDGES = [];
+function drawDag(full) {
+  const COLS = full ? COLS_1B.concat(COLS_DOWN) : COLS_1B;
+  const vis = new Set(COLS.flatMap((c) => c.nodes));
+  VEDGES = EDGES.filter(([a, b]) => vis.has(a) && vis.has(b));
+  const pos = {};
+  const MAXN = maxOf(COLS), W = LBL + MAXN * (NW + GAP), H = TOP + COLS.length * RH - (RH - NH) + 8;
+  COLS.forEach((c, i) => {
+    const off = LBL + ((MAXN - c.nodes.length) * (NW + GAP)) / 2;
+    c.nodes.forEach((n, j) => (pos[n] = { x: off + j * (NW + GAP), y: TOP + i * RH }));
+  });
+  let svg = `<svg width="100%" viewBox="0 0 ${W} ${H}" style="max-width:${W}px" role="img" aria-label="Table lineage map">`;
+  COLS.forEach((c, i) => {
+    const words = c.title.split(" · ");
+    svg += `<text class="colhead" x="0" y="${TOP + i * RH + (words.length > 1 ? 20 : 29)}">${words[0]}</text>` + (words[1] ? `<text class="colhead" x="0" y="${TOP + i * RH + 36}">${words[1]}</text>` : "");
+  });
+  VEDGES.forEach(([a, b]) => {
+    const p = pos[a], q = pos[b], x1 = p.x + NW / 2, y1 = p.y + NH, x2 = q.x + NW / 2, y2 = q.y, my = (y1 + y2) / 2;
+    svg += `<path class="edge" data-a="${a}" data-b="${b}" d="M${x1},${y1} C${x1},${my} ${x2},${my} ${x2},${y2 - 6}" marker-end="url(#arr)"/>`;
+  });
+  COLS.flatMap((c) => c.nodes).forEach((n) => {
+    const p = pos[n], t = T[n];
+    const sub = t ? `${PART[n] ? "Part " + PART[n] + " · " : ""}${fmt(t.rows)} rows` : "CSV file";
+    svg += `<g class="node" data-n="${n}" tabindex="0" role="button" aria-label="${n}"><rect class="box" x="${p.x}" y="${p.y}" width="${NW}" height="${NH}" rx="8"/>` +
+      `<rect class="bar" x="${p.x}" y="${p.y}" width="6" height="${NH}" rx="3" fill="${color[kind(n)]}"/>` +
+      `<text x="${p.x + 16}" y="${p.y + 21}">${n.length > 26 ? n.slice(0, 25) + "…" : n}</text><text class="sub" x="${p.x + 16}" y="${p.y + 38}">${sub}</text></g>`;
+  });
+  svg += `<defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/></marker></defs></svg>`;
+  $("#dag").innerHTML = svg;
+  $$("#dag .node").forEach((g) => {
+    g.addEventListener("click", () => selectNode(g.dataset.n));
+    g.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); selectNode(g.dataset.n); } });
+  });
+  // Start with the full map lit (nothing faded) until the user picks a table.
+  $("#lin-side").innerHTML = `<div style="display:grid;gap:8px"><h2 style="font-size:var(--fs-h3)">Click a table</h2><p>Click any box on the map to see what it holds, what it is built from and what it feeds. The tables linked to it stay lit and the rest fade.</p></div>`;
+}
 
 function related(n) {
   const up = new Set(), down = new Set();
-  const walk = (x, set, dir) => EDGES.forEach(([a, b]) => { const [f, t] = dir ? [a, b] : [b, a]; if (f === x && !set.has(t)) { set.add(t); walk(t, set, dir); } });
+  const walk = (x, set, dir) => VEDGES.forEach(([a, b]) => { const [f, t] = dir ? [a, b] : [b, a]; if (f === x && !set.has(t)) { set.add(t); walk(t, set, dir); } });
   walk(n, down, true); walk(n, up, false);
   return { up, down };
 }
@@ -1907,8 +1954,8 @@ function selectNode(n) {
   $$(".node").forEach((g) => { g.classList.toggle("sel", g.dataset.n === n); g.classList.toggle("dim", !keep.has(g.dataset.n)); });
   $$(".edge").forEach((e) => { const on = keep.has(e.dataset.a) && keep.has(e.dataset.b); e.classList.toggle("hi", on); e.classList.toggle("dim", !on); });
   const t = T[n];
-  const ups = [...up].filter((x) => EDGES.some(([a, b]) => a === x && b === n));
-  const downs = [...down].filter((x) => EDGES.some(([a, b]) => a === n && b === x));
+  const ups = [...up].filter((x) => VEDGES.some(([a, b]) => a === x && b === n));
+  const downs = [...down].filter((x) => VEDGES.some(([a, b]) => a === n && b === x));
   let h = `<div style="display:grid;gap:6px"><h2 class="mono" style="font-size:var(--fs-h3)">${n}</h2><div><span class="pill ${t ? t.layer : "src"}">${t ? (t.layer === "raw" ? "Raw (broken)" : "Clean") : "Source file"}</span></div></div>`;
   if (t) {
     h += `<p>${esc(t.purpose)}</p><dl><dt>One row</dt><dd>${esc(t.grain)}</dd><dt>Key</dt><dd class="mono">${esc(KEY[n])}</dd><dt>Rows</dt><dd class="num">${fmt(t.rows)}</dd><dt>Built by</dt><dd>${codeLink(BUILT_BY[n])}</dd>`;
@@ -1923,12 +1970,14 @@ function selectNode(n) {
   const ob = $("#lin-open");
   if (ob) ob.addEventListener("click", () => { setMode(t.layer); selectTable(n); show("explorer"); });
 }
-$$(".node").forEach((g) => {
-  g.addEventListener("click", () => selectNode(g.dataset.n));
-  g.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); selectNode(g.dataset.n); } });
+drawDag(false);
+$("#dag-more").addEventListener("click", (e) => {
+  const btn = e.currentTarget, open = btn.getAttribute("aria-expanded") !== "true";
+  btn.setAttribute("aria-expanded", String(open));
+  btn.textContent = open ? "− Hide downstream marts" : "+ Show downstream marts";
+  drawDag(open);
 });
-// Start with the full map lit (nothing faded) until the user picks a table.
-$("#lin-side").innerHTML = `<div style="display:grid;gap:8px"><h2 style="font-size:var(--fs-h3)">Click a table</h2><p>Click any box on the map to see what it holds, what it is built from and what it feeds. The tables linked to it stay lit and the rest fade.</p></div>`;
+
 
 // ---------------- explorer ----------------
 const MODES = {
@@ -2238,7 +2287,7 @@ a.brand:hover .logo{transform:translateY(-1px);box-shadow:0 2px 4px rgba(20,35,5
 (() => {
   const BRIEF = {
     task: ["Brief", "The whole task, step by step"],
-    overview: ["Brief", "The situation and the four leadership questions"],
+    overview: ["Brief", "Where each part lives, and the README"],
     dq: ["Brief 1a", "Data-quality report: each issue, its size, why it matters, what we did; ranked"],
     lineage: ["Brief 1b", "Clean layer: dim_user, the subscription table, and the cleaning rules"],
     explorer: ["Brief 1b", "Reproducible SQL: browse and query every table"],
