@@ -266,7 +266,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
 <body>
 <div class="topwrap">
 <header class="top"><div class="top-in pad">
-  <div class="brand"><span class="logo"><img src="tune_logo.png" alt="Tune" width="140" height="54"></span><small>Subscription analysis<br>take-home</small></div>
+  <a class="brand" href="#overview" data-go="overview" aria-label="Tune subscription analysis, go to overview"><span class="logo"><img src="tune_logo.png" alt="Tune" width="140" height="54"></span><span class="brand-t"><b>Subscription Analysis</b><small>Take-home · Jan 2015 – Mar 2017</small></span></a>
   <nav class="tabs" role="tablist" aria-label="Sections">
     <button class="tab on" role="tab" data-group="intro">Introduction</button>
     <button class="tab" role="tab" data-group="p1">Part 1 · Data</button>
@@ -1389,6 +1389,16 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
           <tr><td class="c">7</td><td class="c"><span class="tag c">Claude</span></td><td>Inconsistent ranking: 2015 missing plan length under-rated (39.7% of users active Mar – Oct 2015), and early renewals (578,644 rows) missing from the list.</td><td class="c"><span class="tag u">Me</span><br><small>by asking</small></td><td>Plan length moved to Critical; early renewals added at High (first rated Medium, then corrected).</td></tr>
         </tbody>
       </table></div>
+      <h3 style="margin-top:6px">Cases 6–7 in detail: the AI's original 1a ranking vs the final one</h3>
+      <div class="scroll"><table class="cx-tbl"><thead><tr><th>Issue</th><th>AI's original rank</th><th>Final rank</th></tr></thead><tbody>
+        <tr><td>Billing&#39;s churn labels</td><td class="c">10 · Medium</td><td class="c">1 · Critical</td></tr>
+        <tr><td>2015 paid rows missing plan length</td><td class="c">3 · High</td><td class="c">2 · Critical</td></tr>
+        <tr><td>Exports split by expiry date</td><td class="c">1 · Critical</td><td class="c">3 · Critical</td></tr>
+        <tr><td>Gender missing</td><td class="c">11 · Medium</td><td class="c">6 · High</td></tr>
+        <tr><td>Free periods with no price</td><td class="c">6 · Medium</td><td class="c">8 · High</td></tr>
+        <tr><td>Early renewals</td><td class="c">not listed</td><td class="c">9 · High</td></tr>
+      </tbody></table></div>
+      <p class="cx-note">Original = the first version uploaded to GitHub; only issues that moved are shown.</p>
       <p class="cx-note">Also caught by Claude itself (smaller): a loader bug that left the file path in every row; a tie-break that changed label counts between runs; a first duplicate fix that still over-counted (1,561 rows instead of 747). All listed in <span class="mono">py/01_dq_outputs.py</span>.</p>
     </div>
 
@@ -2117,6 +2127,78 @@ const queueWide = () => { clearTimeout(wideTimer); wideTimer = setTimeout(markWi
 addEventListener("resize", queueWide);
 new MutationObserver(queueWide).observe(document.querySelector("main"), { childList: true, subtree: true, attributes: true, attributeFilter: ["hidden", "open"] });
 queueWide();
+</script>
+<style>
+/* ===== Site-wide design pass (one font, upright text, bold titles, table lines, brief tags, logo) ===== */
+:root{--mono:var(--font);--code:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;--fs-title:30px;--fs-h2:21px;--fs-h3:18px;--fs-tab:16px}
+@media (max-width:640px){:root{--fs-title:25px;--fs-h2:19px;--fs-h3:17px;--fs-tab:15px}}
+/* one family everywhere; monospace only inside SQL code boxes */
+textarea,pre,pre code{font-family:var(--code)!important}
+*{font-style:normal!important}
+em,i:not([class]){font-weight:600}
+code,.mono,a.code{font-weight:500}
+/* titles: bold, same look on every tab */
+h1,h2,h3{font-weight:700;letter-spacing:-.01em;color:var(--navy)}
+main h1{font-size:var(--fs-title);line-height:1.2}
+.lin-sec>h2,.cx-h,.p2-ct,.p3-ct,.p5 .p5-t,.p3-act h2,.p3-no h2,.p3-lim h2,.p4-rec h2,.p4-fig h2{font-weight:700}
+.lin-sec>h2{display:flex;align-items:center;gap:10px}
+.lin-sec>h2::before{content:"";width:6px;height:22px;border-radius:3px;background:var(--accent);flex:none}
+.tab,.stab,.subtab{font-size:var(--fs-tab);font-weight:600}
+/* every table: row lines and column lines */
+main table,.dqframe+table{border-collapse:collapse}
+main table th,main table td{border:1px solid var(--line)!important}
+main table thead th{border-color:color-mix(in srgb,var(--on-dark) 22%,var(--navy))!important}
+table.rt th{border-color:var(--line)!important;box-shadow:inset 0 -1px 0 var(--line)}
+table.task tr.ph td{border-top:2px solid var(--line)!important}
+/* brief tag at the start of every section */
+.brief-ref{justify-self:start;align-self:start;display:inline-flex;align-items:center;gap:8px;font-size:var(--fs-small);font-weight:600;color:var(--navy);background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);border-radius:999px;padding:4px 14px 4px 4px;max-width:100%}
+.brief-ref b{background:var(--accent);color:var(--on-dark);border-radius:999px;padding:1px 10px;font-weight:700;white-space:nowrap}
+#view-dq .brief-ref,#view-explorer .brief-ref{margin-bottom:12px}
+/* logo lockup */
+a.brand{text-decoration:none;color:inherit;gap:16px;border-radius:16px;padding:4px 14px 4px 4px;transition:background .2s}
+a.brand:hover{background:color-mix(in srgb,var(--accent-soft) 60%,transparent)}
+.brand .logo{background:#fff;border-radius:14px;padding:7px 14px;box-shadow:0 1px 2px rgba(20,35,58,.08),0 6px 18px rgba(37,99,235,.14);transition:transform .2s,box-shadow .2s}
+a.brand:hover .logo{transform:translateY(-1px);box-shadow:0 2px 4px rgba(20,35,58,.08),0 10px 24px rgba(37,99,235,.22)}
+.brand .logo img{height:40px!important;clip-path:none!important}
+.brand .logo::after{display:none!important}
+.brand-t{display:grid;gap:1px;padding-left:16px;border-left:2px solid transparent;border-image:linear-gradient(180deg,#2563eb,#16c4e0) 1;line-height:1.25}
+.brand-t b{font-size:var(--fs-h3);font-weight:700;color:var(--navy);letter-spacing:-.01em}
+.brand-t small{font-size:var(--fs-small);font-weight:500;color:var(--muted);border:0;padding:0;letter-spacing:.01em}
+@media (max-width:640px){.brand .logo{padding:5px 10px}.brand .logo img{height:32px!important}.brand-t{padding-left:12px}}
+@media (prefers-reduced-motion:reduce){a.brand .logo{transition:none}a.brand:hover .logo{transform:none}}
+</style>
+<script>
+/* Which brief item each section answers: shown as a tag at the top of the section */
+(() => {
+  const BRIEF = {
+    task: ["Brief", "The whole task, step by step"],
+    overview: ["Brief", "The situation and the four leadership questions"],
+    dq: ["Brief 1a", "Data-quality report: each issue, its size, why it matters, what we did; ranked"],
+    lineage: ["Brief 1b", "Clean layer: dim_user, the subscription table, and the cleaning rules"],
+    explorer: ["Brief 1b", "Reproducible SQL: browse and query every table"],
+    churn: ["Brief 1c", "Churn definition, validated against churn_labels"],
+    "p2-active": ["Brief 2.1", "Active subscribers over time"],
+    "p2-flow": ["Brief 2.2", "New vs renewing vs reactivated subscribers"],
+    "p2-churn": ["Brief 2.3", "Monthly churn rate"],
+    "p2-arpu": ["Brief 2.4", "ARPU, revenue and discount depth over time"],
+    "p2-trust": ["Brief 2.5", "What we don't trust in these series, and why"],
+    p3a: ["Brief 3a", "Churn drivers: which factors matter, which only look like it (confounding)"],
+    "p3a-act": ["Brief 3a", "Churn drivers: what we would act on"],
+    p4: ["Brief 4", "Executive summary: the four questions"],
+    "p4-recs": ["Brief 4", "Three recommendations: impact, confidence, what would change our mind"],
+    "p4-gaps": ["Brief 4", "What we can't answer yet, and what it would take"],
+    p5a: ["Brief 5a", "Annual-plan promotion test"],
+    p5b: ["Brief 5b", "AI process log"],
+  };
+  for (const [id, [k, t]] of Object.entries(BRIEF)) {
+    const v = document.getElementById("view-" + id);
+    if (!v || v.querySelector(":scope > .brief-ref")) continue;
+    const tag = document.createElement("div");
+    tag.className = "brief-ref";
+    tag.innerHTML = `<b>${k}</b><span>${t}</span>`;
+    v.prepend(tag);
+  }
+})();
 </script>
 </body>
 </html>

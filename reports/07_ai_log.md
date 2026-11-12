@@ -40,6 +40,17 @@ Paraphrased from the chat (originally in Hebrew), except the first, which is a f
 | 6 | Claude | Kept billing's churn labels at Medium severity and defended "export split stays #1" without re-reading the brief's ranking rule. | **Me.** The labels are most likely the churn number the CEO already saw. | Labels moved to Critical, now issue #1. |
 | 7 | Claude | Ranking was inconsistent and missed an issue: 2015 missing plan length under-rated (it touches 39.7% of users active Mar–Oct 2015), and early renewals (578,644 rows) missing from the list. | **Prompted by my questions** about wrongly computed plan durations. | Plan length moved to Critical; early renewals added at High (first rated Medium, then corrected). |
 
+**Cases 6-7 in detail: the AI's original 1a ranking vs the final one** (the original is the first version uploaded to GitHub; only issues that moved are shown):
+
+| Issue | AI's original rank | Final rank |
+|:--|:--:|:--:|
+| Billing's churn labels | 10 · Medium | 1 · Critical |
+| 2015 paid rows missing plan length | 3 · High | 2 · Critical |
+| Exports split by expiry date | 1 · Critical | 3 · Critical |
+| Gender missing | 11 · Medium | 6 · High |
+| Free periods with no price | 6 · Medium | 8 · High |
+| Early renewals | not listed | 9 · High |
+
 **Also caught by Claude itself** (smaller): a loader bug that left the file path in every row; a non-repeatable tie-break that changed churn-label counts between runs; a first duplicate fix that still over-counted (1,561 rows instead of 747). All fixed; listed in `py/01_dq_outputs.py` (CORRECTIONS).
 
 ## 5. What I'd keep doing

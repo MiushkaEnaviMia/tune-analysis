@@ -102,6 +102,9 @@ FACTS_SQL = {
  "t9_win_users": "SELECT count(DISTINCT user_id) FROM t WHERE is_cancel = 0 AND transacted_at BETWEEN 20150301 AND 20151031",
  "t9_win_hit":  "SELECT count(DISTINCT user_id) FROM t WHERE is_cancel = 0 AND transacted_at BETWEEN 20150301 AND 20151031 "
                 "AND payment_plan_days = 0 AND list_price = 0 AND amount_paid > 0",
+ "t9_win_paid": "SELECT count(*) FROM t WHERE is_cancel = 0 AND amount_paid > 0 AND transacted_at BETWEEN 20150301 AND 20151031",
+ "t9_win_t9":   "SELECT count(*) FROM t WHERE is_cancel = 0 AND transacted_at BETWEEN 20150301 AND 20151031 "
+                "AND payment_plan_days = 0 AND list_price = 0 AND amount_paid > 0",
  "t25_match":   "SELECT count(*) FROM t_prev WHERE is_cancel = 0 AND payment_plan_days > 0 AND prev_exp > transacted_at "
                 "AND " + DD + " - payment_plan_days > 3 AND abs(datediff('day', strptime(prev_exp::VARCHAR, '%Y%m%d'), "
                 "strptime(expires_at::VARCHAR, '%Y%m%d')) - payment_plan_days) <= 3",
@@ -116,7 +119,7 @@ F = {k: con.sql(v).fetchone()[0] for k, v in FACTS_SQL.items()}
 # ---------------------------------------------------------------------------
 ISSUES = [
  dict(sev="Critical", checks=["T2", "T1", "T3"], table="transactions", fields=["expires_at", "src_file"],
-  title="The two exports are split on expiry date, not on transaction date",
+  title="The two exports are split by expiry date, not purchase date: {T2} older purchases exist only in export_2",
   what="export_1 contains only rows with expires_at <= 2017-03-31: T1 finds {T1} rows expiring later. export_2 contains every row expiring "
        "after that: {F_e2_mar} March 2017 purchases plus {T2} purchases made 2015 - Feb 2017. Neither file is complete on its own.",
   why="Reading export_2 as 'the March file' drops every subscription bought earlier that is still alive after March 2017. That undercounts "
@@ -140,7 +143,7 @@ ISSUES = [
   decision="UNION both exports; keep src_file/src_row for audit. Ask billing for one export with an event ID and updated_at."),
 
  dict(sev="High", checks=["T23", "L5"], table="transactions", fields=["user_id"],
-  title="Transacting users missing from users.csv",
+  title="Users who pay or transact but are missing from users.csv ({F_t23_rev_p}% of revenue)",
   what="{T23_u} users with transactions ({T23_pu}% of transacting users; {T23} rows) have no row in the user registry. "
        "They carry {F_t23_rev_m} of revenue ({F_t23_rev_p}% of {F_rev_total_m}); {F_t23_payers} of them paid at least once. "
        "{L5} labelled users are also missing, and they are not a random subset: they churn at {F_l5_churn}% vs {F_reg_churn}% "
@@ -165,7 +168,7 @@ ISSUES = [
   decision="Build dim_user from the union of all user IDs, with is_in_users = 0 for the missing ones and attributes = 'Unknown'."),
 
  dict(sev="Critical", checks=["T9"], table="transactions", fields=["payment_plan_days", "list_price"],
-  title="Plan length and list price missing (0) on paid rows, Mar-Oct 2015",
+  title="Paid purchases logged with plan length 0 and list price 0, Mar-Oct 2015: {F_t9_paid_p}% of paid purchases in those months, {F_t9_win_p}% of active users",
   what="payment_plan_days = 0 and list_price = 0, but amount_paid > 0 ({F_t9_149} rows paid 149) and expires_at is about 1 month later. "
        "All rows fall in 2015-03 to 2015-10: a logging gap in the billing system, not free plans. "
        "Date evidence: {F_t9_25_35_p}% end 25-35 days after the purchase (normal paid 30-day rows: {F_p30_25_35_p}%); "
@@ -189,7 +192,7 @@ ISSUES = [
   decision="Impute plan days from dates (price lookup as fallback), set list_price = amount_paid, flag every imputed row. Ask billing for a backfill."),
 
  dict(sev="High", checks=["T11"], table="transactions", fields=["amount_paid"],
-  title="Zero-paid subscriptions with a list price (free trials / 100% discounts)",
+  title="Free trials and 100% discounts: paid 0 although the plan has a list price",
   what="Non-cancel rows with list_price > 0 and amount_paid = 0. Not an error: these are the free-trial campaigns, but nothing in the data labels them.",
   why="Counted as paying subscribers, they inflate the active base and deflate ARPU (Q1). They are also the treatment group "
       "for the trial analysis (Q3), so they must be identifiable.",
@@ -208,7 +211,7 @@ ISSUES = [
   decision="Keep and flag is_free = 1. Every subscriber metric is split into paid and free."),
 
  dict(sev="High", checks=["U11", "U1", "U2", "U3", "U4"], table="users", fields=["age"],
-  title="Age missing or implausible",
+  title="Age missing (0) or implausible for {U11_pu}% of users",
   what="age = 0 for {U1_pr}% of users (the missing-value code), plus negative ages (min {F_age_min}), very young and very old ages "
        "(max {F_age_max}). Range kept: 4-92, deliberately wide so real users are not dropped (the app is for all ages). "
        "Lower bound: ages 1-3 ({F_age_1_3} users) look partly like unfilled profiles: {F_ep_1_3}% have an empty profile (gender missing and "
@@ -233,7 +236,7 @@ ISSUES = [
   decision="Set age outside 4-92 to NULL (wide margins, no ground truth for the edges); age_band includes 'Unknown'; no imputation."),
 
  dict(sev="High", checks=["T12", "T13"], table="transactions", fields=["list_price", "amount_paid"],
-  title="Unpriced free periods (list_price = 0 and amount_paid = 0)",
+  title="Free periods with no price at all (list price 0, paid 0)",
   what="Non-cancel rows with no price at all. {F_t12_m35}% are payment_method 35 with a 7-day plan, which looks like a trial product. "
        "Related: T13 = {T13} rows with 0 plan days; the free ones among them are already in T12.",
   why="Same risk as T11, on more users ({T12_u} vs {T11_u}): they inflate the subscriber count and are part of the trial story (Q3).",
@@ -270,7 +273,7 @@ ISSUES = [
   decision="A cancel row sets the period's effective end date (floored at the period start) and is_cancelled = 1."),
 
  dict(sev="Medium", checks=["T8"], table="transactions", fields=["transacted_at", "is_cancel"],
-  title="(user_id, transacted_at) is not a unique key",
+  title="One user can have several events on the same day: (user_id, transacted_at) is not a unique key",
   what="Several real events can share a user and a day, for example a cancel at 149 plus a new plan at 129 on the same day "
        "(a price change). {F_sd_mixed} user-days contain both a cancel and a new purchase.",
   why="Deduplicating on (user, day) would delete real upgrades and downgrades (Q3, Q4). Ordering same-day events at random "
@@ -308,7 +311,7 @@ ISSUES = [
   decision="Keep every row as a purchase; the period end is the latest expiry in the stack. Free stacks keep is_free = 1."),
 
  dict(sev="Critical", checks=["L6", "L7", "L4"], table="churn_labels", fields=["user_id", "is_churn"],
-  title="Churn labels don't match a naive 'due in March' population",
+  title="Billing's churn labels cover different users than those due to expire in March 2017 (the brief's rule)",
   what="Built from each user's last transaction up to 2017-02-28, the 'due in March' set and the labels disagree: some labelled "
        "users fall outside it (L6), some users in it are unlabelled (L7), and {L4} labelled users have no transaction up to 2017-02-28 (L4).",
   why="These are billing's labels for its April 2017 churn review, most likely the churn number leadership has already seen. "
@@ -328,7 +331,7 @@ ISSUES = [
   decision="Implement the definition independently in 1c; report and explain the disagreement buckets."),
 
  dict(sev="High", checks=["U5"], table="users", fields=["gender"],
-  title="Gender missing",
+  title="Gender missing for {U5_pu}% of users",
   what="Gender is NULL/empty for {U5_pr}% of users.",
   why="A churn segment (Q2) available for only about a third of users. Same size and same question as age (U11), so the same severity.",
   qs=["Q2"],
@@ -362,7 +365,7 @@ ISSUES = [
   decision="export_2 version wins; the export_1 expiry is kept as expires_at_asof_feb."),
 
  dict(sev="Low", checks=["T17"], table="transactions", fields=["expires_at"],
-  title="expires_at = 1970-01-01 (placeholder for missing)",
+  title="Expiry date missing, stored as 1970-01-01",
   what="An epoch zero date stands in for 'unknown'. {F_t17_m17}% are payment_method 17 rows with no price; {F_t17_paid} rows are paid.",
   why="Taken literally, the period would end 47 years before it started.",
   qs=["Q1"],
@@ -378,7 +381,7 @@ ISSUES = [
   decision="Set to NULL and derive from plan days; flag."),
 
  dict(sev="Low", checks=["T16"], table="transactions", fields=["expires_at"],
-  title="Expiry before the transaction on a non-cancel row",
+  title="Purchase rows whose expiry date is before the purchase date",
   what="Not explained by cancellation. {F_t16_m24}% are payment_method 24, mostly 30-day plans in 2015: a provider-specific bug.",
   why="Creates negative-length periods, so actives are understated.",
   qs=["Q1"],
@@ -394,7 +397,7 @@ ISSUES = [
   decision="Derive expiry from plan days; flag."),
 
  dict(sev="Low", checks=["T18"], table="transactions", fields=["expires_at"],
-  title="Expiry before 2015 (2007-2014)",
+  title="Expiry dates in 2007-2014, before the data starts",
   what="{F_t18_cx} of these are cancel rows (valid: a cancel moved the expiry back); {F_t18_ncx} are non-cancel rows.",
   why="Only the non-cancel rows are wrong; they would create periods that end before they start.",
   qs=["Q1"],
@@ -615,15 +618,15 @@ CORRECTIONS = [
 PREFIX = [("T", "transactions", "both billing exports, loaded together as raw_transactions"),
           ("U", "users", "the user registry, users.csv (raw_users)"),
           ("L", "churn_labels", "billing's churn labels for March 2017, churn_labels.csv (raw_churn_labels)")]
-SEV_DEF = [("Critical", "Ignoring it makes the headline answers wrong (e.g. the active base or annual-plan counts)."),
-           ("High", "Ignoring it materially distorts at least one leadership question."),
-           ("Medium", "Distorts a specific cut or the churn definition; must be handled in the clean layer."),
-           ("Low", "Small or narrow; handled with a simple rule and a flag.")]
-KIND_DEF = [("Data Bug", "The data in the file is missing or wrong. A query can flag or estimate it, but cannot fully restore it."),
-            ("Analytical Gotcha", "The data is correct, but it misleads an analyst who does not know its structure. One rule handles it fully.")]
-FIX_DEF = [("Full", "Handled completely in the clean layer; nothing is lost."),
-           ("Partial", "Estimated or kept with a flag; some uncertainty remains."),
-           ("None", "Cannot be repaired from the data; shown as 'Unknown' or replaced by our own rule.")]
+SEV_DEF = [("Critical", "If ignored, a headline answer is wrong (e.g. the active base or annual-plan counts)."),
+           ("High", "If ignored, at least one leadership question is clearly distorted."),
+           ("Medium", "Distorts one cut or the churn rule; handled in the clean layer."),
+           ("Low", "Small or narrow; a simple rule and a flag handle it.")]
+KIND_DEF = [("Data Bug", "Values missing or wrong: can be flagged or estimated, not fully restored."),
+            ("Analytical Gotcha", "Values correct but misleading; one rule handles it fully.")]
+FIX_DEF = [("Full", "Fully handled in the clean layer."),
+           ("Partial", "Estimated or flagged; some doubt remains."),
+           ("None", "Cannot be repaired; shown as 'Unknown' or replaced by our own rule.")]
 ORDER_RULE = ("Order: severity first (how much the answers to Q1-Q4 change if the issue is ignored). "
               "Within the same severity, Data Bugs come first, because they cannot be fully fixed.")
 SHORT = {
@@ -703,7 +706,7 @@ for k, v in summ.items():
     N[k + "_pr_rest"], N[k + "_pu_rest"] = f"{100 - v['pct_rows']:.2f}", f"{100 - v['pct_users']:.2f}"
 for k, v in F.items():
     N["F_" + k] = f(v) if isinstance(v, int) else v
-N.update(F_t9_win_p=pct(F["t9_win_hit"], F["t9_win_users"]), F_t25_match_p=pct(F["t25_match"], summ["T25"]["rows"]),
+N.update(F_t9_win_p=pct(F["t9_win_hit"], F["t9_win_users"]), F_t9_paid_p=pct(F["t9_win_t9"], F["t9_win_paid"]), F_t25_match_p=pct(F["t25_match"], summ["T25"]["rows"]),
          F_rev_total_m=mil(F["rev_total"]), F_t23_rev_m=mil(F["t23_rev"]), F_t24_rev_m=mil(F["t24_rev"]),
          F_t23_rev_p=pct(F["t23_rev"], F["rev_total"]),
          F_t9_eq30_p=pct(F["t9_eq30"], summ["T9"]["rows"]), F_t9_25_35_p=pct(F["t9_25_35"], summ["T9"]["rows"]),
@@ -1166,16 +1169,17 @@ def ranked_table():
         r, u, pr, pu = size(i)
         rows.append(
             f'<tr data-sev="{i["sev"]}" data-qs="{" ".join(i["qs"])}">'
-            f'<td class="num">{i["rank"]}</td><td><span class="pill sev-{i["sev"].lower()}">{i["sev"]}</span></td>'
-            f'<td><span class="kind {"kind-b" if i["kind"] == BUG else "kind-g"}">{i["kind"]}</span></td><td class="small">{i["fix"]}</td>'
-            f'<td class="mono">{", ".join(cid(c) for c in i["checks"])}</td>'
-            f'<td class="mono small">{E(i["table"])}.{E(", ".join(i["fields"]))}</td>'
-            f'<td class="issue"><a href="#{i["checks"][0]}">{E(i["title"])}</a></td>'
+            f'<td class="issue"><span class="rk">{i["rank"]}</span><a href="#{i["checks"][0]}">{E(i["title"])}</a></td>'
+            f'<td><span class="pill sev-{i["sev"].lower()}">{i["sev"]}</span></td>'
             f'<td class="num">{f(r)}</td><td class="num">{f(u)}</td><td class="num">{pr}%</td><td class="num">{pu}%</td>'
-            f'<td>{" ".join(f"<span class=q>{q}</span>" for q in i["qs"])}</td></tr>')
-    return ('<div class="scroll"><table class="ranked"><thead><tr><th>Rank</th><th>Severity</th><th>Type</th><th>Fix</th><th>Check</th><th>Table.field</th>'
-            '<th>Issue</th><th>Rows</th><th>Users</th><th>% rows</th><th>% users</th><th>Questions</th></tr></thead><tbody>'
-            + "".join(rows) + "</tbody></table></div>")
+            f'<td>{" ".join(f"<span class=q>{q}</span>" for q in i["qs"])}</td>'
+            f'<td><span class="kind {"kind-b" if i["kind"] == BUG else "kind-g"}">{i["kind"]}</span></td><td>{i["fix"]}</td>'
+            f'<td>{", ".join(cid(c) for c in i["checks"])}</td>'
+            f'<td>{E(i["table"])}.{E(", ".join(i["fields"]))}</td></tr>')
+    return ('<div class="scroll"><table class="ranked"><thead><tr><th>Rank · Issue</th><th>Severity</th>'
+            '<th>Rows</th><th>Users</th><th>% rows</th><th>% users</th>'
+            '<th class="add">Questions hit</th><th class="add">Type</th><th class="add">Fix</th><th class="add">Check</th><th class="add">Table.field</th>'
+            '</tr></thead><tbody>' + "".join(rows) + "</tbody></table></div>")
 
 
 def card(i):
@@ -1201,10 +1205,11 @@ def card(i):
 {related}
 <div class="prose"><p><strong>What is broken.</strong> {L(i["what"])}</p>
 <p><strong>Why it matters ({", ".join(i["qs"])}).</strong> {L(i["why"])}</p></div>
+<details class="more"><summary>Detection query and the two options (A, B)</summary><div class="more-in">
 <div class="sql"><div class="sql-h"><span>Detection SQL · returns {f(i["validated"])} rows (validated against {i["checks"][0]})</span>
 <button type="button" class="copy" id="copy-{i["checks"][0]}">Copy</button></div><pre><code>{E(i["sql"])}</code></pre></div>
 <div class="alts">{"".join(alts)}</div>
-<p class="whyb"><strong>Why B over A.</strong> {L(i["why_b"])}</p>
+<p class="whyb"><strong>Why B over A.</strong> {L(i["why_b"])}</p></div></details>
 <p class="decision"><strong>Decision.</strong> {L(i["decision"])}</p>
 </article>'''
 
@@ -1233,20 +1238,15 @@ legend_checks = "".join(
 legend_terms = "".join(f'<tr id="term-{n}"><td class="mono"><b>{E(a)}</b></td><td class="lft">{L(b)}</td></tr>' for n, (a, b) in enumerate(TERMS))
 legend_cards = (
     '<div class="howto">'
-    '<div class="howto-c"><h3>Check IDs</h3><p>Every finding comes from one check in <span class="mono">sql/01_data_quality.sql</span>. '
-    'The letter names the table; the number is only its position. Hover any ID for its meaning; click it for the full row.</p><dl>'
-    + "".join(f"<dt>{p_}</dt><dd><b>{E(t_)}</b>: {E(d_)}</dd>" for p_, t_, d_ in PREFIX) + "</dl></div>"
     '<div class="howto-c"><h3>Severity</h3><dl>'
     + "".join(f'<dt><span class="pill sev-{k_.lower()}">{k_}</span></dt><dd>{E(v_)}</dd>' for k_, v_ in SEV_DEF) + "</dl></div>"
-    '<div class="howto-c"><h3>Type</h3><dl>'
+    '<div class="howto-c"><h3>Type and Fix</h3><dl>'
     + "".join(f'<dt><span class="kind {"kind-b" if k_ == BUG else "kind-g"}">{k_}</span></dt><dd>{E(v_)}</dd>' for k_, v_ in KIND_DEF)
-    + "</dl></div>"
-    '<div class="howto-c"><h3>Fix</h3><dl>'
-    + "".join(f"<dt>{k_}</dt><dd>{E(v_)}</dd>" for k_, v_ in FIX_DEF)
-    + f"<dt>Order</dt><dd>{E(ORDER_RULE.split(': ', 1)[1])}</dd></dl></div>"
-    '<div class="howto-c"><h3>Questions and options</h3><dl>'
+    + "".join(f"<dt>Fix: {k_}</dt><dd>{E(v_)}</dd>" for k_, v_ in FIX_DEF) + "</dl></div>"
+    '<div class="howto-c"><h3>Questions and IDs</h3><dl>'
     + "".join(f"<dt>{k_}</dt><dd>{E(v_)}</dd>" for k_, v_ in Q.items())
-    + "<dt>A / B</dt><dd>Two realistic fixes per issue. B is chosen; 'Why B over A' gives the reason.</dd></dl></div></div>")
+    + '<dt>T, U, L</dt><dd>Check IDs in <span class="mono">sql/01_data_quality.sql</span> (transactions, users, churn_labels). Hover for the meaning.</dd>'
+    + "<dt>A / B</dt><dd>Two realistic fixes per issue; B is chosen.</dd></dl></div></div>")
 rev_rows = "".join(f"<tr><td>{E(a)}</td><td><span class=verdict-tag>{E(b)}</span></td><td>{L(c)}</td></tr>" for a, b, c in REVIEW)
 corr = "".join(f"<li>{L(c)}</li>" for c in CORRECTIONS)
 tot_rows = (f"<tr><td>users</td><td class=num>{f(totals['users'])}</td><td class=num>{f(totals['users'])}</td></tr>"
@@ -1257,12 +1257,12 @@ CSS = """
 /* Layout: one reading column; summary (totals, filters, ranked table) before per-issue detail cards. */
 :root{--bg:#f5f8fc;--surface:#ffffff;--fg:#14233a;--muted:#55657d;--line:#d3e0ee;--accent:#2e75b6;--accent-soft:#ddebf7;
 --navy:#1f3864;--code-bg:#eef4fa;--crit:#1f3864;--high:#2e75b6;--med:#7fb0dd;--low:#cfe1f3;--on-dark:#ffffff;--on-light:#14233a;
---font-head:"IBM Plex Sans",system-ui,sans-serif;--font-body:"IBM Plex Sans",system-ui,sans-serif;--font-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+--font-head:"IBM Plex Sans",system-ui,sans-serif;--font-body:"IBM Plex Sans",system-ui,sans-serif;--font-mono:var(--font-body);--font-code:"IBM Plex Mono",ui-monospace,Menlo,monospace;--th-add:#e6eaf0;--th-add-fg:#2b3a50;
 --fs-title:28px;--fs-h2:20px;--fs-h3:17px;--fs-tab:16px;--fs-body:15px;--fs-table:14px;--fs-small:13px;--fs-label:12px;--fs-num:22px}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0e1624;--surface:#152238;--fg:#e2ebf6;--muted:#9fb0c6;--line:#28395a;
---accent:#7ab3e6;--accent-soft:#1d3352;--navy:#a9cbef;--code-bg:#101c2e;--crit:#a9cbef;--high:#6fa6dc;--med:#3d6ea3;--low:#2a4468;--on-dark:#0e1624;--on-light:#e2ebf6;color-scheme:dark}}
+--accent:#7ab3e6;--accent-soft:#1d3352;--navy:#a9cbef;--code-bg:#101c2e;--crit:#a9cbef;--high:#6fa6dc;--med:#3d6ea3;--low:#2a4468;--on-dark:#0e1624;--on-light:#e2ebf6;--th-add:#2c3a4f;--th-add-fg:#dbe4ef;color-scheme:dark}}
 :root[data-theme="dark"]{--bg:#0e1624;--surface:#152238;--fg:#e2ebf6;--muted:#9fb0c6;--line:#28395a;
---accent:#7ab3e6;--accent-soft:#1d3352;--navy:#a9cbef;--code-bg:#101c2e;--crit:#a9cbef;--high:#6fa6dc;--med:#3d6ea3;--low:#2a4468;--on-dark:#0e1624;--on-light:#e2ebf6;color-scheme:dark}
+--accent:#7ab3e6;--accent-soft:#1d3352;--navy:#a9cbef;--code-bg:#101c2e;--crit:#a9cbef;--high:#6fa6dc;--med:#3d6ea3;--low:#2a4468;--on-dark:#0e1624;--on-light:#e2ebf6;--th-add:#2c3a4f;--th-add-fg:#dbe4ef;color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:var(--fs-body);line-height:1.55;font-style:normal}
 em,i{font-style:normal}
@@ -1270,18 +1270,30 @@ em,i{font-style:normal}
 h1,h2,h3,h4{font-family:var(--font-head);font-weight:700;text-wrap:balance;margin:0;color:var(--navy)}
 h1{font-size:var(--fs-title);line-height:1.2}h2{font-size:var(--fs-h2)}h3{font-size:var(--fs-h3);line-height:1.3}h4{font-size:var(--fs-body)}
 .lede{color:var(--muted);max-width:75ch;margin:6px 0 0}
-.mono{font-family:var(--font-mono);font-size:.86em}.small{font-size:var(--fs-small)}
+.mono{font-family:var(--font-mono);font-weight:500}.small{font-size:var(--fs-small)}
 .num{font-variant-numeric:tabular-nums;white-space:nowrap}
 section{display:grid;gap:14px;min-width:0}
 .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface);scrollbar-width:thin;scrollbar-color:var(--accent) var(--code-bg)}
 .scroll::-webkit-scrollbar{height:10px}.scroll::-webkit-scrollbar-track{background:var(--code-bg)}.scroll::-webkit-scrollbar-thumb{background:var(--accent);border-radius:6px}
 .scroll-hint{font-size:var(--fs-small);color:var(--accent);font-weight:600;text-align:right;margin:0 0 -8px}.scroll-hint[hidden]{display:none}
 table{border-collapse:collapse;width:100%;font-size:var(--fs-table)}
-th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:center;vertical-align:middle}
-th{background:var(--navy);color:var(--on-dark);font-weight:700;font-size:var(--fs-label);letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+th,td{padding:8px 10px;border:1px solid var(--line);text-align:center;vertical-align:middle}
+th{background:var(--navy);color:var(--on-dark);font-weight:700;font-size:var(--fs-label);letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;border-color:color-mix(in srgb,var(--on-dark) 25%,var(--navy))}
+th.add{background:var(--th-add);color:var(--th-add-fg);border-color:var(--line)}
+table.ranked td,table.ranked td *{font-size:var(--fs-table)}
+table.ranked td{text-align:center}table.ranked th:first-child,table.ranked td:first-child{text-align:left}
+.rk{display:inline-grid;place-items:center;min-width:26px;height:26px;margin-right:10px;border-radius:50%;background:var(--accent-soft);color:var(--navy);font-weight:700;font-variant-numeric:tabular-nums;vertical-align:middle}
+table.ranked td.issue{position:relative;padding-left:48px}table.ranked .rk{position:absolute;left:10px;top:50%;transform:translateY(-50%);margin:0}
+.tnote{margin:0;max-width:110ch;font-size:var(--fs-table);line-height:1.6}
+.tnote b{color:var(--navy)}
+.hk{display:inline-flex;align-items:center;gap:6px;margin-left:16px;font-size:var(--fs-small);color:var(--muted);white-space:nowrap}
+.hk i{width:14px;height:14px;border-radius:3px;display:inline-block}.hk-b{background:var(--navy)}.hk-a{background:var(--th-add);border:1px solid var(--line)}
+details.more{border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+details.more summary{cursor:pointer;font-weight:600;color:var(--accent)}
+.more-in{display:grid;gap:12px;margin-top:10px}
 table.ranked th{white-space:normal}table.ranked th,table.ranked td{padding:8px 7px}table.ranked .kind{white-space:normal}
 tbody tr:nth-child(even){background:color-mix(in srgb,var(--accent-soft) 35%,transparent)}
-td.issue{text-align:left;min-width:220px}td.issue a{color:var(--fg);font-weight:600;text-decoration:none}td.issue a:hover{color:var(--accent);text-decoration:underline}
+td.issue{text-align:left;min-width:260px}td.issue a{color:var(--fg);font-weight:600;text-decoration:none}td.issue a:hover{color:var(--accent);text-decoration:underline}
 .totals{max-width:620px}
 .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:var(--fs-label);font-weight:700;letter-spacing:.03em;white-space:nowrap}
 .sev-critical{background:var(--crit);color:var(--on-dark)}.sev-high{background:var(--high);color:var(--on-dark)}
@@ -1308,7 +1320,7 @@ td.issue{text-align:left;min-width:220px}td.issue a{color:var(--fg);font-weight:
 .sql{border:1px solid var(--line);border-radius:8px;overflow:hidden;min-width:0}
 .sql-h{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 10px;background:var(--accent-soft);font-size:var(--fs-small);color:var(--fg)}
 .copy{font:inherit;font-size:var(--fs-small);padding:3px 10px;border-radius:6px;border:1px solid var(--accent);background:var(--surface);color:var(--accent);cursor:pointer}
-pre{margin:0;padding:12px;background:var(--code-bg);overflow-x:auto;font-family:var(--font-mono);font-size:var(--fs-small);line-height:1.5}
+pre{margin:0;padding:12px;background:var(--code-bg);overflow-x:auto;font-family:var(--font-code);font-size:var(--fs-small);line-height:1.5}
 .alts{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
 .alt{border:1px solid var(--line);border-radius:8px;padding:14px;display:grid;gap:8px;align-content:start;min-width:0}
 .alt.chosen{border:2px solid var(--accent);background:color-mix(in srgb,var(--accent-soft) 45%,var(--surface))}
@@ -1416,14 +1428,18 @@ Every number is computed from DuckDB at build time, and every detection query is
 <details class="legend" id="legend-terms"><summary>Legend: names, views and terms used in the text ({len(TERMS)})</summary>
 <div class="scroll"><table class="legend-t"><thead><tr><th>Name</th><th>Meaning</th></tr></thead><tbody>{legend_terms}</tbody></table></div></details></section>
 <section><h2>Ranked issues</h2>
+<p class="tnote"><b>What the rank is based on:</b> severity, i.e. how much the answers to the four leadership questions (Q1-Q4) would change if the issue were ignored, as the brief asks. Within the same severity, Data Bugs come first, because they cannot be fully fixed.
+<span class="hk"><i class="hk-b"></i>Asked in the brief</span><span class="hk"><i class="hk-a"></i>Added by us</span></p>
 {chip_row()}
 {ranked_table()}</section>
-<section><h2>Issue detail</h2><p class="lede">Each issue: what is broken, how big, why it matters, the query that finds it, two fixes (A, B), and the decision.</p>
+<section><h2>Issue detail</h2><p class="lede">Each issue: what is broken, why it matters, and the decision. The query and the two options are folded under each one.</p>
 <div class="cards">{"".join(card(i) for i in ISSUES)}</div></section>
 <section><h2>Checked and not an issue</h2><div class="scroll"><table class="notissues"><thead><tr><th>Check</th><th>What</th><th>Finding</th></tr></thead><tbody>{not_rows}</tbody></table></div></section>
-<section><h2>Second-opinion review (Gemini)</h2><p class="lede">An independent AI review of the same files. Every number it gave was re-run in DuckDB before being accepted.</p>
-<div class="scroll"><table class="review"><thead><tr><th>Claim</th><th>Verdict</th><th>Evidence (from SQL)</th></tr></thead><tbody>{rev_rows}</tbody></table></div></section>
-<section><h2>Corrections to earlier assumptions</h2><ol class="corr">{corr}</ol></section>
+<section><h2>Second-opinion review (Gemini)</h2><p class="lede">An independent AI review of the same files; every number it gave was re-run in DuckDB before being accepted.</p>
+<details class="legend"><summary>Show the {len(REVIEW)} claims and our verdicts</summary>
+<div class="scroll"><table class="review"><thead><tr><th>Claim</th><th>Verdict</th><th>Evidence (from SQL)</th></tr></thead><tbody>{rev_rows}</tbody></table></div></details></section>
+<section><h2>Corrections to earlier assumptions</h2><p class="lede">Mistakes we made and fixed along the way, including AI mistakes (also in the 5b AI log).</p>
+<details class="legend"><summary>Show the {len(CORRECTIONS)} corrections</summary><ol class="corr">{corr}</ol></details></section>
 <footer>Generated by py/01_dq_outputs.py from tune.duckdb (sql/01_data_quality.sql). Machine-readable copy of every number on this page: the JSON block with id "dq-data".</footer>"""
 
 body_html = english
@@ -1457,5 +1473,7 @@ page = f"""<title>Tune Data-Quality Report</title>
 <script>{JS}</script>
 """
 (ROOT / "reports/01_data_quality.html").write_text(page)
+# The site tab (site/dq.html) is the same page with a full document head.
+(ROOT / "site/dq.html").write_text('<!doctype html>\n<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">\n' + page.rstrip("\n"))
 
 print(f"wrote reports/01_data_quality.md, .xlsx and .html ({len(ISSUES)} issues)")
