@@ -1279,6 +1279,8 @@ section{display:grid;gap:14px;min-width:0}
 .scroll::-webkit-scrollbar{height:10px}.scroll::-webkit-scrollbar-track{background:var(--code-bg)}.scroll::-webkit-scrollbar-thumb{background:var(--accent);border-radius:6px}
 .scroll-hint{font-size:var(--fs-small);color:var(--accent);font-weight:600;text-align:right;margin:0 0 -8px}.scroll-hint[hidden]{display:none}
 table{border-collapse:collapse;width:100%;font-size:var(--fs-table)}
+/* Tables only as wide as their content needs (max 1100px); the ranked table keeps the full width */
+table:not(.ranked){width:auto;max-width:min(100%,1100px)}
 th,td{padding:8px 10px;border:1px solid var(--line);text-align:center;vertical-align:middle}
 th{background:var(--navy);color:var(--on-dark);font-weight:700;font-size:var(--fs-label);letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;border-color:color-mix(in srgb,var(--on-dark) 25%,var(--navy))}
 th.add{background:var(--th-add);color:var(--th-add-fg);border-color:var(--line)}
@@ -1296,7 +1298,7 @@ details.more summary{cursor:pointer;font-weight:600;color:var(--accent)}
 table.ranked th{white-space:normal}table.ranked th,table.ranked td{padding:8px 7px}table.ranked .kind{white-space:normal}
 tbody tr:nth-child(even){background:color-mix(in srgb,var(--accent-soft) 35%,transparent)}
 td.issue{text-align:left;min-width:260px}td.issue a{color:var(--fg);font-weight:600;text-decoration:none}td.issue a:hover{color:var(--accent);text-decoration:underline}
-.totals{max-width:620px}
+.totals{width:fit-content;max-width:100%}
 .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:var(--fs-label);font-weight:700;letter-spacing:.03em;white-space:nowrap}
 .sev-critical{background:var(--crit);color:var(--on-dark)}.sev-high{background:var(--high);color:var(--on-dark)}
 .sev-medium{background:var(--med);color:var(--on-light)}.sev-low{background:var(--low);color:var(--on-light)}
@@ -1476,6 +1478,8 @@ page = f"""<title>Tune Data-Quality Report</title>
 <script type="application/json" id="dq-data">{DATA_JSON}</script>
 <script>{JS}</script>
 """
+import runpy
+page = runpy.run_path(str(ROOT / "py/nodot.py"))["nodot"](page)  # style: no period at the end of a box line, cell or bullet
 (ROOT / "reports/01_data_quality.html").write_text(page)
 # The site tab (site/dq.html) is the same page with a full document head.
 (ROOT / "site/dq.html").write_text('<!doctype html>\n<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">\n' + page.rstrip("\n"))
