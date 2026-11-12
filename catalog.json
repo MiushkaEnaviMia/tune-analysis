@@ -768,6 +768,91 @@
    ]
   },
   {
+   "name": "fct_cohort",
+   "layer": "clean",
+   "grain": "one start-month cohort in one month since its start",
+   "purpose": "Cohort curves: users who started, retention %, paying users, revenue, ARPU and cumulative ARPU by months since the first subscription.",
+   "rows": 378,
+   "bytes": 18279,
+   "columns": [
+    {
+     "name": "cohort_month",
+     "type": "DATE"
+    },
+    {
+     "name": "months_since_start",
+     "type": "INTEGER"
+    },
+    {
+     "name": "calendar_month",
+     "type": "DATE"
+    },
+    {
+     "name": "cohort_users",
+     "type": "BIGINT"
+    },
+    {
+     "name": "active_users",
+     "type": "BIGINT"
+    },
+    {
+     "name": "retained_users",
+     "type": "BIGINT"
+    },
+    {
+     "name": "retention_pct",
+     "type": "DOUBLE"
+    },
+    {
+     "name": "active_paid_users",
+     "type": "BIGINT"
+    },
+    {
+     "name": "paying_users",
+     "type": "BIGINT"
+    },
+    {
+     "name": "revenue",
+     "type": "BIGINT"
+    },
+    {
+     "name": "cum_revenue",
+     "type": "BIGINT"
+    },
+    {
+     "name": "arpu",
+     "type": "DOUBLE"
+    },
+    {
+     "name": "cum_arpu",
+     "type": "DOUBLE"
+    },
+    {
+     "name": "arpu_active",
+     "type": "DOUBLE"
+    },
+    {
+     "name": "months_observed",
+     "type": "INTEGER"
+    },
+    {
+     "name": "is_last_observed_month",
+     "type": "TINYINT"
+    },
+    {
+     "name": "flag_incomplete_cohort",
+     "type": "TINYINT"
+    },
+    {
+     "name": "flag_left_censored",
+     "type": "TINYINT"
+    }
+   ],
+   "files": [
+    "data/clean/fct_cohort/data_0.parquet"
+   ]
+  },
+  {
    "name": "churn_mar17",
    "layer": "clean",
    "grain": "one user in our March-2017 churn cohort and/or with a billing label",

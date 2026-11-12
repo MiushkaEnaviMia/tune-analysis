@@ -1,6 +1,6 @@
 # Part 1b: Clean Layer and Data Model
 
-Built by `sql/02_stg_transactions.sql` → `03_fct_subscription.sql` → `04_dim_user.sql` → `05_fct_user_month.sql`, run in order by `run_all.py` from the raw CSVs in `data/` (the whole pipeline runs in about 20 s). Each script ends with a validation SELECT. Two consecutive runs give identical table fingerprints, so the build is deterministic. Issue codes (T4, T9, U11, L5 …) refer to `reports/01_data_quality.md`.
+Built by `sql/02_stg_transactions.sql` → `03_fct_subscription.sql` → `04_dim_user.sql` → `05_fct_user_month.sql` (→ `07_fct_cohort.sql`, a cohort roll-up of the panel), run in order by `run_all.py` from the raw CSVs in `data/` (the whole pipeline runs in about 20 s). Each script ends with a validation SELECT. Two consecutive runs give identical table fingerprints, so the build is deterministic. Issue codes (T4, T9, U11, L5 …) refer to `reports/01_data_quality.md`.
 
 ## Tables at a glance
 
@@ -11,6 +11,7 @@ Built by `sql/02_stg_transactions.sql` → `03_fct_subscription.sql` → `04_dim
 | fct_subscription | one subscription period (one purchase plus the cancels that follow it) | subscription_id (= src_row of the purchase) | 5,501,434 | Plan, price, discount, auto-renew, cancel, change vs previous, new/renewal/reactivation, episode |
 | dim_user | one user seen anywhere | user_id | 1,800,905 | Cleaned attributes and derived fields |
 | fct_user_month | one user × month with activity, payment or churn (Jan-2015 to Mar-2017) | (user_id, month) | 6,635,753 | Monthly panel: Part 2 metrics become GROUP BY month |
+| fct_cohort | one start-month cohort × months since start (dense, zeros kept) | (cohort_month, months_since_start) | 378 | Cohort retention and revenue curves (retention %, ARPU, cumulative ARPU) |
 
 ## ERD
 
@@ -19,6 +20,7 @@ erDiagram
     dim_user ||--o{ stg_transactions : "user_id"
     dim_user ||--o{ fct_subscription : "user_id"
     dim_user ||--o{ fct_user_month : "user_id"
+    fct_user_month }o--|| fct_cohort : "cohort_month (dim_user.first_period_date) + month"
     stg_transactions ||--o| fct_subscription : "event_id = subscription_id (purchases)"
     fct_subscription }o--|| episode : "episode_id (derived, one GROUP BY)"
     ref_price_plan ||--o{ stg_transactions : "amount_paid (T9 imputation)"
@@ -79,6 +81,16 @@ erDiagram
         tinyint is_churned
         int amount_paid
     }
+    fct_cohort {
+        date cohort_month PK
+        int months_since_start PK
+        bigint cohort_users
+        bigint retained_users
+        double retention_pct
+        bigint revenue
+        double cum_arpu
+        tinyint flag_incomplete_cohort
+    }
 ```
 
 ## Grain choices and why
@@ -98,6 +110,29 @@ The period is the unit the business sells and prices, so discount, plan length, 
 **3. fct_user_month: sparse user × month panel.** A row exists only when the user had access on at least one day, paid, or churned that month. A dense grid of 605,802 transacting users × 27 months would be about 16M rows, mostly zeros that every metric filters out anyway.
 
 **4. dim_user: every user seen anywhere.** 109,330 transacting users (18%) are missing from users.csv (T23), and labelled users missing from it churn at 5.2% vs 9.4% (L5). An inner join would drop a lower-churn group and bias the churn drivers. They stay, with `is_in_users = 0` and 'Unknown' attributes.
+
+**5. fct_cohort: one row per start-month cohort × months since start.** Built in `sql/07_fct_cohort.sql` from `dim_user` and `fct_user_month`. The cohort is the month of the user's **first subscription period** (`dim_user.first_period_date`, free or paid), not the registration date in users.csv: registration is missing for 109,330 transacting users (T23), falls before the data starts (2015-01) for 44% of the rest, and is sometimes after the first purchase (U8). The grid is dense (every month from the start month to 2017-03), so a cohort that fades out shows 0 rather than a missing row. 27 cohorts, 378 rows, 600,667 users (every user with at least one subscription period).
+
+| Field | Definition |
+|:---:|:---:|
+| cohort_month | Month of the user's first subscription period |
+| months_since_start | 0 = start month, 1 = next calendar month, … |
+| calendar_month | cohort_month + months_since_start |
+| cohort_users | Users who started in cohort_month |
+| active_users | Cohort users with access on ≥ 1 day of the month (`fct_user_month.is_active`) |
+| retained_users | Cohort users active in the month **or** who bought in it. Same as active_users except purchases with 0 access days (3,454 users in their start month), so month 0 = 100% |
+| retention_pct | retained_users / cohort_users × 100 |
+| active_paid_users | Cohort users with access from a paid period (`is_active_paid`; excludes free trials, includes annual payers in months they did not pay) |
+| paying_users | Cohort users who paid money in the month (amount_paid > 0) |
+| revenue | amount_paid of purchases made in the month (cash view: an annual plan counts fully in its purchase month) |
+| cum_revenue | revenue from month 0 to this month |
+| arpu | revenue / cohort_users (per user who started, so cohorts compare fairly) |
+| cum_arpu | cum_revenue / cohort_users: revenue per starting user to date; its growth over the months is the cohort's revenue curve |
+| arpu_active | revenue / active_users |
+| months_observed | Months of data the cohort has (cohort_month to 2017-03) |
+| is_last_observed_month | 1 on the 2017-03 row |
+| flag_incomplete_cohort | 1 for cohorts from 2016-10 on (fewer than 6 months of data; 6 cohorts) |
+| flag_left_censored | 1 for the 2015-01 cohort: partly older users first seen when the data starts |
 
 ## How periods, coverage and episodes are built
 
@@ -159,6 +194,10 @@ The key fact about this billing system: **`expires_at` is the membership expiry 
 | dim_user covers every registry, transaction and label user | 0 missing ✓ |
 | (user_id, month) unique; 27 months; active days ≤ 31 | ✓ |
 | Reactivations in fct_user_month = later episodes in fct_subscription | 147,477 = 748,144 − 600,667 ✓ |
+| fct_cohort: cohort sizes = users with a subscription in dim_user | 600,667, difference 0 ✓ |
+| fct_cohort: revenue and final cum_revenue = fct_user_month = fct_subscription | Difference 0 ✓ |
+| fct_cohort: active, active-paid and paying users = fct_user_month counts | Difference 0 ✓ |
+| fct_cohort: month-0 retention; values in range | 100% for all 27 cohorts; no value < 0 or > 100%; cum_arpu never falls ✓ |
 | Two full runs give identical table fingerprints | ✓ |
 
 ## Critique of the alternative star schema (dim_users / fct_transactions / fct_subscriptions)

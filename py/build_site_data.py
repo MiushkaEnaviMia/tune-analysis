@@ -27,6 +27,8 @@ TABLES = {
                  "Every user from the registry, transactions or labels, with cleaned attributes and derived fields."),
     "fct_user_month": ("clean", "user_id, month", "one user in one month with activity, payment or churn",
                        "Monthly panel (Jan 2015 to Mar 2017): monthly metrics become a GROUP BY month."),
+    "fct_cohort": ("clean", "cohort_month, months_since_start", "one start-month cohort in one month since its start",
+                   "Cohort curves: users who started, retention %, paying users, revenue, ARPU and cumulative ARPU by months since the first subscription."),
     "churn_mar17": ("clean", "user_id", "one user in our March-2017 churn cohort and/or with a billing label",
                     "Part 1c: our churn outcome (retained / churned / unknown) next to billing's label, with the disagreement bucket."),
     "churn_confusion": ("clean", "our_outcome", "one of our outcomes, split by billing label",
