@@ -1,0 +1,26 @@
+issue,user_id,payment_method,payment_plan_days,list_price,amount_paid,is_auto_renew,transacted_at,expires_at,is_cancel,src_file,src_row
+T10 amount_paid > list_price (list>0),u_0b65a53c8d2ab010,41,30,119,149,1,20151012,20151012,1,1,2113733
+T11 free trial / 100% discount,u_00007ebab4bfd3fb,41,30,149,0,1,20151109,20151208,0,1,3366891
+T12 unpriced free period,u_bbeacda80826ac37,35,7,0,0,0,20150603,20150615,0,1,2275186
+T13 plan_days=0 on other row,u_31532002893b98fb,41,0,0,0,1,20150507,20150523,1,1,1365902
+T15 cancel with expiry before transaction,u_32d3118627dae9d2,36,30,180,180,1,20161018,20161017,1,1,971719
+T16 non-cancel with expiry before transaction,u_9f6115cddb08eaf4,24,30,149,149,1,20150127,20141129,0,1,4141978
+T17 expires_at = 1970-01-01,u_a489e4a093256e65,17,240,0,0,0,20170127,19700101,0,1,4670233
+T18 expires_at before 2015,u_eb470487dcfaa44f,41,30,149,149,1,20150101,20141231,1,1,3648480
+T19 expires_at > 2019-03-31,u_48feacee1db212cb,41,30,149,149,1,20151125,20210530,0,2,5427498
+T2 export_2 row bought before March (long plan expiring after Feb),u_afa1d990f4bb9ae3,32,395,1599,1599,0,20170204,20180307,0,2,5377268
+T20 expires_at = 2017-03-31 spike,u_72c900fdb2f7c116,34,30,149,149,1,20170228,20170331,0,1,2926958
+T23 user missing from users.csv,u_8827f55441398e37,41,30,99,99,1,20160726,20160826,0,1,2344033
+T24 stacked free passes (first 3 of the largest stack),u_a72561ba2861a4c9,38,7,0,0,0,20160720,20160810,0,1,1603488
+T24 stacked free passes (first 3 of the largest stack),u_a72561ba2861a4c9,38,7,0,0,0,20160720,20160803,0,1,2162789
+T24 stacked free passes (first 3 of the largest stack),u_a72561ba2861a4c9,38,7,0,0,0,20160720,20160727,0,1,2906695
+T25 early renewal: expiry = earlier expiry + plan days,u_7888522a13d88119,38,30,149,149,0,20150313,20150512,0,1,1869760
+T4 conflicting version (export_1 side),u_874b32887d9ba54f,41,30,149,149,1,20150531,20170329,0,1,2681952
+T4 conflicting version (export_2 side),u_874b32887d9ba54f,41,30,149,149,1,20150531,20170428,0,2,5550975
+T6 complementary events split across exports,u_6fff1f92827c9a0c,33,30,149,149,1,20161103,20161102,1,1,2056467
+T6 complementary events split across exports,u_6fff1f92827c9a0c,32,270,894,894,0,20161103,20170731,0,2,5514890
+T7 exact duplicate within export,u_46a0e55995b9a229,41,30,99,99,1,20160129,20160229,0,1,2321249
+T7 exact duplicate within export,u_46a0e55995b9a229,41,30,99,99,1,20160129,20160229,0,1,4788473
+T8 several real events same user+day in one file,u_8b5c1ffedeb0a8b6,41,30,149,149,1,20150526,20150525,1,1,3335128
+T8 several real events same user+day in one file,u_8b5c1ffedeb0a8b6,41,30,129,129,1,20150526,20150625,0,1,3360521
+T9 plan_days=0 & list_price=0 but paid,u_89a9aa15512e53c9,33,0,0,149,1,20151031,20151130,0,1,5045825

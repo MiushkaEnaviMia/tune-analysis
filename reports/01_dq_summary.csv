@@ -1,0 +1,45 @@
+check_id,table_name,check_name,rows_affected,users_affected,pct_of_table_rows,pct_of_table_users
+U1,users,"age = 0 (missing, stored as 0)",1135039,1135039,67.1,67.1
+U2,users,age < 0,72,72,0.0,0.0
+U3,users,age 1-3 (below the lower margin),37,37,0.0,0.0
+U4,users,"age > 92 (above the upper margin, max 1820)",1850,1850,0.11,0.11
+U5,users,gender missing (NULL/empty),1106850,1106850,65.43,65.43
+U6,users,registered_at not a valid YYYYMMDD date,0,0,0.0,0.0
+U7,users,registered_at after data end (> 2017-03-31),13756,13756,0.81,0.81
+U8,users,registered_at after the user's first transaction,26,26,0.0,0.0
+U9,users,duplicate user_id (extra rows),0,0,0.0,0.0
+U10,users,registered users with no transactions (free users; info),1195103,1195103,70.65,70.65
+U11,users,age unusable: outside 4-92 (U1+U2+U3+U4),1136998,1136998,67.22,67.22
+T1,transactions,export_1 rows with expires_at > 2017-03-31 (file is split on expiry),0,0,0.0,0.0
+T2,transactions,export_2 rows transacted before 2017-03-01 (older purchases expiring after Feb),89728,65306,1.57,10.78
+T3,transactions,users whose only long-plan (>=180d) rows sit in export_2,15731,15097,0.27,2.49
+T4,transactions,same event in both exports with conflicting fields (rows in export_1 superseded),747,741,0.01,0.12
+T5,transactions,"same event in both exports, all fields identical (true cross-file duplicates)",0,0,0.0,0.0
+T6,transactions,same user+day in both exports but different events (complementary; keep both),1780,853,0.03,0.14
+T7,transactions,exact duplicate rows within one export (extra copies),832,755,0.01,0.12
+T8,transactions,"(user_id, transacted_at) not unique within a file (grain finding; info)",151025,55809,2.64,9.21
+T24,transactions,stacked passes: same user+day+core event repeated in one file with different expiries,36464,9104,0.64,1.5
+T9,transactions,"plan_days = 0 AND list_price = 0 but amount_paid > 0 (missing plan metadata, Mar-Oct 2015)",214207,122393,3.74,20.2
+T10,transactions,amount_paid > list_price with list_price > 0,13,13,0.0,0.0
+T11,transactions,amount_paid = 0 on a non-cancel row with list_price > 0 (free trial / 100% discount),79575,77570,1.39,12.8
+T12,transactions,list_price = 0 AND amount_paid = 0 on a non-cancel row (unpriced free period),163152,143834,2.85,23.74
+T13,transactions,plan_days = 0 on any other row,3204,2843,0.06,0.47
+T14,transactions,cancellations (is_cancel = 1; info),222448,198114,3.88,32.7
+T15,transactions,expires_at < transacted_at on a cancel row (documented: cancel moves expiry earlier),37811,33702,0.66,5.56
+T16,transactions,expires_at < transacted_at on a NON-cancel row,1287,448,0.02,0.07
+T17,transactions,expires_at = 1970-01-01 (epoch placeholder = missing),457,456,0.01,0.08
+T18,transactions,expires_at before 2015-01-01 (excluding epoch),2020,1835,0.04,0.3
+T19,transactions,expires_at after 2019-03-31 (> 2 years past data end),1738,200,0.03,0.03
+T20,transactions,"expires_at = 2017-03-31 (spike; month-end billing anchor, not a cap)",31082,30959,0.54,5.11
+T21,transactions,invalid transacted_at / expires_at (not a YYYYMMDD date),0,0,0.0,0.0
+T22,transactions,transacted_at after data end (> 2017-03-31),0,0,0.0,0.0
+T23,transactions,transactions for users missing from users.csv,697306,109330,12.18,18.05
+T25,transactions,"early renewal: non-cancel row expiring > plan_days + 3 days after purchase, bought while an earlier expiry was still running",578644,83901,10.1,13.85
+L1,churn_labels,duplicate user_id (extra rows),0,0,0.0,0.0
+L2,churn_labels,"is_churn not in (0,1) or NULL",0,0,0.0,0.0
+L3,churn_labels,labelled users with no transactions at all,0,0,0.0,0.0
+L4,churn_labels,labelled users with no transaction on or before 2017-02-28,639,639,0.26,0.26
+L5,churn_labels,labelled users missing from users.csv,27606,27606,11.42,11.42
+L6,churn_labels,"labelled users NOT in naive ""due in March"" population",26126,26126,10.81,10.81
+L7,churn_labels,"naive ""due in March"" users with NO label",6061,6061,2.51,2.51
+L8,churn_labels,is_churn = 1 (label base rate; info),21647,21647,8.96,8.96

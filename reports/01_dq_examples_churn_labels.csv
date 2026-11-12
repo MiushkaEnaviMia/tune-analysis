@@ -1,0 +1,4 @@
+issue,user_id,is_churn
+L4 no transaction on or before 2017-02-28,u_5a76b64da0c8449c,1
+L5 missing from users.csv,u_83af06aa89517685,0
+L6 labelled but not in naive due-in-March population,u_fd1035693f2a7ebf,0

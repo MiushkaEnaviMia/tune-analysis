@@ -1,0 +1,8 @@
+issue,user_id,city,age,gender,acquisition_channel,registered_at
+U1 age = 0,u_23270a68d0176ef9,1,0,,4,20161208
+U2 age < 0,u_c9b373141cd9c4cf,1,-505,male,2,20141116
+U3 age 1-3,u_156ace53633ef1e8,16,2,male,3,20140402
+U4 age > 92,u_da3af45c13921200,17,1820,male,9,20080908
+U5 gender missing,u_23270a68d0176ef9,1,0,,4,20161208
+U7 registered after data end,u_e6087b63c61b2c48,1,0,,7,20170422
+U8 registered after first transaction,u_fd24a00efe816b3f,13,22,female,9,20150312

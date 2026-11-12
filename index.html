@@ -10,11 +10,11 @@
 /* Layout: app shell. Top bar with tabs; each tab is a full-width workspace (report, lineage map, explorer + query panel). */
 :root{--bg:#f5f8fc;--surface:#ffffff;--fg:#14233a;--muted:#55657d;--line:#d3e0ee;--accent:#2e75b6;--accent-soft:#ddebf7;
 --navy:#1f3864;--code-bg:#eef4fa;--on-dark:#ffffff;--raw:#b4541f;--raw-soft:#fbeadf;--clean:#1d7a4c;--clean-soft:#dff2e8;--err:#b3261e;
---src:#6b7a90;--font:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;color-scheme:light}
+--src:#6b7a90;--warn:#9a5b00;--warn-soft:#fdf0d5;--font:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;color-scheme:light}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1624;--surface:#152238;--fg:#e2ebf6;--muted:#9fb0c6;--line:#28395a;
---accent:#7ab3e6;--accent-soft:#1d3352;--navy:#a9cbef;--code-bg:#101c2e;--on-dark:#0e1624;--raw:#f0a070;--raw-soft:#3a2618;--clean:#6fcf9b;--clean-soft:#163527;--err:#ff8a80;--src:#9fb0c6;color-scheme:dark}}
+--accent:#7ab3e6;--accent-soft:#1d3352;--navy:#a9cbef;--code-bg:#101c2e;--on-dark:#0e1624;--raw:#f0a070;--raw-soft:#3a2618;--clean:#6fcf9b;--clean-soft:#163527;--err:#ff8a80;--src:#9fb0c6;--warn:#f2c060;--warn-soft:#3a2e12;color-scheme:dark}}
 :root[data-theme="dark"]{--bg:#0e1624;--surface:#152238;--fg:#e2ebf6;--muted:#9fb0c6;--line:#28395a;
---accent:#7ab3e6;--accent-soft:#1d3352;--navy:#a9cbef;--code-bg:#101c2e;--on-dark:#0e1624;--raw:#f0a070;--raw-soft:#3a2618;--clean:#6fcf9b;--clean-soft:#163527;--err:#ff8a80;--src:#9fb0c6;color-scheme:dark}
+--accent:#7ab3e6;--accent-soft:#1d3352;--navy:#a9cbef;--code-bg:#101c2e;--on-dark:#0e1624;--raw:#f0a070;--raw-soft:#3a2618;--clean:#6fcf9b;--clean-soft:#163527;--err:#ff8a80;--src:#9fb0c6;--warn:#f2c060;--warn-soft:#3a2e12;color-scheme:dark}
 *{box-sizing:border-box}
 html,body{margin:0}
 body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:14px;line-height:1.5}
@@ -57,6 +57,8 @@ table.grid tbody tr:nth-child(even){background:color-mix(in srgb,var(--accent-so
 .st.done{color:var(--clean)}.st.todo{color:var(--muted)}
 .linkbtn{font:inherit;font-weight:600;color:var(--accent);background:none;border:0;padding:0;cursor:pointer;text-align:left}
 .linkbtn:hover{text-decoration:underline}
+a.code{color:var(--accent);font-family:var(--mono);text-decoration:none}a.code:hover{text-decoration:underline}
+.rerun{padding:16px;display:grid;gap:8px}.rerun ol{margin:0;padding-left:20px;display:grid;gap:4px}.rerun code{font-family:var(--mono);font-size:13px;background:var(--code-bg);padding:1px 5px;border-radius:4px}
 
 /* data quality frame */
 .dqframe{width:100%;height:calc(100vh - 120px);min-height:520px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
@@ -144,6 +146,94 @@ table.rt td.null{color:var(--muted);font-style:italic}
 table.rt tbody tr:hover td{background:var(--accent-soft)}
 .msg{padding:14px 10px;color:var(--muted)}
 .msg.err{color:var(--err);font-family:var(--mono);font-size:12px;white-space:pre-wrap}
+/* churn check */
+.ch{display:grid;gap:22px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.kpi{padding:14px 16px;display:grid;gap:4px}
+.kpi b{font-size:22px;color:var(--accent);font-variant-numeric:tabular-nums}
+.kpi span{color:var(--muted);font-size:13px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+
+/* churn check (1c) — executive page */
+.cx{display:grid;gap:26px;max-width:1280px;margin:0 auto;--c-blue:#2e6db4;--c-orange:#c8571b;--c-grey:#6b7a90;--c-ok:#1d7a4c;--c-ok-bg:#effaf3;--c-bad:#c0322b;--c-bad-bg:#fdf3f2;--c-note-bg:#e9f6fd}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .cx{--c-blue:#7ab3e6;--c-orange:#f0a070;--c-grey:#9fb0c6;--c-ok:#6fcf9b;--c-ok-bg:#163527;--c-bad:#ff8a80;--c-bad-bg:#3a1c1a;--c-note-bg:#13293f}}
+:root[data-theme="dark"] .cx{--c-blue:#7ab3e6;--c-orange:#f0a070;--c-grey:#9fb0c6;--c-ok:#6fcf9b;--c-ok-bg:#163527;--c-bad:#ff8a80;--c-bad-bg:#3a1c1a;--c-note-bg:#13293f}
+.cx-head{display:flex;justify-content:space-between;align-items:center;gap:20px;padding-bottom:18px;border-bottom:4px solid var(--c-blue)}
+.cx-head h1{font-size:clamp(26px,3.2vw,38px);font-weight:700}
+.cx-sub{font-size:17px;color:var(--fg);margin-top:8px}
+.cx-logo{height:64px;width:auto;flex:none;background:#fff;border-radius:12px;padding:4px 8px}
+.cx-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px}
+.cx-kpi{padding:28px 20px;text-align:center;display:grid;gap:8px;border-top:6px solid var(--c-grey)}
+.cx-kpi b{font-size:clamp(34px,4vw,46px);line-height:1.1;font-variant-numeric:tabular-nums;color:var(--c-grey)}
+.cx-kpi b small{font-size:.5em}
+.cx-kpi h3{font-size:19px}
+.cx-kpi span{color:var(--muted);font-size:15px}
+.cx-kpi.blue{border-top-color:var(--c-blue)}.cx-kpi.blue b{color:var(--c-blue)}
+.cx-kpi.orange{border-top-color:var(--c-orange)}.cx-kpi.orange b{color:var(--c-orange)}
+.cx-kpi.grey b{color:var(--fg)}
+.cx-bottom{background:var(--c-note-bg);border-left:6px solid var(--c-blue);border-radius:10px;padding:20px 26px;display:grid;gap:12px;font-size:17px;line-height:1.6}
+.cx-bottom b{color:var(--navy)}
+.cx-two{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:22px}
+@media (max-width:480px){.cx-two{grid-template-columns:minmax(0,1fr)}}
+.cx-panel{padding:24px 26px;display:grid;gap:16px;align-content:start;min-width:0}
+.cx-h{font-size:16px;letter-spacing:.06em;text-transform:uppercase;padding-bottom:14px;border-bottom:1px solid var(--line)}
+table.cx-cm{border-collapse:collapse;width:100%;font-size:16px}
+.cx-cm th,.cx-cm td{padding:16px 12px;border:1px solid var(--line);text-align:center}
+.cx-cm thead th{background:var(--navy);color:var(--on-dark);font-weight:700}
+.cx-cm tbody th{background:var(--code-bg);color:var(--navy);text-align:left;font-weight:700}
+.cx-cm td b{display:block;font-size:24px;font-variant-numeric:tabular-nums}
+.cx-cm td span{font-size:15px}
+.cx-cm td.ok{background:var(--c-ok-bg);color:var(--c-ok)}
+.cx-cm td.bad{background:var(--c-bad-bg);color:var(--c-bad)}
+.cx-note{color:var(--muted);font-size:14px}
+.cx-bars{display:grid;gap:22px}
+.cx-bar{display:grid;gap:8px}
+.cx-bl{display:flex;justify-content:space-between;gap:12px;font-size:16px;align-items:baseline}
+.cx-bl small{color:var(--muted);font-size:14px;font-weight:400}
+.cx-bl .num{white-space:nowrap}
+.cx-bar i{display:block;height:14px;border-radius:7px;background:linear-gradient(90deg,var(--c-blue) 0 var(--w),var(--line) var(--w))}
+.cx-more{padding:0}
+.cx-more summary{cursor:pointer;padding:18px 24px;font-size:17px;font-weight:700;color:var(--accent)}
+.cx-more-in{padding:0 24px 24px;display:grid;gap:16px}
+.cx-explain{background:var(--code-bg);border-radius:8px;padding:12px 16px;font-size:15px;line-height:1.6}
+table.cx-tbl{border-collapse:collapse;width:100%;font-size:15px}
+.cx-tbl th{background:var(--navy);color:var(--on-dark);padding:10px 14px}
+.cx-tbl td{padding:9px 14px;border-bottom:1px solid var(--line)}
+.cx-tbl td.num{text-align:center;white-space:nowrap}
+.cx-lim{font-size:15px}.cx-lim ul{margin:6px 0 0;padding-left:20px;display:grid;gap:4px}
+.cx-src{color:var(--muted);font-size:13px}
+
+/* task & status */
+.ts{display:grid;gap:22px}
+.brief{padding:16px 18px;display:grid;gap:6px;max-width:900px}
+.brief ul{margin:0;padding-left:20px;display:grid;gap:4px}
+.badge{display:inline-block;font-size:12px;font-weight:700;padding:2px 10px;border-radius:999px;white-space:nowrap}
+.badge.done{background:var(--clean-soft);color:var(--clean)}
+.badge.partial{background:var(--warn-soft);color:var(--warn)}
+.badge.todo{background:var(--code-bg);color:var(--muted);border:1px solid var(--line)}
+.prog{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.pcard{padding:10px 12px;display:grid;gap:6px;text-align:left;font:inherit;color:inherit;cursor:pointer}
+.pcard:hover{border-color:var(--accent)}
+.pcard .pt{font-weight:700;color:var(--navy)}
+.pcard .pn{font-size:12px;color:var(--muted)}
+.pbar{display:flex;height:8px;border-radius:4px;overflow:hidden;background:var(--line)}
+.pbar i{display:block;height:100%}
+.pbar .d{background:var(--clean)}.pbar .p{background:var(--warn)}
+.overall{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center}
+table.task td.ask{max-width:420px}
+table.task td.notes{color:var(--muted);max-width:300px}
+table.task tr.ph td{background:var(--accent-soft);color:var(--navy);font-weight:700;text-align:left;padding:9px 12px;border-top:2px solid var(--line)}
+table.task tr.ph .cnt{font-weight:500;color:var(--muted);margin-left:10px}
+table.task td.where{white-space:nowrap}
+table.task td.where a{display:block}
+.subnav{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:44px;z-index:19}
+.subnav-in{max-width:1500px;margin:0 auto;display:flex;gap:4px;flex-wrap:wrap}
+.stab{font:inherit;font-weight:600;font-size:14px;padding:11px 14px;border:0;border-bottom:3px solid transparent;background:none;color:var(--muted);cursor:pointer}
+.stab:hover{color:var(--navy)}
+.stab.on{color:var(--accent);border-bottom-color:var(--accent)}
+.soon{padding:28px;display:grid;gap:8px;max-width:760px}
+.soon .label{margin:0}
+.lg{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:13.5px;align-items:center}
 footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);font-size:12.5px}
 </style>
 </head>
@@ -151,16 +241,51 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
 <header class="top"><div class="top-in pad">
   <div class="brand">Tune <small>subscription analysis · take-home</small></div>
   <nav class="tabs" role="tablist" aria-label="Sections">
-    <button class="tab on" role="tab" data-view="overview" id="tab-overview">Overview</button>
-    <button class="tab" role="tab" data-view="dq" id="tab-dq">1a · Data quality</button>
-    <button class="tab" role="tab" data-view="lineage" id="tab-lineage">1b · Data model</button>
-    <button class="tab" role="tab" data-view="explorer" id="tab-explorer">Explorer &amp; SQL</button>
+    <button class="tab on" role="tab" data-group="intro">Introduction</button>
+    <button class="tab" role="tab" data-group="p1">Part 1 · Data</button>
+    <button class="tab" role="tab" data-group="p2">Part 2 · Metrics</button>
+    <button class="tab" role="tab" data-group="p3">Part 3 · Deep dive</button>
+    <button class="tab" role="tab" data-group="p4">Part 4 · Summary</button>
+    <button class="tab" role="tab" data-group="p5">Part 5 · Test &amp; AI</button>
   </nav>
 </div></header>
+<div class="subnav"><nav class="subnav-in pad" id="subnav" aria-label="Sub-sections"></nav></div>
 
 <main class="pad">
+  <!-- TASK & STATUS -->
+  <section class="view ts" id="view-task">
+    <div style="display:grid;gap:6px">
+      <h1>Task &amp; status</h1>
+      <p class="lede">What the take-home asks for, step by step, and how far each step is. <span id="ts-updated"></span></p>
+    </div>
+    <div class="card brief">
+      <div class="label">The task in short</div>
+      <ul>
+        <li>Raw billing exports from a language-learning app with a premium subscription (users, transactions, churn labels; Jan 2015 – Mar 2017).</li>
+        <li>Goal: answer four leadership questions on subscriber health, churn, free trials and prices, and annual plans.</li>
+        <li>Five parts: clean the data and check the churn labels, core monthly metrics, one deep dive, a one-page executive summary, a test design and an AI log.</li>
+        <li>Time box: 4–5 hours. Hand in a repository with README, numbered SQL scripts and reports.</li>
+      </ul>
+    </div>
+    <div class="card brief legend-card">
+      <div class="label">How to read this site</div>
+      <div class="lg">
+        <span><span class="badge done">Done</span> <span class="badge partial">Partial</span> <span class="badge todo">Not started</span> status of each step</span>
+        <span><i class="sw" style="background:var(--raw)"></i>Broken data (raw, as delivered)</span>
+        <span><i class="sw" style="background:var(--clean)"></i>Clean data (after our fixes)</span>
+        <span><span class="code">↗</span> opens the code or report on GitHub</span>
+        <span>Top tabs = parts of the task; the row under them = its sections</span>
+      </div>
+    </div>
+    <div style="display:grid;gap:10px">
+      <div class="overall" id="ts-overall"></div>
+      <div class="prog" id="ts-prog"></div>
+    </div>
+    <div class="card scroll"><table class="grid task" id="ts-table"><thead><tr><th>Part</th><th>What is asked</th><th>Status</th><th>Where</th><th>Notes</th></tr></thead><tbody></tbody></table></div>
+  </section>
+
   <!-- OVERVIEW -->
-  <section class="view ov" id="view-overview">
+  <section class="view ov" id="view-overview" hidden>
     <div style="display:grid;gap:6px">
       <h1>Tune subscription analysis</h1>
       <p class="lede">Raw billing exports (Jan 2015 – Mar 2017) turned into a clean, tested data model that answers four leadership questions. Every table, broken and clean, can be browsed and queried in this site, in the browser.</p>
@@ -177,14 +302,27 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     <div>
       <div class="label" style="margin-bottom:8px">Parts</div>
       <div class="parts">
-        <div class="card part"><h3>1a · Data quality</h3><span class="st done">Done</span><p>20 issues in the raw exports, ranked by how much each would change the answers, with the query that finds each one and the fix chosen.</p><button class="linkbtn" data-go="dq">Open the report →</button></div>
+        <div class="card part"><h3>1a · Data quality</h3><span class="st done">Done</span><p>21 issues in the raw exports, ranked by how much each would change the answers, with the query that finds each one and the fix chosen.</p><button class="linkbtn" data-go="dq">Open the report →</button></div>
         <div class="card part"><h3>1b · Clean layer and data model</h3><span class="st done">Done</span><p>Four clean tables built in SQL from the raw files, with a fixed rule for every issue. All validation checks pass.</p><button class="linkbtn" data-go="lineage">Open the table map →</button></div>
+        <div class="card part"><h3>1c · Churn definition, checked</h3><span class="st done">Done</span><p>Our own churn rule compared with billing's labels: 96.5% agreement, four clear ways the labels break their own rule, and what the data cannot tell.</p><button class="linkbtn" data-go="churn">Open the churn check →</button></div>
         <div class="card part"><h3>Explorer &amp; SQL</h3><span class="st done">Live</span><p>Browse every table like a warehouse console and run SQL on it. Switch between the broken data as delivered and the clean data.</p><button class="linkbtn" data-go="explorer">Open the explorer →</button></div>
       </div>
     </div>
     <div>
       <div class="label" style="margin-bottom:8px">Tables in this site</div>
-      <div class="card scroll"><table class="grid" id="ov-tables"><thead><tr><th>Table</th><th>Data</th><th>One row is</th><th>Rows</th></tr></thead><tbody></tbody></table></div>
+      <div class="card scroll"><table class="grid" id="ov-tables"><thead><tr><th>Table</th><th>Data</th><th>One row is</th><th>Rows</th><th>Built by</th></tr></thead><tbody></tbody></table></div>
+    </div>
+    <div>
+      <div class="label" style="margin-bottom:8px">Code &amp; how to rerun locally</div>
+      <div class="card rerun">
+        <p>All code is in the <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis" target="_blank" rel="noopener">GitHub repository</a>: numbered SQL scripts in <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/tree/main/sql" target="_blank" rel="noopener">sql/</a>, report generator in <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/tree/main/py" target="_blank" rel="noopener">py/</a>, reports in <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/tree/main/reports" target="_blank" rel="noopener">reports/</a>. To rebuild everything from the raw CSVs:</p>
+        <ol>
+          <li>Clone the repository and run <code>pip install duckdb openpyxl</code> (Python 3.9+).</li>
+          <li>Put <code>users.csv</code>, <code>transactions_export_1.csv</code>, <code>transactions_export_2.csv</code> and <code>churn_labels.csv</code> in <code>data/</code>.</li>
+          <li>Run <code>python run_all.py</code> from the repository root. It builds <code>tune.duckdb</code> and rewrites the reports.</li>
+        </ol>
+        <p>Details in the <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis#readme" target="_blank" rel="noopener">README</a>.</p>
+      </div>
     </div>
   </section>
 
@@ -205,6 +343,90 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <aside class="card side" id="lin-side"><p class="lede">Select a table on the map.</p></aside>
     </div>
   </section>
+
+  <!-- CHURN CHECK (1c) -->
+  <section class="view cx" id="view-churn" hidden>
+    <header class="cx-head">
+      <div>
+        <h1>1c · Churn Definition Validation</h1>
+        <p class="cx-sub">Clean SQL implementation of the March 2017 churn rule vs. billing's <span class="mono">churn_labels.csv</span> (241,665 users)</p>
+      </div>
+      <img class="cx-logo" src="tune_logo.png" alt="Tune">
+    </header>
+
+    <div class="cx-kpis">
+      <div class="card cx-kpi blue"><b>96.5%</b><h3>Core Agreement</h3><span>197,972 of 205,213 observable shared users</span></div>
+      <div class="card cx-kpi orange"><b>~32,500 <small>(13.4%)</small></b><h3>Billing Label Errors</h3><span>Of 241,665 labels — caused by 4 billing bugs</span></div>
+      <div class="card cx-kpi grey"><b>10,740 <small>(4.4%*)</small></b><h3>Missing April Data</h3><span>30-day window ends in April (files stop Mar 31)</span><span style="display:block;margin-top:6px;font-size:.85em;opacity:.8">* Of 241,665 labels. Out of our 222,018-user March 2017 cohort it is 4.8%.</span></div>
+    </div>
+
+    <div class="cx-bottom">
+      <p><b>Main Conclusion:</b> While billing's <span class="mono">churn_labels.csv</span> matches 96.5% on clean March cases, it contains ~32,500 (13.4%) systematic errors — most critically flagging 97.7% of 90+ day upgrades as churned.</p>
+      <p><b>Decision:</b> Do <b>not</b> use <span class="mono">churn_labels.csv</span> for Parts 2 &amp; 3. We use our own validated SQL churn rule instead (<span class="mono">fct_user_month</span>).</p>
+    </div>
+
+    <div class="cx-two">
+      <div class="card cx-panel">
+        <h2 class="cx-h">Confusion Matrix (205,213 observable shared users)</h2>
+        <div class="scroll"><table class="cx-cm">
+          <thead><tr><th>Our Model \ Billing</th><th>Retained (0)</th><th>Churned (1)</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Retained (0)</th><td class="ok"><b>197,877</b><span>96.4%</span></td><td class="bad"><b>7,239</b><span>3.5%</span></td></tr>
+            <tr><th scope="row">Churned (1)</th><td class="bad"><b>2</b><span>0.001%</span></td><td class="ok"><b>95</b><span>0.05%</span></td></tr>
+          </tbody>
+        </table></div>
+        <p class="cx-note">* Excludes 10,740 (4.4%) April-window users, 25,712 (10.6%) only in billing labels, and 6,065 (2.7% of ours) March-1 expiries omitted by billing.</p>
+      </div>
+      <div class="card cx-panel">
+        <h2 class="cx-h">Top 4 Reasons Billing Labels Disagreed</h2>
+        <div class="cx-bars">
+          <div class="cx-bar"><div class="cx-bl"><span><b>1. Ignored <span class="mono">export_2</span></b> <small>(Feb renewals missed)</small></span><b class="num">20,733 (8.6%)</b></div><i style="--w:100%"></i></div>
+          <div class="cx-bar"><div class="cx-bl"><span><b>2. Dropped March 1 Expiries</b> <small>(Only 4.8% labelled)</small></span><b class="num">6,065 (2.7%)</b></div><i style="--w:29.3%"></i></div>
+          <div class="cx-bar"><div class="cx-bl"><span><b>3. Flagged 90+ Day Plans Churned</b> <small>(97.7% mislabelled)</small></span><b class="num">3,436 (1.4%)</b></div><i style="--w:16.6%"></i></div>
+          <div class="cx-bar"><div class="cx-bl"><span><b>4. Missed Early Renewals</b> <small>(30-day plans)</small></span><b class="num">2,451 (1.0%)</b></div><i style="--w:11.8%"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <details class="card cx-more">
+      <summary>Show full technical breakdown &amp; data limitations (13 groups)</summary>
+      <div class="cx-more-in">
+        <p class="cx-explain"><b>What this table shows:</b> every user who is in billing's labels or in our March group, split into 13 groups by how our result compares with billing's label.
+          <b>Users</b> = how many (% of the 241,665 labelled users). <b>Label Churn %</b> = share of the group that billing marked as churned.
+          <b>Why it matters:</b> the two "Match" rows are where we agree; most other rows are the 4 billing errors above, and they explain why we don't use the labels.</p>
+        <div class="scroll"><table class="cx-tbl">
+          <thead><tr><th>Group</th><th>Users</th><th>Label Churn %</th><th>Explanation</th></tr></thead>
+          <tbody>
+            <tr><td>Match: retained</td><td class="num">197,877 (81.9%)</td><td class="num">0%</td><td>Both agree user renewed before window closed</td></tr>
+            <tr><td>Match: churned</td><td class="num">95 (0.04%)</td><td class="num">100%</td><td>Both agree no renewal within 30 days</td></tr>
+            <tr><td>Missing April data</td><td class="num">10,740 (4.4%)</td><td class="num">80.1%</td><td>No renewal by 31 Mar; April data missing</td></tr>
+            <tr><td>Renewed onto 90+ day plan</td><td class="num">3,436 (1.4%)</td><td class="num">100%</td><td>97.7% of long-plan buyers marked churned by billing</td></tr>
+            <tr><td>Renewed, then cancelled in March</td><td class="num">1,352 (0.6%)</td><td class="num">100%</td><td>Billing treats later cancel as undoing the renewal</td></tr>
+            <tr><td>Renewed early (30-day plan)</td><td class="num">2,451 (1.0%)</td><td class="num">100%</td><td>93% renewed early; billing missed early renewals</td></tr>
+            <tr><td>Feb renewal pushed expiry past Mar</td><td class="num">20,733 (8.6%)</td><td class="num">15.4%</td><td>Renewal in <span class="mono">export_2</span>; billing used <span class="mono">export_1</span> only</td></tr>
+            <tr><td>Cancel by Feb 28 moved expiry to Feb</td><td class="num">1,017 (0.4%)</td><td class="num">96.1%</td><td>Billing used pre-cancel expiry date</td></tr>
+            <tr><td>Expired before March</td><td class="num">3,251 (1.3%)</td><td class="num">34.4%</td><td>Not due in March in any version of the data</td></tr>
+            <tr><td>No transaction up to Feb 28</td><td class="num">639 (0.3%)</td><td class="num">54.3%</td><td>First transaction occurred in March</td></tr>
+            <tr><td>Expiry after March (other)</td><td class="num">72 (0.03%)</td><td class="num">100%</td><td>Unexplained</td></tr>
+            <tr><td>No renewal, window closed, labelled retained</td><td class="num">2 (0.001%)</td><td class="num">0%</td><td>Unexplained</td></tr>
+            <tr><td>In our group, missing on March 1</td><td class="num">6,065 (2.7% of ours)</td><td class="num">-</td><td>Only 4.8% of March-1 expiries were labelled</td></tr>
+          </tbody>
+        </table></div>
+        <div class="cx-lim">
+          <b>What this data cannot tell us:</b>
+          <ul>
+            <li>What happened in April to the 10,740 (4.4%) users whose 30-day window crossed 2017-03-31.</li>
+            <li>Whether April refunds reversed any March renewals.</li>
+            <li>Billing's exact SQL/code logic (only inferred from label patterns).</li>
+            <li>Whether <span class="mono">expires_at</span> is inclusive (last day of access) or exclusive (first day without access), affecting March-1 expiries.</li>
+          </ul>
+        </div>
+        <p class="cx-src">Code: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/sql/06_churn_validation.sql" target="_blank" rel="noopener">sql/06_churn_validation.sql ↗</a> · Full write-up: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/03_churn_validation.md" target="_blank" rel="noopener">reports/03_churn_validation.md ↗</a> · Tables in Explorer: <span class="mono">churn_mar17</span>, <span class="mono">churn_confusion</span>, <span class="mono">churn_disagreement</span></p>
+      </div>
+    </details>
+  </section>
+
+  <!-- PARTS 2-5: placeholder pages are generated from SOON in the script -->
 
   <!-- EXPLORER -->
   <section class="view" id="view-explorer" hidden>
@@ -233,7 +455,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     </div>
   </section>
 </main>
-<footer class="pad">Queries run in your browser with DuckDB; the data is read in parts as needed, so the first query on a large table can take a few seconds. Nothing can be changed.</footer>
+<footer class="pad">Queries run in your browser with DuckDB; the data is read in parts as needed, so the first query on a large table can take a few seconds. Nothing can be changed. Code: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis" target="_blank" rel="noopener">GitHub repository</a>.</footer>
 
 <script type="module">
 const $ = (s, el = document) => el.querySelector(s);
@@ -247,28 +469,85 @@ const T = Object.fromEntries(catalog.tables.map((t) => [t.name, t]));
 
 const BUILT_BY = { raw_users: "sql/00_load_raw.sql", raw_transactions: "sql/00_load_raw.sql", raw_churn_labels: "sql/00_load_raw.sql",
   ref_price_plan: "sql/02_stg_transactions.sql", stg_transactions: "sql/02_stg_transactions.sql", fct_subscription: "sql/03_fct_subscription.sql",
-  dim_user: "sql/04_dim_user.sql", fct_user_month: "sql/05_fct_user_month.sql" };
+  dim_user: "sql/04_dim_user.sql", fct_user_month: "sql/05_fct_user_month.sql",
+  churn_mar17: "sql/06_churn_validation.sql", churn_confusion: "sql/06_churn_validation.sql", churn_disagreement: "sql/06_churn_validation.sql" };
+const REPO = "https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/";
+const codeLink = (f) => f ? `<a class="code" href="${REPO}${f}" target="_blank" rel="noopener" title="Open the SQL on GitHub">${f} ↗</a>` : "-";
 const KEY = { raw_users: "none (user_id should be unique)", raw_transactions: "none (src_row added at load)", raw_churn_labels: "user_id",
   ref_price_plan: "amount_paid", stg_transactions: "event_id (= src_row)", fct_subscription: "subscription_id",
-  dim_user: "user_id", fct_user_month: "user_id, month" };
+  dim_user: "user_id", fct_user_month: "user_id, month", churn_mar17: "user_id", churn_confusion: "our_outcome", churn_disagreement: "bucket" };
 const ISSUES = { raw_users: "U1-U11: age 0 or out of range, gender missing, registration after data end",
   raw_transactions: "T1-T24: exports split on expiry, duplicates, conflicting versions, missing plan length, odd expiry dates",
   raw_churn_labels: "L4-L7: labels don't match a naive 'due in March' population" };
 
 // ---------------- tabs ----------------
+const GROUPS = {
+  intro: [["task", "Task & status"], ["overview", "Overview"]],
+  p1: [["dq", "1a · Data quality"], ["lineage", "1b · Clean layer & data model"], ["churn", "1c · Churn check"], ["explorer", "Explorer & SQL"]],
+  p2: [["p2-active", "Active subscribers"], ["p2-flow", "New · renewing · reactivated"], ["p2-churn", "Monthly churn"], ["p2-arpu", "ARPU & discounts"], ["p2-trust", "What we don't trust"]],
+  p3: [["p3a", "3a · Churn drivers"], ["p3b", "3b · Free trials & prices"]],
+  p4: [["p4", "4 · Executive summary"]],
+  p5: [["p5a", "5a · Annual-plan test"], ["p5b", "5b · AI process log"]],
+};
+// old hashes that now live under a new id
+const ALIAS = { p2: "p2-active", p3: "p3a", p5: "p5a" };
+// sections not built yet: empty pages for now
+const EMPTY = ["p2-active", "p2-flow", "p2-churn", "p2-arpu", "p2-trust", "p3a", "p3b", "p4", "p5a", "p5b"];
+const mainEl = document.querySelector("main");
+for (const id of EMPTY) {
+  const sec = document.createElement("section");
+  sec.className = "view"; sec.id = "view-" + id; sec.hidden = true;
+  mainEl.appendChild(sec);
+}
+const groupOf = (v) => Object.keys(GROUPS).find((g) => GROUPS[g].some(([id]) => id === v));
 function show(view) {
-  $$(".tab").forEach((b) => { const on = b.dataset.view === view; b.classList.toggle("on", on); b.setAttribute("aria-selected", on); });
+  view = ALIAS[view] || view;
+  const g = groupOf(view);
+  $$(".tab").forEach((b) => { const on = b.dataset.group === g; b.classList.toggle("on", on); b.setAttribute("aria-selected", on); });
+  $("#subnav").innerHTML = GROUPS[g].map(([id, name]) => `<button type="button" class="stab${id === view ? " on" : ""}" data-v="${id}">${esc(name)}</button>`).join("");
+  $$("#subnav .stab").forEach((b) => b.addEventListener("click", () => show(b.dataset.v)));
   $$(".view").forEach((v) => (v.hidden = v.id !== "view-" + view));
   if (view === "dq" && !$("#dqframe").src) $("#dqframe").src = "dq.html";
   if (view === "explorer") bootEngine();
   if (location.hash.slice(1) !== view) history.replaceState(null, "", "#" + view);
 }
-$$(".tab").forEach((b) => b.addEventListener("click", () => show(b.dataset.view)));
+$$(".tab").forEach((b) => b.addEventListener("click", () => show(GROUPS[b.dataset.group][0][0])));
 $$("[data-go]").forEach((b) => b.addEventListener("click", () => show(b.dataset.go)));
+
+// ---------------- task & status (rows live in task_status.json) ----------------
+const STATUS = { done: "Done", partial: "Partial", todo: "Not started" };
+const TAB_NAME = { dq: "1a tab", lineage: "1b tab", churn: "1c tab", explorer: "Explorer tab", overview: "Overview tab", task: "Task & status tab",
+  p2: "Part 2 tab", "p2-active": "Part 2 tab", p3: "Part 3 tab", p3a: "3a tab", p3b: "3b tab", p4: "Part 4 tab", p5: "Part 5 tab", p5a: "5a tab", p5b: "5b tab" };
+function whereLink(w) {
+  if (w.startsWith("#")) return `<a class="code" href="${w}" data-go="${w.slice(1)}">${esc(TAB_NAME[w.slice(1)] || w)}</a>`;
+  const url = "https://github.com/MiushkaEnaviMia/tune-analysis/" + (w.endsWith("/") ? "tree" : "blob") + "/main/" + w.replace(/\/$/, "");
+  return `<a class="code" href="${url}" target="_blank" rel="noopener">${esc(w)} ↗</a>`;
+}
+fetch("task_status.json").then((r) => r.json()).then((ts) => {
+  const count = (rows) => ({ n: rows.length, done: rows.filter((r) => r.status === "done").length, partial: rows.filter((r) => r.status === "partial").length });
+  const all = count(ts.rows);
+  $("#ts-updated").textContent = "Status as of " + ts.updated + ".";
+  $("#ts-overall").innerHTML = `<span class="label">Overall</span><span class="badge done">${all.done} done</span><span class="badge partial">${all.partial} partial</span><span class="badge todo">${all.n - all.done - all.partial} not started</span><span style="color:var(--muted);font-size:12.5px">of ${all.n} steps</span>`;
+  let prog = "", body = "";
+  for (const p of ts.parts) {
+    const rows = ts.rows.filter((r) => r.part === p.id), c = count(rows);
+    const pct = (k) => (100 * k / (c.n || 1)).toFixed(1) + "%";
+    prog += `<button type="button" class="card pcard" data-part="${esc(p.id)}"><span class="pt">${esc(p.id)}</span><span class="pn">${esc(p.name)}</span>
+      <span class="pbar" aria-hidden="true"><i class="d" style="width:${pct(c.done)}"></i><i class="p" style="width:${pct(c.partial)}"></i></span>
+      <span class="pn">${c.done} of ${c.n} done${c.partial ? ` · ${c.partial} partial` : ""}</span></button>`;
+    body += `<tr class="ph" id="ts-part-${esc(p.id)}"><td colspan="5">${p.id === "Hand-in" ? "" : "Part "}${esc(p.id)} · ${esc(p.name)}<span class="cnt">${c.done} of ${c.n} done</span></td></tr>` +
+      rows.map((r) => `<tr><td class="mono">${esc(r.part)}</td><td class="ask">${esc(r.ask)}</td><td><span class="badge ${esc(r.status)}">${STATUS[r.status] || esc(r.status)}</span></td>` +
+        `<td class="where">${r.where.length ? r.where.map(whereLink).join("") : "-"}</td><td class="notes">${esc(r.notes || "")}</td></tr>`).join("");
+  }
+  $("#ts-prog").innerHTML = prog;
+  $("#ts-table tbody").innerHTML = body;
+  $$("#ts-prog .pcard").forEach((b) => b.addEventListener("click", () => document.getElementById("ts-part-" + b.dataset.part).scrollIntoView({ behavior: "smooth", block: "center" })));
+  $$("#ts-table a[data-go]").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); show(a.dataset.go); scrollTo(0, 0); }));
+});
 
 // ---------------- overview table ----------------
 $("#ov-tables tbody").innerHTML = catalog.tables.map((t) =>
-  `<tr><td class="mono">${t.name}</td><td><span class="pill ${t.layer}">${t.layer === "raw" ? "Broken (raw)" : "Clean"}</span></td><td>${esc(t.grain)}</td><td class="num">${fmt(t.rows)}</td></tr>`).join("");
+  `<tr><td class="mono">${t.name}</td><td><span class="pill ${t.layer}">${t.layer === "raw" ? "Broken (raw)" : "Clean"}</span></td><td>${esc(t.grain)}</td><td class="num">${fmt(t.rows)}</td><td>${codeLink(BUILT_BY[t.name])}</td></tr>`).join("");
 
 // ---------------- lineage map ----------------
 const SOURCES = { "users.csv": ["raw_users"], "transactions_export_1.csv": ["raw_transactions"], "transactions_export_2.csv": ["raw_transactions"], "churn_labels.csv": ["raw_churn_labels"] };
@@ -327,7 +606,7 @@ function selectNode(n) {
   const downs = [...down].filter((x) => EDGES.some(([a, b]) => a === n && b === x));
   let h = `<div style="display:grid;gap:6px"><h2 class="mono" style="font-size:16px">${n}</h2><div><span class="pill ${t ? t.layer : "src"}">${t ? (t.layer === "raw" ? "Raw (broken)" : "Clean") : "Source file"}</span></div></div>`;
   if (t) {
-    h += `<p>${esc(t.purpose)}</p><dl><dt>One row</dt><dd>${esc(t.grain)}</dd><dt>Key</dt><dd class="mono">${esc(KEY[n])}</dd><dt>Rows</dt><dd class="num">${fmt(t.rows)}</dd><dt>Built by</dt><dd class="mono">${BUILT_BY[n]}</dd>`;
+    h += `<p>${esc(t.purpose)}</p><dl><dt>One row</dt><dd>${esc(t.grain)}</dd><dt>Key</dt><dd class="mono">${esc(KEY[n])}</dd><dt>Rows</dt><dd class="num">${fmt(t.rows)}</dd><dt>Built by</dt><dd>${codeLink(BUILT_BY[n])}</dd>`;
     if (ISSUES[n]) h += `<dt>Known issues</dt><dd>${esc(ISSUES[n])}</dd>`;
     h += `<dt>Comes from</dt><dd class="mono">${ups.join(", ") || "-"}</dd><dt>Feeds</dt><dd class="mono">${downs.join(", ") || "-"}</dd></dl>`;
     h += `<div class="label">${t.columns.length} columns</div><div class="cols-list">${t.columns.map((c) => `<span class="cchip" title="${esc(c.type)}">${esc(c.name)}</span>`).join("")}</div>`;
@@ -362,9 +641,9 @@ limit 100;` },
       { label: "Ages in the registry", sql: `-- age = 0 is the missing-value code; negative and 1,000+ ages also appear (U1-U4)
 select case when age = 0 then '0 (missing)'
             when age < 0 then 'negative'
-            when age < 8 then '1-7'
-            when age > 90 then 'over 90'
-            else '8-90 (usable)' end as age_group,
+            when age < 4 then '1-3'
+            when age > 92 then 'over 92'
+            else '4-92 (usable)' end as age_group,
        count(*) as users,
        round(100.0 * count(*) / sum(count(*)) over (), 1) as pct
 from raw_users
@@ -476,7 +755,7 @@ function renderSub() {
   } else if (sub === "details") {
     body.innerHTML = `<dl class="kv"><dt>Table</dt><dd class="mono">tune.${t.layer}.${t.name}</dd><dt>Data</dt><dd>${t.layer === "raw" ? "Broken: as delivered" : "Clean: after the fixes"}</dd>
       <dt>One row</dt><dd>${esc(t.grain)}</dd><dt>Key</dt><dd class="mono">${esc(KEY[t.name])}</dd><dt>Rows</dt><dd class="num">${fmt(t.rows)}</dd>
-      <dt>Columns</dt><dd class="num">${t.columns.length}</dd><dt>Size</dt><dd class="num">${mb(t.bytes)} (compressed)</dd><dt>Built by</dt><dd class="mono">${BUILT_BY[t.name]}</dd>
+      <dt>Columns</dt><dd class="num">${t.columns.length}</dd><dt>Size</dt><dd class="num">${mb(t.bytes)} (compressed)</dd><dt>Built by</dt><dd>${codeLink(BUILT_BY[t.name])}</dd>
       ${ISSUES[t.name] ? `<dt>Known issues</dt><dd>${esc(ISSUES[t.name])}</dd>` : ""}</dl>
       <div style="margin-top:12px"><button class="btn ghost" id="q-this">Query this table</button></div>`;
     $("#q-this").addEventListener("click", () => { $("#sql").value = `select *\nfrom ${t.name}\nlimit 100;`; run(); });
@@ -584,8 +863,10 @@ $("#copy").addEventListener("click", async () => {
 
 setMode("clean");
 const start = location.hash.slice(1);
-show(["overview", "dq", "lineage", "explorer"].includes(start) ? start : "overview");
-addEventListener("hashchange", () => { const v = location.hash.slice(1); if (["overview", "dq", "lineage", "explorer"].includes(v)) show(v); });
+const VIEWS = Object.values(GROUPS).flat().map(([id]) => id);
+const known = (v) => VIEWS.includes(ALIAS[v] || v);
+show(known(start) ? start : "task");
+addEventListener("hashchange", () => { const v = location.hash.slice(1); if (known(v)) show(v); });
 </script>
 </body>
 </html>

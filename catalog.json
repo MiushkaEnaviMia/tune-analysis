@@ -485,14 +485,14 @@
    "grain": "one user seen anywhere",
    "purpose": "Every user from the registry, transactions or labels, with cleaned attributes and derived fields.",
    "rows": 1800905,
-   "bytes": 37457919,
+   "bytes": 37457834,
    "columns": [
     {
      "name": "user_id",
      "type": "VARCHAR"
     },
     {
-     "name": "in_user_registry",
+     "name": "is_in_users",
      "type": "TINYINT"
     },
     {
@@ -765,6 +765,165 @@
    "files": [
     "data/clean/fct_user_month/data_0.parquet",
     "data/clean/fct_user_month/data_1.parquet"
+   ]
+  },
+  {
+   "name": "churn_mar17",
+   "layer": "clean",
+   "grain": "one user in our March-2017 churn cohort and/or with a billing label",
+   "purpose": "Part 1c: our churn outcome (retained / churned / unknown) next to billing's label, with the disagreement bucket.",
+   "rows": 247730,
+   "bytes": 3242909,
+   "columns": [
+    {
+     "name": "user_id",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "in_our_cohort",
+     "type": "TINYINT"
+    },
+    {
+     "name": "has_label",
+     "type": "TINYINT"
+    },
+    {
+     "name": "label_is_churn",
+     "type": "TINYINT"
+    },
+    {
+     "name": "first_renewal_date",
+     "type": "DATE"
+    },
+    {
+     "name": "first_cancel_date",
+     "type": "DATE"
+    },
+    {
+     "name": "first_cancel_expiry",
+     "type": "DATE"
+    },
+    {
+     "name": "max_renewal_plan_days",
+     "type": "INTEGER"
+    },
+    {
+     "name": "renewal_paid",
+     "type": "BOOLEAN"
+    },
+    {
+     "name": "last_march_event_is_cancel",
+     "type": "TINYINT"
+    },
+    {
+     "name": "eff_expiry",
+     "type": "DATE"
+    },
+    {
+     "name": "window_end",
+     "type": "DATE"
+    },
+    {
+     "name": "our_outcome",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "exp_asof_feb",
+     "type": "DATE"
+    },
+    {
+     "name": "last_event_is_cancel",
+     "type": "TINYINT"
+    },
+    {
+     "name": "last_tx_date",
+     "type": "DATE"
+    },
+    {
+     "name": "exp_before_cancel",
+     "type": "DATE"
+    },
+    {
+     "name": "exp_asof_feb_e1",
+     "type": "DATE"
+    },
+    {
+     "name": "is_in_users",
+     "type": "TINYINT"
+    },
+    {
+     "name": "bucket",
+     "type": "VARCHAR"
+    }
+   ],
+   "files": [
+    "data/clean/churn_mar17/data_0.parquet"
+   ]
+  },
+  {
+   "name": "churn_confusion",
+   "layer": "clean",
+   "grain": "one of our outcomes, split by billing label",
+   "purpose": "Part 1c: confusion table, our outcome x billing label, including users only one side has.",
+   "rows": 4,
+   "bytes": 883,
+   "columns": [
+    {
+     "name": "our_outcome",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "label_retained",
+     "type": "BIGINT"
+    },
+    {
+     "name": "label_churned",
+     "type": "BIGINT"
+    },
+    {
+     "name": "no_label",
+     "type": "BIGINT"
+    },
+    {
+     "name": "total",
+     "type": "BIGINT"
+    }
+   ],
+   "files": [
+    "data/clean/churn_confusion/data_0.parquet"
+   ]
+  },
+  {
+   "name": "churn_disagreement",
+   "layer": "clean",
+   "grain": "one agreement or disagreement group",
+   "purpose": "Part 1c: users per group, share labelled churned, and the likely reason.",
+   "rows": 13,
+   "bytes": 1427,
+   "columns": [
+    {
+     "name": "bucket",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "users",
+     "type": "BIGINT"
+    },
+    {
+     "name": "pct_of_all_rows",
+     "type": "DOUBLE"
+    },
+    {
+     "name": "label_churned",
+     "type": "HUGEINT"
+    },
+    {
+     "name": "label_churn_pct",
+     "type": "DOUBLE"
+    }
+   ],
+   "files": [
+    "data/clean/churn_disagreement/data_0.parquet"
    ]
   }
  ]

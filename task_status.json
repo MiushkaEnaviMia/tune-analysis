@@ -1,0 +1,380 @@
+{
+  "_how_to_update": "Change a row's \"status\" to one of: done, partial, todo. Edit \"where\" / \"notes\" as needed. \"where\" items: \"#dq\", \"#lineage\", \"#explorer\" open a site tab; anything else is a repo path linked on GitHub. Then set \"updated\".",
+  "updated": "2026-11-12",
+  "parts": [
+    {
+      "id": "1a",
+      "name": "Data-quality report"
+    },
+    {
+      "id": "1b",
+      "name": "Clean layer"
+    },
+    {
+      "id": "1c",
+      "name": "Churn definition, validated"
+    },
+    {
+      "id": "2",
+      "name": "Core metrics (Jan 2015 – Mar 2017)"
+    },
+    {
+      "id": "3",
+      "name": "Deep dive (choose a or b)"
+    },
+    {
+      "id": "4",
+      "name": "Executive summary (one page)"
+    },
+    {
+      "id": "5a",
+      "name": "Annual-plan test design (one page)"
+    },
+    {
+      "id": "5b",
+      "name": "AI process log"
+    },
+    {
+      "id": "Hand-in",
+      "name": "What to hand in"
+    }
+  ],
+  "rows": [
+    {
+      "part": "1a",
+      "ask": "Each issue: what it is + the query that finds it",
+      "status": "done",
+      "where": [
+        "#dq",
+        "sql/01_data_quality.sql"
+      ],
+      "notes": "21 issues"
+    },
+    {
+      "part": "1a",
+      "ask": "Size of each issue: rows, users, percent",
+      "status": "done",
+      "where": [
+        "#dq",
+        "reports/01_data_quality.md"
+      ],
+      "notes": ""
+    },
+    {
+      "part": "1a",
+      "ask": "Why each issue matters",
+      "status": "done",
+      "where": [
+        "#dq"
+      ],
+      "notes": ""
+    },
+    {
+      "part": "1a",
+      "ask": "What was decided for each issue",
+      "status": "done",
+      "where": [
+        "#dq"
+      ],
+      "notes": ""
+    },
+    {
+      "part": "1a",
+      "ask": "Rank issues by impact on the leadership questions",
+      "status": "done",
+      "where": [
+        "#dq"
+      ],
+      "notes": "Ranked 1–20"
+    },
+    {
+      "part": "1b",
+      "ask": "Reproducible SQL that builds the clean layer",
+      "status": "done",
+      "where": [
+        "sql/",
+        "run_all.py"
+      ],
+      "notes": "sql/00–05, run in order"
+    },
+    {
+      "part": "1b",
+      "ask": "dim_user: one row per user, cleaned + derived fields",
+      "status": "done",
+      "where": [
+        "#lineage",
+        "sql/04_dim_user.sql"
+      ],
+      "notes": ""
+    },
+    {
+      "part": "1b",
+      "ask": "Subscription table: choose the grain and explain why",
+      "status": "done",
+      "where": [
+        "#lineage",
+        "reports/02_data_model.md"
+      ],
+      "notes": "One row = one purchase period, with episode_id"
+    },
+    {
+      "part": "1b",
+      "ask": "Columns: start/end, plan length, list price, paid, discount, auto-renew, cancelled, up/downgrade",
+      "status": "done",
+      "where": [
+        "sql/03_fct_subscription.sql"
+      ],
+      "notes": "All present"
+    },
+    {
+      "part": "1b",
+      "ask": "Rules for duplicates, conflicts, cancellations, implausible values",
+      "status": "done",
+      "where": [
+        "reports/02_data_model.md"
+      ],
+      "notes": "20 cleaning rules"
+    },
+    {
+      "part": "1c",
+      "ask": "Implement the churn definition on the clean layer",
+      "status": "done",
+      "where": [
+        "#churn",
+        "sql/06_churn_validation.sql"
+      ],
+      "notes": "Cohort = expiry in March as of 28 Feb"
+    },
+    {
+      "part": "1c",
+      "ask": "Agreement with churn_labels + confusion matrix",
+      "status": "done",
+      "where": [
+        "#churn",
+        "reports/03_churn_validation.md"
+      ],
+      "notes": "96.5% agreement"
+    },
+    {
+      "part": "1c",
+      "ask": "Where and why the two disagree",
+      "status": "done",
+      "where": [
+        "#churn"
+      ],
+      "notes": "4 clear patterns; ~1.7% unexplained"
+    },
+    {
+      "part": "1c",
+      "ask": "What can't be determined from this data",
+      "status": "done",
+      "where": [
+        "#churn"
+      ],
+      "notes": "6 open points"
+    },
+    {
+      "part": "2",
+      "ask": "Active subscribers over time",
+      "status": "partial",
+      "where": [
+        "sql/05_fct_user_month.sql"
+      ],
+      "notes": "Table ready (fct_user_month), no report"
+    },
+    {
+      "part": "2",
+      "ask": "New vs renewing vs reactivated",
+      "status": "partial",
+      "where": [
+        "sql/05_fct_user_month.sql"
+      ],
+      "notes": "Table ready, no report"
+    },
+    {
+      "part": "2",
+      "ask": "Monthly churn rate",
+      "status": "partial",
+      "where": [
+        "sql/05_fct_user_month.sql"
+      ],
+      "notes": "Table ready, no report"
+    },
+    {
+      "part": "2",
+      "ask": "ARPU, other revenue measures, discount depth",
+      "status": "partial",
+      "where": [
+        "sql/05_fct_user_month.sql"
+      ],
+      "notes": "Table ready, no report"
+    },
+    {
+      "part": "2",
+      "ask": "Define each metric precisely + flag series not to trust",
+      "status": "todo",
+      "where": [],
+      "notes": ""
+    },
+    {
+      "part": "3",
+      "ask": "Choose (a) churn drivers or (b) free trials and price points",
+      "status": "todo",
+      "where": [],
+      "notes": ""
+    },
+    {
+      "part": "3",
+      "ask": "Analysis, with confounding discussed",
+      "status": "todo",
+      "where": [],
+      "notes": ""
+    },
+    {
+      "part": "3",
+      "ask": "What to act on",
+      "status": "todo",
+      "where": [],
+      "notes": ""
+    },
+    {
+      "part": "4",
+      "ask": "Answer the four questions; say which can't be answered yet",
+      "status": "todo",
+      "where": [],
+      "notes": ""
+    },
+    {
+      "part": "4",
+      "ask": "Three recommendations: impact, confidence, what would change my mind",
+      "status": "todo",
+      "where": [],
+      "notes": ""
+    },
+    {
+      "part": "5a",
+      "ask": "Unit of randomization and eligibility",
+      "status": "todo",
+      "where": [],
+      "notes": ""
+    },
+    {
+      "part": "5a",
+      "ask": "Primary metric and guardrail metrics",
+      "status": "todo",
+      "where": [],
+      "notes": ""
+    },
+    {
+      "part": "5a",
+      "ask": "Sample size from baselines in this data",
+      "status": "todo",
+      "where": [],
+      "notes": ""
+    },
+    {
+      "part": "5a",
+      "ask": "Duration + handling annual plans' delayed retention",
+      "status": "todo",
+      "where": [],
+      "notes": ""
+    },
+    {
+      "part": "5a",
+      "ask": "Optional: SQL to analyze the test",
+      "status": "todo",
+      "where": [],
+      "notes": "Optional"
+    },
+    {
+      "part": "5b",
+      "ask": "Tools used, and for what",
+      "status": "partial",
+      "where": [
+        "reports/01_data_quality.md"
+      ],
+      "notes": "Content exists, no file in reports/ yet"
+    },
+    {
+      "part": "5b",
+      "ask": "Key prompts, or a sample",
+      "status": "partial",
+      "where": [
+        "reports/gemini_review_prompt_1a.md"
+      ],
+      "notes": "Content exists, no file in reports/ yet"
+    },
+    {
+      "part": "5b",
+      "ask": "At least 2 cases where the AI was wrong, how caught, what changed",
+      "status": "partial",
+      "where": [
+        "reports/01_data_quality.md"
+      ],
+      "notes": "End of 1a report; move to own file"
+    },
+    {
+      "part": "Hand-in",
+      "ask": "README: how to run end to end",
+      "status": "done",
+      "where": [
+        "README.md"
+      ],
+      "notes": ""
+    },
+    {
+      "part": "Hand-in",
+      "ask": "README: what I'd do with more time",
+      "status": "todo",
+      "where": [
+        "README.md"
+      ],
+      "notes": "Heading exists, empty"
+    },
+    {
+      "part": "Hand-in",
+      "ask": "README: actual time spent",
+      "status": "todo",
+      "where": [
+        "README.md"
+      ],
+      "notes": "Heading exists, empty"
+    },
+    {
+      "part": "Hand-in",
+      "ask": "No data/ or database files in the repo",
+      "status": "done",
+      "where": [
+        ".gitignore"
+      ],
+      "notes": ""
+    },
+    {
+      "part": "Hand-in",
+      "ask": "Scripts read CSVs from a relative data/ folder",
+      "status": "done",
+      "where": [
+        "sql/00_load_raw.sql"
+      ],
+      "notes": ""
+    },
+    {
+      "part": "Hand-in",
+      "ask": "Numbered sql/ scripts that run in order",
+      "status": "done",
+      "where": [
+        "sql/"
+      ],
+      "notes": ""
+    },
+    {
+      "part": "Hand-in",
+      "ask": "reports/: all six reports",
+      "status": "partial",
+      "where": [
+        "reports/"
+      ],
+      "notes": "Data quality only so far"
+    }
+  ]
+}
