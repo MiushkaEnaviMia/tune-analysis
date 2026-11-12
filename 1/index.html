@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tune Subscription Analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: app shell. Top bar with tabs; each tab is a full-width workspace (report, lineage map, explorer + query panel). */
+:root{--bg:#f5f8fc;--surface:#ffffff;--fg:#14233a;--muted:#55657d;--line:#d3e0ee;--accent:#2e75b6;--accent-soft:#ddebf7;
+--navy:#1f3864;--code-bg:#eef4fa;--on-dark:#ffffff;--raw:#b4541f;--raw-soft:#fbeadf;--clean:#1d7a4c;--clean-soft:#dff2e8;--err:#b3261e;
+--src:#6b7a90;--font:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1624;--surface:#152238;--fg:#e2ebf6;--muted:#9fb0c6;--line:#28395a;
+--accent:#7ab3e6;--accent-soft:#1d3352;--navy:#a9cbef;--code-bg:#101c2e;--on-dark:#0e1624;--raw:#f0a070;--raw-soft:#3a2618;--clean:#6fcf9b;--clean-soft:#163527;--err:#ff8a80;--src:#9fb0c6;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1624;--surface:#152238;--fg:#e2ebf6;--muted:#9fb0c6;--line:#28395a;
+--accent:#7ab3e6;--accent-soft:#1d3352;--navy:#a9cbef;--code-bg:#101c2e;--on-dark:#0e1624;--raw:#f0a070;--raw-soft:#3a2618;--clean:#6fcf9b;--clean-soft:#163527;--err:#ff8a80;--src:#9fb0c6;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:14px;line-height:1.5}
+.pad{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top{background:var(--navy);color:var(--on-dark);position:sticky;top:0;z-index:20}
+.top-in{max-width:1500px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:6px 24px;padding-block:10px 0}
+.brand{font-weight:700;font-size:16px;letter-spacing:.01em;padding-bottom:10px}
+.brand small{font-weight:400;opacity:.75;margin-left:8px}
+nav.tabs{display:flex;gap:2px;flex-wrap:wrap;align-self:flex-end}
+.tab{font:inherit;font-weight:600;font-size:13.5px;padding:8px 14px;border:0;border-radius:8px 8px 0 0;background:transparent;color:var(--on-dark);opacity:.8;cursor:pointer}
+.tab:hover{opacity:1}
+.tab.on{background:var(--bg);color:var(--navy);opacity:1}
+.tab:focus-visible,button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+main{max-width:1500px;margin:0 auto;padding-block:20px 48px}
+.view[hidden]{display:none}
+h1,h2,h3{margin:0;color:var(--navy);text-wrap:balance}
+h1{font-size:26px}h2{font-size:19px}h3{font-size:15px}
+p{margin:0}
+.lede{color:var(--muted);max-width:80ch}
+.mono{font-family:var(--mono)}
+.num{font-variant-numeric:tabular-nums}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px}
+.label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.pill{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;padding:1px 8px;border-radius:999px;white-space:nowrap}
+.pill.raw{background:var(--raw-soft);color:var(--raw)}.pill.clean{background:var(--clean-soft);color:var(--clean)}.pill.src{background:var(--code-bg);color:var(--src)}
+table.grid{border-collapse:collapse;width:100%;font-size:13px}
+table.grid th,table.grid td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:center;vertical-align:middle}
+table.grid th{background:var(--navy);color:var(--on-dark);font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;font-weight:700;white-space:nowrap}
+table.grid tbody tr:nth-child(even){background:color-mix(in srgb,var(--accent-soft) 35%,transparent)}
+.scroll{overflow:auto}
+
+/* overview */
+.ov{display:grid;gap:22px}
+.qs{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.qcard{padding:14px 16px;display:grid;gap:4px}
+.qcard b{font-family:var(--mono);color:var(--accent)}
+.parts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.part{padding:16px;display:grid;gap:8px;align-content:start}
+.part .st{font-size:12px;font-weight:600}
+.st.done{color:var(--clean)}.st.todo{color:var(--muted)}
+.linkbtn{font:inherit;font-weight:600;color:var(--accent);background:none;border:0;padding:0;cursor:pointer;text-align:left}
+.linkbtn:hover{text-decoration:underline}
+
+/* data quality frame */
+.dqframe{width:100%;height:calc(100vh - 120px);min-height:520px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+
+/* lineage */
+.lin{display:grid;gap:14px}
+.lin-wrap{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}
+@media (max-width:1380px){.lin-wrap{grid-template-columns:minmax(0,1fr)}}
+.dag{overflow:auto;padding:8px}
+.dag svg{display:block}
+.node{cursor:pointer}
+.node rect.box{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
+.node rect.bar{stroke:none}
+.node text{fill:var(--fg);font-family:var(--mono);font-size:11.5px}
+.node text.sub{fill:var(--muted);font-family:var(--font);font-size:11px}
+.node:hover rect.box,.node.sel rect.box{stroke:var(--accent);stroke-width:2.5}
+.node.dim{opacity:.28}
+.edge{fill:none;stroke:var(--muted);stroke-width:1.4;opacity:.7}
+.edge.hi{stroke:var(--accent);stroke-width:2.4;opacity:1}
+.edge.dim{opacity:.12}
+.colhead{fill:var(--muted);font-family:var(--font);font-size:11px;font-weight:700;letter-spacing:.08em}
+.legend{display:flex;flex-wrap:wrap;gap:14px;color:var(--muted);font-size:12.5px;align-items:center}
+.sw{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;margin-right:6px}
+.side{padding:16px;display:grid;gap:12px;position:sticky;top:70px}
+.side dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13px}
+.side dt{color:var(--muted);font-weight:600}.side dd{margin:0}
+.cols-list{display:flex;flex-wrap:wrap;gap:4px;max-height:220px;overflow:auto}
+.cchip{font-family:var(--mono);font-size:11.5px;padding:1px 6px;border:1px solid var(--line);border-radius:4px;background:var(--code-bg)}
+.btn{font:inherit;font-weight:600;font-size:13px;cursor:pointer;padding:7px 14px;border-radius:6px;border:1px solid var(--accent);background:var(--accent);color:var(--on-dark)}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn:disabled{opacity:.45;cursor:default}
+
+/* explorer */
+.ex-top{display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;margin-bottom:14px}
+.mode{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface)}
+.mode button{font:inherit;font-weight:600;font-size:13px;padding:7px 14px;border:0;background:transparent;color:var(--muted);cursor:pointer;display:flex;gap:8px;align-items:center}
+.mode button .sw{margin:0}
+.mode button.on.raw{background:var(--raw-soft);color:var(--raw)}
+.mode button.on.clean{background:var(--clean-soft);color:var(--clean)}
+.modetext{color:var(--muted);font-size:13px;max-width:70ch}
+.status{font-family:var(--mono);font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px;margin-left:auto}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted);flex:none}
+.status.ready .dot{background:var(--clean)}.status.error .dot{background:var(--err)}
+.status.loading .dot{background:var(--accent);animation:pulse 1s infinite alternate}
+@keyframes pulse{from{opacity:.35}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.status.loading .dot{animation:none}}
+.ex{display:grid;grid-template-columns:230px minmax(0,1fr) minmax(0,1.15fr);gap:14px;align-items:start}
+@media (max-width:1180px){.ex{grid-template-columns:220px minmax(0,1fr)}.qpanel{grid-column:1 / -1}}
+@media (max-width:720px){.ex{grid-template-columns:minmax(0,1fr)}}
+.tree{padding:10px;display:grid;gap:2px;font-size:13px}
+.ds{display:flex;align-items:center;gap:6px;padding:6px 6px 4px;font-weight:700;color:var(--navy)}
+.ds .pill{margin-left:auto}
+.tnode{font:inherit;font-family:var(--mono);font-size:12.5px;text-align:left;border:0;background:transparent;color:var(--fg);padding:5px 6px 5px 22px;border-radius:6px;cursor:pointer;display:flex;justify-content:space-between;gap:8px}
+.tnode:hover{background:var(--accent-soft)}
+.tnode.sel{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.tnode small{color:var(--muted);font-family:var(--font);font-weight:400}
+.ds-group.off{opacity:.45}
+.tdetail{min-width:0}
+.td-h{padding:14px 16px 0;display:grid;gap:6px}
+.td-h h2{font-family:var(--mono);font-size:17px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.subtabs{display:flex;gap:4px;border-bottom:1px solid var(--line);padding:0 12px;margin-top:6px}
+.subtab{font:inherit;font-size:13px;font-weight:600;padding:8px 12px;border:0;border-bottom:2px solid transparent;background:none;color:var(--muted);cursor:pointer}
+.subtab.on{color:var(--accent);border-bottom-color:var(--accent)}
+.td-body{padding:12px 16px 16px;min-width:0}
+.td-body .scroll{max-height:60vh;border:1px solid var(--line);border-radius:8px}
+.kv{display:grid;grid-template-columns:minmax(120px,auto) 1fr;gap:6px 14px;font-size:13px}
+.kv dt{color:var(--muted);font-weight:600}.kv dd{margin:0}
+.qpanel{padding:12px;display:grid;gap:10px;min-width:0}
+.examples{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:12.5px;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+textarea{width:100%;min-height:180px;resize:vertical;font-family:var(--mono);font-size:13px;line-height:1.55;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--code-bg);color:var(--fg);tab-size:2}
+textarea:focus{outline:2px solid var(--accent);outline-offset:-1px}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.kbd{color:var(--muted);font-size:12px}
+.res{border:1px solid var(--line);border-radius:8px;min-width:0;background:var(--surface)}
+.res-h{display:flex;justify-content:space-between;gap:8px;padding:7px 10px;border-bottom:1px solid var(--line);align-items:center}
+.meta{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.res .scroll{max-height:52vh}
+table.rt{border-collapse:collapse;font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums;min-width:100%}
+table.rt th,table.rt td{padding:4px 10px;border-bottom:1px solid var(--line);white-space:nowrap;text-align:left}
+table.rt th{position:sticky;top:0;background:var(--surface);color:var(--muted);font-weight:600;z-index:1}
+table.rt td.n,table.rt th.n{text-align:right}
+table.rt td.null{color:var(--muted);font-style:italic}
+table.rt tbody tr:hover td{background:var(--accent-soft)}
+.msg{padding:14px 10px;color:var(--muted)}
+.msg.err{color:var(--err);font-family:var(--mono);font-size:12px;white-space:pre-wrap}
+footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);font-size:12.5px}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in pad">
+  <div class="brand">Tune <small>subscription analysis · take-home</small></div>
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <button class="tab on" role="tab" data-view="overview" id="tab-overview">Overview</button>
+    <button class="tab" role="tab" data-view="dq" id="tab-dq">1a · Data quality</button>
+    <button class="tab" role="tab" data-view="lineage" id="tab-lineage">1b · Data model</button>
+    <button class="tab" role="tab" data-view="explorer" id="tab-explorer">Explorer &amp; SQL</button>
+  </nav>
+</div></header>
+
+<main class="pad">
+  <!-- OVERVIEW -->
+  <section class="view ov" id="view-overview">
+    <div style="display:grid;gap:6px">
+      <h1>Tune subscription analysis</h1>
+      <p class="lede">Raw billing exports (Jan 2015 – Mar 2017) turned into a clean, tested data model that answers four leadership questions. Every table, broken and clean, can be browsed and queried in this site, in the browser.</p>
+    </div>
+    <div>
+      <div class="label" style="margin-bottom:8px">Leadership questions</div>
+      <div class="qs">
+        <div class="card qcard"><b>Q1</b>How healthy is the subscriber base, and how is it trending?</div>
+        <div class="card qcard"><b>Q2</b>What drives churn?</div>
+        <div class="card qcard"><b>Q3</b>Did the free trials and price points work?</div>
+        <div class="card qcard"><b>Q4</b>Should we push annual plans harder?</div>
+      </div>
+    </div>
+    <div>
+      <div class="label" style="margin-bottom:8px">Parts</div>
+      <div class="parts">
+        <div class="card part"><h3>1a · Data quality</h3><span class="st done">Done</span><p>20 issues in the raw exports, ranked by how much each would change the answers, with the query that finds each one and the fix chosen.</p><button class="linkbtn" data-go="dq">Open the report →</button></div>
+        <div class="card part"><h3>1b · Clean layer and data model</h3><span class="st done">Done</span><p>Four clean tables built in SQL from the raw files, with a fixed rule for every issue. All validation checks pass.</p><button class="linkbtn" data-go="lineage">Open the table map →</button></div>
+        <div class="card part"><h3>Explorer &amp; SQL</h3><span class="st done">Live</span><p>Browse every table like a warehouse console and run SQL on it. Switch between the broken data as delivered and the clean data.</p><button class="linkbtn" data-go="explorer">Open the explorer →</button></div>
+      </div>
+    </div>
+    <div>
+      <div class="label" style="margin-bottom:8px">Tables in this site</div>
+      <div class="card scroll"><table class="grid" id="ov-tables"><thead><tr><th>Table</th><th>Data</th><th>One row is</th><th>Rows</th></tr></thead><tbody></tbody></table></div>
+    </div>
+  </section>
+
+  <!-- DATA QUALITY -->
+  <section class="view" id="view-dq" hidden>
+    <iframe class="dqframe" id="dqframe" title="Data-quality report" loading="lazy"></iframe>
+  </section>
+
+  <!-- LINEAGE -->
+  <section class="view lin" id="view-lineage" hidden>
+    <div style="display:grid;gap:6px">
+      <h1>Data model</h1>
+      <p class="lede">How the clean tables are built from the raw files. Click a table to see what it holds and where its data comes from and goes to.</p>
+      <div class="legend"><span><i class="sw" style="background:var(--src)"></i>Source file</span><span><i class="sw" style="background:var(--raw)"></i>Raw table (as delivered)</span><span><i class="sw" style="background:var(--clean)"></i>Clean table</span><span>Arrows: data flows left to right</span></div>
+    </div>
+    <div class="lin-wrap">
+      <div class="card dag" id="dag"></div>
+      <aside class="card side" id="lin-side"><p class="lede">Select a table on the map.</p></aside>
+    </div>
+  </section>
+
+  <!-- EXPLORER -->
+  <section class="view" id="view-explorer" hidden>
+    <div class="ex-top">
+      <div class="mode" role="group" aria-label="Data version">
+        <button type="button" class="raw" data-mode="raw" id="mode-raw"><i class="sw" style="background:var(--raw)"></i>Broken data</button>
+        <button type="button" class="clean on" data-mode="clean" id="mode-clean"><i class="sw" style="background:var(--clean)"></i>Clean data</button>
+      </div>
+      <p class="modetext" id="modetext"></p>
+      <div class="status loading" id="status"><span class="dot"></span><span id="statusText">Starting the query engine…</span></div>
+    </div>
+    <div class="ex">
+      <nav class="card tree" id="tree" aria-label="Tables"></nav>
+      <section class="card tdetail" id="tdetail"></section>
+      <section class="card qpanel">
+        <div class="label">Query</div>
+        <div class="examples" id="examples"></div>
+        <textarea id="sql" spellcheck="false" aria-label="SQL query"></textarea>
+        <div class="bar">
+          <button class="btn" id="run" disabled>Run</button>
+          <button class="btn ghost" id="copy" disabled>Copy as CSV</button>
+          <span class="kbd">Ctrl / ⌘ + Enter · first 1,000 rows shown</span>
+        </div>
+        <div class="res"><div class="res-h"><span class="label">Result</span><span class="meta" id="meta"></span></div><div class="scroll" id="out"><div class="msg">Results appear here.</div></div></div>
+      </section>
+    </div>
+  </section>
+</main>
+<footer class="pad">Queries run in your browser with DuckDB; the data is read in parts as needed, so the first query on a large table can take a few seconds. Nothing can be changed.</footer>
+
+<script type="module">
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const fmt = (n) => Number(n).toLocaleString("en-US");
+const mb = (b) => (b / 1e6).toFixed(1) + " MB";
+
+const catalog = await (await fetch("catalog.json")).json();
+const T = Object.fromEntries(catalog.tables.map((t) => [t.name, t]));
+
+const BUILT_BY = { raw_users: "sql/00_load_raw.sql", raw_transactions: "sql/00_load_raw.sql", raw_churn_labels: "sql/00_load_raw.sql",
+  ref_price_plan: "sql/02_stg_transactions.sql", stg_transactions: "sql/02_stg_transactions.sql", fct_subscription: "sql/03_fct_subscription.sql",
+  dim_user: "sql/04_dim_user.sql", fct_user_month: "sql/05_fct_user_month.sql" };
+const KEY = { raw_users: "none (user_id should be unique)", raw_transactions: "none (src_row added at load)", raw_churn_labels: "user_id",
+  ref_price_plan: "amount_paid", stg_transactions: "event_id (= src_row)", fct_subscription: "subscription_id",
+  dim_user: "user_id", fct_user_month: "user_id, month" };
+const ISSUES = { raw_users: "U1-U11: age 0 or out of range, gender missing, registration after data end",
+  raw_transactions: "T1-T24: exports split on expiry, duplicates, conflicting versions, missing plan length, odd expiry dates",
+  raw_churn_labels: "L4-L7: labels don't match a naive 'due in March' population" };
+
+// ---------------- tabs ----------------
+function show(view) {
+  $$(".tab").forEach((b) => { const on = b.dataset.view === view; b.classList.toggle("on", on); b.setAttribute("aria-selected", on); });
+  $$(".view").forEach((v) => (v.hidden = v.id !== "view-" + view));
+  if (view === "dq" && !$("#dqframe").src) $("#dqframe").src = "dq.html";
+  if (view === "explorer") bootEngine();
+  if (location.hash.slice(1) !== view) history.replaceState(null, "", "#" + view);
+}
+$$(".tab").forEach((b) => b.addEventListener("click", () => show(b.dataset.view)));
+$$("[data-go]").forEach((b) => b.addEventListener("click", () => show(b.dataset.go)));
+
+// ---------------- overview table ----------------
+$("#ov-tables tbody").innerHTML = catalog.tables.map((t) =>
+  `<tr><td class="mono">${t.name}</td><td><span class="pill ${t.layer}">${t.layer === "raw" ? "Broken (raw)" : "Clean"}</span></td><td>${esc(t.grain)}</td><td class="num">${fmt(t.rows)}</td></tr>`).join("");
+
+// ---------------- lineage map ----------------
+const SOURCES = { "users.csv": ["raw_users"], "transactions_export_1.csv": ["raw_transactions"], "transactions_export_2.csv": ["raw_transactions"], "churn_labels.csv": ["raw_churn_labels"] };
+const EDGES = [
+  ...Object.entries(SOURCES).flatMap(([s, ts]) => ts.map((t) => [s, t])),
+  ["raw_transactions", "ref_price_plan"], ["raw_transactions", "stg_transactions"], ["ref_price_plan", "stg_transactions"],
+  ["stg_transactions", "fct_subscription"], ["fct_subscription", "dim_user"], ["stg_transactions", "dim_user"],
+  ["raw_users", "dim_user"], ["raw_churn_labels", "dim_user"], ["fct_subscription", "fct_user_month"],
+];
+const COLS = [
+  { title: "SOURCE FILES", nodes: Object.keys(SOURCES) },
+  { title: "RAW", nodes: ["raw_users", "raw_transactions", "raw_churn_labels"] },
+  { title: "STAGING", nodes: ["ref_price_plan", "stg_transactions"] },
+  { title: "SUBSCRIPTIONS", nodes: ["fct_subscription"] },
+  { title: "MARTS", nodes: ["dim_user", "fct_user_month"] },
+];
+const NW = 188, NH = 50, CW = 206, RH = 84, TOP = 34;
+const pos = {};
+const maxRows = Math.max(...COLS.map((c) => c.nodes.length));
+COLS.forEach((c, i) => {
+  const off = ((maxRows - c.nodes.length) * RH) / 2;
+  c.nodes.forEach((n, j) => (pos[n] = { x: 10 + i * CW, y: TOP + off + j * RH }));
+});
+const W = 10 + (COLS.length - 1) * CW + NW + 10, H = TOP + maxRows * RH;
+const kind = (n) => (T[n] ? T[n].layer : "src");
+const color = { src: "var(--src)", raw: "var(--raw)", clean: "var(--clean)" };
+let svg = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Table lineage map">`;
+COLS.forEach((c, i) => (svg += `<text class="colhead" x="${10 + i * CW}" y="16">${c.title}</text>`));
+EDGES.forEach(([a, b]) => {
+  const p = pos[a], q = pos[b], x1 = p.x + NW, y1 = p.y + NH / 2, x2 = q.x, y2 = q.y + NH / 2, mx = (x1 + x2) / 2;
+  svg += `<path class="edge" data-a="${a}" data-b="${b}" d="M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2 - 6},${y2}" marker-end="url(#arr)"/>`;
+});
+svg = svg.replace("<svg", "<svg") + "";
+COLS.flatMap((c) => c.nodes).forEach((n) => {
+  const p = pos[n], t = T[n];
+  const sub = t ? `${fmt(t.rows)} rows` : "CSV file";
+  svg += `<g class="node" data-n="${n}" tabindex="0" role="button" aria-label="${n}"><rect class="box" x="${p.x}" y="${p.y}" width="${NW}" height="${NH}" rx="8"/>` +
+    `<rect class="bar" x="${p.x}" y="${p.y}" width="6" height="${NH}" rx="3" fill="${color[kind(n)]}"/>` +
+    `<text x="${p.x + 16}" y="${p.y + 21}">${n.length > 26 ? n.slice(0, 25) + "…" : n}</text><text class="sub" x="${p.x + 16}" y="${p.y + 38}">${sub}</text></g>`;
+});
+svg += `<defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/></marker></defs></svg>`;
+$("#dag").innerHTML = svg;
+
+function related(n) {
+  const up = new Set(), down = new Set();
+  const walk = (x, set, dir) => EDGES.forEach(([a, b]) => { const [f, t] = dir ? [a, b] : [b, a]; if (f === x && !set.has(t)) { set.add(t); walk(t, set, dir); } });
+  walk(n, down, true); walk(n, up, false);
+  return { up, down };
+}
+function selectNode(n) {
+  const { up, down } = related(n), keep = new Set([n, ...up, ...down]);
+  $$(".node").forEach((g) => { g.classList.toggle("sel", g.dataset.n === n); g.classList.toggle("dim", !keep.has(g.dataset.n)); });
+  $$(".edge").forEach((e) => { const on = keep.has(e.dataset.a) && keep.has(e.dataset.b); e.classList.toggle("hi", on); e.classList.toggle("dim", !on); });
+  const t = T[n];
+  const ups = [...up].filter((x) => EDGES.some(([a, b]) => a === x && b === n));
+  const downs = [...down].filter((x) => EDGES.some(([a, b]) => a === n && b === x));
+  let h = `<div style="display:grid;gap:6px"><h2 class="mono" style="font-size:16px">${n}</h2><div><span class="pill ${t ? t.layer : "src"}">${t ? (t.layer === "raw" ? "Raw (broken)" : "Clean") : "Source file"}</span></div></div>`;
+  if (t) {
+    h += `<p>${esc(t.purpose)}</p><dl><dt>One row</dt><dd>${esc(t.grain)}</dd><dt>Key</dt><dd class="mono">${esc(KEY[n])}</dd><dt>Rows</dt><dd class="num">${fmt(t.rows)}</dd><dt>Built by</dt><dd class="mono">${BUILT_BY[n]}</dd>`;
+    if (ISSUES[n]) h += `<dt>Known issues</dt><dd>${esc(ISSUES[n])}</dd>`;
+    h += `<dt>Comes from</dt><dd class="mono">${ups.join(", ") || "-"}</dd><dt>Feeds</dt><dd class="mono">${downs.join(", ") || "-"}</dd></dl>`;
+    h += `<div class="label">${t.columns.length} columns</div><div class="cols-list">${t.columns.map((c) => `<span class="cchip" title="${esc(c.type)}">${esc(c.name)}</span>`).join("")}</div>`;
+    h += `<div><button class="btn" id="lin-open">Open in explorer</button></div>`;
+  } else {
+    h += `<p>Delivered by the billing team as a CSV file. Loaded unchanged into <span class="mono">${SOURCES[n].join(", ")}</span>.</p>`;
+  }
+  $("#lin-side").innerHTML = h;
+  const ob = $("#lin-open");
+  if (ob) ob.addEventListener("click", () => { setMode(t.layer); selectTable(n); show("explorer"); });
+}
+$$(".node").forEach((g) => {
+  g.addEventListener("click", () => selectNode(g.dataset.n));
+  g.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); selectNode(g.dataset.n); } });
+});
+// Start with the full map lit (nothing faded) until the user picks a table.
+$("#lin-side").innerHTML = `<div style="display:grid;gap:8px"><h2 style="font-size:16px">Click a table</h2><p>Click any box on the map to see what it holds, what it is built from and what it feeds. The tables linked to it stay lit and the rest fade.</p></div>`;
+
+// ---------------- explorer ----------------
+const MODES = {
+  raw: { text: "Broken data: the files exactly as the billing team delivered them, loaded without changes. Duplicates, conflicts, missing values and impossible dates are all still here.",
+    examples: [
+      { label: "Exact duplicate rows", sql: `-- Rows that appear more than once, identical in every column (T7)
+select user_id, payment_method, payment_plan_days, list_price, amount_paid,
+       is_auto_renew, transacted_at, expires_at, is_cancel, src_file,
+       count(*) as copies
+from raw_transactions
+group by all
+having count(*) > 1
+order by copies desc
+limit 100;` },
+      { label: "Ages in the registry", sql: `-- age = 0 is the missing-value code; negative and 1,000+ ages also appear (U1-U4)
+select case when age = 0 then '0 (missing)'
+            when age < 0 then 'negative'
+            when age < 8 then '1-7'
+            when age > 90 then 'over 90'
+            else '8-90 (usable)' end as age_group,
+       count(*) as users,
+       round(100.0 * count(*) / sum(count(*)) over (), 1) as pct
+from raw_users
+group by 1
+order by users desc;` },
+      { label: "Missing plan length by month", sql: `-- Paid rows with plan length and list price both 0 (T9), by month
+select strftime(strptime(transacted_at::varchar, '%Y%m%d'), '%Y-%m') as month,
+       count(*) as rows_missing_plan
+from raw_transactions
+where payment_plan_days = 0 and list_price = 0 and amount_paid > 0
+group by 1
+order by 1;` },
+      { label: "Impossible expiry dates", sql: `-- Expiry 1970-01-01, before 2015, or years after the data ends (T17-T19)
+select case when expires_at = 19700101 then '1970-01-01 placeholder'
+            when expires_at < 20150101 then 'before 2015'
+            when expires_at > 20190331 then 'after 2019-03-31' end as problem,
+       count(*) as rows, min(expires_at) as earliest, max(expires_at) as latest
+from raw_transactions
+where expires_at = 19700101 or expires_at < 20150101 or expires_at > 20190331
+group by 1;` },
+      { label: "Which export holds what", sql: `-- The two exports are split on expiry date, not on transaction date (T1-T3)
+select src_file,
+       count(*) as rows,
+       min(transacted_at) as first_tx, max(transacted_at) as last_tx,
+       max(expires_at) filter (where expires_at < 20190331) as last_expiry
+from raw_transactions
+group by src_file
+order by src_file;` },
+    ] },
+  clean: { text: "Clean data: the tables built by the SQL in this project, after every fix from the data-quality report. These are the tables the analysis uses.",
+    examples: [
+      { label: "Paying users and churn by month", sql: `-- Paying users, new users and churned users per month
+select month,
+       sum(is_active_paid) as paying_users,
+       sum(is_new)         as new_users,
+       sum(is_churned)     as churned_users
+from fct_user_month
+group by month
+order by month;` },
+      { label: "Subscriptions by plan length", sql: `-- Subscription periods by plan length and type
+select plan_tier, subscription_type, count(*) as periods,
+       round(avg(amount_paid), 1) as avg_paid
+from fct_subscription
+group by all
+order by plan_tier, subscription_type;` },
+      { label: "Users by channel", sql: `-- Users and money by acquisition channel
+select acquisition_channel,
+       count(*)                        as users,
+       round(100.0 * avg(is_payer), 1) as payer_pct,
+       round(avg(lifetime_paid), 1)    as avg_lifetime_paid
+from dim_user
+group by acquisition_channel
+order by users desc;` },
+      { label: "One user's history", sql: `-- Every cleaned event of one user, in order
+select transacted_date, is_purchase, is_cancel, plan_days_clean,
+       amount_paid, list_price_clean, is_auto_renew, expires_date
+from stg_transactions
+where user_id = 'u_81713676e69ce5f2'
+order by event_seq;` },
+      { label: "Broken vs clean row counts", sql: `-- How many raw rows each cleaning step removed
+select 'raw_transactions' as table_name, count(*) as rows from raw_transactions
+union all select 'stg_transactions', count(*) from stg_transactions
+union all select 'fct_subscription (purchases)', count(*) from fct_subscription;` },
+    ] },
+};
+let mode = "clean", selected = null;
+function setMode(m) {
+  mode = m;
+  $$(".mode button").forEach((b) => b.classList.toggle("on", b.dataset.mode === m));
+  $("#modetext").textContent = MODES[m].text;
+  $$(".ds-group").forEach((g) => g.classList.toggle("off", g.dataset.layer !== m));
+  $("#examples").innerHTML = "";
+  for (const ex of MODES[m].examples) {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "chip"; b.textContent = ex.label;
+    b.addEventListener("click", () => { $("#sql").value = ex.sql; run(); });
+    $("#examples").appendChild(b);
+  }
+  $("#sql").value = MODES[m].examples[0].sql;
+  if (!selected || T[selected].layer !== m) selectTable(catalog.tables.find((t) => t.layer === m && t.name !== "ref_price_plan").name);
+  if (conn) run();
+}
+$$(".mode button").forEach((b) => b.addEventListener("click", () => setMode(b.dataset.mode)));
+
+// tree
+$("#tree").innerHTML = `<div class="ds" style="padding-top:2px"><span class="mono">tune</span></div>` + ["raw", "clean"].map((layer) =>
+  `<div class="ds-group" data-layer="${layer}"><div class="ds"><span>${layer === "raw" ? "raw" : "clean"}</span><span class="pill ${layer}">${layer === "raw" ? "broken" : "clean"}</span></div>` +
+  catalog.tables.filter((t) => t.layer === layer).map((t) => `<button type="button" class="tnode" data-t="${t.name}"><span>${t.name}</span><small>${fmt(t.rows)}</small></button>`).join("") + `</div>`).join("");
+$$(".tnode").forEach((b) => b.addEventListener("click", () => { if (T[b.dataset.t].layer !== mode) setMode(T[b.dataset.t].layer); selectTable(b.dataset.t); }));
+
+let sub = "schema";
+function selectTable(n) {
+  selected = n;
+  $$(".tnode").forEach((b) => b.classList.toggle("sel", b.dataset.t === n));
+  const t = T[n];
+  $("#tdetail").innerHTML = `<div class="td-h"><h2>${n} <span class="pill ${t.layer}">${t.layer === "raw" ? "broken" : "clean"}</span></h2><p class="lede">${esc(t.purpose)}</p></div>
+    <div class="subtabs" role="tablist"><button class="subtab" data-s="schema">Schema</button><button class="subtab" data-s="details">Details</button><button class="subtab" data-s="preview">Preview</button></div>
+    <div class="td-body" id="tdbody"></div>`;
+  $$(".subtab").forEach((b) => b.addEventListener("click", () => { sub = b.dataset.s; renderSub(); }));
+  renderSub();
+}
+function renderSub() {
+  const t = T[selected];
+  $$(".subtab").forEach((b) => b.classList.toggle("on", b.dataset.s === sub));
+  const body = $("#tdbody");
+  if (sub === "schema") {
+    body.innerHTML = `<div class="scroll"><table class="grid"><thead><tr><th>#</th><th>Column</th><th>Type</th></tr></thead><tbody>` +
+      t.columns.map((c, i) => `<tr><td class="num">${i + 1}</td><td class="mono" style="text-align:left">${esc(c.name)}</td><td class="mono">${esc(c.type)}</td></tr>`).join("") + `</tbody></table></div>`;
+  } else if (sub === "details") {
+    body.innerHTML = `<dl class="kv"><dt>Table</dt><dd class="mono">tune.${t.layer}.${t.name}</dd><dt>Data</dt><dd>${t.layer === "raw" ? "Broken: as delivered" : "Clean: after the fixes"}</dd>
+      <dt>One row</dt><dd>${esc(t.grain)}</dd><dt>Key</dt><dd class="mono">${esc(KEY[t.name])}</dd><dt>Rows</dt><dd class="num">${fmt(t.rows)}</dd>
+      <dt>Columns</dt><dd class="num">${t.columns.length}</dd><dt>Size</dt><dd class="num">${mb(t.bytes)} (compressed)</dd><dt>Built by</dt><dd class="mono">${BUILT_BY[t.name]}</dd>
+      ${ISSUES[t.name] ? `<dt>Known issues</dt><dd>${esc(ISSUES[t.name])}</dd>` : ""}</dl>
+      <div style="margin-top:12px"><button class="btn ghost" id="q-this">Query this table</button></div>`;
+    $("#q-this").addEventListener("click", () => { $("#sql").value = `select *\nfrom ${t.name}\nlimit 100;`; run(); });
+  } else {
+    body.innerHTML = `<div class="msg">${conn ? "Loading the first 50 rows…" : "The preview loads once the query engine is ready."}</div>`;
+    if (conn) query(`select * from ${t.name} limit 50`, 50).then((r) => { if (selected === t.name && sub === "preview") body.innerHTML = `<div class="scroll">${tableHtml(r)}</div>`; })
+      .catch((e) => (body.innerHTML = `<div class="msg err">${esc(e.message)}</div>`));
+  }
+}
+
+// ---------------- engine ----------------
+let conn = null, booting = null, lastResult = null;
+function setStatus(k, text) { $("#status").className = "status " + k; $("#statusText").textContent = text; }
+function bootEngine() {
+  if (booting) return booting;
+  booting = (async () => {
+    try {
+      const duckdb = await import("https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm");
+      const bundle = await duckdb.selectBundle(duckdb.getJsDelivrBundles());
+      const workerUrl = URL.createObjectURL(new Blob([`importScripts("${bundle.mainWorker}");`], { type: "text/javascript" }));
+      const db = new duckdb.AsyncDuckDB(new duckdb.VoidLogger(), new Worker(workerUrl));
+      await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
+      URL.revokeObjectURL(workerUrl);
+      await db.open({ query: { castBigIntToDouble: false, castDecimalToDouble: true, castTimestampToDate: true } });
+      const c = await db.connect();
+      await c.query("create schema if not exists raw; create schema if not exists clean;");
+      for (const t of catalog.tables) {
+        const names = [];
+        for (const f of t.files) {
+          const name = f.replace(/\//g, "_");
+          await db.registerFileURL(name, new URL(f, location.href).href, duckdb.DuckDBDataProtocol.HTTP, false);
+          names.push(`'${name}'`);
+        }
+        await c.query(`create or replace view ${t.layer}.${t.name} as select * from read_parquet([${names.join(",")}]);
+                       create or replace view main.${t.name} as select * from ${t.layer}.${t.name};`);
+      }
+      conn = c;
+      setStatus("ready", "Ready · all tables, read-only");
+      $("#run").disabled = false;
+      if (sub === "preview") renderSub();
+      run();
+    } catch (e) {
+      console.error(e);
+      setStatus("error", "The query engine could not start");
+      $("#out").innerHTML = `<div class="msg err">${esc(e && e.message || e)}</div>`;
+    }
+  })();
+  return booting;
+}
+
+function formatter(field) {
+  const type = String(field.type);
+  if (/^Date/.test(type)) return (v) => new Date(Number(v)).toISOString().slice(0, 10);
+  if (/^Timestamp/.test(type)) return (v) => new Date(Number(v)).toISOString().replace("T", " ").replace(/\.000Z$|Z$/, "");
+  return (v) => (typeof v === "bigint" ? v.toString() : typeof v === "number" ? String(Math.round(v * 1e6) / 1e6) : String(v));
+}
+const isNum = (f) => /^(Int|Uint|Float|Decimal)/.test(String(f.type));
+async function query(sql, limit) {
+  const t0 = performance.now();
+  const reader = await conn.send(sql);
+  let fields = null, rows = [], more = false;
+  for await (const batch of reader) {
+    if (!fields) fields = batch.schema.fields;
+    for (let i = 0; i < batch.numRows; i++) { if (rows.length >= limit) { more = true; break; } rows.push(batch.get(i)); }
+    if (more) break;
+  }
+  fields = fields || [];
+  const fm = fields.map(formatter);
+  return { cols: fields.map((f) => f.name), nums: fields.map(isNum), more, ms: performance.now() - t0,
+    cells: rows.map((r) => fields.map((f, j) => (r[f.name] == null ? null : fm[j](r[f.name])))) };
+}
+function tableHtml(r) {
+  if (!r.cells.length) return `<div class="msg">No rows.</div>`;
+  return `<table class="rt"><thead><tr>${r.cols.map((c, j) => `<th class="${r.nums[j] ? "n" : ""}">${esc(c)}</th>`).join("")}</tr></thead><tbody>` +
+    r.cells.map((row) => `<tr>${row.map((v, j) => v == null ? `<td class="null">null</td>` : `<td class="${r.nums[j] ? "n" : ""}">${esc(v)}</td>`).join("")}</tr>`).join("") + `</tbody></table>`;
+}
+async function run() {
+  if (!conn) return;
+  const sql = $("#sql").value.trim();
+  if (!sql) return;
+  $("#run").disabled = true; $("#copy").disabled = true; $("#meta").textContent = "Running…";
+  try {
+    const r = await query(sql, 1000);
+    lastResult = r;
+    $("#meta").textContent = `${fmt(r.cells.length)}${r.more ? "+" : ""} rows · ${(r.ms / 1000).toFixed(2)} s${r.more ? " · first 1,000 shown" : ""}`;
+    $("#out").innerHTML = tableHtml(r);
+    $("#copy").disabled = !r.cells.length;
+  } catch (e) {
+    $("#meta").textContent = "Error";
+    $("#out").innerHTML = `<div class="msg err">${esc(e && e.message || e)}</div>`;
+  } finally { $("#run").disabled = false; }
+}
+$("#run").addEventListener("click", run);
+$("#sql").addEventListener("keydown", (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); run(); }
+  if (e.key === "Tab" && !e.shiftKey) { e.preventDefault(); const s = e.target.selectionStart; e.target.setRangeText("  ", s, e.target.selectionEnd, "end"); }
+});
+$("#copy").addEventListener("click", async () => {
+  if (!lastResult) return;
+  const q = (v) => (v == null ? "" : /[",\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v);
+  const csv = [lastResult.cols.map(q).join(","), ...lastResult.cells.map((r) => r.map(q).join(","))].join("\n");
+  try { await navigator.clipboard.writeText(csv); $("#copy").textContent = "Copied"; } catch { $("#copy").textContent = "Copy blocked"; }
+  setTimeout(() => ($("#copy").textContent = "Copy as CSV"), 1500);
+});
+
+setMode("clean");
+const start = location.hash.slice(1);
+show(["overview", "dq", "lineage", "explorer"].includes(start) ? start : "overview");
+addEventListener("hashchange", () => { const v = location.hash.slice(1); if (["overview", "dq", "lineage", "explorer"].includes(v)) show(v); });
+</script>
+</body>
+</html>
