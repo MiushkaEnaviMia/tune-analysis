@@ -122,7 +122,31 @@ a.code{color:var(--accent);font-family:var(--mono);text-decoration:none}a.code:h
 .lin-doc{display:grid;gap:16px}
 .lin-sec{padding:18px 20px;display:grid;gap:12px;min-width:0}
 .lin-sec p{max-width:100ch}
+.ov-hero{padding:24px 26px;display:grid;gap:10px;background:linear-gradient(120deg,var(--accent-soft),var(--surface) 70%)}
+.ov-pitch{font-size:var(--fs-h3);color:var(--fg);margin:0;max-width:70ch}
+.ov-chips{display:flex;flex-wrap:wrap;gap:8px}
+.ov-chips span{display:inline-flex;gap:8px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:var(--fs-table);font-weight:600}
+.ov-chips i,.ov-qs em{font-style:normal}
+.ov-grid{display:grid;grid-template-columns:auto minmax(260px,380px);gap:20px;align-items:start;justify-content:start}
+@media (max-width:1000px){.ov-grid{grid-template-columns:minmax(0,1fr)}}
+.ov-main,.ov-side{display:grid;gap:8px;align-content:start;min-width:0}
+.ov-side .label{margin-top:4px}
+.ov-qs{padding:14px 16px;display:grid;gap:10px}
+.ov-qs ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.ov-qs li{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:baseline;font-size:var(--fs-table)}
+.ov-qs li b{color:var(--accent)}
+.ov-qs em{font-size:var(--fs-label);font-weight:700;padding:1px 8px;border-radius:999px;white-space:nowrap}
+.ov-qs em.ok{background:#e7f6ee;color:#1d7a4c}.ov-qs em.pt{background:#fdf1e3;color:#a35a0b}
+.ov-time{padding:14px 16px}.ov-time b{font-size:var(--fs-h2);color:var(--navy)}
 .ov-map{width:fit-content;max-width:100%}
+.ov-map tr.grp td{background:var(--accent-soft);color:var(--navy);font-weight:700;text-align:left;padding:7px 12px}
+.ov-map tr.skip td{color:var(--muted);text-decoration:line-through}
+.ov-map tr.skip td:nth-child(3),.ov-map tr.skip td:nth-child(4){text-decoration:none;font-style:normal}
+.ov-map td.l{text-align:left}
+.ov-map .muted{color:var(--muted);font-size:var(--fs-small)}
+.ov .label{margin-bottom:0}
+.rerun ul{margin:0;padding-left:20px;display:grid;gap:6px}
+
 details.fold>summary{cursor:pointer;list-style:none;display:grid;gap:4px}
 details.fold>summary::-webkit-details-marker{display:none}
 details.fold>summary h2::after{content:"Show ▾";margin-left:auto;font-size:var(--fs-small);font-weight:600;color:var(--accent)}
@@ -329,25 +353,39 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
 
   <!-- OVERVIEW -->
   <section class="view ov" id="view-overview" hidden>
-    <div style="display:grid;gap:6px">
+    <div class="card ov-hero">
       <h1>Tune subscription analysis</h1>
-      <p class="lede">Raw billing exports (Jan 2015 – Mar 2017) turned into a clean, tested data model that answers four leadership questions. Every table, broken and clean, can be browsed and queried in this site, in the browser.</p>
+      <p class="ov-pitch">Two years of messy billing exports, turned into clear answers for the CEO and the Head of Growth</p>
+      <div class="ov-chips">
+        <span><i>🔍</i>21 data issues found, sized and fixed</span>
+        <span><i>🧱</i>A clean, tested data model you can query live</span>
+        <span><i>📈</i>Monthly metrics, churn drivers, 3 recommendations</span>
+      </div>
     </div>
-    <div>
-      <div class="label" style="margin-bottom:8px">Leadership questions</div>
-      <div class="qs">
-        <div class="card qcard"><b>Q1</b>How healthy is the subscriber base, and how is it trending?</div>
-        <div class="card qcard"><b>Q2</b>What drives churn?</div>
-        <div class="card qcard"><b>Q3</b>Did the free trials and price points work?</div>
-        <div class="card qcard"><b>Q4</b>Should we push annual plans harder?</div>
+    <div class="ov-grid">
+      <div class="ov-main">
+        <div class="label">🗺️ Where each part of the brief lives</div>
+        <div class="card scroll ov-map"><table class="grid"><thead><tr><th>Part</th><th>What</th><th>On this site</th><th>Report</th></tr></thead><tbody><tr class="grp"><td colspan="4">🧱 Part 1 · Data engineering</td></tr><tr><td><b>1a</b></td><td class="l">Data quality: 21 issues, ranked by impact</td><td><button class="linkbtn" data-go="dq">1a →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/01_data_quality.md" target="_blank" rel="noopener">01_data_quality.md ↗</a></td></tr><tr><td><b>1b</b></td><td class="l">Clean layer: table map, cleaning rules, SQL on every table</td><td><button class="linkbtn" data-go="lineage">1b.1 · 1b.2 →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/02_data_model.md" target="_blank" rel="noopener">02_data_model.md ↗</a></td></tr><tr><td><b>1c</b></td><td class="l">Billing's churn labels checked against our rule</td><td><button class="linkbtn" data-go="churn">1c →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/03_churn_validation.md" target="_blank" rel="noopener">03_churn_validation.md ↗</a></td></tr><tr class="grp"><td colspan="4">📈 Part 2 · Core metrics</td></tr><tr><td><b>2</b></td><td class="l">Active, new, renewing, reactivated, churn, ARPU, discounts</td><td><button class="linkbtn" data-go="p2-active">Part 2 →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/04_metrics.md" target="_blank" rel="noopener">04_metrics.md ↗</a></td></tr><tr class="grp"><td colspan="4">🔍 Part 3 · Deep dive (one of two)</td></tr><tr><td><b>3a</b></td><td class="l">Churn drivers: what matters, what only looks like it</td><td><button class="linkbtn" data-go="p3a">Part 3 →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/05_deep_dive.md" target="_blank" rel="noopener">05_deep_dive.md ↗</a></td></tr><tr class="skip"><td><b>3b</b></td><td class="l">Free trials and price points</td><td><span class="muted">Not chosen</span></td><td><span class="muted">-</span></td></tr><tr class="grp"><td colspan="4">🎯 Part 4 · Executive summary</td></tr><tr><td><b>4</b></td><td class="l">Four answers and three recommendations</td><td><button class="linkbtn" data-go="p4">Part 4 →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/08_executive_summary.md" target="_blank" rel="noopener">08_executive_summary.md ↗</a></td></tr><tr class="grp"><td colspan="4">🧪 Part 5 · Experiment and AI</td></tr><tr><td><b>5a</b></td><td class="l">Annual-plan A/B test design</td><td><button class="linkbtn" data-go="p5a">5a →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/06_ab_test.md" target="_blank" rel="noopener">06_ab_test.md ↗</a></td></tr><tr><td><b>5b</b></td><td class="l">How AI was used, and where it was wrong</td><td><button class="linkbtn" data-go="p5b">5b →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/07_ai_log.md" target="_blank" rel="noopener">07_ai_log.md ↗</a></td></tr></tbody></table></div>
+      </div>
+      <div class="ov-side">
+        <div class="label">❓ The four leadership questions</div>
+        <div class="card ov-qs"><ul><li><b>Q1</b><span>How healthy is the subscriber base, and how is it trending?</span><em class="st ok">Answered</em></li><li><b>Q2</b><span>What drives churn?</span><em class="st ok">Answered</em></li><li><b>Q3</b><span>Did the free trials and price points work?</span><em class="st pt">Partly</em></li><li><b>Q4</b><span>Should we push annual plans harder?</span><em class="st pt">Partly</em></li></ul><button class="linkbtn" data-go="p4">See the answers in Part 4 →</button></div>
+        <div class="label">⏱️ Time spent</div>
+        <div class="card ov-time"><b>~5 hours</b></div>
       </div>
     </div>
     <div>
-      <div class="label" style="margin-bottom:8px">Where each part of the brief lives</div>
-      <div class="card scroll ov-map"><table class="grid"><thead><tr><th>Part</th><th>What</th><th>On this site</th><th>Report</th></tr></thead><tbody><tr><td><b>1a</b></td><td>Data quality: 21 issues ranked</td><td><button class="linkbtn" data-go="dq">1a →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/01_data_quality.md" target="_blank" rel="noopener">01_data_quality.md ↗</a></td></tr><tr><td><b>1b</b></td><td>Clean layer, table map, SQL on every table</td><td><button class="linkbtn" data-go="lineage">1b.1 · 1b.2 →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/02_data_model.md" target="_blank" rel="noopener">02_data_model.md ↗</a></td></tr><tr><td><b>1c</b></td><td>Billing's churn labels checked</td><td><button class="linkbtn" data-go="churn">1c →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/03_churn_validation.md" target="_blank" rel="noopener">03_churn_validation.md ↗</a></td></tr><tr><td><b>2</b></td><td>Core metrics, with exact definitions</td><td><button class="linkbtn" data-go="p2-active">Part 2 →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/04_metrics.md" target="_blank" rel="noopener">04_metrics.md ↗</a></td></tr><tr><td><b>3</b></td><td>Deep dive: what drives churn</td><td><button class="linkbtn" data-go="p3a">Part 3 →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/05_deep_dive.md" target="_blank" rel="noopener">05_deep_dive.md ↗</a></td></tr><tr><td><b>4</b></td><td>Four answers and three recommendations</td><td><button class="linkbtn" data-go="p4">Part 4 →</button></td><td>-</td></tr><tr><td><b>5a</b></td><td>Annual-plan A/B test design</td><td><button class="linkbtn" data-go="p5a">5a →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/06_ab_test.md" target="_blank" rel="noopener">06_ab_test.md ↗</a></td></tr><tr><td><b>5b</b></td><td>How AI was used, and where it was wrong</td><td><button class="linkbtn" data-go="p5b">5b →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/07_ai_log.md" target="_blank" rel="noopener">07_ai_log.md ↗</a></td></tr></tbody></table></div>
+      <div class="label">🛠️ With more time</div>
+      <div class="card rerun"><ul>
+        <li><b>Part 3b:</b> free trials and price points, the deep dive we did not choose</li>
+        <li><b>Test the SQL explorer properly:</b> every table, large results, phones and slow browsers</li>
+        <li><b>Go deeper on the engineering base layers</b> (RAW, BASE, STAGING), with automated tests at each step</li>
+        <li><b>Check that the model structure is the most efficient one:</b> table sizes, views vs tables, query speed</li>
+        <li><b>Close the data gaps:</b> April 2017 transactions and a full user export</li>
+      </ul></div>
     </div>
     <div>
-      <div class="label" style="margin-bottom:8px">Run it end to end</div>
+      <div class="label">▶️ Run it end to end</div>
       <div class="card rerun">
         <p>All code is in the <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis" target="_blank" rel="noopener">GitHub repository</a>: numbered SQL scripts in <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/tree/main/sql" target="_blank" rel="noopener">sql/</a>, report generator in <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/tree/main/py" target="_blank" rel="noopener">py/</a>, reports in <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/tree/main/reports" target="_blank" rel="noopener">reports/</a>. To rebuild everything from the raw CSVs:</p>
         <ol>
@@ -357,14 +395,6 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
         </ol>
         <p>Details in the <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis#readme" target="_blank" rel="noopener">README</a></p>
       </div>
-    </div>
-    <div>
-      <div class="label" style="margin-bottom:8px">With more time</div>
-      <div class="card rerun"><ul><li><b>Free trials and prices (Part 3 option b):</b> We chose churn drivers; next would be trial waves vs similar months, and how price relates to renewal</li><li><b>April 2017 transactions:</b> They would close March-2017 churn and give an outcome to the 10,740 users the churn check can't judge yet</li><li><b>A full user export:</b> 109,330 users in the transactions are missing from <code>users.csv</code> (8.3% of revenue), so they have no channel, city or age</li><li><b>Usage data and failed-payment reason codes:</b> Today we see patterns, not causes: we can't tell lost interest from a failed card</li><li><b>Run the annual-plan test (Part 5a)</b> with a 12-month follow-up, since annual-plan retention only shows after a year</li><li><b>Automated tests</b> for the validation queries (today each SQL file ends with a validation query that prints its result, but nothing fails the build automatically)</li><li><b>Test the SQL explorer properly</b> on the website (every table, large results, slow phones and browsers)</li><li><b>Go deeper on the engineering base layers</b> (RAW, BASE, STAGING): review each rule again and add tests at each step</li><li><b>Check that the model structure is the most efficient one</b> (table sizes, which tables to keep as views, query speed)</li></ul></div>
-    </div>
-    <div>
-      <div class="label" style="margin-bottom:8px">Time spent</div>
-      <div class="card rerun"><p>~5 hours</p></div>
     </div>
   </section>
 

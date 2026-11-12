@@ -1,17 +1,20 @@
 # Tune subscription analysis (take-home)
 
-Raw billing exports (Jan 2015 – Mar 2017) are checked, cleaned and rebuilt as a tested data model in DuckDB,
-then used to answer four leadership questions:
+Two years of messy billing exports, turned into clear answers for the CEO and the Head of Growth.
+
+**Live site:** https://miushkaenavimia.github.io/tune-analysis/
+one tab per part of the brief, the data-quality report, a map of every table, and SQL on every table (raw and clean) right in the browser.
+
+The four leadership questions:
 
 - **Q1** How healthy is the subscriber base, and how is it trending?
 - **Q2** What drives churn?
 - **Q3** Did the free trials and price points work?
 - **Q4** Should we push annual plans harder?
 
-**Live site:** https://miushkaenavimia.github.io/tune-analysis/ — one tab per part of the brief, and SQL on every table
-(broken and clean) right in the browser.
+The brief asks this README for three things: how to run the work end to end, what I'd do with more time, and the time spent.
 
-## Run it end to end
+## 1. How to run it end to end
 
 Requirements: Python 3.9+ and two packages.
 
@@ -36,6 +39,39 @@ Optional:
 - `python py/build_site_data.py` re-exports the tables to Parquet for the website (writes `site/data/` and
   `site/catalog.json`; on GitHub those site files sit at the repository root).
 
+## 2. What I'd do with more time
+
+- **Part 3b:** free trials and price points, the deep dive we did not choose.
+- **Test the SQL explorer properly:** every table, large results, phones and slow browsers.
+- **Go deeper on the engineering base layers** (RAW, BASE, STAGING), with automated tests at each step.
+- **Check that the model structure is the most efficient one:** table sizes, views vs tables, query speed.
+- **Close the data gaps:** April 2017 transactions (to finish March-2017 churn) and a full user export (109,330 users in the transactions are missing from `users.csv`).
+
+## 3. Time spent
+
+~5 hours
+
+---
+
+## Where each part of the brief lives
+
+| Part | What | Site tab | Report |
+|---|---|---|---|
+| **Part 1 · Data engineering** | | | |
+| 1a | Data quality: 21 issues, ranked by impact | [1a](https://miushkaenavimia.github.io/tune-analysis/#dq) | `reports/01_data_quality.md` (also `.xlsx`, `.html`) |
+| 1b | Clean layer: table map, cleaning rules, SQL on every table | [1b.1](https://miushkaenavimia.github.io/tune-analysis/#lineage) · [1b.2](https://miushkaenavimia.github.io/tune-analysis/#explorer) | `reports/02_data_model.md` |
+| 1c | Billing's churn labels checked against our rule | [1c](https://miushkaenavimia.github.io/tune-analysis/#churn) | `reports/03_churn_validation.md` |
+| **Part 2 · Core metrics** | | | |
+| 2 | Active, new, renewing, reactivated, churn, ARPU, discounts | [Part 2](https://miushkaenavimia.github.io/tune-analysis/#p2-active) | `reports/04_metrics.md` |
+| **Part 3 · Deep dive (one of two)** | | | |
+| 3a | Churn drivers: what matters, what only looks like it | [Part 3](https://miushkaenavimia.github.io/tune-analysis/#p3a) | `reports/05_deep_dive.md` |
+| ~~3b~~ | ~~Free trials and price points~~ | not chosen | - |
+| **Part 4 · Executive summary** | | | |
+| 4 | Four answers and three recommendations | [Part 4](https://miushkaenavimia.github.io/tune-analysis/#p4) | `reports/08_executive_summary.md` |
+| **Part 5 · Experiment and AI** | | | |
+| 5a | Annual-plan A/B test design | [5a](https://miushkaenavimia.github.io/tune-analysis/#p5a) | `reports/06_ab_test.md` |
+| 5b | How AI was used, and where it was wrong | [5b](https://miushkaenavimia.github.io/tune-analysis/#p5b) | `reports/07_ai_log.md` |
+
 ## What gets built
 
 | Script | Builds | One row is |
@@ -56,21 +92,6 @@ Optional:
 
 Each SQL file starts with a header that states its input, output, grain and the rules it applies.
 
-## Where each part of the brief lives
-
-Every part has a tab on the [live site](https://miushkaenavimia.github.io/tune-analysis/) and a write-up in `reports/`.
-
-| Part | Site tab | Report | Code |
-|---|---|---|---|
-| 1a · Data-quality report | [1a](https://miushkaenavimia.github.io/tune-analysis/#dq) | `reports/01_data_quality.md` (also `.xlsx`, `.html`) | `sql/01_data_quality.sql`, `py/01_dq_outputs.py` |
-| 1b · Clean layer and data model | [1b.1 map](https://miushkaenavimia.github.io/tune-analysis/#lineage), [1b.2 SQL explorer](https://miushkaenavimia.github.io/tune-analysis/#explorer) | `reports/02_data_model.md` | `sql/00`–`sql/05`, `sql/07` |
-| 1c · Churn definition, validated | [1c](https://miushkaenavimia.github.io/tune-analysis/#churn) | `reports/03_churn_validation.md` | `sql/06_churn_validation.sql` |
-| 2 · Core metrics | [Part 2](https://miushkaenavimia.github.io/tune-analysis/#p2-active) | `reports/04_metrics.md` | `sql/08_metrics.sql` |
-| 3 · Deep dive: churn drivers | [Part 3](https://miushkaenavimia.github.io/tune-analysis/#p3a) | `reports/05_deep_dive.md` | `sql/09_deep_dive.sql` |
-| 4 · Answers and three recommendations | [Part 4](https://miushkaenavimia.github.io/tune-analysis/#p4) | on the site | built on Parts 1-3 |
-| 5a · Experiment design | [5a](https://miushkaenavimia.github.io/tune-analysis/#p5a) | `reports/06_ab_test.md` | |
-| 5b · AI log | [5b](https://miushkaenavimia.github.io/tune-analysis/#p5b) | `reports/07_ai_log.md` | prompt example: `reports/gemini_review_prompt_1a.md` |
-
 ## Repository layout
 
 ```
@@ -84,19 +105,3 @@ index.html, dq.html, catalog.json, tune_logo.png, .nojekyll, data/raw, data/clea
 task_status.json
             rows of the site's "Task & status" tab (status: done / partial / todo)
 ```
-
-## With more time
-
-- **Free trials and prices (Part 3 option b).** We chose churn drivers; next would be trial waves vs similar months, and how price relates to renewal.
-- **April 2017 transactions.** They would close March-2017 churn and give an outcome to the 10,740 users the churn check can't judge yet.
-- **A full user export.** 109,330 users in the transactions are missing from `users.csv` (8.3% of revenue), so they have no channel, city or age.
-- **Usage data and failed-payment reason codes.** Today we see patterns, not causes: we can't tell lost interest from a failed card.
-- **Run the annual-plan test (Part 5a)** with a 12-month follow-up, since annual-plan retention only shows after a year.
-- **Automated tests** for the validation queries (today each SQL file ends with a validation query that prints its result, but nothing fails the build automatically).
-- **Test the SQL explorer properly** on the website (every table, large results, slow phones and browsers).
-- **Go deeper on the engineering base layers** (RAW, BASE, STAGING): review each rule again and add tests at each step.
-- **Check that the model structure is the most efficient one** (table sizes, which tables to keep as views, query speed).
-
-## Time spent
-
-~5 hours

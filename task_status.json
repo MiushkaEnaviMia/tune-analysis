@@ -260,18 +260,20 @@
       "ask": "Answer the four questions; say which can't be answered yet",
       "status": "done",
       "where": [
-        "#p4"
+        "#p4",
+        "reports/08_executive_summary.md"
       ],
-      "notes": "On the site; no file in reports/ yet"
+      "notes": ""
     },
     {
       "part": "4",
       "ask": "Three recommendations: impact, confidence, what would change my mind",
       "status": "done",
       "where": [
-        "#p4"
+        "#p4",
+        "reports/08_executive_summary.md"
       ],
-      "notes": "On the site; no file in reports/ yet"
+      "notes": ""
     },
     {
       "part": "5a",
@@ -365,20 +367,20 @@
     {
       "part": "Hand-in",
       "ask": "README: what I'd do with more time",
-      "status": "todo",
+      "status": "done",
       "where": [
         "README.md"
       ],
-      "notes": "Heading exists, empty"
+      "notes": ""
     },
     {
       "part": "Hand-in",
       "ask": "README: actual time spent",
-      "status": "todo",
+      "status": "done",
       "where": [
         "README.md"
       ],
-      "notes": "Heading exists, empty"
+      "notes": ""
     },
     {
       "part": "Hand-in",
@@ -410,11 +412,11 @@
     {
       "part": "Hand-in",
       "ask": "reports/: all six reports",
-      "status": "partial",
+      "status": "done",
       "where": [
         "reports/"
       ],
-      "notes": "5 of 6; executive summary (Part 4) is on the site only"
+      "notes": "6 of 6"
     }
   ]
 }
