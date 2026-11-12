@@ -343,7 +343,8 @@ $$(".node").forEach((g) => {
   g.addEventListener("click", () => selectNode(g.dataset.n));
   g.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); selectNode(g.dataset.n); } });
 });
-selectNode("fct_subscription");
+// Start with the full map lit (nothing faded) until the user picks a table.
+$("#lin-side").innerHTML = `<div style="display:grid;gap:8px"><h2 style="font-size:16px">Click a table</h2><p>Click any box on the map to see what it holds, what it is built from and what it feeds. The tables linked to it stay lit and the rest fade.</p></div>`;
 
 // ---------------- explorer ----------------
 const MODES = {
