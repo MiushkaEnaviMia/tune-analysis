@@ -1,0 +1,771 @@
+{
+ "tables": [
+  {
+   "name": "raw_users",
+   "layer": "raw",
+   "grain": "one row of users.csv",
+   "purpose": "User registry as delivered. age 0 = missing, gender often empty, some users missing.",
+   "rows": 1691575,
+   "bytes": 15399060,
+   "columns": [
+    {
+     "name": "user_id",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "city",
+     "type": "INTEGER"
+    },
+    {
+     "name": "age",
+     "type": "INTEGER"
+    },
+    {
+     "name": "gender",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "acquisition_channel",
+     "type": "INTEGER"
+    },
+    {
+     "name": "registered_at",
+     "type": "INTEGER"
+    }
+   ],
+   "files": [
+    "data/raw/raw_users/data_0.parquet"
+   ]
+  },
+  {
+   "name": "raw_transactions",
+   "layer": "raw",
+   "grain": "one row of transactions_export_1.csv or _2.csv",
+   "purpose": "Both billing exports as delivered, with src_file and src_row added at load.",
+   "rows": 5727342,
+   "bytes": 65723950,
+   "columns": [
+    {
+     "name": "user_id",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "payment_method",
+     "type": "INTEGER"
+    },
+    {
+     "name": "payment_plan_days",
+     "type": "INTEGER"
+    },
+    {
+     "name": "list_price",
+     "type": "INTEGER"
+    },
+    {
+     "name": "amount_paid",
+     "type": "INTEGER"
+    },
+    {
+     "name": "is_auto_renew",
+     "type": "TINYINT"
+    },
+    {
+     "name": "transacted_at",
+     "type": "INTEGER"
+    },
+    {
+     "name": "expires_at",
+     "type": "INTEGER"
+    },
+    {
+     "name": "is_cancel",
+     "type": "TINYINT"
+    },
+    {
+     "name": "src_file",
+     "type": "TINYINT"
+    },
+    {
+     "name": "src_row",
+     "type": "BIGINT"
+    }
+   ],
+   "files": [
+    "data/raw/raw_transactions/data_0.parquet",
+    "data/raw/raw_transactions/data_1.parquet",
+    "data/raw/raw_transactions/data_2.parquet",
+    "data/raw/raw_transactions/data_3.parquet"
+   ]
+  },
+  {
+   "name": "raw_churn_labels",
+   "layer": "raw",
+   "grain": "one labelled user",
+   "purpose": "Billing team's churn labels for users due to expire in March 2017.",
+   "rows": 241665,
+   "bytes": 1583328,
+   "columns": [
+    {
+     "name": "user_id",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "is_churn",
+     "type": "TINYINT"
+    }
+   ],
+   "files": [
+    "data/raw/raw_churn_labels/data_0.parquet"
+   ]
+  },
+  {
+   "name": "ref_price_plan",
+   "layer": "clean",
+   "grain": "one price",
+   "purpose": "Price to plan-length lookup, used to fill in missing plan days (T9).",
+   "rows": 47,
+   "bytes": 1046,
+   "columns": [
+    {
+     "name": "amount_paid",
+     "type": "INTEGER"
+    },
+    {
+     "name": "plan_days",
+     "type": "INTEGER"
+    },
+    {
+     "name": "plan_share",
+     "type": "DOUBLE"
+    },
+    {
+     "name": "n_rows",
+     "type": "BIGINT"
+    }
+   ],
+   "files": [
+    "data/clean/ref_price_plan/data_0.parquet"
+   ]
+  },
+  {
+   "name": "stg_transactions",
+   "layer": "clean",
+   "grain": "one real billing event",
+   "purpose": "Deduplicated, conflict-resolved events with typed dates and one flag per cleaning rule.",
+   "rows": 5725763,
+   "bytes": 68901114,
+   "columns": [
+    {
+     "name": "event_id",
+     "type": "BIGINT"
+    },
+    {
+     "name": "user_id",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "src_file",
+     "type": "TINYINT"
+    },
+    {
+     "name": "src_row",
+     "type": "BIGINT"
+    },
+    {
+     "name": "event_seq",
+     "type": "BIGINT"
+    },
+    {
+     "name": "transacted_date",
+     "type": "DATE"
+    },
+    {
+     "name": "expires_date",
+     "type": "DATE"
+    },
+    {
+     "name": "expires_date_raw",
+     "type": "DATE"
+    },
+    {
+     "name": "expires_at_asof_feb",
+     "type": "DATE"
+    },
+    {
+     "name": "payment_method",
+     "type": "INTEGER"
+    },
+    {
+     "name": "plan_days_raw",
+     "type": "INTEGER"
+    },
+    {
+     "name": "plan_days_clean",
+     "type": "INTEGER"
+    },
+    {
+     "name": "list_price_clean",
+     "type": "INTEGER"
+    },
+    {
+     "name": "list_price_raw",
+     "type": "INTEGER"
+    },
+    {
+     "name": "amount_paid",
+     "type": "INTEGER"
+    },
+    {
+     "name": "discount_amount",
+     "type": "INTEGER"
+    },
+    {
+     "name": "discount_pct",
+     "type": "DOUBLE"
+    },
+    {
+     "name": "is_auto_renew",
+     "type": "TINYINT"
+    },
+    {
+     "name": "is_cancel",
+     "type": "TINYINT"
+    },
+    {
+     "name": "is_free",
+     "type": "TINYINT"
+    },
+    {
+     "name": "price_type",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "is_purchase",
+     "type": "TINYINT"
+    },
+    {
+     "name": "flag_imputed_plan",
+     "type": "TINYINT"
+    },
+    {
+     "name": "plan_imputation_method",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "flag_conflict_resolved",
+     "type": "TINYINT"
+    },
+    {
+     "name": "flag_stacked",
+     "type": "TINYINT"
+    },
+    {
+     "name": "flag_same_day_multi",
+     "type": "TINYINT"
+    },
+    {
+     "name": "flag_same_day_both_exports",
+     "type": "TINYINT"
+    },
+    {
+     "name": "flag_zero_plan_days",
+     "type": "TINYINT"
+    },
+    {
+     "name": "flag_paid_above_list",
+     "type": "TINYINT"
+    },
+    {
+     "name": "flag_expiry_epoch",
+     "type": "TINYINT"
+    },
+    {
+     "name": "flag_expiry_before_tx",
+     "type": "TINYINT"
+    },
+    {
+     "name": "flag_cancel_moves_expiry",
+     "type": "TINYINT"
+    },
+    {
+     "name": "flag_expiry_far_future",
+     "type": "TINYINT"
+    },
+    {
+     "name": "flag_expiry_month_end_0331",
+     "type": "TINYINT"
+    }
+   ],
+   "files": [
+    "data/clean/stg_transactions/data_0.parquet",
+    "data/clean/stg_transactions/data_1.parquet",
+    "data/clean/stg_transactions/data_2.parquet",
+    "data/clean/stg_transactions/data_3.parquet"
+   ]
+  },
+  {
+   "name": "fct_subscription",
+   "layer": "clean",
+   "grain": "one subscription period (a purchase and the cancels that follow it)",
+   "purpose": "Plan, price, discount, auto-renew, cancel, change vs previous, new/renewal/reactivation, episode.",
+   "rows": 5501434,
+   "bytes": 71067079,
+   "columns": [
+    {
+     "name": "subscription_id",
+     "type": "BIGINT"
+    },
+    {
+     "name": "user_id",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "period_no",
+     "type": "HUGEINT"
+    },
+    {
+     "name": "episode_id",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "episode_no",
+     "type": "HUGEINT"
+    },
+    {
+     "name": "start_date",
+     "type": "DATE"
+    },
+    {
+     "name": "end_date",
+     "type": "DATE"
+    },
+    {
+     "name": "purchase_expiry_date",
+     "type": "DATE"
+    },
+    {
+     "name": "covered_start",
+     "type": "DATE"
+    },
+    {
+     "name": "covered_end",
+     "type": "DATE"
+    },
+    {
+     "name": "membership_days",
+     "type": "BIGINT"
+    },
+    {
+     "name": "gap_days",
+     "type": "BIGINT"
+    },
+    {
+     "name": "plan_days",
+     "type": "INTEGER"
+    },
+    {
+     "name": "plan_tier",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "list_price",
+     "type": "INTEGER"
+    },
+    {
+     "name": "amount_paid",
+     "type": "INTEGER"
+    },
+    {
+     "name": "discount_amount",
+     "type": "INTEGER"
+    },
+    {
+     "name": "discount_pct",
+     "type": "DOUBLE"
+    },
+    {
+     "name": "payment_method",
+     "type": "INTEGER"
+    },
+    {
+     "name": "is_auto_renew",
+     "type": "TINYINT"
+    },
+    {
+     "name": "is_free",
+     "type": "TINYINT"
+    },
+    {
+     "name": "price_type",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "is_cancelled",
+     "type": "TINYINT"
+    },
+    {
+     "name": "cancel_date",
+     "type": "DATE"
+    },
+    {
+     "name": "n_cancels",
+     "type": "BIGINT"
+    },
+    {
+     "name": "subscription_type",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "is_early_renewal",
+     "type": "TINYINT"
+    },
+    {
+     "name": "change_vs_prev",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "prev_plan_days",
+     "type": "INTEGER"
+    },
+    {
+     "name": "prev_list_price",
+     "type": "INTEGER"
+    },
+    {
+     "name": "episode_start_date",
+     "type": "DATE"
+    },
+    {
+     "name": "episode_end_date",
+     "type": "DATE"
+    },
+    {
+     "name": "episode_n_periods",
+     "type": "BIGINT"
+    },
+    {
+     "name": "is_last_episode",
+     "type": "TINYINT"
+    },
+    {
+     "name": "episode_outcome",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "flag_imputed_plan",
+     "type": "TINYINT"
+    },
+    {
+     "name": "flag_stacked",
+     "type": "TINYINT"
+    },
+    {
+     "name": "flag_conflict_resolved",
+     "type": "TINYINT"
+    },
+    {
+     "name": "flag_expiry_far_future",
+     "type": "TINYINT"
+    },
+    {
+     "name": "src_file",
+     "type": "TINYINT"
+    }
+   ],
+   "files": [
+    "data/clean/fct_subscription/data_0.parquet",
+    "data/clean/fct_subscription/data_1.parquet",
+    "data/clean/fct_subscription/data_2.parquet",
+    "data/clean/fct_subscription/data_3.parquet"
+   ]
+  },
+  {
+   "name": "dim_user",
+   "layer": "clean",
+   "grain": "one user seen anywhere",
+   "purpose": "Every user from the registry, transactions or labels, with cleaned attributes and derived fields.",
+   "rows": 1800905,
+   "bytes": 37457919,
+   "columns": [
+    {
+     "name": "user_id",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "in_user_registry",
+     "type": "TINYINT"
+    },
+    {
+     "name": "has_transactions",
+     "type": "TINYINT"
+    },
+    {
+     "name": "has_churn_label",
+     "type": "TINYINT"
+    },
+    {
+     "name": "city",
+     "type": "INTEGER"
+    },
+    {
+     "name": "acquisition_channel",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "age_raw",
+     "type": "INTEGER"
+    },
+    {
+     "name": "age",
+     "type": "INTEGER"
+    },
+    {
+     "name": "age_band",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "gender",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "registered_date",
+     "type": "DATE"
+    },
+    {
+     "name": "flag_registered_after_data_end",
+     "type": "TINYINT"
+    },
+    {
+     "name": "flag_registered_after_first_tx",
+     "type": "TINYINT"
+    },
+    {
+     "name": "tenure_start_date",
+     "type": "DATE"
+    },
+    {
+     "name": "first_tx_date",
+     "type": "DATE"
+    },
+    {
+     "name": "last_tx_date",
+     "type": "DATE"
+    },
+    {
+     "name": "n_events",
+     "type": "BIGINT"
+    },
+    {
+     "name": "n_cancels",
+     "type": "BIGINT"
+    },
+    {
+     "name": "last_is_auto_renew",
+     "type": "TINYINT"
+    },
+    {
+     "name": "last_payment_method",
+     "type": "INTEGER"
+    },
+    {
+     "name": "first_period_date",
+     "type": "DATE"
+    },
+    {
+     "name": "first_paid_date",
+     "type": "DATE"
+    },
+    {
+     "name": "days_registration_to_first_paid",
+     "type": "BIGINT"
+    },
+    {
+     "name": "first_plan_days",
+     "type": "INTEGER"
+    },
+    {
+     "name": "first_plan_tier",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "first_price_type",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "first_payment_method",
+     "type": "INTEGER"
+    },
+    {
+     "name": "first_is_auto_renew",
+     "type": "TINYINT"
+    },
+    {
+     "name": "first_paid_plan_days",
+     "type": "INTEGER"
+    },
+    {
+     "name": "first_paid_list_price",
+     "type": "INTEGER"
+    },
+    {
+     "name": "first_paid_amount",
+     "type": "INTEGER"
+    },
+    {
+     "name": "n_periods",
+     "type": "BIGINT"
+    },
+    {
+     "name": "n_paid_periods",
+     "type": "BIGINT"
+    },
+    {
+     "name": "n_free_periods",
+     "type": "BIGINT"
+    },
+    {
+     "name": "n_episodes",
+     "type": "HUGEINT"
+    },
+    {
+     "name": "lifetime_paid",
+     "type": "HUGEINT"
+    },
+    {
+     "name": "lifetime_discount",
+     "type": "HUGEINT"
+    },
+    {
+     "name": "is_payer",
+     "type": "TINYINT"
+    },
+    {
+     "name": "is_trial_user",
+     "type": "TINYINT"
+    },
+    {
+     "name": "started_free",
+     "type": "TINYINT"
+    },
+    {
+     "name": "ever_annual",
+     "type": "TINYINT"
+    },
+    {
+     "name": "flag_first_seen_jan2015",
+     "type": "TINYINT"
+    },
+    {
+     "name": "current_end_date",
+     "type": "DATE"
+    },
+    {
+     "name": "status_at_data_end",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "subscribed_span_days",
+     "type": "BIGINT"
+    }
+   ],
+   "files": [
+    "data/clean/dim_user/data_0.parquet",
+    "data/clean/dim_user/data_1.parquet"
+   ]
+  },
+  {
+   "name": "fct_user_month",
+   "layer": "clean",
+   "grain": "one user in one month with activity, payment or churn",
+   "purpose": "Monthly panel (Jan 2015 to Mar 2017): monthly metrics become a GROUP BY month.",
+   "rows": 6635753,
+   "bytes": 20354802,
+   "columns": [
+    {
+     "name": "user_id",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "month",
+     "type": "DATE"
+    },
+    {
+     "name": "is_active",
+     "type": "TINYINT"
+    },
+    {
+     "name": "is_active_paid",
+     "type": "TINYINT"
+    },
+    {
+     "name": "is_active_som",
+     "type": "TINYINT"
+    },
+    {
+     "name": "is_active_eom",
+     "type": "TINYINT"
+    },
+    {
+     "name": "active_days",
+     "type": "HUGEINT"
+    },
+    {
+     "name": "paid_active_days",
+     "type": "HUGEINT"
+    },
+    {
+     "name": "is_new",
+     "type": "TINYINT"
+    },
+    {
+     "name": "is_reactivated",
+     "type": "TINYINT"
+    },
+    {
+     "name": "is_churned",
+     "type": "TINYINT"
+    },
+    {
+     "name": "is_churn_censored",
+     "type": "TINYINT"
+    },
+    {
+     "name": "status",
+     "type": "VARCHAR"
+    },
+    {
+     "name": "n_purchases",
+     "type": "BIGINT"
+    },
+    {
+     "name": "n_paid_purchases",
+     "type": "BIGINT"
+    },
+    {
+     "name": "n_paid_renewals",
+     "type": "BIGINT"
+    },
+    {
+     "name": "amount_paid",
+     "type": "HUGEINT"
+    },
+    {
+     "name": "list_price",
+     "type": "HUGEINT"
+    },
+    {
+     "name": "discount_amount",
+     "type": "HUGEINT"
+    },
+    {
+     "name": "has_cancel",
+     "type": "TINYINT"
+    }
+   ],
+   "files": [
+    "data/clean/fct_user_month/data_0.parquet",
+    "data/clean/fct_user_month/data_1.parquet"
+   ]
+  }
+ ]
+}
