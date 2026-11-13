@@ -8,6 +8,14 @@ SQL: `sql/09_deep_dive.sql` → `mart_renewal_decisions`, `mart_churn_drivers`,
 `mart_churn_factor_summary`, `mart_churn_plan_monthly`, `mart_churn_method_quarter`.
 Site: Part 3 tab (`#p3a`, `#p3a-act`).
 
+**Main churn rule on the site (added 2026-11-13).** The site now counts churn with 3 days for monthly
+Auto-renew plans and 30 days for plans paid by hand (98.5% of Auto-renew users who come back are back
+by day 3). `sql/13_churn_rule_3_30.sql` rebuilds the same tables with the suffix `_3d`. With that rule:
+churn per renewal 5.1% (4.6% below); Pays by hand 20.1% vs Auto-renew 2.8%; first renewal 17.1% vs
+4.2% after a year; gaps with the same auto-renew and plan mix: payment method 5.2×, auto-renew 3.9×,
+tenure 2.8×, channel 1.8×, city 1.7×, plan length 1.6×, age 1.3×; the three moves keep up to ~16,000 a
+year (~3,000 + ~5,000 + ~7,900). The numbers below use 30 days for all; the site has a toggle for both.
+
 ## How we measured
 
 | | |
