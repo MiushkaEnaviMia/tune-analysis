@@ -1885,10 +1885,7 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
     <div class="qa">
       <p class="qa-q">Which tools were used, and for what?</p>
       <div class="qa-a p5b-tools">
-        <p><b>Each model and mode had a clear job, chosen to save time and tokens</b></p>
-        <p><b>Claude Code with Opus 5.5</b> was the main builder: the DuckDB pipeline, every query, the reports and this site. The work ran as about 115 sub-sessions, several at a time. 91 started fresh with a short brief, so each kept a small context; 24 were forks, used only when a task needed the full history</p>
-        <p><b>Sonnet 5.5</b> handled a narrow side task at lower cost. <b>Fable</b> was kept for a few very complex tasks</p>
-        <p><b>Auto mode</b> let sessions run without approving every step, and <b>memory files</b> carried decisions, such as the churn window and naming rules, from one session to the next</p>
+                <p><b>Claude Code</b> matched the model to the task: <b>Opus 5.5</b> built the pipeline, queries, reports and site; <b>Fable</b> took a few very complex tasks; <b>Sonnet 5.5</b>, a lighter model, a narrow side task. About 115 sub-sessions ran several at a time, most started fresh with a short brief to keep context small. <b>Auto mode</b> and <b>bypass permissions</b> let them run without stopping for approval. <b>Plan mode</b> reviewed the plan before any code was written, and <b>memory files</b> carried decisions between sessions</p>
         <p><b>Gemini</b> was the second opinion: a critical review of 1a and of the churn window, drafts of page and chart design, and sharper wording, for example the 2.2 definitions and the chart conclusions</p>
         <p><b>NotebookLM</b> turned the reports into audio overviews, heard while working</p>
       </div>
@@ -1898,15 +1895,13 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
     <div class="qa">
       <p class="qa-q">Which prompts steered the work?</p>
       <div class="qa-a">
-        <p><b>Short, pointed questions that made the AI check its own choices</b> · translated from Hebrew</p>
-        <div class="scroll"><table class="cx-tbl p5-w"><colgroup><col style="width:58%"><col style="width:42%"></colgroup>
-        <thead><tr><th>Prompt</th><th>What it changed</th></tr></thead>
+        <p><b>Three prompts that steered the work. Both AIs had to think critically, not simply agree with me. The two Claude prompts sum up, in their sharpest form, the rules set at the start and the checks run near the end</b></p>
+        <div class="scroll"><table class="cx-tbl p5-w"><colgroup><col style="width:44%"><col style="width:28%"><col style="width:28%"></colgroup>
+        <thead><tr><th>Prompt</th><th>Why</th><th>What it changes</th></tr></thead>
         <tbody>
-          <tr><td><span class="tag g">Gemini</span><span class="p5b-q">"You are a senior data analyst reviewing someone else's report. Be critical and specific. Do not praise. If you can't verify a claim without the data, say so"</span></td><td data-l="Changed">An independent review of 1a. Each claim was re-run in DuckDB before use</td></tr>
-          <tr><td><span class="tag c">Claude</span><span class="p5b-q">"Shouldn't we first load the files exactly as they are, and only in the next layer combine them and add columns like which file a row came from? If not, why?"</span></td><td data-l="Changed">One raw table per file, checked 1 : 1 against the CSV. Combining moved to its own step, <span class="mono">base_transactions</span></td></tr>
-          <tr><td><span class="tag c">Claude</span><span class="p5b-q">"What did 1c ask? On what basis did you decide? We checked and found that not splitting was wrong, so why ignore it?"</span></td><td data-l="Changed">1c keeps billing's 30-day rule, so the labels are compared like for like. Parts 2–3 use the split window</td></tr>
-          <tr><td><span class="tag c">Claude</span><span class="p5b-q">"The first bar fills 100% of the width and mixes two bases, 241,665 and 222,018. Put all billing errors on one base"</span></td><td data-l="Changed">1c chart on one base of 39,018 users. Two reasons it had hidden are now shown: 3,251 and 3,082</td></tr>
-          <tr><td><span class="tag c">Claude</span><span class="p5b-q">"Why not say clearly that ARPU falls until 2016, apart from the free waves, and then holds? How is that not the key point?"</span></td><td data-l="Changed">2.4 now leads with it: $129 → $118</td></tr>
+          <tr><td><span class="tag c">Claude · start</span><span class="p5b-q">"We have 4–5 hours: depth on what matters, not coverage. Read BRIEF.md first and map every deliverable before any code. Match the model to the task: Opus to build, Fable for the hardest reasoning, a lighter model for side tasks. One fresh sub-session per topic with a short brief; plan mode before code; every decision goes in a memory file. Challenge my ideas and Gemini's, recommend the best option, never just agree"</span></td><td data-l="Why">Time and tokens are the real limit; one plan up front prevents rework</td><td data-l="Changes">Every hour goes to leadership's questions; sessions run in parallel with small context; decisions carry over; weak ideas are dropped early</td></tr>
+          <tr><td><span class="tag c">Claude · mid-to-end</span><span class="p5b-q">"Audit the hand-in as the examiner would. Re-run every number against the full data in DuckDB. Re-read each sub-question in the brief and check its tab answers exactly that, ranked by impact on leadership's four questions. Cut what wasn't asked for. List your own mistakes, and disagree with me where the data does"</span></td><td data-l="Why">Late errors hide in numbers already trusted and in text that drifted from the brief</td><td data-l="Changes">No unchecked number reaches leadership; each tab answers its own question; the AI-mistakes log comes from a real audit</td></tr>
+          <tr><td><span class="tag g">Gemini · 1a</span><span class="p5b-q">"Review this data-quality report as a critical senior analyst. No praise. Flag every claim you cannot verify without the data"</span></td><td data-l="Why">A second model, with no stake in the result, finds what the builder misses</td><td data-l="Changes">An independent review of 1a; each claim was re-run in DuckDB before use</td></tr>
         </tbody>
       </table></div></div>
     </div>
