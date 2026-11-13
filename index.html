@@ -25,7 +25,7 @@ body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:var(
 /* Top bar: light, bright header with the Tune logo (shared by every tab) */
 .topwrap{position:sticky;top:0;z-index:20;box-shadow:0 4px 18px rgba(20,35,58,.06)}
 .top{background:linear-gradient(100deg,#ffffff 0%,#f3f9ff 55%,#e3f4fb 100%);color:var(--fg);border-bottom:1px solid var(--line);position:relative}
-.top::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:3px;background:linear-gradient(90deg,#2563eb,#16c4e0)}
+.top::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--line)}
 .top-in{max-width:1500px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px;padding-block:12px 13px}
 .brand{display:flex;align-items:center;gap:14px;min-width:0}
 .brand .logo{display:block;position:relative;line-height:0;flex:none}
@@ -34,7 +34,7 @@ body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:var(
 nav.tabs{display:flex;gap:4px;flex-wrap:wrap;background:rgba(255,255,255,.7);border:1px solid var(--line);border-radius:999px;padding:4px}
 .tab{font:inherit;font-weight:600;font-size:var(--fs-tab);padding:7px 14px;border:0;border-radius:999px;background:transparent;color:var(--muted);cursor:pointer;transition:background .15s,color .15s}
 .tab:hover{color:var(--navy);background:var(--accent-soft)}
-.tab.on{background:linear-gradient(90deg,#2563eb,#1aa6e0);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,.28)}
+.tab.on{background:#1e3a8a;color:#fff;box-shadow:none}
 .cx-head .cx-logo{display:none}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .top{background:linear-gradient(100deg,#152238 0%,#13253f 60%,#0f2c40 100%)}:root:not([data-theme="light"]) nav.tabs{background:rgba(14,22,36,.5)}:root:not([data-theme="light"]) .brand .logo img{clip-path:inset(0 63% 0 0)}:root:not([data-theme="light"]) .brand .logo::after{content:"";position:absolute;inset:0;background:url(tune_logo.png) 0 0/100% 100% no-repeat;filter:invert(1);clip-path:inset(0 0 0 37%)}}
 :root[data-theme="dark"] .top{background:linear-gradient(100deg,#152238 0%,#13253f 60%,#0f2c40 100%)}:root[data-theme="dark"] nav.tabs{background:rgba(14,22,36,.5)}:root[data-theme="dark"] .brand .logo img{clip-path:inset(0 63% 0 0)}:root[data-theme="dark"] .brand .logo::after{content:"";position:absolute;inset:0;background:url(tune_logo.png) 0 0/100% 100% no-repeat;filter:invert(1);clip-path:inset(0 0 0 37%)}
@@ -635,7 +635,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
           h += `<rect x="${x(i) - bw / 2}" y="${y1}" width="${bw}" height="${Math.max(0, y0 - y1)}" fill="${(s.colorAt && s.colorAt(i, v)) || s.color}"/>`;
         }));
       } else {
-        const k = bars.length, bw = Math.max(3, gw / k);
+        const k = bars.length, bw = Math.max(3, gw / k); let lab = "";  // value labels drawn after all bars, so no bar covers them
         bars.forEach((s, j) => {
           const yy = s.axis === "r" ? y2 : y, ax = s.axis === "r" ? o.y2 : o.y, base = yy(Math.max(ax.min, 0));
           s.values.forEach((v, i) => {
@@ -643,15 +643,20 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
             const bx = x(i) - gw / 2 + bw * j, top = Math.min(yy(v), base), hh = Math.abs(base - yy(v)), w = Math.max(2, bw - (k > 1 ? 2 : 0));
             h += `<rect x="${bx}" y="${top}" width="${w}" height="${hh}" rx="${Math.min(3, w / 3)}" fill="${(s.colorAt && s.colorAt(i, v)) || s.color}"/>`;
             if (s.label && (!s.labelAt || s.labelAt(i, v)) && !(narrow && s.labelWide))
-              h += `<text x="${bx + w / 2}" y="${v < 0 ? top + hh + 15 : top - 6}" text-anchor="middle" class="vz-val"${s.labelColor ? ` style="fill:${s.labelColor}"` : ""}>${s.label(v, i)}</text>`;
+              lab += `<text x="${bx + w / 2}" y="${v < 0 ? top + hh + 15 : top - 6}" text-anchor="middle" class="vz-val"${s.labelColor ? ` style="fill:${s.labelColor}"` : ""}>${s.label(v, i)}</text>`;
           });
         });
+        h += lab;
       }
       (o.avgs || []).forEach((a) => {
         const xa = L + band * a.from + 3, xb = L + band * (a.to + 1) - 3, ya = y(a.v);
         h += `<line x1="${xa}" x2="${xb}" y1="${ya}" y2="${ya}" stroke="${a.color}" stroke-width="3" stroke-linecap="round"/>`;
         const anc = a.anchor || "middle", lx = anc === "end" ? xb : anc === "start" ? xa : (xa + xb) / 2;
-        h += `<text x="${lx}" y="${a.below ? ya + 18 : ya - 8}" text-anchor="${anc}" class="vz-avg" style="fill:${a.color}">${narrow && a.short ? a.short : a.label}</text>`;
+        // label in a small white pill just above (or below) the line, so it never sits on the bars
+        const t = narrow && a.short ? a.short : a.label, tw = t.length * 7.2 + 14, cy = a.below ? ya + 16 : ya - 15;
+        const px = anc === "end" ? lx - tw : anc === "start" ? lx : lx - tw / 2;
+        h += `<rect x="${px}" y="${cy - 10}" width="${tw}" height="20" rx="5" fill="var(--surface)" stroke="${a.color}" stroke-width="1"/>`;
+        h += `<text x="${px + tw / 2}" y="${cy + 4.5}" text-anchor="middle" class="vz-avg" style="fill:${a.color}">${t}</text>`;
       });
       o.series.filter((s) => s.type === "line").forEach((s) => {
         const yy = s.axis === "r" ? y2 : y; let d = "", pen = false;
@@ -882,6 +887,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <div class="qa-a"><p>From more customers. Q1-17 vs Q1-16: revenue <b>+24%</b>, paying subscribers <b>+20%</b>, revenue per subscriber (ARPU) only <b>+4%</b>. Paid discounts stopped in 11-15, so growth was not bought with discounts</p></div>
     </div>
     
+    <div class="brief-ref sub-ref"><b>2.4 · Revenue</b><span>Where revenue growth comes from, and revenue per month</span></div>
     <div class="card v3-card">
       <h2>Where revenue growth came from · Q1-17 vs Q1-16</h2>
       <p class="v3-c ok"><b>Volume, not price:</b> revenue grew 24% because there are 20% more paying subscribers. Revenue per subscriber (ARPU) added only 4%</p>
@@ -896,6 +902,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <div class="vz" id="p24-ch1"></div>
     </div>
 
+    <div class="brief-ref sub-ref"><b>2.4 · ARPU</b><span>Revenue per paying subscriber over time</span></div>
     <div class="card v3-card">
       <h2>ARPU by month</h2>
       <p class="v3-c info"><b>Price is flat:</b> about $120–$128 a month since 2016. February is lower only because it has fewer days</p>
@@ -904,6 +911,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <p class="v3-foot">Axis starts at $100 · grey band: list price filled in by us (1a issue #2)</p>
     </div>
 
+    <div class="brief-ref sub-ref"><b>2.4 · Discount depth</b><span>How much paid purchases were discounted</span></div>
     <div class="card v3-card">
       <h2>Discounts by month</h2>
       <p class="v3-c ok"><b>No discounts since 11-15:</b> in early 2015 about 1 in 10 paid purchases got a discount; since 11-15 almost none. Free trials took their place</p>
@@ -1810,7 +1818,7 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
 
   <section class="view p4" id="view-p4" hidden>
     <div style="display:grid;gap:6px">
-      <h1>4 · Executive summary</h1>
+      <h1>4.1 · Executive summary</h1>
       <p class="lede">For the CEO and the Head of Growth. The four leadership questions, answered as far as the data allows. Every number comes from Part 1 (data), Part 2 (metrics) and Part 3 (churn deep dive)</p>
     </div>
     <div class="qa">
@@ -1877,7 +1885,7 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
 
   <section class="view p4" id="view-p4-recs" hidden>
     <div style="display:grid;gap:6px">
-      <h1>4 · Three recommendations</h1>
+      <h1>4.2 · Three recommendations</h1>
       <p class="lede">Each with the impact we expect, how sure we are, and what would change our mind</p>
     </div>
     <div class="qa">
@@ -1918,7 +1926,7 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
 
   <section class="view p4" id="view-p4-gaps" hidden>
     <div style="display:grid;gap:6px">
-      <h1>4 · What we can't answer yet</h1>
+      <h1>4.3 · What we can't answer yet</h1>
       <p class="lede">Where the data stops, and what it would take to close each gap</p>
     </div>
     <div class="qa">
@@ -2838,7 +2846,7 @@ main{--v-navy:#1e3a8a;--v-blue:#2563eb;--v-mid:#60a5fa;--v-sky:#bfdbfe;--v-teal:
 .vz svg{display:block;width:100%;height:auto;overflow:visible}
 .vz text{font-family:var(--font)}
 .vz .vz-ax{font-size:12px;fill:var(--v-mute)}
-.vz .vz-val{font-size:12px;font-weight:700;fill:var(--v-ink)}
+.vz .vz-val{font-size:12px;font-weight:700;fill:var(--v-ink);paint-order:stroke;stroke:var(--surface);stroke-width:3px}
 .vz .vz-avg{font-size:13px;font-weight:700;paint-order:stroke;stroke:var(--surface);stroke-width:4px}
 .vz .vz-flag text{font-size:12px;font-weight:700}
 .vz .vz-shl{font-size:12px;font-weight:700;fill:var(--v-red)}
@@ -2895,6 +2903,15 @@ details.v3-fold>ul{margin:0;padding:0 24px 18px 40px;display:grid;gap:6px;line-h
 :is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) details>summary{font-size:15px!important;color:var(--v-navy)!important}
 :is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .brief-ref{background:var(--v-info-bg)!important;color:var(--v-info-ink)!important;font-size:13px!important}
 :is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .brief-ref b{background:var(--v-navy)!important;color:var(--surface)!important}
+/* light-blue sub-question tags in Part 2: pill width, left-aligned to the 900px column */
+:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust)>.brief-ref{width:fit-content!important;max-width:100%!important;margin-left:max(0px,calc((100% - 900px) / 2))!important;margin-top:8px!important;background:var(--v-info-bg)!important;color:var(--v-info-ink)!important;border:0!important;font-size:13px!important}
+:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust)>.brief-ref b{background:var(--v-navy)!important;color:var(--surface)!important}
+:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust)>.brief-ref::before{content:none!important}
+/* text cells: normal figures, so dates like 04-15 are not spaced out */
+table.v3-t td.l,:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(table.grid,table.cx-tbl) td{font-variant-numeric:normal}
+.tab.on:hover{background:#1e3a8a;color:#fff}
+/* 5a: Design and Metrics stacked (different content heights, so no side-by-side) */
+#view-p5a>.cx-two{grid-template-columns:minmax(0,1fr)!important;max-width:900px!important;gap:16px!important}
 /* Part 3-5 chart palette: navy / blue / grey / teal instead of the bright set */
 .p3{--q1:var(--v-blue)!important;--q2:var(--v-grey)!important;--q3:var(--v-amber)!important;--q4:var(--v-teal)!important;--q-grid:var(--v-grid)!important;--q-axis:var(--v-axis)!important}
 :is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.p3-plot,.p5-sc,.p4-fig) text{font-size:12px}
