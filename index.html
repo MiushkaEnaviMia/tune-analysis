@@ -1491,7 +1491,7 @@ const P23_TYPE = [["2015-02",1.99,2249,15.49,1943,0.09,4],["2015-03",2.33,2673,1
     <div class="p3-acts">
       <div class="card p3-card">
         <h2 class="p3-ct">Target Groups: Churn vs Comparison Group</h2>
-        <p class="p3-cc warn"><b>Each move targets a group that churns <span data-r30="2–9×">3–7×</span> more.</b> Churn per renewal: <span data-r30="Pays by hand 20.1% vs Auto-renew 2.3%, first renewal 16.5% vs 3.8% after a year, method 40 4.3% vs method 41 1.9%">Pays by hand 20.1% vs Auto-renew 2.8%, first renewal 17.1% vs 4.2% after a year, method 40 5.6% vs method 41 2.2%</span></p>
+        <p class="p3-cc warn"><b>Each move targets a group that churns <span data-r30="2–9×">3–7×</span> more</b> Churn per renewal: <span data-r30="Pays by hand 20.1% vs Auto-renew 2.3%, first renewal 16.5% vs 3.8% after a year, method 40 4.3% vs method 41 1.9%">Pays by hand 20.1% vs Auto-renew 2.8%, first renewal 17.1% vs 4.2% after a year, method 40 5.6% vs method 41 2.2%</span></p>
         <div class="p3-lg" id="p3-lg-act"></div>
         <div class="p3-plot" id="p3-ch-act"></div>
       </div>
@@ -1734,87 +1734,109 @@ const P23_TYPE = [["2015-02",1.99,2249,15.49,1943,0.09,4],["2015-03",2.33,2673,1
   .p5-tl b.w{color:var(--c-blue);font-variant-numeric:tabular-nums}
   .p5-tl li.key b.w{color:var(--c-orange)}
   .p5-tl span{display:block;color:var(--muted);font-size:var(--fs-small)}
+  .p5 .qa-a .cx-tbl{background:var(--surface);border-radius:8px}
+  .p5 .qa-a .cx-tbl td,.p5 .qa-a .cx-tbl th{padding:8px 12px;font-size:15px;line-height:1.5}
+  .p5 .qa-a .cx-tbl td:first-child{white-space:nowrap}
+  .p5 .qa-a .cx-tbl td.c:first-child,.p5 .qa-a .cx-tbl td.num{white-space:nowrap}
+  .p5 .p5-f{color:var(--muted);font-size:14px}
+  .p5 .qa-a table.p5-w{width:100%!important;max-width:100%!important;table-layout:fixed}
+  .p5 .qa-a table.p5-w td{white-space:normal!important;min-width:0!important}
+  @media (max-width:640px){.p5 .qa-a table:is(.p5-w,.p5-st),.p5 .qa-a table:is(.p5-w,.p5-st) tbody,.p5 .qa-a table:is(.p5-w,.p5-st) tr,.p5 .qa-a table:is(.p5-w,.p5-st) td{display:block!important;width:auto!important;min-width:0!important;height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;position:static!important;float:none!important}
+    .p5 .qa-a table:is(.p5-w,.p5-st) thead,.p5 .qa-a table:is(.p5-w,.p5-st) colgroup{display:none}
+    .p5 .qa-a table:is(.p5-w,.p5-st) tr{border-bottom:1px solid var(--line);padding:6px 0}
+    .p5 .qa-a table:is(.p5-w,.p5-st) td{border:0!important;padding:3px 12px!important;text-align:left!important}
+    .p5 .qa-a table:is(.p5-w,.p5-st) td:first-child{font-weight:700;color:var(--navy)}
+    .p5 .qa-a .scroll:has(table:is(.p5-w,.p5-st)){overflow:visible}
+    .p5 .qa-a .scroll:has(table:is(.p5-w,.p5-st))::before,.p5 .qa-a .scroll:has(table:is(.p5-w,.p5-st))::after{display:none!important}}
+  .p5 details.p5-sql summary{cursor:pointer;font-weight:700;color:var(--navy);margin-bottom:8px}
+  @media (max-width:640px){.p5 .qa-a .cx-tbl td:first-child{white-space:normal}}
   </style>
 
   <section class="view cx p5" id="view-p5a" hidden>
     <header class="cx-head">
       <div>
         <h1>5a · Annual-Plan Promotion Test</h1>
-        <p class="cx-sub">Offer 30-day subscribers a discounted annual plan at renewal. Baselines from our clean layer (<span class="mono">fct_subscription</span>)</p>
+        <p class="cx-sub">Offer 30-day subscribers a discounted annual plan at renewal · baselines from <span class="mono">fct_subscription</span></p>
       </div>
-      
     </header>
 
     <div class="qa">
-    <p class="qa-q">How do we test a discounted annual plan for 30-day subscribers at renewal?</p>
-    <div class="cx-bottom qa-a">
-      <p><b class="qa-l">Answer:</b> <b>We test it with a 50 / 50 randomised offer at renewal and judge it on 12-month net revenue per assigned user</b></p><p>Paid 30-day subscribers, 7 days before expiry; one half is offered an annual plan at 10× their monthly price (about 17% off) · read separately for auto-renew and pays by hand · 1 month to enrol, final read at month 12</p><p><b>Risk:</b> auto-renew users already stay (97.9% renew each month). For them the discount may just hand money back</p>
-    </div>
-    </div>
-
-    <div class="cx-kpis">
-      <div class="card cx-kpi blue"><b>233,800</b><h3>Eligible per Month</h3><span class="vd good">Good: enough users for a fast test</span><span>Paid 30-day subscribers reaching expiry; 10.1% pay by hand</span></div>
-      <div class="card cx-kpi orange"><b>1 month</b><h3>Enrolment Needed</h3><span class="vd good">Good: detects a 0.5% revenue change</span><span>~117,000 users per group; 2.5% for people who pay by hand</span></div>
-      <div class="card cx-kpi grey"><b>Month 12</b><h3>Final Read</h3><span class="vd bad">Bad: the real answer takes a year</span><span>Annual cash arrives on day 1, so early revenue looks good by default</span></div>
+      <p class="qa-q">How do we test a discounted annual plan for 30-day subscribers at renewal?</p>
+      <div class="qa-a">
+        <p><b class="qa-l">Answer:</b> <b>A 50 / 50 randomised offer at renewal, judged on 12-month net revenue per assigned user</b></p>
+        <p>One month of renewals is enough users · decide at month 3, confirm at month 12 · main risk: auto-renew users already renew 97.9% of the time, so the discount may only give money back</p>
+      </div>
     </div>
 
+    <div class="brief-ref sub-ref"><b>5a · Unit and eligibility</b><span>Unit of randomization and eligibility</span></div>
+    <div class="qa">
+      <p class="qa-q">What is randomised, and who is eligible?</p>
+      <div class="qa-a"><div class="scroll"><table class="cx-tbl p5-st">
+        <tbody>
+          <tr><td><b>Unit</b></td><td>The user (<span class="mono">user_id</span>), assigned once for the whole test, so no one sees both offers on later renewals</td></tr>
+          <tr><td><b>Eligible</b></td><td>Paid 30-day subscriber, 7 days before expiry, no future period already bought, not on a free trial</td></tr>
+          <tr><td><b>Split</b></td><td>50 / 50, balanced within auto-renew vs pays by hand and within price ($99 / $149 / other)</td></tr>
+          <tr><td><b>Offer</b></td><td>Annual plan at 10 × the user's own monthly price (about 17% off). The $1,788 list price costs 50% more than 12 months at $99, and 39.4% pay $99</td></tr>
+        </tbody>
+      </table></div></div>
+    </div>
 
-    <div class="cx-two">
-      <div class="sub-col"><div class="brief-ref sub-ref"><b>5a · Unit and eligibility</b><span>Unit of randomization and eligibility</span></div>
-    <div class="card cx-panel">
-        <h2 class="cx-h">Design</h2>
-        <div class="scroll"><table class="cx-tbl">
-          <thead><tr><th>Item</th><th>Choice</th></tr></thead>
-          <tbody>
-            <tr><td><b>Unit</b></td><td>User (<span class="mono">user_id</span>), assigned once and kept for the whole test. A user renews monthly; assigning each renewal would show one person both offers</td></tr>
-            <tr><td><b>Eligible</b></td><td>Paid 30-day subscriber, 7 days before expiry, no future period already bought, not on a free trial</td></tr>
-            <tr><td><b>Split</b></td><td>50 / 50, balanced within auto-renew vs pays by hand, and within price ($99 / $149 / other)</td></tr>
-            <tr><td><b>Control</b></td><td>Normal renewal</td></tr>
-            <tr><td><b>Treatment</b></td><td>Annual plan at 10 × the user's <b>own</b> monthly price (about 17% off). The $1,788 list price is a deal at $149 a month but costs 50% more than 12 months at $99, and 39.4% pay $99</td></tr>
-          </tbody>
-        </table></div>
-      </div></div>
-      <div class="sub-col"><div class="brief-ref sub-ref"><b>5a · Metrics</b><span>Primary metric and guardrail metrics</span></div>
-    <div class="card cx-panel">
-        <h2 class="cx-h">Metrics</h2>
-        <p><b>Primary: 12-month net revenue per assigned user</b> Everyone assigned counts, whether they took the offer or not. Annual takers are the most loyal users, so comparing takers with non-takers would flatter the offer</p>
-        <p><b>Secondary:</b> annual take-up (today 0.13% with no offer) and paid days in the next 12 months</p>
-        <div class="scroll"><table class="cx-tbl">
-          <thead><tr><th>Guardrail</th><th>Baseline</th><th>Protects against</th></tr></thead>
-          <tbody>
-            <tr><td>Renewal at the offer moment, any plan</td><td class="num">96.3%<br><small>by hand: 82.0%</small></td><td>An offer that confuses or pushes people away</td></tr>
-            <tr><td>12-month revenue, auto-renew users</td><td class="num">$1,361</td><td>Discounts for people who'd pay anyway</td></tr>
-            <tr><td>Annual cancelled within 30 days</td><td class="num">0.3%</td><td>Regret buys</td></tr>
-          </tbody>
-        </table></div>
-      </div></div>
+    <div class="brief-ref sub-ref"><b>5a · Metrics</b><span>Primary metric and guardrail metrics</span></div>
+    <div class="qa">
+      <p class="qa-q">What is the primary metric, and what are the guardrails?</p>
+      <div class="qa-a"><div class="scroll"><table class="cx-tbl p5-st">
+        <thead><tr><th>Metric</th><th>Baseline</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr class="hi"><td><b>Primary:</b> 12-month net revenue per assigned user</td><td class="num">$1,318</td><td>Counts everyone assigned, takers or not; comparing only takers would flatter the offer</td></tr>
+          <tr><td>Secondary: annual take-up</td><td class="num">0.13%</td><td>Today's switch rate with no offer</td></tr>
+          <tr><td>Guardrail: renewal at the offer, any plan</td><td class="num">96.3%</td><td>The offer must not push people away (pays by hand: 82.0%)</td></tr>
+          <tr><td>Guardrail: 12-month revenue, auto-renew</td><td class="num">$1,361</td><td>No discount for people who would pay full price anyway</td></tr>
+          <tr><td>Guardrail: annual cancelled within 30 days</td><td class="num">0.3%</td><td>Regret buys</td></tr>
+        </tbody>
+      </table></div></div>
     </div>
 
     <div class="brief-ref sub-ref"><b>5a · Sample size</b><span>Sample-size logic, using baselines computed from this data</span></div>
-    <div class="card cx-panel">
-      <h2 class="p5-t">Sample Size: Users per Group vs Change Detected</h2>
-      <p class="p5-so"><b>One month of renewals is enough:</b> Pays by hand, the smallest group, gives 11,800 users per group in a month, enough to see a 2.5% change in 12-month revenue; all users give ~117,000 and a 0.5% change</p>
-      <div class="p5-sc"><svg class="p5-svg" viewBox="0 0 720 352" role="img" aria-labelledby="p5-ch-t"><title id="p5-ch-t">Users needed per group versus the smallest change in 12-month revenue we want to detect</title><text class="p5-alab" x="8" y="12">Users per group</text><line class="p5-grid" x1="72" x2="700" y1="300.0" y2="300.0"/><text class="p5-tick" x="62" y="304.0" text-anchor="end">0</text><line class="p5-grid" x1="72" x2="700" y1="231.0" y2="231.0"/><text class="p5-tick" x="62" y="235.0" text-anchor="end">20k</text><line class="p5-grid" x1="72" x2="700" y1="162.0" y2="162.0"/><text class="p5-tick" x="62" y="166.0" text-anchor="end">40k</text><line class="p5-grid" x1="72" x2="700" y1="93.0" y2="93.0"/><text class="p5-tick" x="62" y="97.0" text-anchor="end">60k</text><line class="p5-grid" x1="72" x2="700" y1="24.0" y2="24.0"/><text class="p5-tick" x="62" y="28.0" text-anchor="end">80k</text><line class="p5-axis" x1="72.0" x2="72.0" y1="300" y2="305"/><text class="p5-tick" x="72.0" y="322" text-anchor="middle">1%</text><line class="p5-axis" x1="229.0" x2="229.0" y1="300" y2="305"/><text class="p5-tick" x="229.0" y="322" text-anchor="middle">2%</text><line class="p5-axis" x1="386.0" x2="386.0" y1="300" y2="305"/><text class="p5-tick" x="386.0" y="322" text-anchor="middle">3%</text><line class="p5-axis" x1="543.0" x2="543.0" y1="300" y2="305"/><text class="p5-tick" x="543.0" y="322" text-anchor="middle">4%</text><line class="p5-axis" x1="700.0" x2="700.0" y1="300" y2="305"/><text class="p5-tick" x="700.0" y="322" text-anchor="middle">5%</text><line class="p5-axis" x1="72" x2="700" y1="300" y2="300"/><text class="p5-alab" x="386.0" y="346" text-anchor="middle">Smallest change in 12-month revenue we want to detect</text><line class="p5-avail" x1="72" x2="700" y1="259.4" y2="259.4"/><text class="p5-note" x="700" y="252.4" text-anchor="end">Pays by hand, available in 1 month: 11,800 per group</text><polyline class="p5-line p5-c1" points="72.0,185.3 87.7,205.2 103.4,220.4 119.1,232.1 134.8,241.5 150.5,249.0 166.2,255.2 181.9,260.3 197.6,264.6 213.3,268.2 229.0,271.3 244.7,274.0 260.4,276.3 276.1,278.3 291.8,280.1 307.5,281.7 323.2,283.0 338.9,284.3 354.6,285.4 370.3,286.4 386.0,287.3 401.7,288.1 417.4,288.8 433.1,289.5 448.8,290.1 464.5,290.6 480.2,291.2 495.9,291.6 511.6,292.1 527.3,292.5 543.0,292.8 558.7,293.2 574.4,293.5 590.1,293.8 605.8,294.1 621.5,294.3 637.2,294.6 652.9,294.8 668.6,295.0 684.3,295.2 700.0,295.4"/><polyline class="p5-line p5-c2" points="72.0,207.8 87.7,223.8 103.4,235.9 119.1,245.4 134.8,252.9 150.5,259.0 166.2,264.0 181.9,268.1 197.6,271.5 213.3,274.4 229.0,276.9 244.7,279.1 260.4,280.9 276.1,282.6 291.8,284.0 307.5,285.2 323.2,286.4 338.9,287.3 354.6,288.2 370.3,289.0 386.0,289.8 401.7,290.4 417.4,291.0 433.1,291.5 448.8,292.0 464.5,292.5 480.2,292.9 495.9,293.3 511.6,293.6 527.3,293.9 543.0,294.2 558.7,294.5 574.4,294.8 590.1,295.0 605.8,295.2 621.5,295.4 637.2,295.6 652.9,295.8 668.6,296.0 684.3,296.2 700.0,296.3"/><polyline class="p5-line p5-c3" points="72.0,39.0 87.7,84.3 103.4,118.8 119.1,145.6 134.8,166.9 150.5,184.0 166.2,198.1 181.9,209.7 197.6,219.5 213.3,227.7 229.0,234.8 244.7,240.8 260.4,246.1 276.1,250.7 291.8,254.7 307.5,258.2 323.2,261.4 338.9,264.2 354.6,266.7 370.3,269.0 386.0,271.0 401.7,272.8 417.4,274.5 433.1,276.0 448.8,277.4 464.5,278.7 480.2,279.9 495.9,280.9 511.6,281.9 527.3,282.8 543.0,283.7 558.7,284.5 574.4,285.2 590.1,285.9 605.8,286.5 621.5,287.1 637.2,287.7 652.9,288.2 668.6,288.7 684.3,289.1 700.0,289.6"/><circle class="p5-dot" cx="312.2" cy="259.4" r="6"/><text class="p5-note b" x="322" y="242">2.5%</text></svg></div>
-      <div class="p5-leg"><span><i style="background:var(--p5-c3)"></i>Pays by hand</span><span><i style="background:var(--p5-c1)"></i>All eligible</span><span><i style="background:var(--p5-c2)"></i>Auto-renew</span><span><i class="d"></i>Available in 1 month (Pays by hand)</span></div>
-      <p class="cx-note" style="text-align:center">Two-sided test, 5% false-alarm rate, 80% power. Users per group = 2 × (1.96 + 0.84)² × SD² ÷ change². 12-month revenue per subscriber: $1,318 on average (SD $607); Auto-renew $1,361 (SD $562); Pays by hand $1,097 (SD $762)</p>
+    <div class="qa">
+      <p class="qa-q">How many users do we need, based on this data?</p>
+      <div class="qa-a">
+        <p><b>One month of renewals is enough: 233,800 users reach renewal each month</b></p>
+        <div class="scroll"><table class="cx-tbl">
+          <thead><tr><th>Group</th><th>12-month revenue per user</th><th>Users per group in 1 month</th><th>Smallest change we can detect</th></tr></thead>
+          <tbody>
+            <tr><td><b>All eligible</b></td><td class="num">$1,318 (SD $607)</td><td class="num">116,900</td><td class="num">0.5%</td></tr>
+            <tr><td><b>Auto-renew</b></td><td class="num">$1,361 (SD $562)</td><td class="num">105,100</td><td class="num">0.5%</td></tr>
+            <tr><td><b>Pays by hand</b></td><td class="num">$1,097 (SD $762)</td><td class="num">11,800</td><td class="num">2.5%</td></tr>
+          </tbody>
+        </table></div>
+        <p class="p5-f">Users per group = 2 × (1.96 + 0.84)² × SD² ÷ change² · two-sided, 5% false-alarm rate, 80% power · revenue from subscribers expiring 01-16 – 03-16</p>
+      </div>
     </div>
 
     <div class="brief-ref sub-ref"><b>5a · Duration</b><span>Duration, and annual plans that pay upfront but show retention a year later</span></div>
-    <div class="card cx-panel">
-      <h2 class="p5-t">Timeline: Enrolment to Final Read</h2>
-      <p class="p5-so info"><b>The real answer comes at month 12:</b> annual buyers pay up front and can't churn for a year, so we decide on earned revenue at month 3 and confirm with cash at month 12</p>
-      <ol class="p5-tl">
-        <li><b class="w">Month 1</b><div>Enrol<span>Every 30-day subscriber passes renewal once</span></div></li>
-        <li><b class="w">Months 1–2</b><div>Take-up, renewal guardrail, refunds<span>Stop early if renewal drops</span></div></li>
-        <li class="key"><b class="w">Month 3</b><div>Go / no-go, per payer type<span>Earned revenue: each payment spread over the days it covers (an annual counts 1/12 a month). The rest of the year projected from the control group</span></div></li>
-        <li class="key"><b class="w">Month 12</b><div>Final read: actual 12-month cash, both groups<span>Confirm or reverse the month-3 call</span></div></li>
-        <li><b class="w">Month 13–14</b><div>Do annual buyers renew?<span>Compare with 69.0% today. Keep a 10% holdout with no offer until then</span></div></li>
-      </ol>
+    <div class="qa">
+      <p class="qa-q">How long does it run, and how do we judge a plan that pays upfront but shows retention a year later?</p>
+      <div class="qa-a">
+        <p><b>Decide on earned revenue at month 3, confirm with cash at month 12</b></p>
+        <div class="scroll"><table class="cx-tbl p5-st">
+          <thead><tr><th>When</th><th>What we read</th></tr></thead>
+          <tbody>
+            <tr><td class="num">Month 1</td><td>Enrol: every 30-day subscriber passes renewal once</td></tr>
+            <tr><td class="num">Months 1–2</td><td>Take-up, renewal guardrail, refunds · stop early if renewal drops</td></tr>
+            <tr class="hi"><td class="num">Month 3</td><td>Go / no-go per payer type, on earned revenue: an annual payment counts 1/12 a month, not all on day 1</td></tr>
+            <tr class="hi"><td class="num">Month 12</td><td>Final read on actual 12-month cash, both groups</td></tr>
+            <tr><td class="num">Months 13–14</td><td>Do annual buyers renew? Today 69.0%; a 10% no-offer holdout stays until then</td></tr>
+          </tbody>
+        </table></div>
+      </div>
     </div>
 
     <div class="brief-ref sub-ref"><b>5a · SQL</b><span>Optional: the SQL to analyze the test</span></div>
-    <details class="card lin-sec fold"><summary><h2>+ Analysis SQL</h2></summary><div class="fold-in">
-      <p>Runs on the clean layer plus a hypothetical <span class="mono">experiment_assignments(user_id, variant, assigned_at)</span> table; tested on a fake assignment</p>
+    <div class="qa">
+      <p class="qa-q">What SQL would analyze it?</p>
+      <div class="qa-a">
+        <p>Runs on our clean layer plus the hypothetical <span class="mono">experiment_assignments(user_id, variant, assigned_at)</span>; tested on a fake assignment</p>
+        <details class="p5-sql"><summary>Show the SQL</summary>
 <pre>with a as (
   select e.user_id, e.variant, e.assigned_at::date as d0, max(s.is_auto_renew) as is_auto_renew
   from experiment_assignments e
@@ -1840,127 +1862,79 @@ select t.is_auto_renew, t.n n_treat, c.n n_ctrl, t.take_up, c.renewal ctrl_renew
        (t.cash - c.cash) / sqrt(t.v / t.n + c.v / c.n) as z_score,   -- |z| &gt; 1.96 = significant
        t.earned_90d - c.earned_90d as earned_90d_diff
 from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatment' and c.variant = 'control';</pre>
-    </div></details>
-
-    <details class="card lin-sec fold"><summary><h2>+ Baselines</h2></summary><div class="fold-in">
-        <div class="scroll"><table class="cx-tbl">
-          <thead><tr><th>Baseline</th><th>All</th><th>Auto-renew</th><th>Pays by hand</th></tr></thead>
-          <tbody>
-            <tr><td>Eligible subscribers per month (10-16 – 01-17)</td><td class="num">233,800</td><td class="num">210,200 (89.9%)</td><td class="num">23,600 (10.1%)</td></tr>
-            <tr><td>Renew within 30 days of expiry (same months)</td><td class="num">96.3%</td><td class="num">97.9%</td><td class="num">82.0%</td></tr>
-            <tr><td>Switch to annual today, no offer (2016)</td><td class="num">0.13%</td><td class="num">-</td><td class="num">0.7%</td></tr>
-            <tr><td>12-month revenue per subscriber (01-16 – 03-16)</td><td class="num">$1,318</td><td class="num">$1,361</td><td class="num">$1,097</td></tr>
-            <tr><td>Still paying 12 months later</td><td class="num">74.9%</td><td class="num">79.9%</td><td class="num">49.3%</td></tr>
-            <tr class="hi"><td>Users per group to detect a 2% change</td><td class="num">8,310</td><td class="num">6,684</td><td class="num">18,910</td></tr>
-            <tr class="hi"><td>Users per group to detect a 3% change</td><td class="num">3,693</td><td class="num">2,971</td><td class="num">8,405</td></tr>
-          </tbody>
-        </table></div>
-    </div></details>
-    <details class="card lin-sec fold"><summary><h2>+ Who is still paying a year later</h2></summary><div class="fold-in">
-      <div class="cx-panel">
-        <h2 class="p5-t">12-month Retention: Pays by hand vs Auto-renew</h2>
-        <p class="p5-so warn"><b>Half of Pays by hand is gone within a year:</b> 49.3% still pay after 12 months vs 79.9% on Auto-renew; annual buyers renew at 69.0%</p>
-        <div class="cx-bars">
-          <div class="cx-bar"><div class="cx-bl"><span><b>30-day, auto-renew</b> <small>(still paying after 12 months)</small></span><b class="num">79.9%</b></div><i class="c2" style="--w:79.9%"></i></div>
-          <div class="cx-bar"><div class="cx-bl"><span><b>Annual plan</b> <small>(renews at end of plan)</small></span><b class="num">69.0%</b></div><i style="--w:69%"></i></div>
-          <div class="cx-bar"><div class="cx-bl"><span><b>30-day, pays by hand</b> <small>(still paying after 12 months)</small></span><b class="num">49.3%</b></div><i class="c3" style="--w:49.3%"></i></div>
-        </div>
-        <p class="cx-note">30-day groups: 225,158 subscribers with a paid expiry in 01-16 – 03-16. Annual: 20,981 annual plans ending 01-16 – 01-17. Annual buyers chose the plan themselves, so 69% is an upper guess for discount takers</p>
+        </details>
       </div>
-    </div></details>
-    <details class="card lin-sec fold"><summary><h2>+ Limits</h2></summary><div class="fold-in">
-        <div class="cx-lim">
-          <ul>
-            <li>Baselines come from 2016; prices and the payer mix may have moved since</li>
-            <li>We can't see app usage, so we can't tell whether annual buyers stay because they learn more or because they prepaid</li>
-            <li>The 69.0% annual renewal comes from people who chose annual on their own; discount takers may renew less</li>
-          </ul>
-        </div>
-    </div></details>
-        <p class="cx-src">Full write-up with the baseline queries: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/06_ab_test.md" target="_blank" rel="noopener">reports/06_ab_test.md ↗</a></p>
+    </div>
+    <p class="cx-src">Full write-up with the baseline queries: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/06_ab_test.md" target="_blank" rel="noopener">reports/06_ab_test.md ↗</a></p>
   </section>
 
   <section class="view cx p5" id="view-p5b" hidden>
     <header class="cx-head">
       <div>
         <h1>5b · AI Process Log</h1>
-        <p class="cx-sub">How three AI tools were used as one team, and the mistakes that mattered</p>
+        <p class="cx-sub">Claude Code, Gemini and NotebookLM in parallel · no AI number went in until a DuckDB query on the full data confirmed it</p>
       </div>
-      
     </header>
 
+    <div class="brief-ref sub-ref"><b>5b · Tools</b><span>Which tools you used, and for what</span></div>
     <div class="qa">
-    <p class="qa-q">Which AI tools did we use, for what and with which prompts, and where was the AI wrong, how was it caught and what changed?</p>
-    <div class="cx-bottom qa-a">
-      <p><b class="qa-l">Answer:</b> <b>Three AI tools worked in parallel like a small team, and no AI number went in until a DuckDB query confirmed it</b></p><p><b>Claude</b> built and checked the analysis, with several agents at once · <b>Gemini</b> reviewed it critically and drafted designs in parallel · <b>NotebookLM</b> turned the reports into audio overviews · 4 AI mistakes would have changed leadership's answers; the costliest would have dropped ~10,800 real purchases as duplicates</p>
-    </div>
-    </div>
-
-    <div class="cx-kpis">
-      <div class="card cx-kpi blue"><b>3 tools</b><h3>Working in Parallel</h3><span class="vd good">Good: the only way to cover all five parts in the time box</span><span>Each model used for what it does best, several agents per tool</span></div>
-      <div class="card cx-kpi orange"><b>4</b><h3>Serious AI Mistakes</h3><span class="vd bad">Bad: each would have changed an answer</span><span>3 from Claude, 1 from Gemini · smaller ones in the fold below</span></div>
-      <div class="card cx-kpi grey"><b>3 of 4</b><h3>Caught by Me</h3><span class="vd good">Good: caught by asking "how do you know?"</span><span>The 4th Claude caught itself while building the clean layer</span></div>
-    </div>
-
-
-    <div class="brief-ref sub-ref"><b>5b · Tools</b><span>Which tools were used, and for what</span></div>
-    <div class="card cx-panel">
-      <h2 class="cx-h">Tools: a Small Team Working in Parallel</h2>
-      <p class="cx-explain">I ran three tools side by side, each for what it does best, with several agents working at once in each. That made it work like a small team, and it was the only way to cover all five parts in the time box</p>
-      <div class="scroll"><table class="cx-tbl">
-        <thead><tr><th>Tool</th><th>Role</th><th>Used for</th></tr></thead>
-        <tbody>
-          <tr><td><b>Claude</b><br><small>Claude Code · Opus, Sonnet, Fable</small></td><td>Builder and checker</td><td>SQL pipeline, clean layer, churn check, metrics, reports and this site. The model was matched to the task: the strongest for modelling and reviews, faster ones for checks and edits, many agents in parallel sessions. Every query ran on the real database</td></tr>
-          <tr><td><b>Gemini</b><br><small>several modes in parallel</small></td><td>Independent critic and second site builder</td><td>Critical review of the 1a data-quality findings and of the churn-window analysis, so one model checks another. In parallel, its site-building mode drafted page and chart designs, and the clearest chart wording (e.g. the 2.2 conclusions) was carried over to this site</td></tr>
-          <tr><td><b>NotebookLM</b></td><td>Fast learning</td><td>Audio overviews of the technical reports, to take in a lot of material while working, and to prepare the debrief</td></tr>
-        </tbody>
-      </table></div>
+      <p class="qa-q">Which tools were used, and for what?</p>
+      <div class="qa-a">
+        <p><b>Run like a small team: 115 Claude Code sub-sessions, several at a time, Gemini as reviewer and editor, NotebookLM for listening</b></p>
+        <div class="scroll"><table class="cx-tbl p5-w"><colgroup><col style="width:24%"><col style="width:44%"><col style="width:32%"></colgroup>
+          <thead><tr><th>Tool · mode</th><th>Used for</th><th>Why it saved time or tokens</th></tr></thead>
+          <tbody>
+            <tr><td><b>Claude Code · Opus 5.5</b></td><td>SQL pipeline in DuckDB, clean layer, churn check, metrics, reports, this site</td><td>The strongest model where a wrong number is costly</td></tr>
+            <tr><td><b>Claude Code · Sonnet, Fable</b></td><td>Narrow, well-specified side tasks and second reads</td><td>Cheaper models where depth is not needed</td></tr>
+            <tr><td><b>Parallel sub-sessions</b></td><td>One session per brief part or tab, side by side; each reports back in a few lines</td><td>Parallel work; short contexts instead of one long chat</td></tr>
+            <tr><td><b>Fresh vs fork</b></td><td>91 fresh sessions with a short brief; 24 forks only when the full history was needed</td><td>A fresh session does not re-read the history</td></tr>
+            <tr><td><b>Auto mode + memory</b></td><td>Routine commands ran without approval prompts; decisions (churn window, Q / A format, chart rules) saved as memory</td><td>No waiting, no re-explaining rules in each session</td></tr>
+            <tr><td><b>Gemini · critical review</b></td><td>Independent review of the 1a issues and of the churn window</td><td>A second model checks the first</td></tr>
+            <tr><td><b>Gemini · design and wording</b></td><td>Page and chart drafts; sharper wording of definitions and chart conclusions (e.g. 2.2)</td><td>Design and wording ran while Claude computed</td></tr>
+            <tr><td><b>NotebookLM</b></td><td>Audio overviews of the technical reports, and debrief prep</td><td>Long reports taken in while working</td></tr>
+          </tbody>
+        </table></div>
+      </div>
     </div>
 
     <div class="brief-ref sub-ref"><b>5b · Prompts</b><span>The key prompts, or a representative sample</span></div>
-    <div class="card cx-panel">
-      <h2 class="cx-h">Key Prompts and What Each Fixed</h2>
-      <p class="cx-explain">Translated from Hebrew and tightened, except #1, which is a file in the repo</p>
-      <div class="scroll"><table class="cx-tbl">
-        <thead><tr><th>#</th><th>Prompt</th><th>What it fixed</th></tr></thead>
-        <tbody>
-          <tr><td class="c">1</td><td><b>To Gemini:</b> "You are a senior data analyst reviewing someone else's data-quality report. Be critical and specific. Do not praise. If you cannot verify a claim without the data, say so" <span class="mono">reports/gemini_review_prompt_1a.md</span></td><td>An independent second check of every 1a issue</td></tr>
-          <tr><td class="c">2</td><td>"Before we use any number from Gemini, re-run it in DuckDB on both full export files and show the query and the row count"</td><td>The day-31 renewal spike did not exist (mistake 3)</td></tr>
-          <tr><td class="c">3</td><td>"Re-read the brief's ranking rule and re-rank every issue by how much it changes the four leadership answers, not by how many rows it touches"</td><td>Billing's churn labels moved from Medium to issue #1 (mistake 2)</td></tr>
-          <tr><td class="c">4</td><td>"Split the days-to-return curve by plan type and by Auto-renew vs Pays by hand, show the % of returners by day, and set the churn window for each group from that curve"</td><td>3 days for Auto-renew, 30 days for Pays by hand (mistake 4)</td></tr>
-          <tr><td class="c">5</td><td>"Implement billing's churn definition on the clean layer, compare it with <span class="mono">churn_labels.csv</span>, and explain every group where they disagree"</td><td>Showed 13.6% of billing's labels are wrong (tab 1c)</td></tr>
-        </tbody>
-      </table></div>
+    <div class="qa">
+      <p class="qa-q">Which prompts steered the work?</p>
+      <div class="qa-a">
+        <p><b>Each prompt below changed a number or a rule on this site</b> · translated from Hebrew and tightened</p>
+        <div class="scroll"><table class="cx-tbl p5-w"><colgroup><col style="width:5%"><col style="width:52%"><col style="width:43%"></colgroup>
+          <thead><tr><th>#</th><th>Prompt</th><th>What it changed</th></tr></thead>
+          <tbody>
+            <tr><td class="c">1</td><td><b>To Gemini:</b> "Review this data-quality report as a senior analyst. Be critical and specific, no praise. If you cannot verify a claim without the data, say so"</td><td>An independent second check of every 1a issue</td></tr>
+            <tr><td class="c">2</td><td>"Gemini shows renewals jumping right after day 30. That looks wrong: re-run it in DuckDB on both export files"</td><td>Gemini had read 1.35M of 5.72M rows: the day-31 spike is 0.35%, not 17.5%</td></tr>
+            <tr><td class="c">3</td><td>"You were wrong, payment type does change the window. Test 1 or 7 days for auto-renew, and 14 to 30 days for pays by hand, split by plan length"</td><td>Churn window: 3 days auto-renew, 30 days pays by hand. Auto-renew churn is 2.7% a month, not 2.2%</td></tr>
+            <tr><td class="c">4</td><td>"What exactly does 1c ask? On what basis did you decide? We already found you were wrong not to split: why was that ignored?"</td><td>1c keeps billing's own 30-day rule, since it tests their labels; Parts 2–3 use the split window</td></tr>
+            <tr><td class="c">5</td><td>"A churn file with the wrong users is an error leadership already sees, not a possible one: why isn't it #1? Then check for any other ranking mistake"</td><td>Billing's labels became issue #1 (13.6% wrong); plan length moved to Critical; early renewals (578,644 rows) added</td></tr>
+            <tr><td class="c">6</td><td>"The first bar fills 100% and mixes two denominators (241,665 and 222,018). Put all billing errors on one base so they add up to 100% and none are hidden"</td><td>1c chart on one base of 39,018 users; two hidden reasons added (expired before March 3,251, other 3,082)</td></tr>
+            <tr><td class="c">7</td><td>"You load the raw files with two added columns. Shouldn't they first be loaded untouched, in a separate step? If not, why?"</td><td>One raw table per file, checked 1 : 1 against the CSVs; cleaning moved to staging</td></tr>
+            <tr><td class="c">8</td><td>"Why not say plainly that ARPU falls until 2016, apart from the free-trial waves, and then stays flat? Isn't that the key point?"</td><td>2.4 now leads with it: ARPU $129 in 2015, $118 in 2016 (−8%), then flat</td></tr>
+          </tbody>
+        </table></div>
+      </div>
     </div>
 
     <div class="brief-ref sub-ref"><b>5b · AI mistakes</b><span>At least two cases where the AI was wrong, how each was caught, what changed</span></div>
-    <div class="card cx-panel">
-      <h2 class="p5-t">The Four AI Mistakes That Would Have Changed the Answers</h2>
-      <p class="p5-so info"><b>The costliest was Claude's own:</b> matching on user + day would have dropped ~10,800 real purchases as duplicates, so revenue and renewals would have been too low</p>
-      <div class="scroll"><table class="cx-tbl">
-        <thead><tr><th>#</th><th>Tool</th><th>What it got wrong</th><th>What it would have changed</th><th>How it was caught</th><th>What changed</th></tr></thead>
-        <tbody>
-          <tr class="hi"><td class="c">1</td><td class="c"><span class="tag c">Claude</span></td><td>Counted 11,560 "conflicting versions" between the two exports by matching user + day, which is not a unique key</td><td>About 10,800 real, separate purchases dropped as duplicates (real conflicts: 747)</td><td><span class="tag a">Claude</span> itself, while building the clean layer</td><td>Match on the whole event (user, day, method, plan, amount, cancel); only true one-to-one matches count as the same event</td></tr>
-          <tr><td class="c">2</td><td class="c"><span class="tag c">Claude</span></td><td>Ranked billing's churn labels Medium and defended the export split as #1 without re-reading the brief's ranking rule</td><td>The churn number the CEO likely already saw (13.6% of labels wrong) would have looked like a side issue</td><td><span class="tag u">Me</span>, by checking the brief's rule</td><td>Labels moved to Critical, now issue #1 in 1a</td></tr>
-          <tr><td class="c">3</td><td class="c"><span class="tag g">Gemini</span></td><td>Reported a renewal spike on day 31 (17.5%; real 0.35%) and 33.4% churn (real 43.5%), with an invented "card declined" reason</td><td>A churn window set around a spike that does not exist, and churn about 10 points too low</td><td><span class="tag u">Me</span>: the day-31 jump looked wrong; Claude re-ran it on the full data and Gemini admitted it had read a partial file</td><td>Every second opinion is re-run on the full data before it is used</td></tr>
-          <tr><td class="c">4</td><td class="c"><span class="tag c">Claude</span></td><td>Said plan type doesn't change the churn window, and later kept "30 days for all" as the main churn line</td><td>Auto-renew churn hidden: 2.2% instead of 2.7% a month, because 98.5% of Auto-renew returners are back by day 3</td><td><span class="tag u">Me</span>, by asking for the return curve per plan type</td><td>2.3 uses 3 days for Auto-renew and 30 days for Pays by hand; 30 days for all is a side check</td></tr>
-        </tbody>
-      </table></div>
+    <div class="qa">
+      <p class="qa-q">Where was the AI wrong, how was it caught, and what changed?</p>
+      <div class="qa-a">
+        <p><b>Four mistakes would have changed leadership's answers; the costliest was Claude's own</b></p>
+        <div class="scroll"><table class="cx-tbl p5-w"><colgroup><col style="width:11%"><col style="width:45%"><col style="width:18%"><col style="width:26%"></colgroup>
+          <thead><tr><th>Tool</th><th>What it got wrong</th><th>Caught by</th><th>What changed</th></tr></thead>
+          <tbody>
+            <tr class="hi"><td class="c"><span class="tag c">Claude</span></td><td>Matched the two exports on user + day, which is not unique: ~10,800 real purchases would have been dropped as duplicates (real conflicts: 747)</td><td>Claude, while building the clean layer</td><td>Match on the whole event (user, day, method, plan, amount, cancel)</td></tr>
+            <tr><td class="c"><span class="tag c">Claude</span></td><td>Ranked billing's churn labels Medium, without re-reading the brief's ranking rule</td><td>Me (prompt 5)</td><td>Labels are issue #1 in 1a</td></tr>
+            <tr><td class="c"><span class="tag g">Gemini</span></td><td>Reported a day-31 renewal spike (17.5%; real 0.35%) and 33.4% churn (real 43.5%), from a partial file</td><td>Me (prompt 2)</td><td>Every second opinion is re-run on the full data first</td></tr>
+            <tr><td class="c"><span class="tag c">Claude</span></td><td>Said plan type does not change the churn window, hiding auto-renew churn (2.2% instead of 2.7%)</td><td>Me (prompt 3)</td><td>2.3 uses 3 days auto-renew, 30 days pays by hand</td></tr>
+          </tbody>
+        </table></div>
+      </div>
     </div>
-
-    <details class="card lin-sec fold"><summary><h2>+ Smaller mistakes</h2><span>Five more, caught before they reached a number on this site</span></summary><div class="fold-in">
-      <div class="scroll"><table class="cx-tbl">
-        <thead><tr><th>Tool</th><th>What it got wrong</th><th>What changed</th><th>Caught by</th></tr></thead>
-        <tbody>
-          <tr><td class="c"><span class="tag g">Gemini</span></td><td>"All 109,330 users missing from <span class="mono">users.csv</span> are paying users"; only 53,023 ever paid</td><td>The issue is sized on paying users: 8.3% of revenue</td><td class="c"><span class="tag a">Claude</span></td></tr>
-          <tr><td class="c"><span class="tag g">Gemini</span></td><td>Explained ages 106 and 112 with the Taiwan (ROC) calendar; the registration years don't fit</td><td>Story rejected; impossible ages set to NULL in <span class="mono">stg_users</span></td><td class="c"><span class="tag a">Claude</span></td></tr>
-          <tr><td class="c"><span class="tag c">Claude</span></td><td>Under-rated the 2015 rows missing plan length (39.7% of users active 03-15 – 10-15) and left early renewals (578,644 rows) off the 1a list</td><td>Plan length moved to Critical, early renewals added at High</td><td class="c"><span class="tag u">Me</span></td></tr>
-          <tr><td class="c"><span class="tag c">Claude</span></td><td>Combined the two exports already at load, so the raw layer could not be checked 1:1 against the files</td><td>One raw table per file, then <span class="mono">base_transactions</span> combines them; all tables checked identical</td><td class="c"><span class="tag u">Me</span></td></tr>
-          <tr><td class="c"><span class="tag c">Claude</span></td><td>Cleaned the users file inside <span class="mono">dim_user</span> instead of in STAGING</td><td>New <span class="mono">stg_users</span> holds all user cleaning; all tables checked identical</td><td class="c"><span class="tag u">Me</span></td></tr>
-        </tbody>
-      </table></div>
-    </div></details>
-      <p class="cx-src">Full log: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/07_ai_log.md" target="_blank" rel="noopener">reports/07_ai_log.md ↗</a></p>
+    <p class="cx-src">Full log, including smaller mistakes: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/07_ai_log.md" target="_blank" rel="noopener">reports/07_ai_log.md ↗</a></p>
   </section>
 
   <!-- EXPLORER -->
@@ -3032,11 +3006,6 @@ main>.view:not(.p21){max-width:1280px;margin-inline:auto}
 #view-lineage>.sub-ref{margin-left:max(0px,calc((100% - 1100px) / 2))!important}
 /* 5b: narrow #, tool and caught-by columns so the text columns get the room */
 :is(#view-task,#view-overview,#view-lineage,#view-churn,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .cx-tbl td.c{width:1%;white-space:nowrap}
-/* 5b: the mistakes table needs the wide column */
-#view-p5b>div.card.cx-panel:has(td .tag){max-width:1100px!important}
-#view-p5b>.sub-ref:has(+ .card td .tag){margin-left:max(0px,calc((100% - 1100px) / 2))!important}
-#view-p5b .cx-tbl:has(td .tag){table-layout:auto!important;width:100%}
-#view-p5b .cx-tbl:has(td .tag) :is(th,td):nth-child(1){width:44px!important;min-width:0!important}#view-p5b .cx-tbl:has(td .tag) :is(th,td):nth-child(2){width:84px!important;min-width:0!important}#view-p5b .cx-tbl:has(td .tag) :is(th,td):nth-child(6){width:96px!important;min-width:0!important}#view-p5b .cx-tbl:has(td .tag) :is(th,td):is(:nth-child(3),:nth-child(4),:nth-child(5)){width:auto!important}
 /* phone: wide fixed charts scroll inside their box, not the page */
 @media (max-width:640px){
   :is(#view-task,#view-overview,#view-lineage,#view-churn,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .vhead,:is(#view-task,#view-overview,#view-lineage,#view-churn,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .ov-hero{padding:16px!important}
@@ -3220,6 +3189,7 @@ details.v3-fold>ul{margin:0;padding:0 24px 18px 40px;display:grid;gap:6px;line-h
 :is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .vd.bad{color:var(--v-bad)!important}
 :is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(table.grid,table.cx-tbl){width:auto!important;margin-inline:auto!important;font-size:14px!important}
 :is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(table.grid,table.cx-tbl) :is(th,td){height:40px!important;padding:6px 12px!important;border:1px solid var(--v-line)!important}
+@media (max-width:640px){:is(#view-p5a,#view-p5b) .qa-a table:is(.p5-w,.p5-st) td{height:auto!important;width:auto!important;max-width:none!important;border:0!important;padding:3px 12px!important}:is(#view-p5a,#view-p5b) .qa-a table:is(.p5-w,.p5-st) tr{border-bottom:1px solid var(--v-line)}}
 :is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(table.grid,table.cx-tbl) th{background:var(--v-navy)!important;color:var(--surface)!important;font-size:13px!important}
 :is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) details>summary{font-size:15px!important;color:var(--v-navy)!important}
 :is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .brief-ref{background:var(--v-info-bg)!important;color:var(--v-info-ink)!important;font-size:13px!important}
