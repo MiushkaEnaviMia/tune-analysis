@@ -628,12 +628,16 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       });
       const bars = o.series.filter((s) => s.type === "bar"), gw = band * (o.gap || 0.7);
       if (o.stacked) {
-        const acc = new Array(n).fill(0), bw = Math.max(3, gw);
+        const acc = new Array(n).fill(0), bw = Math.max(3, gw); let slab = "";
         bars.forEach((s) => s.values.forEach((v, i) => {
           if (v == null) return;
           const y0 = y(acc[i]), y1 = y(acc[i] + v); acc[i] += v;
           h += `<rect x="${x(i) - bw / 2}" y="${y1}" width="${bw}" height="${Math.max(0, y0 - y1)}" fill="${(s.colorAt && s.colorAt(i, v)) || s.color}"/>`;
+          // optional value labels: "in" = centred in the segment (white), "top" = in a row above the plot (row 0 nearest)
+          if (s.label && s.labelPos === "in" && y0 - y1 >= 18 && band >= 40) slab += `<text x="${x(i)}" y="${(y0 + y1) / 2 + 4.5}" text-anchor="middle" class="vz-val vz-in">${s.label(v, i)}</text>`;
+          if (s.label && s.labelPos === "top" && (band >= 40 || !s.labelRow)) slab += `<text x="${x(i)}" y="${T - 8 - 17 * (s.labelRow || 0)}" text-anchor="middle" class="vz-val${band < 40 ? " vz-sm" : ""}"${s.labelColor ? ` style="fill:${s.labelColor}"` : ""}>${s.label(v, i)}</text>`;
         }));
+        h += slab;
       } else {
         const k = bars.length, bw = Math.max(3, gw / k); let lab = "";  // value labels drawn after all bars, so no bar covers them
         bars.forEach((s, j) => {
@@ -757,55 +761,51 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
 
   <!-- 2.2 -->
   <section class="view cx v3" id="view-p2-flow" data-own-brief="1" hidden>
-    <div class="card v3-head">
-      <span class="v3-tag">Brief 2.2 · New vs renewing vs reactivated</span>
+    <div class="card v3-head p22-head">
+      <span class="v3-tag">Brief 2.2 · New vs Renewing vs Reactivated</span>
       <h1>2.2 · New, Renewing &amp; Reactivated</h1>
-      <p>Each month's paying subscribers split into three groups, 04-15 to 03-17</p>
+      <p>Each month's paying subscribers split into three groups, 02-15 to 03-17</p>
     </div>
     <div class="qa">
-      <p class="qa-q">Where do paying subscribers come from, and how has the mix changed?</p>
-      <div class="qa-a"><p>Growth comes from keeping customers: <b>95.5%</b> of paying subscribers renew (Q1-17). New subscribers keep falling: from <b>6.1%</b> of paying subscribers in Q4-15 to <b>2.8%</b> in Q1-17 (about <b>13,700 → 8,500</b> a month)</p></div>
+      <p class="qa-q">Where do monthly subscribers come from (New, Renewing, Reactivated), and how did the mix change over time?</p>
+      <div class="qa-a"><p>Retention carries the business. Renewing rose from <b class="p22-up">91.0%</b> of paying subscribers (Q2-15) to <b class="p22-up">95.5%</b> (Q1-17). New fell from <b class="p22-dn">6.1%</b> (Q4-15) to <b class="p22-dn">2.8%</b> (Q1-17), about 13,700 → 8,500 a month</p></div>
     </div>
-    
+
     <div class="card v3-card">
-      <h2>New and reactivated share, by quarter</h2>
-      <p class="v3-c warn"><b>New share fell by half:</b> 6.1% (Q3-15, Q4-15) → 2.8% (Q1-17). The two reactivated peaks are customers back after a billing gap</p>
-      <div class="vz-lg"><span><i class="bar" style="--c:var(--v-blue)"></i>New, % of paying</span><span><i class="bar" style="--c:var(--v-teal-l)"></i>Reactivated, % of paying</span></div>
+      <h2>Quarterly Subscriber Mix</h2>
+      <p class="v3-c ok"><b>Renewing grows, New shrinks:</b> Renewing 91.0% (Q2-15) → 95.5% (Q1-17) · New 6.1% (Q4-15) → 2.8% (Q1-17)</p>
+      <div class="vz-lg p22-lg"><span><i style="--c:var(--p22-ren)"></i>Renewing</span><span><i style="--c:var(--p22-new)"></i>New</span><span><i style="--c:var(--p22-rea)"></i>Reactivated</span></div>
       <div class="vz" id="p22-q"></div>
-      <p class="v3-foot">Q1-15 left out: the files start 01-15, so customers from before look new · <button class="linkbtn" data-go="p2-trust">2.5 →</button></p>
+      <p class="v3-foot">% of paying subscribers in the quarter · above each column: New and Reactivated (on phone: Reactivated only) · *Q1-15 = 02-15 and 03-15 only, 01-15 is the warm-up month</p>
     </div>
 
-    <div class="card v3-card">
-      <h2>New and reactivated users, by month</h2>
-      <p class="v3-c warn"><b>New is shrinking:</b> about 11,500 a month in 2015 → 8,500 in 2017</p>
-      <div class="vz-lg"><span><i class="bar" style="--c:var(--v-mid)"></i>New</span><span><i class="bar" style="--c:var(--v-teal-l)"></i>Reactivated</span><span><i class="ln thick" style="--c:var(--v-navy)"></i>New, yearly average</span></div>
-      <div class="vz" id="p22-m"></div>
-      <p class="v3-foot"><b>New</b> = first paid month seen in the files, not always a new app user · free trials are not counted (not paying)</p>
-    </div>
-
-    <div class="card v3-card">
-      <h2>Months with an event</h2>
-      <div class="v3-tw"><table class="v3-t">
-        <thead><tr><th>Month</th><th>New · % of paying</th><th>Reactivated · % of paying</th><th>Renewing</th><th>What happened</th></tr></thead>
-        <tbody>
-          <tr><td class="m">01-15</td><td class="am">131,441 · 100%</td><td>0 · 0%</td><td>0%</td><td class="l">Files start 01-01-15: every customer from before counts as new</td></tr>
-          <tr><td class="m">03-15</td><td class="am">27,285 · 16.4%</td><td>585 · 0.4%</td><td>83.3%</td><td class="l">Customers on longer plans make their first 2015 purchase: also counted as new</td></tr>
-          <tr><td class="m">06-15</td><td>8,050 · 4.5%</td><td class="bd">18,324 · 10.2%</td><td>85.3%</td><td class="l">About 17,000 users cut off in the 04-15 billing gap came back</td></tr>
-          <tr><td class="m">03-16</td><td>11,657 · 4.6%</td><td>3,684 · 1.4%</td><td>94.0%</td><td class="l">Payment method 39 outage starts: its users drop out (2.3)</td></tr>
-          <tr><td class="m">07-16</td><td>11,627 · 4.3%</td><td class="bd">25,205 · 9.3%</td><td>86.5%</td><td class="l">Payment method 39 users came back</td></tr>
-          <tr><td class="m">03-17</td><td>8,310 · 2.7%</td><td>3,491 · 1.2%</td><td>96.1%</td><td class="l">Latest month</td></tr>
-        </tbody></table></div>
-      <p class="v3-foot">Amber: counted as new only because the files start in 2015 · Red: back after a billing problem · <button class="linkbtn" data-go="p2-trust">2.5 What we don't trust →</button></p>
-    </div>
-
-    <details class="card v3-fold"><summary>+ Definitions</summary><ul>
-      <li><b>Paying subscriber:</b> at least one day of paid access in the month (same as 2.1). Each one is exactly one of the three below</li>
+    <details class="card v3-fold"><summary>+ Metric definitions</summary><ul>
+      <li><b>Paying subscriber:</b> at least one day of paid access in the month (same as 2.1). Each one is exactly one of the three groups below</li>
       <li><b>New:</b> their first subscription in the files starts this month: first time paying in our data, not always a new app user</li>
+      <li><b>Renewing:</b> paid before and did not stop for more than 30 days: renewed, or still inside a multi-month or annual plan</li>
       <li><b>Reactivated:</b> back more than 30 days after their last subscription expired</li>
-      <li><b>Renewing:</b> everyone else: renewed, or still inside a multi-month or annual plan</li>
+      <li><b>Warm-up:</b> the files start on 01-01-15, so in 01-15 every customer counts as New. 01-15 is left out; 02-15 and 03-15 still show extra New</li>
     </ul></details>
-    <details class="card v3-fold"><summary>+ Why 01-15 to 03-15 are left out</summary><div class="v3-in">
-      <p>The files start on 01-01-15. A customer who already paid in 2014 shows up as <b>New</b> at their first 2015 purchase. Example, user <span class="mono">u_00001a7cf51cb31e</span>:</p>
+
+    <div class="p22-two">
+      <div class="card v3-card">
+        <h2>Retention base: Total vs Renewing</h2>
+        <p class="v3-c ok"><b>Renewing carries the total:</b> 291,149 of 302,950 paying subscribers renewed in 03-17</p>
+        <div class="vz-lg p22-lg"><span><i class="ln dash" style="--c:var(--p22-tot)"></i>Total monthly (paying)</span><span><i class="ln thick" style="--c:var(--p22-ren)"></i>Renewing</span></div>
+        <div class="vz" id="p22-l1"></div>
+        <p class="v3-foot">From 04-15: earlier months are still warm-up</p>
+      </div>
+      <div class="card v3-card">
+        <h2>Growth engine: New vs Reactivated</h2>
+        <p class="v3-c warn"><b>New is falling:</b> about 11,500 a month in 2015 → 8,500 in 2017. Reactivated peaks are billing-gap returns</p>
+        <div class="vz-lg p22-lg"><span><i class="ln thick" style="--c:var(--p22-new)"></i>New</span><span><i class="ln thick" style="--c:var(--p22-rea)"></i>Reactivated</span></div>
+        <div class="vz" id="p22-l2"></div>
+        <p class="v3-foot">Separate scale from the left chart, so the small groups stay readable</p>
+      </div>
+    </div>
+
+    <details class="card v3-fold"><summary>+ Technical note</summary><div class="v3-in">
+      <p><b>01-15 warm-up.</b> The files start on 01-01-15. A customer who already paid in 2014 shows up as <b>New</b> at their first 2015 purchase. Example, user <span class="mono">u_00001a7cf51cb31e</span>:</p>
       <div class="v3-tw"><table class="v3-t">
         <thead><tr><th>What</th><th>Value</th></tr></thead>
         <tbody>
@@ -815,6 +815,29 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
           <tr><td class="l">Counted in 01-15 as</td><td class="am">New</td></tr>
         </tbody></table></div>
       <p>So 01-15 shows 131,441 "new" (100%); 64,730 of them registered before 2013. In 02-15 and 03-15 customers on 2–12 month plans make their first 2015 purchase and also look new. From 04-15 the numbers are normal</p>
+      <p><b>06-15 jump.</b> 17,208 paying users were lost in the 04-15 billing gap. In 06-15 Reactivated jumps to 18,324 (10.2% of paying): mostly the same users coming back, not real win-backs</p>
+      <p><b>07-16 jump.</b> Payment method 39 paying users fell from 18,813 (03-16) to 1,844 (06-16), then went back to 18,906 in 07-16. Reactivated jumps to 25,205 (9.3% of paying) · <button class="linkbtn" data-go="p2-trust">2.5 What we don't trust →</button></p>
+    </div></details>
+
+    <div class="card v3-card">
+      <h2>Key months</h2>
+      <div class="v3-tw"><table class="v3-t">
+        <thead><tr><th>Month</th><th>New · % of paying</th><th>Reactivated · % of paying</th><th>Renewing</th><th>What happened</th></tr></thead>
+        <tbody>
+          <tr><td class="m">01-15</td><td class="am">131,441 · 100%</td><td>0 · 0%</td><td>0%</td><td class="l">Warm-up: files start 01-01-15, every customer from before counts as New</td></tr>
+          <tr><td class="m">03-15</td><td class="am">27,285 · 16.4%</td><td>585 · 0.4%</td><td>83.3%</td><td class="l">Customers on longer plans make their first 2015 purchase: also counted as New</td></tr>
+          <tr><td class="m">06-15</td><td>8,050 · 4.5%</td><td class="in">18,324 · 10.2%</td><td>85.3%</td><td class="l">About 17,000 users cut off in the 04-15 billing gap came back</td></tr>
+          <tr><td class="m">03-16</td><td>11,657 · 4.6%</td><td>3,684 · 1.4%</td><td>94.0%</td><td class="l bd">Payment method 39 outage starts: its users drop out (2.3)</td></tr>
+          <tr><td class="m">07-16</td><td>11,627 · 4.3%</td><td class="in">25,205 · 9.3%</td><td>86.5%</td><td class="l">Payment method 39 users came back</td></tr>
+          <tr><td class="m">11-16</td><td>7,959 · 2.8%</td><td>3,588 · 1.2%</td><td>96.0%</td><td class="l">Free-trial wave (46,264 free users): no lift in New</td></tr>
+          <tr><td class="m">03-17</td><td>8,310 · 2.7%</td><td>3,491 · 1.2%</td><td class="gd">96.1%</td><td class="l">Latest month: Renewing 96.1%, close to its top (96.2% in 09-16)</td></tr>
+        </tbody></table></div>
+      <p class="v3-foot">Amber: New only because the files start in 2015 · Blue: back after a billing gap · Red: outage starts · Green: latest month</p>
+    </div>
+
+    <details class="card v3-fold"><summary>+ All months</summary><div class="v3-in">
+      <div class="v3-tw"><table class="v3-t" id="p2-tb-flow"></table></div>
+      <p class="v3-foot">Shaded: 01-15 to 03-15 warm-up months</p>
     </div></details>
     <p class="cx-src">SQL: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/sql/08_metrics.sql" target="_blank" rel="noopener">sql/08_metrics.sql ↗</a> (<span class="mono">mart_metrics_month</span>) · Report: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/04_metrics.md" target="_blank" rel="noopener">reports/04_metrics.md ↗</a></p>
   </section>
@@ -1046,24 +1069,42 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     }).join("") + "</tbody>";
 
   /* ---------- 2.2 ---------- */
-  const Q = [["Q2-15", 5.1, 3.9], ["Q3-15", 6.1, 1.2], ["Q4-15", 6.1, 1.8], ["Q1-16", 5.7, 2.0], ["Q2-16", 3.3, 1.8], ["Q3-16", 3.5, 4.2], ["Q4-16", 2.9, 1.3], ["Q1-17", 2.8, 1.6]];
+  // quarterly mix from P2_DATA (same as mart_metrics_month); Q1-15 = 02-15 and 03-15 only (01-15 is the warm-up month)
+  const QS = [];
+  P2_DATA.filter((r) => r[0] >= "2015-02").forEach((r) => {
+    const q = "Q" + Math.ceil(+r[0].slice(5, 7) / 3) + "-" + r[0].slice(2, 4) + (r[0] < "2015-04" ? "*" : "");
+    let o = QS.find((x) => x.q === q); if (!o) QS.push((o = { q, p: 0, n: 0, r: 0, rn: 0, k: 0 }));
+    o.p += r[F.p]; o.n += r[F.n]; o.r += r[F.r]; o.rn += r[5]; o.k++;
+  });
+  const qRen = QS.map((o) => (100 * o.rn) / o.p), qNew = QS.map((o) => (100 * o.n) / o.p), qRea = QS.map((o) => (100 * o.r) / o.p);
+  const pctL = (v) => (v < 10 ? v.toFixed(1) : v.toFixed(0)) + "%";
+  const K22 = { ren: "var(--p22-ren)", nw: "var(--p22-new)", rea: "var(--p22-rea)", tot: "var(--p22-tot)" };
   mount("p22-q", (el) => chart(el, {
-    labels: Q.map((q) => q[0]), xShow: (lab, i, narrow) => !narrow || i % 2 === 0, H: 270, T: 34, gap: 0.84, aria: "New and reactivated share of paying subscribers by quarter",
-    y: { min: 0, max: 8, step: 2, fmt: (v) => v + "%" },
-    series: [{ type: "bar", values: Q.map((q) => q[1]), color: C.blue, label: (v) => v.toFixed(1) + "%", labelWide: true },
-      { type: "bar", values: Q.map((q) => q[2]), color: C.tealL, label: (v) => v.toFixed(1) + "%", labelWide: true }],
-    flags: [{ i: 0, v: 6.6, text: "Billing gap", short: "Gap", color: C.amber, anchor: "start" }, { i: 5, v: 5.6, text: "Billing gap", short: "Gap", color: C.amber }],
-    tip: (i) => `<b>${Q[i][0]}</b>` + tipRow("New", Q[i][1].toFixed(1) + "%") + tipRow("Reactivated", Q[i][2].toFixed(1) + "%"),
+    labels: QS.map((o) => o.q), H: 280, T: 50, gap: 0.62, stacked: true, aria: "Quarterly subscriber mix: Renewing, New and Reactivated as % of paying subscribers",
+    y: { min: 0, max: 100, step: 25, fmt: (v) => v + "%" },
+    series: [{ type: "bar", values: qRen, color: K22.ren, label: pctL, labelPos: "in" },
+      { type: "bar", values: qNew, color: K22.nw, label: pctL, labelPos: "top", labelRow: 1, labelColor: K22.nw },
+      { type: "bar", values: qRea, color: K22.rea, label: pctL, labelPos: "top", labelRow: 0, labelColor: K22.rea }],
+    tip: (i) => `<b>${QS[i].q}</b>` + tipRow("Renewing", qRen[i].toFixed(1) + "%") + tipRow("New", qNew[i].toFixed(1) + "%") + tipRow("Reactivated", qRea[i].toFixed(1) + "%") +
+      `<div class="mute">${n0(QS[i].p / QS[i].k)} paying a month</div>`,
   }));
-  const M22 = rng("2015-04", "2017-03"), L22 = M22.map((r) => ml(r[0])), nw = col(M22, "n"), re = col(M22, "r");
-  const yrAvg = (yr) => { const idx = M22.map((r, i) => (r[0].startsWith(yr) ? i : -1)).filter((i) => i >= 0); return { from: idx[0], to: idx[idx.length - 1], v: avg(idx.map((i) => nw[i])) }; };
-  mount("p22-m", (el) => chart(el, {
-    labels: L22, xShow: qtr, H: 270, T: 34, stacked: true, aria: "New and reactivated paying users per month",
-    y: { min: 0, max: 40000, step: 10000, fmt: (v) => (v ? v / 1000 + "k" : "0") },
-    series: [{ type: "bar", values: nw, color: C.mid }, { type: "bar", values: re, color: C.tealL }],
-    avgs: ["2015", "2016", "2017"].map((yr) => { const a = yrAvg(yr); return { ...a, color: C.navy, label: (yr === "2017" ? "" : yr + " avg ") + (a.v / 1000).toFixed(1) + "k", short: (a.v / 1000).toFixed(1) + "k", anchor: yr === "2017" ? "end" : "middle" }; }),
-    flags: [{ i: L22.indexOf("06-15"), v: nw[2] + re[2], text: "Billing-gap return", short: "Gap", color: C.amber, anchor: "start" },
-      { i: L22.indexOf("07-16"), v: nw[15] + re[15], text: "Billing-gap return", short: "Gap", color: C.amber }],
+  const M22 = rng("2015-04", "2017-03"), L22 = M22.map((r) => ml(r[0])), nw = col(M22, "n"), re = col(M22, "r"), pay = col(M22, "p"), ren = M22.map((r) => r[5]);
+  const half = (lab) => lab.startsWith("01-") || lab.startsWith("07-");
+  const kF = (v) => (v ? v / 1000 + "K" : "0");
+  mount("p22-l1", (el) => chart(el, {
+    labels: L22, xShow: half, H: 260, T: 20, aria: "Total paying subscribers and renewing subscribers per month",
+    y: { min: 0, max: 320000, step: 80000, fmt: kF },
+    series: [{ type: "line", values: pay, color: K22.tot, dash: true, w: 2.2 }, { type: "line", values: ren, color: K22.ren, w: 2.8, end: true }],
+    tip: (i) => `<b>${L22[i]}</b>` + tipRow("Total paying", n0(pay[i])) + tipRow("Renewing", n0(ren[i]) + " · " + ((100 * ren[i]) / pay[i]).toFixed(1) + "%"),
+  }));
+  const ix22 = (m) => L22.indexOf(m);
+  mount("p22-l2", (el) => chart(el, {
+    labels: L22, xShow: half, H: 260, T: 20, aria: "New and reactivated paying subscribers per month",
+    y: { min: 0, max: 30000, step: 10000, fmt: kF },
+    series: [{ type: "line", values: nw, color: K22.nw, w: 2.6 }, { type: "line", values: re, color: K22.rea, w: 2.6 }],
+    flags: [{ i: ix22("06-15"), v: re[ix22("06-15")], dot: re[ix22("06-15")], text: "06-15 Gap return", short: "06-15 Gap", color: K22.rea, anchor: "start" },
+      { i: ix22("07-16"), v: re[ix22("07-16")], dot: re[ix22("07-16")], text: "07-16 Method 39 back", short: "07-16 M39", color: K22.rea, anchor: "end" },
+      { i: ix22("11-16"), v: 15500, dot: nw[ix22("11-16")], text: "11-16 Trials, no lift", short: "11-16 Trials", color: "var(--v-amber)", anchor: "end" }],
     tip: (i) => `<b>${L22[i]}</b>` + tipRow("New", n0(nw[i])) + tipRow("Reactivated", n0(re[i])),
   }));
 
@@ -1155,6 +1196,8 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     document.getElementById(id).innerHTML = `<thead><tr>${head.map((x) => `<th>${x}</th>`).join("")}</tr></thead><tbody>` +
       P2_DATA.map((r) => `<tr${flag && flag(r) ? ' class="flag"' : ""}>${cells(r).map((c, j) => `<td${j ? "" : ' class="m"'}>${c}</td>`).join("")}</tr>`).join("") + "</tbody>";
   };
+  tbl("p2-tb-flow", ["Month", "Paying", "New", "New %", "Reactivated", "Reactivated %", "Renewing", "Renewing %"],
+    (r) => [ml(r[0]), n0(r[F.p]), n0(r[F.n]), pct1(r[6]), n0(r[F.r]), pct1(r[7]), n0(r[5]), pct1(r[8])], (r) => r[0] <= "2015-03");
   tbl("p2-tb-churn", ["Month", "Paying on the 1st", "Lost (30 days)", "Churn 30 days", "Churn 32 days", "Churn 45 days"],
     (r) => [ml(r[0]), n0(r[F.som]), r[F.pc] === null ? "n/a" : n0(r[F.pc]), pct1(r[F.c30]), pct1(r[F.c32]), pct1(r[F.c45])],
     (r) => ["2015-01", "2015-04", "2016-03", "2017-03"].includes(r[0]));
@@ -2917,6 +2960,23 @@ table.v3-t td.l,:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps
 :is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.p3-plot,.p5-sc,.p4-fig) text{font-size:12px}
 :is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.p3-plot,.p5-sc,.p4-fig) :is(text.cat,text.val,text.ax,.tk,.vl){font-size:13px!important}
 
+/* 2.2: Gemini layout. Header gradient, mix colours, two trend cards side by side on one subgrid */
+#view-p2-flow{--p22-ren:#24477A;--p22-new:#4EA3B5;--p22-rea:#0D9488;--p22-tot:#94A3B8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #view-p2-flow{--p22-ren:#6f9ad6;--p22-new:#6cc3d4;--p22-rea:#2dd4bf;--p22-tot:#8a9bb3}}
+:root[data-theme="dark"] #view-p2-flow{--p22-ren:#6f9ad6;--p22-new:#6cc3d4;--p22-rea:#2dd4bf;--p22-tot:#8a9bb3}
+#view-p2-flow .v3-head.p22-head{background:linear-gradient(180deg,#FFFFFF,#F8FAFC)!important}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #view-p2-flow .v3-head.p22-head{background:var(--surface)!important}}
+:root[data-theme="dark"] #view-p2-flow .v3-head.p22-head{background:var(--surface)!important}
+#view-p2-flow .qa>.qa-a.qa-a b.p22-up{color:var(--v-good)!important}
+#view-p2-flow .qa>.qa-a.qa-a b.p22-dn{color:var(--v-bad)!important}
+#view-p2-flow .p22-lg{font-size:14px;font-weight:600}
+#view-p2-flow .vz .vz-in{fill:#fff;stroke:none;font-size:13px}
+#view-p2-flow .vz .vz-val{font-size:13px}
+#view-p2-flow .vz .vz-val.vz-sm{font-size:11px}
+#view-p2-flow table.v3-t td.in{color:var(--v-info-ink);background:var(--v-info-bg);font-weight:700}
+#view-p2-flow>.p22-two{max-width:1100px!important;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}
+#view-p2-flow>.p22-two>.v3-card{grid-row:span 5;grid-template-rows:subgrid;row-gap:12px}
+@media (max-width:860px){#view-p2-flow>.p22-two{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:640px){
   #view-p4 .p4-kpi h3{white-space:normal!important}
   #view-p4 :is(.p4-kpis,.p4-qs){grid-template-columns:repeat(2,minmax(0,1fr))!important}
