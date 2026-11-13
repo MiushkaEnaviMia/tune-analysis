@@ -520,7 +520,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     </header>
 
     <div class="qa">
-    <p class="qa-q"><b>Question:</b> Does our churn rule agree with billing's <span class="mono">churn_labels</span>, and where and why do they disagree?</p>
+    <p class="qa-q"><b>Q</b> Does our churn rule agree with billing's <span class="mono">churn_labels</span>, and where and why do they disagree?</p>
     <div class="cx-bottom qa-a">
       <p><b class="qa-l">Answer:</b> <b>Mostly yes on clean cases, but 13.6% of billing's labels are wrong</b></p><p><span class="mono">churn_labels.csv</span> matches 96.5% on clean 03-17 cases, yet 32,953 labels (13.6%) are systematic errors, most of all 97.7% of 90+ day upgrades flagged as churned</p><p><b>Decision:</b> Do <b>not</b> use <span class="mono">churn_labels.csv</span> for Parts 2 &amp; 3; we use our own validated SQL churn rule instead (<span class="mono">fct_user_month</span>)</p>
     </div>
@@ -713,9 +713,9 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <p>Paying and all active subscribers per month (01-15 – 03-17)</p>
     </div>
     <div class="qa">
-      <p class="qa-q">Are subscribers truly paying, and is growth slowing down?</p>
+      <p class="qa-q">How have active subscribers changed over time?</p>
       <div class="qa-a">
-      <p><b class="qa-l">Answer:</b> <b>Yes on both: almost all active subscribers pay (99.1% in 03-17), while growth has slowed from 5.6% a month in 2015 to 0.8% in 2017</b></p><p>Share paying 03-17: <b>99.1%</b> (03-16: 95.8%, <b class="chg-good">+3%</b>) · paying growth a month, Avg 01-17 – 03-17: <b>0.8%</b> (Avg 04-16 – 03-17: 1.5%, <b class="chg-bad">−49%</b>)</p>
+      <p><b class="qa-l">Answer:</b> <b>Active subscribers keep growing and almost all pay (99.1% in 03-17), but growth has slowed from 5.6% a month in 2015 to 0.8% in 2017</b></p><p>Share paying 03-17: <b>99.1%</b> (03-16: 95.8%, <b class="chg-good">+3%</b>) · paying growth a month, Avg 01-17 – 03-17: <b>0.8%</b> (Avg 04-16 – 03-17: 1.5%, <b class="chg-bad">−49%</b>)</p>
     </div>
     </div>
     <div class="v3-kpis k5">
@@ -870,7 +870,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <p>Share of paying subscribers who left each month, by subscriber type (02-15 – 02-17)</p>
     </div>
     <div class="qa">
-      <p class="qa-q">Are customers staying or leaving, and is churn getting worse?</p>
+      <p class="qa-q">How has the monthly churn rate changed over time?</p>
       <div class="qa-a">
       <p><b class="qa-l">Answer:</b> <b>Customers are staying, and churn is getting a little better</b></p><p>Average churn share a month, Avg 03-16 – 02-17: <b data-r30="3.9%">4.3%</b> (Avg 02-15 – 02-16: <span data-r30="4.5%">5.0%</span>, <b class="chg-good" data-r30="−13%">−14%</b>) · averages leave out the <span data-r30="two billing-gap months (04-15, 03-16)">three billing-gap months (04-15, 01-16, 03-16)</span>, where the charge failed on the company's side and most users paid again</p>
     </div>
@@ -965,16 +965,22 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     <div class="qa">
       <p class="qa-q">Does revenue grow because more people pay or because each pays more, and did discounts drive it?</p>
       <div class="qa-a">
-      <p><b class="qa-l">Answer:</b> <b>Revenue grew because more people pay, not because each pays more, and discounts did not drive it</b></p><p>Revenue <b class="chg-good">+24%</b> (Q1-17 vs Q1-16) came almost entirely from <b class="chg-good">+20%</b> paying subscribers, while ARPPU (revenue per paying subscriber) rose only <b>+4%</b>; discounts ended in 11-15, before both quarters</p>
+      <p><b class="qa-l">Answer:</b> <b>Revenue grew because more people pay, not because each pays more, and discounts did not drive it</b></p><p>Revenue <b class="chg-good">+24%</b> (Q1-17 vs Q1-16) = active subscribers <b class="chg-good">+15%</b> × share paying <b>+4%</b> (96% → 99%) × ARPPU (revenue per paying subscriber) <b>+4%</b> ($119 → $124), so about 2/3 of the growth is more subscribers</p><p>Revenue per subscriber did not grow: ARPU fell from 2015 to 2016 and then stayed flat, and discounts ended in 11-15, before both quarters</p>
     </div>
     </div>
     
     <div class="brief-ref sub-ref"><b>2.4 · Revenue</b><span>Where revenue growth comes from, and revenue per month</span></div>
     <div class="card v3-card">
-      <h2>Revenue Growth: Customers vs Price (Q1-17 vs Q1-16)</h2>
-      <p class="v3-c ok"><b>More paying subscribers explain most of the growth:</b> paying subscribers +20% (252k → 301k a month) and ARPPU +4% ($119 → $124) add up to revenue +24% ($90.4M → $112.3M)</p>
-      <div class="vz" id="p24-ch0"></div>
-      <p class="v3-foot">Q1 = months 01–03 · paying subscribers = monthly average</p>
+      <h2>Where Revenue Growth Comes From (Q1-17 vs Q1-16)</h2>
+      <p class="v3-c ok"><b>About 2/3 of the growth is more active subscribers:</b> revenue +24% = active subscribers +15% × share paying +4% × ARPPU +4%</p>
+      <div class="p24-eq" role="img" aria-label="Q1-17 vs Q1-16: revenue +24% equals active subscribers +15% times share paying +4% times ARPPU +4%">
+        <div class="eq-c tot"><span class="k">Revenue</span><b>+24%</b><span class="ft">$90.4M → $112.3M</span></div><i>=</i>
+        <div class="eq-c a"><span class="k">Active subscribers</span><b>+15%</b><span class="ft">264k → 304k a month</span></div><i>×</i>
+        <div class="eq-c c"><span class="k">Share paying</span><b>+4%</b><span class="ft">96% → 99%</span></div><i>×</i>
+        <div class="eq-c u"><span class="k">ARPPU</span><b>+4%</b><span class="ft">$119 → $124</span></div>
+      </div>
+      <div class="p24-sh"><span class="lb">Share of the growth</span><div class="bar" role="img" aria-label="Share of revenue growth: active subscribers 65%, share paying 17%, ARPPU 18%"><span class="a" style="flex:65">65%</span><span class="c" style="flex:17">17%</span><span class="u" style="flex:18">18%</span></div></div>
+      <p class="v3-foot">Q1 = months 01–03 · active and paying = monthly average · paying subscribers +20% (252k → 301k) = active +15% × share paying +4% · parts multiply, so shares of the growth are counted on a log scale to add up to 100%</p>
     </div>
 
     <div class="card v3-card">
@@ -987,27 +993,19 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     <div class="brief-ref sub-ref"><b>2.4 · ARPU</b><span>Revenue per active subscriber and per paying subscriber over time</span></div>
     <div class="card v3-card">
       <h2>ARPU: Revenue per Active Subscriber</h2>
-      <p class="v3-c info"><b>ARPU is almost the same as ARPPU because almost every active subscriber pays:</b> ARPU Q1-17: $123 a month (Q1-16: $114, +8%), rising faster than ARPPU (+4%) as the share paying grew from 96% to 99%</p>
+      <p class="v3-c warn"><b>ARPU fell from 2015 to 2016 and then stayed flat:</b> ARPU Avg 2016: $118 a month (Avg 2015: $129, −8%), Q1-17: $123</p>
       <div class="vz-lg"><span><i class="ln" style="--c:var(--v-navy)"></i>ARPU = revenue ÷ active subscribers (paying + free trial)</span><span><i class="ln dash" style="--c:var(--v-sky)"></i>ARPPU = revenue ÷ paying subscribers</span></div>
       <div class="vz" id="p24-chA"></div>
       <ul class="vz-flg">
+        <li><b style="color:var(--v-navy)">⚑ 01-16: Auto-renew pays less</b>: Auto-renew ARPPU fell from $139 in 12-15 to $114 in 01-16 and stayed about $122 in 2016, while Pays by hand stayed about $124 (Split by below)</li>
+        <li><b style="color:var(--v-mute)">⚑ 03-15 – 10-15: prices filled in by us</b> (grey band): part of the 2015 level, but outside the band ARPPU still fell from $130 (02-15, 11-15, 12-15) to $123 (Avg 2016)</li>
         <li><b style="color:var(--v-mute)">⚑ 06-15 · 11-16: free-trial waves</b>: ARPU fell to $98 and $106 because many free-trial users joined the base without paying</li>
+        <li><b style="color:var(--v-mute)">⚑ 02-17: 28 days</b>: ARPU $114 vs $133 in 03-17, a calendar effect, not a price cut</li>
       </ul>
-      <p class="v3-foot">Axis starts at $90 · ARPU worked out on this page from revenue and active subscribers in <span class="mono">mart_metrics_month</span></p>
+      <p class="v3-foot">Axis starts at $90 · ARPU and ARPPU move together because 92–99% of active subscribers pay in most months · averages leave out 01-15 (payments missing) and the free-trial months 06-15 and 11-16 · ARPU worked out on this page from revenue and active subscribers in <span class="mono">mart_metrics_month</span></p>
     </div>
 
-    <div class="card v3-card">
-      <h2>ARPPU: Revenue per Paying Subscriber</h2>
-      <p class="v3-c info"><b>Prices stayed flat, so revenue did not grow by charging more:</b> ARPPU Q1-17: $124 a month (Q1-16: $119, +4%), and most months since 01-16 stay between $120 and $128</p>
-      <div class="vz-lg"><span><i class="ln" style="--c:var(--v-navy)"></i>ARPPU = revenue ÷ paying subscribers</span></div>
-      <div class="vz" id="p24-ch2"></div>
-      <ul class="vz-flg">
-        <li><b style="color:var(--v-mute)">⚑ 02-17: 28 days</b>: ARPPU fell to $114.2 from $125.1 in 01-17 because February has only 28 days and revenue is counted per plan day, so it is a calendar effect, not a price cut</li>
-      </ul>
-      <p class="v3-foot">Axis starts at $90 · grey band 03-15 – 10-15: missing list prices filled in by us (1a issue #2)</p>
-    </div>
-
-    <div class="brief-ref sub-ref"><b>2.4 · What else revenue needs</b><span>Auto-renew: the share of paying subscribers whose plan renews by itself</span></div>
+        <div class="brief-ref sub-ref"><b>2.4 · What else revenue needs</b><span>Auto-renew: the share of paying subscribers whose plan renews by itself</span></div>
     <div class="card v3-card">
       <h2>Auto-renew: Count and Share of Paying Subscribers</h2>
       <p class="v3-c ok"><b>3 in 4 paying subscribers now renew automatically:</b> Auto-renew share 75% (228,537 of 302,950) in 03-17, up from a low of 70% in 04-16</p>
@@ -1050,6 +1048,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <li><b>Revenue (recognised):</b> each payment spread evenly over its plan days; a month gets the days that fall in it (an annual plan counts about 1/12 a month)</li>
       <li><b>ARPU:</b> revenue for the month ÷ active subscribers (paying + free trial)</li>
       <li><b>ARPPU:</b> revenue for the month ÷ paying subscribers</li>
+      <li><b>Share paying:</b> paying subscribers ÷ active subscribers, so revenue = active subscribers × share paying × ARPPU</li>
       <li><b>Auto-renew share:</b> paying subscribers whose paid plan in the month has <span class="mono">is_auto_renew = 1</span> ÷ all paying subscribers</li>
       <li><b>Discounted:</b> paid purchases that got any discount from list price ÷ all paid purchases</li>
       <li><b>Discount depth:</b> total discount ÷ total list price, over paid purchases; free trials (100% off) are counted as free-trial starts instead</li>
@@ -1068,42 +1067,43 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     <div class="qa">
       <p class="qa-q">Which months or metrics in 2.1–2.4 can't be read as they are, and why?</p>
       <div class="qa-a">
-      <p><b class="qa-l">Answer:</b> <b>Five periods can't be read as they are; we flag them and leave them out of trends</b></p><p><b>01-15 – 03-15</b> (files start in 2015, so earlier customers look New) · <b>03-15 – 10-15</b> (missing prices that we filled in) · <b>01-16</b> (payment method 39 charged late) · <b>04-16 – 07-16</b> (payment method 39 outage) · <b>churn for 03-17</b> (needs 04-17 data)</p>
+      <p><b class="qa-l">Answer:</b> <b>Five periods can't be read as they are; we flag them and leave them out of trends</b></p>
+      <ul class="p25-ans">
+        <li><b>01-15 – 03-15</b> · files start in 2015, so earlier customers look New and early revenue is missing</li>
+        <li><b>04-15 → 06-15</b> · billing gap: churn jumps, then the same users come back as Reactivated</li>
+        <li><b>01-16</b> · payment method 39 charged late, so churn looks high</li>
+        <li><b>03-16 – 07-16</b> · payment method 39 outage: churn jumps, paying dips, users back in 07-16</li>
+        <li><b>03-17</b> · churn needs 04-17 data</li>
+      </ul>
+      <p class="p25-care">Read with care: <b>03-15 – 10-15</b> revenue and ARPU use prices we filled in</p>
     </div>
     </div>
 
     <div class="card v3-card">
-      <h2>Flagged Points: Month, Problem and Fix</h2>
-      <div class="v3-tw"><table class="v3-t">
-        <thead><tr><th>Tab</th><th>Month · metric</th><th>What is wrong</th><th>Evidence</th><th>What we did</th></tr></thead>
+      <h2>The Five Periods: What Is Wrong and What We Did</h2>
+      <div class="v3-tw"><table class="v3-t p25-t">
+        <thead><tr><th>Period</th><th>Tabs</th><th>What is wrong</th><th>What we did</th></tr></thead>
         <tbody>
-          <tr><td class="m"><button class="linkbtn" data-go="p2-active">2.1</button></td><td class="l">All active users</td><td class="l">Free-trial waves add up to 46,264 extra users in a month</td><td class="l">06-15, 10-16 – 11-16</td><td class="l">Headline counts paying only</td></tr>
-          <tr><td class="m"><button class="linkbtn" data-go="p2-active">2.1</button></td><td class="l bd">Paying · 04-16 – 06-16</td><td class="l">Dip from the payment method 39 outage (below)</td><td class="l">257,452 (02-16) → 239,955 (04-16)</td><td class="l">Flagged, not lost customers</td></tr>
-          <tr><td class="m"><button class="linkbtn" data-go="p2-flow">2.2</button></td><td class="l bd">New · 01-15 – 03-15</td><td class="l">Files start in 2015, so earlier customers look new</td><td class="l">100% New in 01-15; 27,285 in 03-15</td><td class="l">Left out of trends</td></tr>
-          <tr><td class="m"><button class="linkbtn" data-go="p2-flow">2.2</button></td><td class="l bd">Reactivated · 06-15, 07-16</td><td class="l">Users back after a billing gap, not real win-backs</td><td class="l">17,208 and 16,047 lost in 04-15 and 03-16</td><td class="l">Flagged</td></tr>
-          <tr><td class="m"><button class="linkbtn" data-go="p2-churn">2.3</button></td><td class="l bd">Churn · 04-15 (14.3%)</td><td class="l">17,435 Auto-renew users not charged on the same day</td><td class="l">99.5% paid again, mostly in 06-15</td><td class="l">Flagged, not real churn</td></tr>
-          <tr><td class="m"><button class="linkbtn" data-go="p2-churn">2.3</button></td><td class="l bd">Churn · 03-16 (14.0%)</td><td class="l">Payment method 39 outage (below)</td><td class="l">16,468 lost (usual: ~670); 97% back in 07-16</td><td class="l">Flagged · ask billing</td></tr>
-          <tr><td class="m"><button class="linkbtn" data-go="p2-churn">2.3</button></td><td class="l bd">Churn · 01-16 (13.0%)</td><td class="l">Payment method 39 charged its Auto-renew users late, past the 3-day window</td><td class="l">15,970 charged on the last day of 01-16; 5.0% with 30 days for all</td><td class="l">Flagged, left out of averages</td></tr>
-          <tr><td class="m"><button class="linkbtn" data-go="p2-churn">2.3</button></td><td class="l am">Churn · 12-15, 12-16</td><td class="l">Many Pays by hand renew on day 31–32, just past 30 days</td><td class="l">5.2% → 3.8% and 4.6% → 3.2% with 32 days for all</td><td class="l">Kept 30 days, noted</td></tr>
-          <tr><td class="m"><button class="linkbtn" data-go="p2-churn">2.3</button></td><td class="l bd">Churn · 03-17</td><td class="l">The 30-day window for Pays by hand needs April data</td><td class="l">14,396 outcomes can't be judged</td><td class="l">Not reported</td></tr>
-          <tr><td class="m"><button class="linkbtn" data-go="p2-arpu">2.4</button></td><td class="l bd">Revenue, ARPU, ARPPU · 01-15</td><td class="l">Payments made before 2015 are missing</td><td class="l">ARPPU $71 vs ~$130 later</td><td class="l">Left out of trends</td></tr>
-          <tr><td class="m"><button class="linkbtn" data-go="p2-arpu">2.4</button></td><td class="l am">Revenue, ARPU, discount · 03-15 – 10-15</td><td class="l">Price missing on 214,207 paid rows, filled from a price list</td><td class="l">1a issue #2</td><td class="l">Used, lower confidence</td></tr>
-          <tr><td class="m"><button class="linkbtn" data-go="p2-arpu">2.4</button></td><td class="l am">ARPU, ARPPU · month to month</td><td class="l">Follows the number of days in the month</td><td class="l">$114 (02-17) vs $133 (03-17)</td><td class="l">Compare years, not months</td></tr>
+          <tr><td class="m bd">01-15 – 03-15</td><td class="m"><button class="linkbtn" data-go="p2-flow">2.2</button> <button class="linkbtn" data-go="p2-arpu">2.4</button></td><td class="l">Files start in 2015: earlier customers look New (100% New in 01-15) and payments before 2015 are missing (ARPPU $71 vs ~$130 later)</td><td class="l">Left out of trends</td></tr>
+          <tr><td class="m bd">04-15 → 06-15</td><td class="m"><button class="linkbtn" data-go="p2-churn">2.3</button> <button class="linkbtn" data-go="p2-flow">2.2</button></td><td class="l">17,435 Auto-renew users not charged on the same day (churn 14.3%); 99.5% paid again, mostly in 06-15</td><td class="l">Flagged, not real churn</td></tr>
+          <tr><td class="m bd">01-16</td><td class="m"><button class="linkbtn" data-go="p2-churn">2.3</button></td><td class="l">Payment method 39 charged 15,970 Auto-renew users on the last day of the month, past the 3-day window (churn 13.0%)</td><td class="l">Left out of averages</td></tr>
+          <tr><td class="m bd">03-16 – 07-16</td><td class="m"><button class="linkbtn" data-go="p2-active">2.1</button> <button class="linkbtn" data-go="p2-churn">2.3</button> <button class="linkbtn" data-go="p2-flow">2.2</button></td><td class="l">Payment method 39 outage: 16,468 lost in 03-16 (usual ~670), paying 257,452 → 239,955, 97% back in 07-16</td><td class="l">Flagged · ask billing</td></tr>
+          <tr><td class="m bd">03-17</td><td class="m"><button class="linkbtn" data-go="p2-churn">2.3</button></td><td class="l">Churn for Pays by hand needs 04-17 data: 14,396 outcomes can't be judged</td><td class="l">Not reported</td></tr>
+          <tr><td class="m am">03-15 – 10-15</td><td class="m"><button class="linkbtn" data-go="p2-arpu">2.4</button></td><td class="l">Price missing on 214,207 paid rows, filled from a price list</td><td class="l">Used, lower confidence</td></tr>
         </tbody></table></div>
       <p class="v3-foot">Red: not trusted · amber: read with care</p>
     </div>
 
     <div class="card v3-card">
       <h2>Billing Gaps: Churn vs Reactivated</h2>
-      <p class="v3-c warn"><b>The 04-15 and 03-16 churn spikes were billing gaps, not users leaving:</b> a group of Auto-renew users was not charged on time (churn share 14.3% and 14.0%); most paid again in 06-15 and 07-16 (Reactivated 10.2% and 9.3% share of paying)</p>
+      <p class="v3-c warn"><b>The 04-15 and 03-16 churn spikes were billing gaps, not users leaving:</b> most of the same users paid again in 06-15 and 07-16</p>
       <div class="vz-lg"><span><i class="ln" style="--c:var(--v-navy)"></i>Churn rate</span><span><i class="ln" style="--c:var(--v-teal)"></i>Reactivated, % of paying</span></div>
       <div class="vz" id="p25-ch1"></div>
       <ul class="vz-flg">
-        <li><b style="color:var(--v-red)">⚑ Left</b>: churn jumps in 04-15 and 03-16 (03-16 = payment method 39 outage)</li>
-        <li><b style="color:var(--v-teal)">⚑ Back</b>: Reactivated jumps in 06-15 and 07-16, mostly the same users</li>
-        <li><b style="color:var(--v-mute)">⚑ Late charge</b>: 01-16, payment method 39 charged 15,970 Auto-renew users late, on the last day of the month; they paid, so no Reactivated jump follows</li>
+        <li><b style="color:var(--v-red)">⚑ Left</b>: churn jumps in 04-15 and 03-16</li>
+        <li><b style="color:var(--v-teal)">⚑ Back</b>: Reactivated jumps in 06-15 and 07-16</li>
+        <li><b style="color:var(--v-mute)">⚑ Late charge</b>: 01-16, users paid late, so no Reactivated jump follows</li>
       </ul>
-      <p class="v3-foot">The data can't tell why; most likely failed payments, billing should confirm</p>
     </div>
     <p class="cx-src">SQL: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/sql/08_metrics.sql" target="_blank" rel="noopener">sql/08_metrics.sql ↗</a> · Report: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/04_metrics.md" target="_blank" rel="noopener">reports/04_metrics.md ↗</a></p>
   </section>
@@ -1291,13 +1291,6 @@ const P23_TYPE = [["2015-02",1.99,2249,15.49,1943,0.09,4],["2015-03",2.33,2673,1
   }));
 
   /* ---------- 2.4 ---------- */
-  const G24 = [["Revenue", 24, "$90.4M → $112.3M"], ["Paying subscribers", 20, "252k → 301k a month"], ["ARPPU", 4, "$119 → $124"]];
-  mount("p24-ch0", (el) => chart(el, {
-    labels: G24.map((g) => g[0]), H: 230, T: 30, gap: 0.42, aria: "Q1-17 vs Q1-16: revenue +24%, paying subscribers +20%, ARPPU +4%",
-    y: { min: 0, max: 30, step: 10, fmt: (v) => (v ? "+" + v + "%" : "0%") },
-    series: [{ type: "bar", values: G24.map((g) => g[1]), color: C.blue, colorAt: (i) => (i === 2 ? C.sky : null), label: (v, i) => "+" + v + "%" }],
-    tip: (i) => `<b>${G24[i][0]}</b>` + tipRow("Q1-16 → Q1-17", G24[i][2]),
-  }));
   const R24 = rng("2015-02", "2017-03"), L24 = R24.map((r) => ml(r[0]));
   mount("p24-ch1", (el) => chart(el, {
     labels: L24, xShow: qtr, H: 270, aria: "Revenue per month and paying subscribers",
@@ -1309,19 +1302,12 @@ const P23_TYPE = [["2015-02",1.99,2249,15.49,1943,0.09,4],["2015-03",2.33,2673,1
   mount("p24-chA", (el) => chart(el, {
     labels: L24, xShow: qtr, H: 250, T: 34, aria: "ARPU and ARPPU by month in US dollars",
     y: { min: 90, max: 150, step: 10, fmt: (v) => "$" + v },
+    shade: [[L24.indexOf("03-15"), L24.indexOf("10-15"), ""]],
     series: [{ type: "line", values: pp24, color: C.sky, dash: true, w: 2 }, { type: "line", values: u24, color: C.navy, w: 2.6, dots: true, end: true }],
-    flags: [{ i: L24.indexOf("06-15"), v: u24[L24.indexOf("06-15")], below: true, text: "06-15: free trials", short: "Trials", color: "var(--v-mute)" },
+    flags: [{ i: L24.indexOf("01-16"), v: u24[L24.indexOf("01-16")], below: true, text: "01-16: Auto-renew pays less", short: "01-16", color: C.navy },
+      { i: L24.indexOf("06-15"), v: u24[L24.indexOf("06-15")], below: true, text: "06-15: free trials", short: "Trials", color: "var(--v-mute)" },
       { i: L24.indexOf("11-16"), v: u24[L24.indexOf("11-16")], below: true, text: "11-16: free trials", short: "Trials", color: "var(--v-mute)", anchor: "end" }],
     tip: (i) => `<b>${L24[i]}</b>` + tipRow("ARPU", "$" + u24[i].toFixed(1)) + tipRow("ARPPU", "$" + pp24[i].toFixed(1)),
-  }));
-  const a24 = col(R24, "arpu"), feb = (lab) => lab.startsWith("02-");
-  mount("p24-ch2", (el) => chart(el, {
-    labels: L24, xShow: qtr, H: 250, T: 34, aria: "ARPPU by month in US dollars",
-    y: { min: 90, max: 150, step: 10, fmt: (v) => "$" + v },
-    shade: [[L24.indexOf("03-15"), L24.indexOf("10-15"), ""]],
-    series: [{ type: "line", values: a24, color: C.navy, w: 2.6, dots: true, end: true }],
-    flags: [{ i: L24.indexOf("02-17"), v: a24[L24.indexOf("02-17")], below: true, text: "02-17: 28 days", short: "28 days", color: "var(--v-mute)", anchor: "end" }],
-    tip: (i) => `<b>${L24[i]}</b>` + tipRow("ARPPU", "$" + a24[i].toFixed(1)) + (feb(L24[i]) ? `<div class="mute">February: fewer days</div>` : ""),
   }));
   const AR24 = [[117348,142169],[136377,166868],[136279,173128],[119000,161139],[133126,179194],[139860,189659],[145359,198520],[150221,207464],[153189,213907],[164632,227523],[169904,236038],[175511,244746],[184552,257452],[179449,254318],[167070,239955],[169900,241657],[171844,244016],[199148,271819],[207716,279560],[209792,283352],[212280,285582],[215308,289108],[220205,296009],[223282,299719],[226136,301797],[228537,302950]]; // 02-15 .. 03-17, mart_p2_splits paying_by_renew (sql/11)
   const arN = AR24.map((r) => r[0]), arS = AR24.map((r) => Math.round(1000 * r[0] / r[1]) / 10);
@@ -3058,10 +3044,11 @@ main{--v-navy:#1e3a8a;--v-blue:#2563eb;--v-mid:#60a5fa;--v-sky:#bfdbfe;--v-teal:
 :is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .qa>.qa-a.qa-a :is(p,li){margin:0;background:none!important;color:var(--v-ink)!important;font-size:15px!important;font-weight:400!important}
 :is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .qa>.qa-a.qa-a b{color:var(--v-navy)!important;font-weight:700!important}
 
-/* Gemini Q/A: question and answer in one box, labelled "Question:" and "Answer:" */
+/* Q/A: question and answer in one box; question labelled "Q", answer unlabelled on the line below */
+.qa b.qa-l{display:none!important}
 :is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .qa.qa{background:var(--v-qa-bg)!important;border:1px solid var(--v-qa-line)!important;border-left:4px solid var(--v-navy)!important;border-radius:10px!important;padding:16px 20px!important;gap:10px!important}
 :is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .qa>.qa-q.qa-q{display:block!important;font-size:16px!important;font-weight:400!important;color:var(--v-ink)!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .qa>.qa-q.qa-q::before{content:"Question: "!important;display:inline!important;width:auto!important;height:auto!important;background:none!important;color:var(--v-navy)!important;font-size:inherit!important;font-weight:700!important;border-radius:0!important;transform:none!important;margin:0!important;white-space:pre}
+:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .qa>.qa-q.qa-q::before{content:"Q"!important;display:inline!important;width:auto!important;height:auto!important;background:none!important;color:var(--v-navy)!important;font-size:inherit!important;font-weight:700!important;border-radius:0!important;transform:none!important;margin:0 8px 0 0!important;vertical-align:baseline!important}
 :is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .qa>.qa-a.qa-a{background:none!important;border:0!important;padding:0!important;font-size:16px!important;box-shadow:none!important}
 :is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .qa>.qa-a.qa-a :is(p,li){font-size:16px!important}
 
@@ -3129,7 +3116,21 @@ main{--v-navy:#1e3a8a;--v-blue:#2563eb;--v-mid:#60a5fa;--v-sky:#bfdbfe;--v-teal:
 .vz .vz-grid{stroke:var(--v-grid);stroke-dasharray:3 3}
 .vz .vz-base{stroke:var(--v-axis)}
 .vz .vz-shade{fill:var(--v-shade);opacity:.8}
-#p24-ch2 .vz-shade{fill:var(--v-grey);opacity:.35}
+#p24-chA .vz-shade,#p24-chA-split .vz-shade{fill:var(--v-grey);opacity:.35}
+/* 2.4 revenue = active × share paying × ARPPU */
+.p24-eq{display:flex;align-items:stretch;justify-content:center;gap:8px;flex-wrap:wrap}
+.p24-eq>i{align-self:center;font-style:normal;font-size:22px;font-weight:700;color:var(--v-mute)}
+.p24-eq .eq-c{flex:1 1 0;min-width:120px;max-width:180px;display:grid;gap:2px;text-align:center;padding:10px 8px;border:1px solid var(--v-line);border-top:4px solid var(--c,var(--v-navy));border-radius:10px}
+.p24-eq .eq-c .k{font-size:13px;font-weight:700;color:var(--v-mute)}
+.p24-eq .eq-c b{font-size:24px;line-height:1.2;color:var(--v-navy);font-variant-numeric:tabular-nums}
+.p24-eq .eq-c .ft{font-size:13px;color:var(--v-mute);font-variant-numeric:tabular-nums}
+.p24-eq .eq-c.tot{background:var(--v-qa-bg)}.p24-eq .eq-c.tot b{color:var(--v-good)}
+.p24-eq .a,.p24-sh .a{--c:var(--v-navy)}.p24-eq .c,.p24-sh .c{--c:var(--v-blue)}.p24-eq .u,.p24-sh .u{--c:var(--v-mid)}
+.p24-sh{display:flex;align-items:center;gap:10px;max-width:640px;width:100%;margin:0 auto}
+.p24-sh .lb{font-size:13px;font-weight:700;color:var(--v-mute);white-space:nowrap}
+.p24-sh .bar{flex:1;display:flex;gap:0!important;height:24px;border-radius:6px;overflow:hidden}
+.p24-sh .bar span{margin:0!important;padding:0!important;border-radius:0!important;background:var(--c);color:#fff;font-size:12px;font-weight:700;display:grid;place-items:center;min-width:0}
+@media (max-width:560px){.p24-eq>i{font-size:18px}.p24-eq .eq-c{min-width:calc(50% - 22px)}.p24-eq>i:nth-of-type(2){display:none}.p24-sh{flex-wrap:wrap}.p24-sh .bar{flex-basis:100%}}
 .vz .vz-cross{stroke:var(--v-axis);stroke-dasharray:3 3}
 .vz-tip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--v-line);border-radius:8px;padding:8px 12px;font-size:13px;box-shadow:0 4px 14px rgba(15,23,42,.1);white-space:nowrap;z-index:2}
 .vz-tip b{display:block;color:var(--v-navy);margin-bottom:2px}
@@ -3218,6 +3219,13 @@ table.v3-t td.l,:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps
 #view-p2-flow .vz .vz-val{font-size:13px}
 #view-p2-flow .vz .vz-val.vz-sm{font-size:11px}
 #view-p2-flow table.v3-t td.in{color:var(--v-info-ink);background:var(--v-info-bg);font-weight:700}
+#view-p2-trust .qa-a ul.p25-ans{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+#view-p2-trust .qa-a ul.p25-ans li{padding-left:12px;border-left:3px solid var(--v-bad)}
+#view-p2-trust .qa-a p.p25-care{padding-left:12px;border-left:3px solid var(--v-warn);color:var(--v-mute)!important}
+#view-p2-trust table.p25-t td.l{min-width:0}
+#view-p2-trust table.p25-t td.l:nth-child(3){min-width:300px}
+#view-p2-trust table.p25-t td.l:last-child{white-space:nowrap}
+@media (max-width:640px){#view-p2-trust .p25-t{display:block}#view-p2-trust .p25-t thead{display:none}#view-p2-trust .p25-t :is(tbody,tr){display:block}#view-p2-trust .p25-t tr{display:grid;grid-template-columns:auto 1fr;border-bottom:1px solid var(--v-line);padding:8px 0}#view-p2-trust .p25-t td{display:block;height:auto!important;border:0!important;padding:3px 10px!important;text-align:left!important;min-width:0!important;white-space:normal!important;background:none!important}#view-p2-trust .p25-t td.l{grid-column:1/-1}#view-p2-trust .p25-t td.l:last-child{color:var(--v-mute);font-size:13px}#view-p2-trust .p25-t td.m:nth-child(2){text-align:right!important}}
 #view-p2-flow>.p22-two{max-width:1100px!important;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}
 #view-p2-flow>.p22-two>.v3-card{grid-row:span 6;grid-template-rows:subgrid;row-gap:12px}
 @media (max-width:860px){#view-p2-flow>.p22-two{grid-template-columns:minmax(0,1fr)}}
@@ -3346,15 +3354,15 @@ main{--sp-a:#1e3a8a;--sp-b:#d97706;--sp-c:#0d9488;--sp-d:#60a5fa;--sp-e:#94a3b8}
   }
   const v3 = { pcls: "v3-c", fcls: "v3-foot", plotCls: "vz" };
 
-  /* 2.4 ARPPU by auto-renew: revenue of auto-renew purchases ÷ paying subscribers on auto-renew (same for manual), from 02-15 like the Total chart */
+  /* 2.4 ARPU card, split = ARPPU by auto-renew: revenue of auto-renew purchases ÷ paying subscribers on auto-renew (same for manual), from 02-15 like the Total chart */
   const s24 = M.indexOf("2015-02"), L24 = L.slice(s24), aA = D.arpu["Auto-renew"].slice(s24), aM = D.arpu.Manual.slice(s24);
-  addSplit("p24-ch2", { ...v3, name: "Auto-renew vs Pays by hand",
-    concl: "<b>Moving people to Auto-renew would not lower revenue per subscriber:</b> both groups pay about the same, ARPPU Avg 04-16 – 03-17: Auto-renew $123, Pays by hand $125",
+  addSplit("p24-chA", { ...v3, name: "Auto-renew vs Pays by hand",
+    concl: "<b>The drop came from Auto-renew, and now both groups pay about the same:</b> ARPPU Avg 2016: Auto-renew $122 (Avg 2015: $140), Pays by hand $124 (Avg 2015: $119)",
     legend: vzLg([["--sp-a", "Auto-renew", 1], ["--sp-b", "Pays by hand", 1]]),
-    foot: "Why this split: Part 4 recommends moving Pays by hand to Auto-renew, so we check it would not cut revenue · ARPPU = the group's revenue ÷ the group's paying subscribers · axis starts at $90",
+    foot: "Why this split: Part 4 recommends moving Pays by hand to Auto-renew, so we check it would not cut revenue · ARPPU = the group's revenue ÷ the group's paying subscribers · grey band 03-15 – 10-15: prices filled in by us · axis starts at $90",
     draw: (el) => chart(el, {
       labels: L24, xShow: qtr, H: 250, aria: "ARPPU by month for Auto-renew and Pays by hand subscribers, US dollars",
-      y: { min: 90, max: 150, step: 10, fmt: (v) => "$" + v },
+      y: { min: 90, max: 150, step: 10, fmt: (v) => "$" + v }, shade: [[L24.indexOf("03-15"), L24.indexOf("10-15"), ""]],
       series: [{ type: "line", values: aA, color: "var(--sp-a)", w: 2.6, end: true }, { type: "line", values: aM, color: "var(--sp-b)", w: 2.6, end: true }],
       tip: (i) => `<b>${L24[i]}</b>` + tip("Auto-renew", "$" + aA[i].toFixed(1)) + tip("Pays by hand", "$" + aM[i].toFixed(1)),
     }) });
