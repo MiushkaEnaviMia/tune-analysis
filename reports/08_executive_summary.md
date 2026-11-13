@@ -6,7 +6,7 @@ Interactive version with charts: https://miushkaenavimia.github.io/tune-analysis
 
 ## Bottom line
 
-**The subscriber base is healthy, but growth is slowing.** Paying subscribers grew +19% in the last year (from +52% the year before), and monthly churn fell to about 3.6%. The risk is fewer new payers and a slowly falling revenue per user. **Churn is about how people pay and how new they are, not who they are:** manual payers churn 20.1% per renewal vs 2.3% on auto-renew, and the first renewal loses 16.5% vs ~4% later.
+**The subscriber base is healthy, but growth is slowing.** Paying subscribers grew +19% in the last year (from +52% the year before), and monthly churn fell to about 3.6%. The risk is fewer new payers and flat revenue per user. **Churn is about how people pay and how new they are, not who they are:** manual payers churn 20.1% per renewal vs 2.3% on auto-renew, and the first renewal loses 16.5% vs ~4% later.
 
 | Metric | Value |
 |:--|:--|
@@ -14,13 +14,13 @@ Interactive version with charts: https://miushkaenavimia.github.io/tune-analysis
 | Growth, Mar 2016 → Mar 2017 | +19% (was +52%) |
 | Monthly churn, 2017 average | 3.6% (5.0% in 2016) |
 | New payers per month, 2017 | 2.9% of payers (3.9% in 2016) |
-| Revenue per paying user | 133 (2015) → 120 (2017), −10% |
+| Revenue per paying user | $119 (Q1-16) → $124 (Q1-17), +4%: flat |
 
 ## The four questions
 
 | Question | Status | Answer |
 |:--|:--:|:--|
-| **1 · How healthy is the base?** | Answered | Healthy, growing, but slowing. +19% paying subscribers in the last year, down from +52%. Monthly churn mostly 3–5%; 3.6% in 2017. Renewing users are 94–96% of the base; new payers fell to 2.9% a month. Revenue per paying user down about 10% since 2015 |
+| **1 · How healthy is the base?** | Answered | Healthy, growing, but slowing. +19% paying subscribers in the last year, down from +52%. Monthly churn mostly 3–5%; 3.6% in 2017. Renewing users are 94–96% of the base; new payers fell to 2.9% a month. Revenue per paying user flat: +4% (Q1-16 → Q1-17), growth comes from more payers |
 | **2 · What drives churn?** | Answered | How people pay, and how new they are. Auto-renew off 20.1% vs on 2.3% per renewal (4.5× after a fair comparison). First renewal 16.5% vs ~4% later (3.5×). Payment provider: one billing incident (Mar 2016, 16,468 users), plus a real gap, method 40 4.3% vs method 41 1.9%. Age, city and channel only look important: their gap shrinks to 1.3–2.1× once auto-renew and plan length are equal |
 | **3 · Did free trials and prices work?** | Partly | We see what changed, not whether it paid off. Discounts stopped by Oct 2015 (9.7% of paid purchases → about 0.1%). Promotion moved to free trials: 42,743 free starts in Jun 2015, 58,821 in Oct–Nov 2016. Not measured: our deep dive chose churn drivers (option a), so the trial and price analysis (option b) is not done |
 | **4 · Push annual plans harder?** | Partly | Promising, but test before pushing. Per month of cover, manual annual plans lose 2.7% vs 18.5% on manual 30-day plans, but committed users pick annual plans, so this is not proof: that is the Part 5a test. Annual plans are 10.7% of revenue; do not judge them on billing's labels (97.7% of 90+ day renewals wrongly "churned") |

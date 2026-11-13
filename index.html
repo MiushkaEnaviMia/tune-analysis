@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Tune Subscription Analysis</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap">
 <style>
 /* Layout: app shell. Top bar with tabs; each tab is a full-width workspace (report, lineage map, explorer + query panel). */
 :root{--bg:#f5f8fc;--surface:#ffffff;--fg:#14233a;--muted:#55657d;--line:#d3e0ee;--accent:#2e75b6;--accent-soft:#ddebf7;
@@ -378,17 +378,16 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
   <section class="view ov" id="view-overview" hidden>
     <div class="card ov-hero">
       <h1>Tune subscription analysis</h1>
-      <p class="ov-bl"><b>Bottom line:</b> the subscriber base is healthy (+19% in a year, churn 3.6% a month) but growth is slowing. Churn is driven by how people pay and how new they are, not by who they are</p>
       <p class="ov-pitch">This project is the Data Analytics Lead take-home submission on Tune, a language-learning subscription app. It analyzes raw 2015–2017 billing data in DuckDB, from data preparation and metric definitions to answering four questions on growth, churn, pricing, and annual plans. In this Introduction tab, you can navigate each part of the analysis alongside the README setup guide</p>
     </div>
     <div class="ov-main">
-      <div class="label">Where each part of the brief lives</div>
-        <div class="card scroll ov-map"><table class="grid"><thead><tr><th>Part</th><th>What</th><th>On this site</th><th>Report</th></tr></thead><tbody><tr class="grp"><td colspan="4">Part 1 · Data engineering</td></tr><tr><td><b>1a</b></td><td class="l">Data quality: 21 issues, ranked by impact</td><td><button class="linkbtn" data-go="dq">1a →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/01_data_quality.md" target="_blank" rel="noopener">01_data_quality.md ↗</a></td></tr><tr><td><b>1b</b></td><td class="l">Clean layer: table map, cleaning rules, SQL on every table</td><td><button class="linkbtn" data-go="lineage">1b.1 · 1b.2 →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/02_data_model.md" target="_blank" rel="noopener">02_data_model.md ↗</a></td></tr><tr><td><b>1c</b></td><td class="l">Billing's churn labels checked against our rule</td><td><button class="linkbtn" data-go="churn">1c →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/03_churn_validation.md" target="_blank" rel="noopener">03_churn_validation.md ↗</a></td></tr><tr class="grp"><td colspan="4">Part 2 · Core metrics</td></tr><tr><td><b>2</b></td><td class="l">Active, new, renewing, reactivated, churn, ARPU, discounts</td><td><button class="linkbtn" data-go="p2-active">Part 2 →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/04_metrics.md" target="_blank" rel="noopener">04_metrics.md ↗</a></td></tr><tr class="grp"><td colspan="4">Part 3 · Deep dive (one of two)</td></tr><tr><td><b>3a</b></td><td class="l">Churn drivers: what matters, what only looks like it</td><td><button class="linkbtn" data-go="p3a">Part 3 →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/05_deep_dive.md" target="_blank" rel="noopener">05_deep_dive.md ↗</a></td></tr><tr class="skip"><td><b>3b</b></td><td class="l">Free trials and price points</td><td><span class="muted">Not chosen</span></td><td><span class="muted">-</span></td></tr><tr class="grp"><td colspan="4">Part 4 · Executive summary</td></tr><tr><td><b>4</b></td><td class="l">Four answers and three recommendations</td><td><button class="linkbtn" data-go="p4">Part 4 →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/08_executive_summary.md" target="_blank" rel="noopener">08_executive_summary.md ↗</a></td></tr><tr class="grp"><td colspan="4">Part 5 · Experiment and AI</td></tr><tr><td><b>5a</b></td><td class="l">Annual-plan A/B test design</td><td><button class="linkbtn" data-go="p5a">5a →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/06_ab_test.md" target="_blank" rel="noopener">06_ab_test.md ↗</a></td></tr><tr><td><b>5b</b></td><td class="l">How AI was used, and where it was wrong</td><td><button class="linkbtn" data-go="p5b">5b →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/07_ai_log.md" target="_blank" rel="noopener">07_ai_log.md ↗</a></td></tr></tbody></table></div>
+      <div class="label">🗺️ Where each part of the brief lives</div>
+        <div class="card scroll ov-map"><table class="grid"><thead><tr><th>Part</th><th>What</th><th>On this site</th><th>Report</th></tr></thead><tbody><tr class="grp"><td colspan="4">🧱 Part 1 · Data engineering</td></tr><tr><td><b>1a</b></td><td class="l">Data quality: 21 issues, ranked by impact</td><td><button class="linkbtn" data-go="dq">1a →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/01_data_quality.md" target="_blank" rel="noopener">01_data_quality.md ↗</a></td></tr><tr><td><b>1b</b></td><td class="l">Clean layer: table map, cleaning rules, SQL on every table</td><td><button class="linkbtn" data-go="lineage">1b.1 · 1b.2 →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/02_data_model.md" target="_blank" rel="noopener">02_data_model.md ↗</a></td></tr><tr><td><b>1c</b></td><td class="l">Billing's churn labels checked against our rule</td><td><button class="linkbtn" data-go="churn">1c →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/03_churn_validation.md" target="_blank" rel="noopener">03_churn_validation.md ↗</a></td></tr><tr class="grp"><td colspan="4">📈 Part 2 · Core metrics</td></tr><tr><td><b>2</b></td><td class="l">Active, new, renewing, reactivated, churn, ARPU, discounts</td><td><button class="linkbtn" data-go="p2-active">Part 2 →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/04_metrics.md" target="_blank" rel="noopener">04_metrics.md ↗</a></td></tr><tr class="grp"><td colspan="4">🔍 Part 3 · Deep dive (one of two)</td></tr><tr><td><b>3a</b></td><td class="l">Churn drivers: what matters, what only looks like it</td><td><button class="linkbtn" data-go="p3a">Part 3 →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/05_deep_dive.md" target="_blank" rel="noopener">05_deep_dive.md ↗</a></td></tr><tr class="skip"><td><b>3b</b></td><td class="l">Free trials and price points</td><td><span class="muted">Not chosen</span></td><td><span class="muted">-</span></td></tr><tr class="grp"><td colspan="4">🎯 Part 4 · Executive summary</td></tr><tr><td><b>4</b></td><td class="l">Four answers and three recommendations</td><td><button class="linkbtn" data-go="p4">Part 4 →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/08_executive_summary.md" target="_blank" rel="noopener">08_executive_summary.md ↗</a></td></tr><tr class="grp"><td colspan="4">🧪 Part 5 · Experiment and AI</td></tr><tr><td><b>5a</b></td><td class="l">Annual-plan A/B test design</td><td><button class="linkbtn" data-go="p5a">5a →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/06_ab_test.md" target="_blank" rel="noopener">06_ab_test.md ↗</a></td></tr><tr><td><b>5b</b></td><td class="l">How AI was used, and where it was wrong</td><td><button class="linkbtn" data-go="p5b">5b →</button></td><td><a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/07_ai_log.md" target="_blank" rel="noopener">07_ai_log.md ↗</a></td></tr></tbody></table></div>
     </div>
     <div class="ov-readme">
-      <h2 class="ov-band">README</h2>
+      <h2 class="ov-band">📄 README</h2>
       <p class="ov-rm-note">The same three sections as <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis#readme" target="_blank" rel="noopener">README.md ↗</a> in the repository</p>
-      <div class="label">1. How to run it end to end</div>
+      <div class="label">▶️ 1. How to run it end to end</div>
       <div class="card rerun">
         <p>All code is in the <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis" target="_blank" rel="noopener">GitHub repository</a>: numbered SQL scripts in <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/tree/main/sql" target="_blank" rel="noopener">sql/</a>, Python steps in <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/tree/main/py" target="_blank" rel="noopener">py/</a>, reports in <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/tree/main/reports" target="_blank" rel="noopener">reports/</a>. To rebuild everything from the raw CSVs:</p>
         <ol>
@@ -398,7 +397,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
         </ol>
         <p>The repository holds no <code>data/</code> folder and no database: all paths are relative, so the scripts run on your own copy of the CSVs</p>
       </div>
-      <div class="label">2. What I'd do with more time</div>
+      <div class="label">🛠️ 2. What I'd do with more time</div>
       <div class="card rerun"><ul>
         <li><b>Part 3b:</b> free trials and price points, the deep dive we did not choose</li>
         <li><b>Go deeper on the validation checks</b> on <button class="linkbtn" data-go="lineage">tab 1b.1 →</button>: more checks per table, run automatically after every build</li>
@@ -407,7 +406,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
         <li><b>Check that the model structure is the most efficient one:</b> table sizes, views vs tables, query speed</li>
         <li><b>Close the data gaps:</b> 04-17 transactions and a full user export</li>
       </ul></div>
-      <div class="label">3. Time spent</div>
+      <div class="label">⏱️ 3. Time spent</div>
       <div class="card ov-time"><b>~5 hours</b></div>
     </div>
   </section>
@@ -599,575 +598,253 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
   </section>
 
   <!-- PART 2 · METRICS (sub-tabs p2-active, p2-flow, p2-churn, p2-arpu, p2-trust). Numbers from sql/08_metrics.sql; data inline in P2_DATA below. -->
-  <style>
-  .p2{--s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--s4:#6250d6;--p2-grid:#e3eaf3;--p2-axis:#8a97a8}
-  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .p2{--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#9085e9;--p2-grid:#24344f;--p2-axis:#6f819c}}
-  :root[data-theme="dark"] .p2{--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#9085e9;--p2-grid:#24344f;--p2-axis:#6f819c}
-  .p2-chart-card{padding:24px 26px;display:grid;gap:10px;min-width:0}
-  .p2-ct{font-size:var(--fs-h2);color:var(--c-blue);display:flex;align-items:center;gap:10px}
-  .p2-ct::before{content:"";width:6px;height:22px;border-radius:3px;background:var(--c-blue);flex:none}
-  .p2-cc{font-size:var(--fs-body);line-height:1.6;max-width:95ch}
-  .p2-cc b{color:var(--navy)}
-  .p2-legend{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:var(--fs-table);color:var(--fg);margin-top:4px}
-  .p2-legend span{display:inline-flex;align-items:center;gap:8px}
-  .p2-legend i{display:inline-block;width:22px;height:0;border-top:3px solid currentColor;border-radius:2px}
-  .p2-legend i.dash{border-top-style:dashed}
-  .p2-legend i.box{width:14px;height:14px;border:0;border-radius:3px;background:currentColor}
-  .p2-legend i.flag{width:12px;height:12px;border:0;border-radius:50%;background:var(--c-orange)}
-  .p2-plot{position:relative;width:100%;min-height:260px}
-  .p2-plot svg{display:block;width:100%;overflow:visible}
-  .p2-plot text{font-family:var(--font);fill:var(--muted);font-size:13px}
-  .p2-plot .note text{fill:var(--fg);font-size:12.5px;font-weight:600}
-  .p2-tip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:var(--fs-small);box-shadow:0 4px 14px rgba(20,35,58,.12);white-space:nowrap;z-index:2}
-  .p2-tip b{display:block;color:var(--navy);margin-bottom:2px}
-  .p2-tip i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
-  .p2-axisnote{font-size:var(--fs-small);color:var(--muted)}
-  .p2-def{background:var(--code-bg);border-radius:8px;padding:14px 18px;font-size:var(--fs-body);line-height:1.6}
-  .p2-def b{color:var(--navy)}
-  .p2 table.grid td.l{text-align:left}
-  .p2 details.card summary{cursor:pointer;padding:18px 24px;font-size:var(--fs-h3);font-weight:700;color:var(--accent)}
-  .p2 details.card > div{padding:0 24px 24px;display:grid;gap:10px}
-  .p2 tr.flag td{background:var(--c-bad-bg)}
-  /* 2.3-2.5 layout (scoped to .p2x so 2.1 and 2.2 are untouched) */
-  .p2x{--g:#16a34a;--r:#dc2626;--am:#b45309}
-  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .p2x{--g:#4ade80;--r:#f87171;--am:#fbbf24}}
-  :root[data-theme="dark"] .p2x{--g:#4ade80;--r:#f87171;--am:#fbbf24}
-  .p2x{font-size:var(--fs-body)}
-  .p2x .p2x-head{padding:26px 30px;display:grid;gap:12px}
-  .p2x .p2x-tag{justify-self:start;background:var(--accent-soft);color:var(--navy);font-weight:700;font-size:var(--fs-small);border-radius:999px;padding:5px 14px}
-  .p2x .p2x-head h1{font-size:var(--fs-title)}
-  .p2x .p2x-head p{color:var(--muted)}
-  .p2x .p2x-qa{display:grid;gap:10px}
-  .p2x .p2x-q{margin:0;font-size:var(--fs-h3);font-weight:700;color:var(--fg)}
-  .p2x .p2x-a{margin:0;background:var(--c-note-bg);border:1px solid color-mix(in srgb,var(--accent) 25%,transparent);border-left:6px solid var(--navy);border-radius:10px;padding:18px 24px;line-height:1.7}
-  .p2x .p2x-a>b{color:var(--navy)}
-  .p2x .gp{color:var(--g);font-weight:700}.p2x .rd{color:var(--r);font-weight:700}.p2x .nv{color:var(--navy);font-weight:700}
-  .p2x .p2x-card{padding:24px 28px;display:grid;gap:14px;min-width:0;width:100%;max-width:900px;margin:0 auto}
-  .p2x .p2x-card.p2x-wide{max-width:1100px}
-  .p2x .p2x-card h2,.p2x .p2x-flat h2{font-size:var(--fs-h2);color:var(--fg)}
-  .p2x .p2-ct::before{display:none}
-  .p2x .p2x-flat{padding:0;display:grid;gap:14px}
-  .p2x .p2x-concl{border-left:5px solid var(--g);background:color-mix(in srgb,var(--g) 9%,transparent);border-radius:8px;padding:12px 18px;line-height:1.6}
-  .p2x .p2x-concl b{color:var(--g)}
-  .p2x .p2x-concl.warn{border-left-color:var(--am);background:color-mix(in srgb,var(--am) 9%,transparent)}
-  .p2x .p2x-concl.warn b{color:var(--am)}
-  .p2x .p2-legend{justify-content:center}
-  .p2x .p2-plot{max-width:760px;margin:0 auto}
-  .p2x .p2x-foot{margin:0;font-size:var(--fs-small);color:var(--muted)}
-  .p2x .p2x-list{margin:0;padding-left:22px;display:grid;gap:4px}
-  .p2x .p2x-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:16px;max-width:900px;width:100%;margin:0 auto}
-  .p2x .p2x-kpi{padding:20px 14px;text-align:center;display:grid;gap:6px;align-content:start;border-top:5px solid var(--g)}
-  .p2x .p2x-kpi h3{font-size:var(--fs-small);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-  .p2x .p2x-kpi .per{font-size:var(--fs-small);color:var(--muted)}
-  .p2x .p2x-kpi b{font-size:var(--fs-figure);line-height:1.15;color:var(--navy);font-variant-numeric:tabular-nums}
-  .p2x .p2x-kpi .cmp{font-size:var(--fs-table)}
-  .p2x .p2x-kpi .up{color:var(--g);font-weight:700}
-  .p2x .p2x-fold{padding:0;width:100%;max-width:900px;margin:0 auto}
-  .p2x .p2x-fold summary{cursor:pointer;padding:18px 24px;font-size:var(--fs-h3);font-weight:700;color:var(--navy)}
-  .p2x .p2x-fold ul{margin:0;padding:0 24px 20px 44px;display:grid;gap:8px;line-height:1.6}
-  .p2x .p2x-in{padding:0 24px 24px;display:grid;gap:12px}
-  /* one table style: same font, same row height, never full width */
-  .p2x table.p2x-key{width:100%;font-size:var(--fs-table)}
-  .p2x table.p2x-key th,.p2x table.p2x-key td{height:48px;padding:4px 12px;line-height:1.3;text-align:center;font-variant-numeric:tabular-nums}
-  .p2x table.p2x-key th{background:var(--navy);color:var(--on-dark)}
-  .p2x table.p2x-key td.l{text-align:left}
-  .p2x table.p2x-key td.m{font-weight:700;background:var(--code-bg);white-space:nowrap}
-  .p2x table.p2x-key td.bd{background:var(--c-bad-bg);color:var(--c-bad);font-weight:700}
-  .p2x table.p2x-key td.am{background:var(--warn-soft);color:var(--warn);font-weight:700}
-  .p2x table.p2x-key td.gd{background:var(--c-ok-bg);color:var(--c-ok);font-weight:700}
-  .p2x table.p2x-key td.na{color:var(--muted);background:var(--code-bg)}
-  .p2x table.p2x-key td.l.bd,.p2x table.p2x-key td.l.am,.p2x table.p2x-key td.l.gd{font-weight:600}
-  .p2-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:22px;max-width:1100px;width:100%;margin:0 auto}
-  .p2-trio{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:22px;max-width:1240px;width:100%;margin:0 auto}
-  .p2-one{max-width:820px;width:100%;margin:0 auto}
-  .p2-keys{padding:24px 26px;display:grid;gap:12px;max-width:1000px;width:100%;margin:0 auto}
-  .p2-keys td.num{white-space:nowrap}
-  .p2-qa p{margin:0}
-  .p2-m39{max-width:820px;width:100%;margin:0 auto}
-  .p2-list{margin:0;padding-left:22px;display:grid;gap:4px;font-size:var(--fs-body)}
-  /* narrow, centred charts across Part 2 */
-  .p2 .p2-plot{max-width:760px;margin:0 auto}
-  .p2 .p2-legend{max-width:760px;margin:4px auto 0;justify-content:center}
-  </style>
-  <section class="view cx p2 p21" id="view-p2-active" data-own-brief="1" hidden>
-    <style>
-    .p21{--g:#16a34a;--r:#dc2626;--am:#b45309;--bar:#bfe6fb;--bar-hi:#0b84c6;--ln1:#1e3a8a;--ln2:#0d9488;--pos:#93c5fd;--neg:#fca5a5;--shade:#fee2e2;--y15:#1e3a8a;--y16:#0e9fb5;--y17:#dc2626}
-    @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .p21{--g:#4ade80;--r:#f87171;--am:#fbbf24;--bar:#1d3b57;--bar-hi:#38a8e8;--ln1:#a9cbef;--ln2:#2dd4bf;--pos:#3b6fb0;--neg:#b45454;--shade:#3a1c1a;--y15:#a9cbef;--y16:#2dd4bf;--y17:#f87171}}
-    :root[data-theme="dark"] .p21{--g:#4ade80;--r:#f87171;--am:#fbbf24;--bar:#1d3b57;--bar-hi:#38a8e8;--ln1:#a9cbef;--ln2:#2dd4bf;--pos:#3b6fb0;--neg:#b45454;--shade:#3a1c1a;--y15:#a9cbef;--y16:#2dd4bf;--y17:#f87171}
-    .p21-head{padding:26px 30px;display:grid;gap:18px;background:linear-gradient(120deg,var(--surface) 0%,var(--surface) 55%,color-mix(in srgb,var(--accent) 10%,var(--surface)) 100%)}
-    .p21-head-top{display:flex;align-items:center;justify-content:space-between;gap:24px}
-    .p21-head-txt{display:grid;gap:12px;min-width:0}
-    .p21-logo{height:76px;width:auto;flex:none;background:#fff;border-radius:16px;padding:10px 16px;box-shadow:0 2px 4px rgba(20,35,58,.06),0 10px 26px rgba(37,99,235,.16)}
-    .p21-qa{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
-    .p21-q{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;text-decoration:none;color:var(--fg);border:1px solid color-mix(in srgb,var(--g) 35%,transparent);background:color-mix(in srgb,var(--g) 8%,var(--surface));transition:transform .15s,box-shadow .15s}
-    .p21-q:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(20,35,58,.1)}
-    .p21-q.warn{border-color:color-mix(in srgb,var(--am) 40%,transparent);background:color-mix(in srgb,var(--am) 8%,var(--surface))}
-    .p21 .qn{flex:none;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--navy);color:var(--on-dark);font-weight:800;font-size:13px}
-    .p21-q .qt{font-weight:600;flex:1}
-    .p21-q .qa-ans{display:inline-flex;align-items:center;gap:7px;font-weight:800;color:var(--g);white-space:nowrap}
-    .p21-q.warn .qa-ans{color:var(--am)}
-    .p21 .ic{flex:none;display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--g);color:#fff;font-weight:900;font-size:13px}
-    .p21 .warn .ic{background:var(--am)}
-    .p21-qh{display:flex;align-items:center;gap:12px}
-    .p21-card{scroll-margin-top:210px}
-    .p21-qh .qn.warn{background:var(--am)}
-    .kic{justify-self:center;display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:color-mix(in srgb,var(--g) 13%,transparent);color:var(--g)}
-    .p21-kpi.bad .kic{background:color-mix(in srgb,var(--r) 12%,transparent);color:var(--r)}
-    .kic svg,.bic svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-    .p21-bottom{display:flex;gap:14px;align-items:flex-start}
-    .bic{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--navy);color:var(--on-dark);margin-top:2px}
-    .p21-concl{display:flex;gap:12px;align-items:flex-start}
-    .p21-concl .ic{margin-top:1px}
-    .p21-steps{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
-    .p21-steps div{display:grid;justify-items:center;gap:2px;min-width:120px;padding:10px 16px;border-radius:12px;background:var(--code-bg);border:1px solid var(--line)}
-    .p21-steps div span{font-size:var(--fs-small);color:var(--muted);font-weight:600}
-    .p21-steps div b{font-size:24px;color:var(--navy);line-height:1.2}
-    .p21-steps div i{font-style:normal;font-size:var(--fs-label);color:var(--muted)}
-    .p21-steps div.hot{background:color-mix(in srgb,var(--r) 9%,var(--surface));border-color:color-mix(in srgb,var(--r) 35%,transparent)}
-    .p21-steps div.hot b{color:var(--r)}
-    .p21-steps em{font-style:normal;font-size:22px;color:var(--muted);font-weight:700}
-    .p21-kpi{transition:transform .15s,box-shadow .15s}
-    .p21-kpi:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(20,35,58,.1)}
-    @media (max-width:640px){.p21-head-top{flex-direction:column-reverse;align-items:flex-start}.p21-logo{height:58px}.p21-q{flex-wrap:wrap}.p21-steps em{display:none}}
-    .p21-tag{justify-self:start;background:var(--accent-soft);color:var(--navy);font-weight:700;font-size:var(--fs-small);border-radius:999px;padding:5px 14px}
-    .p21-head h1{font-size:var(--fs-title)}
-    .p21-head p{color:var(--muted)}
-    .p21-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}
-    .p21-kpi{padding:20px 14px;text-align:center;display:grid;gap:6px;align-content:start;border-top:5px solid var(--g)}
-    .p21-kpi.bad{border-top-color:var(--r)}
-    .p21-kpi h3{font-size:var(--fs-small);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-    .p21-kpi .per{font-size:var(--fs-small);color:var(--muted)}
-    .p21-kpi b{font-size:var(--fs-figure);line-height:1.15;color:var(--navy);font-variant-numeric:tabular-nums}
-    .p21-kpi .cmp{font-size:var(--fs-table);line-height:1.5}
-    .p21-kpi .up{color:var(--g);font-weight:700}.p21-kpi .dn{color:var(--r);font-weight:700}
-    .p21-bottom{background:var(--c-note-bg);border:1px solid color-mix(in srgb,var(--accent) 25%,transparent);border-left:6px solid var(--navy);border-radius:10px;padding:18px 24px;line-height:1.7}
-    .p21-bottom b.k{color:var(--navy)}
-    .p21 .gp{color:var(--g);font-weight:700}.p21 .rd{color:var(--r);font-weight:700}.p21 .nv{color:var(--navy);font-weight:700}
-    .p21-fold{padding:0}
-    .p21-fold summary{cursor:pointer;padding:18px 24px;font-size:var(--fs-h3);font-weight:700;color:var(--navy)}
-    .p21-fold ul{margin:0;padding:0 24px 20px 44px;display:grid;gap:8px;line-height:1.6}
-    .p21-card{padding:24px 28px;display:grid;gap:14px;min-width:0}
-    .p21-card h2{font-size:var(--fs-h2)}
-    .p21-concl{border-left:5px solid var(--g);background:color-mix(in srgb,var(--g) 9%,transparent);border-radius:8px;padding:12px 18px;line-height:1.6}
-    .p21-concl b{color:var(--g)}
-    .p21-concl.warn{border-left-color:var(--am);background:color-mix(in srgb,var(--am) 9%,transparent);color:var(--am)}
-    .p21-concl.warn b{color:var(--am)}
-    .p21-lg{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 22px;font-size:var(--fs-table)}
-    .p21-lg span{display:inline-flex;align-items:center;gap:8px}
-    .p21-lg i{display:inline-block;width:22px;height:0;border-top:3px solid}
-    .p21-lg i.box{width:16px;height:12px;border:0;border-radius:2px}
-    .p21-lg i.dash{border-top-style:dashed}
-    .p21-plot{position:relative;width:100%;max-width:760px;margin:0 auto}
-    .p21-plot svg{display:block;width:100%;overflow:visible}
-    .p21-plot text{font-family:var(--font);font-size:12.5px;fill:var(--muted)}
-    .p21-foot{font-size:var(--fs-small);color:var(--muted)}
-    .p21-key{max-width:1000px;margin:0 auto}
-    .p21-key th{background:var(--navy);color:var(--on-dark)}
-    .p21-key td{text-align:center;font-variant-numeric:tabular-nums}
-    .p21-key td.m{font-weight:700;background:var(--code-bg)}
-    .p21-key td.m39{background:var(--accent-soft);color:var(--navy);font-weight:600}
-    .p21-key td.ok{background:var(--c-ok-bg);color:var(--c-ok)}
-    .p21-key td.am{background:var(--warn-soft);color:var(--warn);font-weight:700}
-    .p21-key td.bd{background:var(--c-bad-bg);color:var(--c-bad);font-weight:700}
-    .p21-key td.gd{background:var(--c-ok-bg);color:var(--c-ok);font-weight:700}
-    .p21-tip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:var(--fs-small);box-shadow:0 4px 14px rgba(20,35,58,.12);white-space:nowrap;z-index:2}
-    .p21-tip b{display:block;color:var(--navy)}
-    </style>
+  <script>
+  /* VZ: one small chart engine for Parts 2-5. Wide and short (max 700 x 270), dashed light grid, axis text 12px,
+     flags drawn inside the plot (never in the legend), value labels with units, hover tooltip. */
+  window.VZ = (() => {
+    function chart(el, o) {
+      const cw = el.clientWidth; if (!cw) return;
+      const W = Math.min(cw, 700), narrow = W < 520, H = Math.round((o.H || 270) * (narrow ? 0.85 : 1));
+      const n = o.labels.length, L = o.L || (narrow ? 42 : 52), R = o.y2 ? (narrow ? 42 : 52) : (o.R || 14), T = o.T || 26, B = 30;
+      const pw = W - L - R, ph = H - T - B, band = pw / n, x = (i) => L + band * (i + 0.5);
+      const mk = (ax) => (v) => T + ph - ((v - ax.min) / (ax.max - ax.min)) * ph;
+      const y = mk(o.y), y2 = o.y2 ? mk(o.y2) : null;
+      let h = "";
+      (o.shade || []).forEach(([a, b, lab]) => {
+        h += `<rect x="${L + band * a}" y="${T}" width="${band * (b - a + 1)}" height="${ph}" class="vz-shade"/>`;
+        if (lab && !narrow) h += `<text x="${L + band * (b + 1) - 5}" y="${T + 15}" text-anchor="end" class="vz-shl">${lab}</text>`;
+      });
+      for (let v = o.y.min; v <= o.y.max + 1e-9; v += o.y.step) {
+        const vv = +v.toFixed(6), yy = y(vv), base = vv === 0 || (o.y.min > 0 && vv === o.y.min);
+        h += `<line x1="${L}" x2="${W - R}" y1="${yy}" y2="${yy}" class="${base ? "vz-base" : "vz-grid"}"/>`;
+        h += `<text x="${L - 8}" y="${yy + 4}" text-anchor="end" class="vz-ax">${o.y.fmt(vv)}</text>`;
+      }
+      if (o.y2) for (let v = o.y2.min; v <= o.y2.max + 1e-9; v += o.y2.step) { const vv = +v.toFixed(6); h += `<text x="${W - R + 8}" y="${y2(vv) + 4}" class="vz-ax">${o.y2.fmt(vv)}</text>`; }
+      let last = -1e9;
+      o.labels.forEach((lab, i) => {
+        const show = o.xShow ? o.xShow(lab, i, narrow) : true;
+        if (!show || x(i) - last < (narrow ? 34 : 40)) return;
+        h += `<text x="${x(i)}" y="${T + ph + 20}" text-anchor="middle" class="vz-ax">${lab}</text>`; last = x(i);
+      });
+      const bars = o.series.filter((s) => s.type === "bar"), gw = band * (o.gap || 0.7);
+      if (o.stacked) {
+        const acc = new Array(n).fill(0), bw = Math.max(3, gw);
+        bars.forEach((s) => s.values.forEach((v, i) => {
+          if (v == null) return;
+          const y0 = y(acc[i]), y1 = y(acc[i] + v); acc[i] += v;
+          h += `<rect x="${x(i) - bw / 2}" y="${y1}" width="${bw}" height="${Math.max(0, y0 - y1)}" fill="${(s.colorAt && s.colorAt(i, v)) || s.color}"/>`;
+        }));
+      } else {
+        const k = bars.length, bw = Math.max(3, gw / k);
+        bars.forEach((s, j) => {
+          const yy = s.axis === "r" ? y2 : y, ax = s.axis === "r" ? o.y2 : o.y, base = yy(Math.max(ax.min, 0));
+          s.values.forEach((v, i) => {
+            if (v == null) return;
+            const bx = x(i) - gw / 2 + bw * j, top = Math.min(yy(v), base), hh = Math.abs(base - yy(v)), w = Math.max(2, bw - (k > 1 ? 2 : 0));
+            h += `<rect x="${bx}" y="${top}" width="${w}" height="${hh}" rx="${Math.min(3, w / 3)}" fill="${(s.colorAt && s.colorAt(i, v)) || s.color}"/>`;
+            if (s.label && (!s.labelAt || s.labelAt(i, v)) && !(narrow && s.labelWide))
+              h += `<text x="${bx + w / 2}" y="${v < 0 ? top + hh + 15 : top - 6}" text-anchor="middle" class="vz-val"${s.labelColor ? ` style="fill:${s.labelColor}"` : ""}>${s.label(v, i)}</text>`;
+          });
+        });
+      }
+      (o.avgs || []).forEach((a) => {
+        const xa = L + band * a.from + 3, xb = L + band * (a.to + 1) - 3, ya = y(a.v);
+        h += `<line x1="${xa}" x2="${xb}" y1="${ya}" y2="${ya}" stroke="${a.color}" stroke-width="3" stroke-linecap="round"/>`;
+        const anc = a.anchor || "middle", lx = anc === "end" ? xb : anc === "start" ? xa : (xa + xb) / 2;
+        h += `<text x="${lx}" y="${a.below ? ya + 18 : ya - 8}" text-anchor="${anc}" class="vz-avg" style="fill:${a.color}">${narrow && a.short ? a.short : a.label}</text>`;
+      });
+      o.series.filter((s) => s.type === "line").forEach((s) => {
+        const yy = s.axis === "r" ? y2 : y; let d = "", pen = false;
+        s.values.forEach((v, i) => { if (v == null) { pen = false; return; } d += (pen ? "L" : "M") + x(i).toFixed(1) + "," + yy(v).toFixed(1); pen = true; });
+        h += `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="${s.w || 2.4}" stroke-linejoin="round" stroke-linecap="round"${s.dash ? ' stroke-dasharray="6 4"' : ""}/>`;
+        if (s.dots) s.values.forEach((v, i) => { if (v != null) h += `<circle cx="${x(i)}" cy="${yy(v)}" r="2.6" fill="${s.color}"/>`; });
+        if (s.end) { const li = s.values.length - 1, lv = s.values[li]; h += `<circle cx="${x(li)}" cy="${yy(lv)}" r="4" fill="${s.color}" stroke="var(--surface)" stroke-width="2"/>`; }
+      });
+      (o.flags || []).forEach((f) => {
+        const yy = f.axis === "r" ? y2 : y, fx = x(f.i);
+        if (f.dot != null) h += `<circle cx="${fx}" cy="${yy(f.dot)}" r="5" fill="${f.color}" stroke="var(--surface)" stroke-width="2"/>`;
+        const fy = f.top ? T - 10 : f.below ? yy(f.v) + 20 : yy(f.v) - 18;
+        const text = narrow && f.short ? f.short : f.text, w = text.length * 7 + 26;
+        const anc = f.anchor || (fx - w / 2 < 2 ? "start" : fx + w / 2 > W - 2 ? "end" : "middle");
+        const x0 = anc === "start" ? Math.max(2, fx - 10) : anc === "end" ? Math.min(W - 2, fx + 10) - w : fx - w / 2;
+        h += `<g class="vz-flag"><rect x="${x0}" y="${fy - 11}" width="${w}" height="22" rx="5" fill="var(--surface)" stroke="${f.color}"/><text x="${x0 + w / 2}" y="${fy + 4.5}" text-anchor="middle" style="fill:${f.color}">⚑ ${text}</text></g>`;
+      });
+      h += `<line class="vz-cross" x1="0" x2="0" y1="${T}" y2="${T + ph}" visibility="hidden"/><rect class="vz-hit" x="${L}" y="${T}" width="${pw}" height="${ph}" fill="transparent"/>`;
+      el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${o.aria || ""}">${h}</svg><div class="vz-tip" hidden></div>`;
+      if (o.tip) {
+        const svg = el.firstElementChild, tip = el.lastElementChild, cross = svg.querySelector(".vz-cross"), hit = svg.querySelector(".vz-hit");
+        hit.addEventListener("mousemove", (e) => {
+          const bb = svg.getBoundingClientRect(), px = (e.clientX - bb.left) * (W / bb.width), i = Math.max(0, Math.min(n - 1, Math.floor((px - L) / band)));
+          cross.setAttribute("x1", x(i)); cross.setAttribute("x2", x(i)); cross.setAttribute("visibility", "visible");
+          tip.innerHTML = o.tip(i); tip.hidden = false;
+          const tx = x(i) * (bb.width / W), tw = tip.offsetWidth;
+          tip.style.left = Math.max(0, Math.min(bb.width - tw, tx + 14 > bb.width - tw ? tx - tw - 14 : tx + 14)) + "px"; tip.style.top = "6px";
+        });
+        hit.addEventListener("mouseleave", () => { tip.hidden = true; cross.setAttribute("visibility", "hidden"); });
+      }
+    }
+    // draw now, and again whenever the box width changes (a hidden tab has width 0 until it opens)
+    function mount(id, fn) {
+      const el = document.getElementById(id); if (!el) return;
+      const run = () => { const w = el.clientWidth; if (w && w !== el._w) { el._w = w; fn(el); } };
+      run(); if (window.ResizeObserver) new ResizeObserver(run).observe(el); else addEventListener("resize", run);
+    }
+    const ml = (m) => m.slice(5, 7) + "-" + m.slice(2, 4);
+    const qtr = (lab, i, narrow) => { const mo = +lab.slice(0, 2); return narrow ? mo === 1 || mo === 7 : (mo - 1) % 3 === 0; };
+    const n0 = (v) => Math.round(v).toLocaleString("en-US");
+    const C = { navy: "var(--v-navy)", blue: "var(--v-blue)", mid: "var(--v-mid)", sky: "var(--v-sky)", teal: "var(--v-teal)", tealL: "var(--v-teal-l)", red: "var(--v-red)", redL: "var(--v-red-l)", amber: "var(--v-amber)", grey: "var(--v-grey)" };
+    return { chart, mount, ml, qtr, n0, C };
+  })();
+  </script>
 
-    <div class="card p21-head">
-      <span class="p21-tag">Brief 2.1 · Active Subscribers Over Time</span>
-      <h1>2.1 · Active Subscribers — Quality, Paying Share &amp; Growth Deceleration</h1>
+  <!-- 2.1 -->
+  <section class="view cx v3" id="view-p2-active" data-own-brief="1" hidden>
+    <div class="card v3-head">
+      <span class="v3-tag">Brief 2.1 · Active subscribers over time</span>
+      <h1>2.1 · Active Subscribers</h1>
       <p>Paying and all active subscribers per month, 01-15 to 03-17</p>
     </div>
-
-    <div class="p2-qa2">
-      <p><b>Question 1:</b> Are subscribers truly paying?<br><b>Answer:</b> Yes. 99.1% of active subscribers pay (03-17) · <a href="#p21-c1" data-scroll="p21-c1">chart ↓</a></p>
-      <p><b>Question 2:</b> Is growth slowing down?<br><b>Answer:</b> Yes. Paid growth fell from 5.6% a month (2015) to 0.8% a month (01-17 – 03-17) · <a href="#p21-c2" data-scroll="p21-c2">chart ↓</a></p>
+    <div class="qa">
+      <p class="qa-q">Are subscribers truly paying, and is growth slowing down?</p>
+      <div class="qa-a"><p>Subscribers pay: <b>99.1%</b> of active subscribers paid in 03-17. Growth is slowing: paying subscribers grew <b>5.6% a month</b> in 2015, <b>2.0%</b> in 2016 and only <b>0.8%</b> in 01-17 – 03-17</p></div>
     </div>
-
-    <div class="p21-kpis">
-      <div class="card p21-kpi"><h3>All Active Subscribers</h3><span class="per">03-17</span><b>305,617</b>
-        <span class="cmp"><span class="up">↑ +6%</span> vs last 12m</span></div>
-      <div class="card p21-kpi"><h3>Paid Active Subscribers</h3><span class="per">03-17</span><b>302,950</b>
-        <span class="cmp"><span class="up">↑ +9%</span> vs last 12m</span></div>
-      <div class="card p21-kpi"><h3>Paid Active %</h3><span class="per">03-17</span><b>99.1%</b>
-        <span class="cmp"><span class="up">↑ +3%</span> vs last 12m</span></div>
-      <div class="card p21-kpi bad"><h3>Avg Monthly Growth (Paid)</h3><span class="per">01-17 – 03-17 avg</span><b>0.8%/mo</b>
-        <span class="cmp"><span class="dn">↓ -49%</span> vs last 12m (1.5%)</span></div>
-      <div class="card p21-kpi bad"><h3>Paid Active Annual Growth</h3><span class="per">03-16 → 03-17</span><b>19.1%</b>
-        <span class="cmp"><span class="dn">↓ -64%</span> vs year before (52.4%)</span></div>
+    <div class="v3-kpis k5">
+      <div class="card v3-kpi good"><span class="k">All active</span><span class="per">03-17</span><b>305,617</b><span class="cmp"><i class="up">↑ 6%</i> vs 12 months before</span></div>
+      <div class="card v3-kpi good"><span class="k">Paying</span><span class="per">03-17</span><b>302,950</b><span class="cmp"><i class="up">↑ 9%</i> vs 12 months before</span></div>
+      <div class="card v3-kpi good"><span class="k">Share paying</span><span class="per">03-17</span><b>99.1%</b><span class="cmp"><i class="up">↑ 3%</i> vs 12 months before</span></div>
+      <div class="card v3-kpi bad"><span class="k">Growth a month</span><span class="per">01-17 – 03-17 avg</span><b>0.8%</b><span class="cmp"><i class="dn">↓ 49%</i> vs 1.5% a year before</span></div>
+      <div class="card v3-kpi bad"><span class="k">Growth in a year</span><span class="per">03-16 → 03-17</span><b>19.1%</b><span class="cmp"><i class="dn">↓ 64%</i> vs 52.4% a year before</span></div>
     </div>
-
-    <details class="card p21-fold"><summary>+ Metric Definitions</summary><ul>
-      <li><b>All Active Subscribers:</b> Distinct <span class="mono">user_id</span> with ≥1 day of access (paid or free) in the month, on the clean data (<span class="mono">is_active = 1</span>)</li>
-      <li><b>Paid Active Subscribers:</b> Distinct <span class="mono">user_id</span> with ≥1 day of paid access in the month (<span class="mono">is_active_paid = 1</span>, <span class="mono">amount_paid &gt; 0</span>). A cancellation ends access, overlapping plans count once</li>
-      <li><b>Paid Active %:</b> Paid Active Subscribers ÷ All Active Subscribers in the same month</li>
-      <li><b>MoM % / YoY %:</b> Relative change in Paid Active vs. prior month (MoM) or same month prior year (YoY)</li>
-      <li><b>Delta %:</b> Always calculated as <span class="mono">(Current ÷ Baseline) − 1</span></li>
+    <details class="card v3-fold"><summary>+ Metric definitions</summary><ul>
+      <li><b>All active:</b> distinct <span class="mono">user_id</span> with at least 1 day of access in the month, paid or free (<span class="mono">is_active = 1</span>)</li>
+      <li><b>Paying:</b> distinct <span class="mono">user_id</span> with at least 1 day of paid access in the month (<span class="mono">is_active_paid = 1</span>). A cancellation ends access, overlapping plans count once</li>
+      <li><b>Share paying:</b> paying ÷ all active, same month</li>
+      <li><b>Growth a month:</b> change in paying vs the month before. Change % = current ÷ baseline − 1</li>
     </ul></details>
 
-    <div class="card p21-card" id="p21-c1">
-      <h2 class="p21-qh">Concern 1: Are Subscribers Actually Paying?</h2>
-      <div class="p21-concl"><div><b>Concern ruled out:</b> 92–99% of active subscribers pay in normal months. The two free-trial spikes lasted one month each and did not lift the paying trend</div></div>
-      <div class="p21-lg"><span><i class="box" style="background:var(--bar)"></i>Paid Active %</span><span><i style="border-color:var(--ln1)"></i>Paid Active Subscribers</span><span><i class="dash" style="border-color:var(--ln2)"></i>All Active Subscribers (incl. Free)</span></div>
-      <div class="p21-plot" id="p21-ch1"></div>
-      <p class="p21-foot">*04-16 – 06-16 dip: a short billing pause at payment method 39, see the technical note below</p>
+    <div class="card v3-card">
+      <h2>Are subscribers paying?</h2>
+      <p class="v3-c ok"><b>Yes:</b> 92–99% of active subscribers pay in normal months. The two free-trial waves lasted one month each and did not lift the paying line</p>
+      <div class="vz-lg"><span><i class="bar" style="--c:var(--v-sky)"></i>Share paying (left)</span><span><i class="ln" style="--c:var(--v-navy)"></i>Paying (right)</span><span><i class="ln dash" style="--c:var(--v-teal)"></i>All active, incl. free (right)</span></div>
+      <div class="vz" id="p21-ch1"></div>
+      <p class="v3-foot">*04-16 – 06-16 dip: a billing pause at payment method 39, see the note below</p>
     </div>
 
-    <div class="card p21-card" id="p21-c2">
-      <h2 class="p21-qh">Concern 2: Monthly Growth Rate (MoM %)</h2>
-      <div class="p21-concl"><div><b>Concern confirmed:</b> paid growth slows every year, down to <span class="rd">under 1% a month</span> in 2017</div></div>
-      <div class="p21-steps"><div><span>2015</span><b>+5.6%</b><i>a month</i></div><em>→</em><div><span>2016</span><b>+2.0%</b><i>a month</i></div><em>→</em><div class="hot"><span>01-17 – 03-17</span><b>+0.8%</b><i>a month</i></div></div>
-      <div class="p21-plot" id="p21-ch2"></div>
+    <div class="card v3-card">
+      <h2>Is growth slowing down?</h2>
+      <p class="v3-c warn"><b>Yes:</b> paying subscribers grow more slowly every year, down to <b>0.8% a month</b> in 2017</p>
+      <div class="vz-lg"><span><i class="bar" style="--c:var(--v-mid)"></i>Growth vs month before</span><span><i class="bar" style="--c:var(--v-red-l)"></i>Decline</span><span><i class="ln thick" style="--c:var(--v-navy)"></i>Yearly average</span></div>
+      <div class="vz" id="p21-ch2"></div>
     </div>
 
-    <details class="card p21-fold"><summary>+ *Technical Note: 04-16 – 06-16 Dip (Payment Method 39 Outage)</summary><ul>
-      <li>Paid users on Payment Method 39 fell from <b>18,813</b> (03-16) to <b>3,085</b> (04-16) and <b>1,844</b> (06-16), then went back to <b>18,906</b> in 07-16</li>
-      <li>The same users came back in 07-16 (the <b>Rebound</b> bar), so this is a billing pause at one provider, not users leaving</li>
-      <li>We do not count it as real loss of subscribers · <button class="linkbtn" data-go="p2-trust">2.5 What we don't trust →</button></li>
+    <details class="card v3-fold"><summary>+ Note: the 04-16 – 06-16 dip (payment method 39)</summary><ul>
+      <li>Paying users on payment method 39 fell from <b>18,813</b> (03-16) to <b>3,085</b> (04-16) and <b>1,844</b> (06-16), then went back to <b>18,906</b> in 07-16</li>
+      <li>The same users came back in 07-16 (the Rebound bar), so this is a billing pause at one provider, not users leaving · <button class="linkbtn" data-go="p2-trust">2.5 What we don't trust →</button></li>
     </ul></details>
 
-    <div class="card p21-card">
-      <h2>Key Months Breakdown</h2>
-      <p class="p21-foot">Free-trial spikes (amber), low % paying (red), payment method 39 outage (red) and return (green)</p>
-      <div class="scroll"><table class="grid p21-key" id="p21-key"></table></div>
+    <div class="card v3-card">
+      <h2>Key months</h2>
+      <p class="v3-foot">Free-trial waves (amber), low share paying (red), payment method 39 outage (red) and return (green)</p>
+      <div class="v3-tw"><table class="v3-t" id="p21-key"></table></div>
     </div>
-
     <p class="cx-src">SQL: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/sql/08_metrics.sql" target="_blank" rel="noopener">sql/08_metrics.sql ↗</a> · Report: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/04_metrics.md" target="_blank" rel="noopener">reports/04_metrics.md ↗</a></p>
-
-    <script>
-    /* 2.1 charts and table. Rows: month, all active, paid active, free trial users (active, paid=0), payment method 39 paid users.
-       Source: mart_metrics_month (active_any, paying_subscribers) and fct_subscription (payment_method = 39, is_free = 0). */
-    (() => {
-    const D = [["2015-01",133034,131441,1593,18210],["2015-02",143939,142169,1770,18707],["2015-03",170074,166868,3206,19175],["2015-04",176884,173128,3756,19123],["2015-05",164574,161139,3435,18995],["2015-06",220877,179194,41683,18935],["2015-07",195215,189659,5556,18861],["2015-08",207324,198520,8804,18927],["2015-09",218730,207464,11266,19000],["2015-10",226840,213907,12933,19051],["2015-11",244088,227523,16565,19199],["2015-12",256003,236038,19965,19277],["2016-01",260295,244746,15549,19380],["2016-02",265743,257452,8291,19432],["2016-03",265567,254318,11249,18813],["2016-04",245662,239955,5707,3085],["2016-05",246760,241657,5103,2378],["2016-06",250692,244016,6676,1844],["2016-07",279618,271819,7799,18906],["2016-08",289248,279560,9688,18823],["2016-09",298217,283352,14865,18688],["2016-10",307419,285582,21837,18510],["2016-11",335372,289108,46264,18185],["2016-12",302981,296009,6972,17916],["2017-01",302284,299719,2565,17642],["2017-02",303173,301797,1376,17369],["2017-03",305617,302950,2667,17172]];
-    const ml = (m) => m.slice(5, 7) + "-" + m.slice(2, 4);
-    const n0 = (v) => Math.round(v).toLocaleString("en-US");
-    const pct = (r) => (100 * r[2]) / r[1];
-    const mom = D.map((r, i) => (i ? 100 * (r[2] / D[i - 1][2] - 1) : null));
-    const WAVES = ["2015-06", "2016-11"];
-
-    function frame(el, H) {
-      const W = Math.min(el.clientWidth, 700); if (!W) return null;
-      if (W < 560) H = Math.round(H * 0.8);  // phone: lower, so the chart is never tall and narrow
-      el.innerHTML = "";
-      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("height", H);
-      el.appendChild(svg);
-      const tip = document.createElement("div"); tip.className = "p21-tip"; tip.hidden = true; el.appendChild(tip);
-      return { W, H, svg, tip };
-    }
-    // x labels every 3 months, plus the last month when it has room
-    function xLabels(rows, x, y, band) {
-      let h = "", last = -1e9;
-      rows.forEach((r, i) => {
-        const mo = +r[0].slice(5), isLast = i === rows.length - 1;
-        if ((mo - 1) % 3 === 0 || isLast) {
-          if (x(i) - last < 46) return;
-          h += `<text x="${x(i)}" y="${y}" text-anchor="middle">${ml(r[0])}</text>`; last = x(i);
-        }
-      });
-      return h;
-    }
-    function flag(xc, yc, text, color, anchor) {
-      const w = text.length * 7.4 + 22, x0 = anchor === "end" ? xc - w : anchor === "start" ? xc : xc - w / 2;
-      return `<g><rect x="${x0}" y="${yc - 13}" width="${w}" height="24" rx="5" fill="var(--surface)" stroke="${color}" stroke-width="1.5"/>` +
-        `<text x="${x0 + w / 2}" y="${yc + 3.5}" text-anchor="middle" style="fill:${color};font-weight:700;font-size:13px">⚑ ${text}</text></g>`;
-    }
-    function hover(f, n, L, band, T, ph, html) {
-      const { svg, tip, W } = f;
-      svg.insertAdjacentHTML("beforeend", `<rect x="${L}" y="${T}" width="${band * n}" height="${ph}" fill="transparent" class="hit"/>`);
-      const hit = svg.querySelector(".hit");
-      hit.addEventListener("mousemove", (e) => {
-        const bb = svg.getBoundingClientRect(), px = (e.clientX - bb.left) * (W / bb.width);
-        const i = Math.max(0, Math.min(n - 1, Math.floor((px - L) / band)));
-        tip.innerHTML = html(i); tip.hidden = false;
-        const tx = (L + band * (i + 0.5)) * (bb.width / W), tw = tip.offsetWidth;
-        tip.style.left = Math.max(0, Math.min(bb.width - tw, tx + 14 > bb.width - tw ? tx - tw - 14 : tx + 14)) + "px"; tip.style.top = "8px";
-      });
-      hit.addEventListener("mouseleave", () => (tip.hidden = true));
-    }
-
-    // Concern 1: Paid Active % bars (left axis) + Paid / All active lines (right axis)
-    function ch1() {
-      const el = document.getElementById("p21-ch1"), f = frame(el, 360); if (!f) return;
-      const { W, H, svg } = f, L = 46, R = 50, T = 40, B = 34, ph = H - T - B, n = D.length, band = (W - L - R) / n;
-      const x = (i) => L + band * (i + 0.5), yl = (v) => T + ph - (v / 100) * ph, yr = (v) => T + ph - (v / 400000) * ph;
-      let h = "";
-      for (let k = 0; k <= 5; k++) {
-        const v = k * 20, yy = yl(v);
-        h += `<line x1="${L}" x2="${W - R}" y1="${yy}" y2="${yy}" stroke="${k ? "var(--line)" : "var(--muted)"}" stroke-dasharray="${k ? "4 4" : ""}"/>`;
-        h += `<text x="${L - 8}" y="${yy + 4}" text-anchor="end">${v}%</text>`;
-      }
-      for (let k = 0; k <= 4; k++) h += `<text x="${W - R + 8}" y="${yr(k * 100000) + 4}">${k ? k * 100 + "K" : 0}</text>`;
-      const bw = Math.max(4, band * 0.62);
-      D.forEach((r, i) => {
-        const p = pct(r), hi = WAVES.includes(r[0]);
-        h += `<rect x="${x(i) - bw / 2}" y="${yl(p)}" width="${bw}" height="${yl(0) - yl(p)}" rx="2" fill="${hi ? "var(--bar-hi)" : "var(--bar)"}"/>`;
-        if (hi) h += `<text x="${x(i)}" y="${yl(p) - 6}" text-anchor="middle" style="fill:var(--bar-hi);font-weight:800;font-size:13px">${Math.round(p)}%</text>`;
-      });
-      const path = (k) => D.map((r, i) => (i ? "L" : "M") + x(i).toFixed(1) + "," + yr(r[k]).toFixed(1)).join("");
-      h += `<path d="${path(1)}" fill="none" stroke="var(--ln2)" stroke-width="2.2" stroke-dasharray="6 5"/>`;
-      h += `<path d="${path(2)}" fill="none" stroke="var(--ln1)" stroke-width="2.6"/>`;
-      D.forEach((r, i) => (h += `<circle cx="${x(i)}" cy="${yr(r[2])}" r="3" fill="var(--ln1)"/>`));
-      h += xLabels(D, x, T + ph + 22, band);
-      const iw1 = D.findIndex((r) => r[0] === "2015-06"), iw2 = D.findIndex((r) => r[0] === "2016-11"), idp = D.findIndex((r) => r[0] === "2016-05");
-      const narrow = W < 560;
-      h += flag(x(iw1), narrow ? yl(22) : T + 16, narrow ? "06-15 Trials" : "06-15 Free-Trial Wave", "var(--c-orange)", narrow ? "start" : "middle");
-      h += flag(x(idp), T + 40, narrow ? "Dip*" : "04-16 Dip*", "var(--r)", "middle");
-      h += flag(x(iw2), T - 18, narrow ? "11-16 Trials" : "11-16 Free-Trial Wave", "var(--c-orange)", "end");
-      svg.innerHTML = h;
-      hover(f, n, L, band, T, ph, (i) => { const r = D[i]; return `<b>${ml(r[0])}</b>Paid Active: <strong>${n0(r[2])}</strong><br>All Active: <strong>${n0(r[1])}</strong><br>Paid Active %: <strong>${pct(r).toFixed(1)}%</strong>`; });
-    }
-
-    // Concern 2: MoM % bars, yearly average lines, 2017 shaded
-    function ch2() {
-      const el = document.getElementById("p21-ch2"), f = frame(el, 340); if (!f) return;
-      const { W, H, svg } = f, rows = D.slice(1), g = mom.slice(1), L = 52, R = 16, T = 30, B = 34, ph = H - T - B, n = rows.length, band = (W - L - R) / n;
-      const x = (i) => L + band * (i + 0.5), y = (v) => T + ph - ((v + 12) / 32) * ph;
-      let h = "";
-      const i17 = rows.findIndex((r) => r[0] >= "2017-01");
-      h += `<rect x="${L + band * i17}" y="${T}" width="${band * (n - i17)}" height="${ph}" fill="var(--shade)" opacity=".6"/>`;
-      [-10, -5, 0, 5, 10, 15, 20].forEach((v) => {
-        h += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="${v ? "var(--line)" : "var(--muted)"}" stroke-width="${v ? 1 : 1.5}" stroke-dasharray="${v ? "4 4" : ""}"/>`;
-        h += `<text x="${L - 8}" y="${y(v) + 4}" text-anchor="end">${v > 0 ? "+" : ""}${v}%</text>`;
-      });
-      const bw = Math.max(4, band * 0.62);
-      g.forEach((v, i) => { const top = Math.min(y(v), y(0)); h += `<rect x="${x(i) - bw / 2}" y="${top}" width="${bw}" height="${Math.abs(y(v) - y(0))}" rx="2" fill="${v < 0 ? "var(--neg)" : "var(--pos)"}"/>`; });
-      const narrow = W < 560;
-      [["2015", 5.6, "2015 Avg: +5.6%/mo", "var(--y15)"], ["2016", 2.0, "2016 Avg: +2.0%/mo", "var(--y16)"], ["2017", 0.8, "2017: +0.8%", "var(--y17)"]].forEach(([yr, v, lab, c]) => {
-        const idx = rows.map((r, i) => (r[0].startsWith(yr) ? i : -1)).filter((i) => i >= 0), a = L + band * idx[0], b = L + band * (idx[idx.length - 1] + 1);
-        h += `<line x1="${a}" x2="${b}" y1="${y(v)}" y2="${y(v)}" stroke="${c}" stroke-width="4" stroke-linecap="round"/>`;
-        const anc = yr === "2017" ? "end" : "middle", lx = yr === "2017" ? b : (a + b) / 2;
-        h += `<text x="${lx}" y="${narrow && yr === "2017" ? y(v) + 20 : y(v) - 9}" text-anchor="${anc}" style="fill:${c};font-weight:800;font-size:${narrow ? 12 : 16}px;paint-order:stroke;stroke:var(--surface);stroke-width:4px">${narrow ? lab.replace(" Avg", "").replace("/mo", "") : lab}</text>`;
-      });
-      const ir = rows.findIndex((r) => r[0] === "2016-07"), io = rows.findIndex((r) => r[0] === "2016-04");
-      h += flag(x(ir), y(g[ir]) - 18, "Rebound", "var(--y16)", "middle");
-      h += flag(x(io), y(g[io]) + 20, "Outage*", "var(--r)", "middle");
-      h += xLabels(rows, x, T + ph + 22, band);
-      svg.innerHTML = h;
-      hover(f, n, L, band, T, ph, (i) => `<b>${ml(rows[i][0])}</b>Paid Active MoM: <strong>${g[i] > 0 ? "+" : ""}${g[i].toFixed(1)}%</strong><br>Paid Active: <strong>${n0(rows[i][2])}</strong>`);
-    }
-
-    // Key Months Breakdown
-    const KEY = [["2015-01", "Baseline", ""], ["2015-05", "Normal", ""], ["2015-06", "Trial Wave 1 (12.9% conv.)", "am"], ["2015-07", "Post-trial drop", ""],
-      ["2016-01", "Normal (Payment Method 39 active)", ""], ["2016-04", "Payment Method 39 Outage (-84%)", "bd"], ["2016-06", "Payment Method 39 Outage (-90%)", "bd"],
-      ["2016-07", "Payment Method 39 Back", "gd"], ["2016-10", "Normal", ""], ["2016-11", "Trial Wave 2 (4.9% conv. by 03-17)", "am"], ["2016-12", "Post-trial drop", ""], ["2017-03", "Latest month", ""]];
-    const pmin = 130000, pmax = 310000;
-    document.getElementById("p21-key").innerHTML =
-      "<thead><tr><th>Month</th><th>Paid Active</th><th>Free Trial Users (paid=0)</th><th>% Paying of Active</th><th>Payment Method 39 Users</th><th>Signal / Evidence</th></tr></thead><tbody>" +
-      KEY.map(([m, sig, sc]) => {
-        const r = D.find((d) => d[0] === m), p = pct(r), shade = Math.round(8 + 22 * (r[2] - pmin) / (pmax - pmin));
-        const fc = r[3] > 20000 ? "am" : "", pc = p < 90 ? "bd" : p < 95 ? "am" : "ok";
-        const mc = sc === "bd" ? "bd" : sc === "gd" ? "gd" : "m39";
-        return `<tr><td class="m">${ml(m)}</td><td style="background:color-mix(in srgb,var(--accent) ${shade}%,transparent);font-weight:600">${n0(r[2])}</td>` +
-          `<td class="${fc}">${n0(r[3])}</td><td class="${pc}">${p.toFixed(1)}%</td><td class="${mc}">${n0(r[4])}</td><td class="${sc}">${sig}</td></tr>`;
-      }).join("") + "</tbody>";
-
-    // Q1 / Q2 chips scroll to their answer without changing the tab in the URL
-    document.querySelectorAll("#view-p2-active [data-scroll]").forEach((a) => a.addEventListener("click", (e) => {
-      e.preventDefault(); document.getElementById(a.dataset.scroll).scrollIntoView({ behavior: "smooth", block: "start" });
-    }));
-    const all = () => { ch1(); ch2(); };
-    all();
-    if (window.ResizeObserver) { const ro = new ResizeObserver(() => { const w = document.getElementById("p21-ch1").clientWidth; if (w && w !== ro.w) { ro.w = w; all(); } }); ro.observe(document.getElementById("p21-ch1")); }
-    else addEventListener("resize", all);
-    })();
-    </script>
   </section>
 
-  <section class="view cx p2 p22" id="view-p2-flow" data-own-brief="1" hidden>
-    <style>
-    .p22{--nw:#2563eb;--re:#0d9488;--fl:#c2410c;--fl-bg:#fff4ec;--gr:#e3eaf3;--ax:#8a97a8}
-    @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .p22{--nw:#60a5fa;--re:#2dd4bf;--fl:#fb923c;--fl-bg:#3a2414;--gr:#24344f;--ax:#6f819c}}
-    :root[data-theme="dark"] .p22{--nw:#60a5fa;--re:#2dd4bf;--fl:#fb923c;--fl-bg:#3a2414;--gr:#24344f;--ax:#6f819c}
-    .p22-head{padding:26px 30px;display:grid;gap:10px}
-    .p22-tag{justify-self:start;background:var(--accent-soft);color:var(--navy);font-weight:700;font-size:var(--fs-small);border-radius:999px;padding:5px 14px}
-    .p22-head h1{font-size:var(--fs-title)}
-    .p22-head p{color:var(--muted)}
-    .p22-qa{background:var(--c-note-bg);border:1px solid color-mix(in srgb,var(--accent) 25%,transparent);border-left:6px solid var(--navy);border-radius:10px;padding:18px 24px;display:grid;gap:8px;line-height:1.65}
-    .p22-qa p{margin:0}
-    .p22-qa b.k{color:var(--navy)}
-    .p22 .nb{color:var(--nw);font-weight:700}.p22 .rb{color:var(--re);font-weight:700}.p22 .gb{color:var(--c-ok);font-weight:700}.p22 .db{color:var(--c-bad);font-weight:700}
-    .p22-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:22px;max-width:1120px;width:100%;margin:0 auto}
-    .p22-card{padding:22px 24px;display:grid;gap:12px;align-content:start;min-width:0}
-    .p22-card h2{font-size:var(--fs-h2)}
-    .p22-concl{border-left:5px solid var(--c-ok);background:var(--c-ok-bg);border-radius:8px;padding:10px 16px;line-height:1.55}
-    .p22-concl.warn{border-left-color:var(--fl);background:var(--fl-bg)}
-    .p22-lg{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 20px;font-size:var(--fs-table)}
-    .p22-lg span{display:inline-flex;align-items:center;gap:8px}
-    .p22-lg i{display:inline-block;width:14px;height:14px;border-radius:3px}
-    .p22-lg i.ln{width:22px;height:0;border-top:3px solid;border-radius:2px}
-    .p22-lg i.ln.dash{border-top-style:dashed}
-    .p22-plot svg{display:block;width:100%;height:auto;overflow:visible}
-    .p22-plot text{font-family:var(--font);font-size:13px;fill:var(--muted)}
-    .p22-plot text.v{fill:var(--fg);font-weight:700;font-size:12.5px}
-    .p22-plot text.ren{fill:var(--c-ok);font-weight:700;font-size:12.5px}
-    .p22-plot text.fl{fill:var(--fl);font-weight:700;font-size:12.5px}
-    .p22-foot{font-size:var(--fs-small);color:var(--muted)}
-    .p22-keys{padding:22px 24px;display:grid;gap:12px;max-width:960px;width:100%;margin:0 auto}
-    .p22-keys h2{font-size:var(--fs-h2)}
-    .p22 table.p22-t{width:100%;border-collapse:collapse;font-size:var(--fs-table)}
-    .p22 table.p22-t th,.p22 table.p22-t td{height:42px;padding:0 12px;border-bottom:1px solid var(--line);text-align:center;vertical-align:middle;white-space:nowrap;font-variant-numeric:tabular-nums}
-    .p22 table.p22-t th{background:var(--navy);color:var(--on-dark);font-size:var(--fs-label);letter-spacing:.04em;text-transform:uppercase}
-    .p22 table.p22-t td.m{font-weight:700;background:var(--code-bg)}
-    .p22 table.p22-t td.l{text-align:left;white-space:normal}
-    .p22 table.p22-t td.wu{background:var(--warn-soft);color:var(--warn);font-weight:700}
-    .p22 table.p22-t td.bg{background:var(--fl-bg);color:var(--fl);font-weight:700}
-    .p22-fold{padding:0}
-    .p22-fold summary{cursor:pointer;padding:16px 24px;font-size:var(--fs-h3);font-weight:700;color:var(--navy)}
-    .p22-fold .in{padding:0 24px 20px;display:grid;gap:12px;line-height:1.6}
-    .p22-fold ul{margin:0;padding-left:22px;display:grid;gap:6px}
-    .p22-fold .ex{max-width:760px}
-    </style>
-
-    <div class="card p22-head">
-      <span class="p22-tag">Brief 2.2 · New vs Renewing vs Reactivated</span>
-      <h1>2.2 · New, Renewing &amp; Reactivated Subscribers</h1>
-      <p>Each month's paying subscribers split into three groups, 02-15 to 03-17</p>
+  <!-- 2.2 -->
+  <section class="view cx v3" id="view-p2-flow" data-own-brief="1" hidden>
+    <div class="card v3-head">
+      <span class="v3-tag">Brief 2.2 · New vs renewing vs reactivated</span>
+      <h1>2.2 · New, Renewing &amp; Reactivated</h1>
+      <p>Each month's paying subscribers split into three groups, 04-15 to 03-17</p>
     </div>
-
     <div class="qa">
-    <p class="qa-q"><b>Question:</b> Where do paying subscribers come from (new, renewing, reactivated), and how has the mix changed?</p>
-    <div class="p22-qa">
-      <p><b class="k">Answer:</b> Growth comes from keeping existing customers: <span class="gb">95.5%</span> of paying subscribers renew (Q1-17). New subscribers keep falling: from <span class="nb">6.1%</span> of paying subscribers in Q4-15 to <span class="db">2.8%</span> in Q1-17 (about 13,700 → 8,500 a month)</p>
+      <p class="qa-q">Where do paying subscribers come from, and how has the mix changed?</p>
+      <div class="qa-a"><p>Growth comes from keeping customers: <b>95.5%</b> of paying subscribers renew (Q1-17). New subscribers keep falling: from <b>6.1%</b> of paying subscribers in Q4-15 to <b>2.8%</b> in Q1-17 (about <b>13,700 → 8,500</b> a month)</p></div>
     </div>
-    </div>
-
-    <div class="p22-pair">
-      <div class="card p22-card">
-        <h2>A · New and reactivated share, by quarter</h2>
-        <div class="p22-concl"><b>New share fell by half:</b> 6.1% (Q3–Q4-15) → 2.8% (Q1-17). Renewing (green row under the bars) grew to 95–96%</div>
-        <div class="p22-lg"><span><i style="background:var(--nw)"></i>New, % of paying</span><span><i style="background:var(--re)"></i>Reactivated, % of paying</span><span><i style="background:var(--fl)"></i>Billing-gap return</span></div>
-        <div class="p22-plot" id="p22-q"></div>
-        <div class="p22-notes"><p class="p22-foot">Q1-15 left out: files start 01-15, so existing customers look new · <button class="linkbtn" data-go="p2-trust">2.5 →</button></p></div>
-      </div>
-      <div class="card p22-card">
-        <h2>B · New and reactivated users, by month</h2>
-        <div class="p22-concl"><b>New is shrinking:</b> ~11,500 a month in 2015 → ~8,500 in 2017. Both reactivated spikes are returns after a billing problem</div>
-        <div class="p22-lg"><span><i class="ln" style="color:var(--nw)"></i>New</span><span><i class="ln dash" style="color:var(--re)"></i>Reactivated</span><span><i style="background:var(--fl)"></i>Billing-gap return</span></div>
-        <div class="p22-plot" id="p22-m"></div>
-        <div class="p22-notes"><p class="p22-foot">From 04-15 · free trials are not counted (not paying)</p>
-        <p class="p22-foot"><b>New</b> = first paid month seen in the files, not always a new app user: only about half registered in the 2 months before</p></div>
-      </div>
+    
+    <div class="card v3-card">
+      <h2>New and reactivated share, by quarter</h2>
+      <p class="v3-c warn"><b>New share fell by half:</b> 6.1% (Q3-15, Q4-15) → 2.8% (Q1-17). The two reactivated peaks are customers back after a billing gap</p>
+      <div class="vz-lg"><span><i class="bar" style="--c:var(--v-blue)"></i>New, % of paying</span><span><i class="bar" style="--c:var(--v-teal-l)"></i>Reactivated, % of paying</span></div>
+      <div class="vz" id="p22-q"></div>
+      <p class="v3-foot">Q1-15 left out: the files start 01-15, so customers from before look new · <button class="linkbtn" data-go="p2-trust">2.5 →</button></p>
     </div>
 
-    <div class="card p22-keys">
+    <div class="card v3-card">
+      <h2>New and reactivated users, by month</h2>
+      <p class="v3-c warn"><b>New is shrinking:</b> about 11,500 a month in 2015 → 8,500 in 2017</p>
+      <div class="vz-lg"><span><i class="bar" style="--c:var(--v-mid)"></i>New</span><span><i class="bar" style="--c:var(--v-teal-l)"></i>Reactivated</span><span><i class="ln thick" style="--c:var(--v-navy)"></i>New, yearly average</span></div>
+      <div class="vz" id="p22-m"></div>
+      <p class="v3-foot"><b>New</b> = first paid month seen in the files, not always a new app user · free trials are not counted (not paying)</p>
+    </div>
+
+    <div class="card v3-card">
       <h2>Months with an event</h2>
-      <div class="scroll"><table class="p22-t">
-        <thead><tr><th>Month</th><th>New</th><th>Reactivated</th><th>Renewing %</th><th>What happened</th></tr></thead>
+      <div class="v3-tw"><table class="v3-t">
+        <thead><tr><th>Month</th><th>New · % of paying</th><th>Reactivated · % of paying</th><th>Renewing</th><th>What happened</th></tr></thead>
         <tbody>
-          <tr><td class="m">01-15</td><td class="wu">131,441</td><td>0</td><td>0%</td><td class="l">Files start 01-01-15: every customer from before counts as new</td></tr>
-          <tr><td class="m">03-15</td><td class="wu">27,285</td><td>585</td><td>83.3%</td><td class="l">Customers on longer plans make their first 2015 purchase: also counted as new</td></tr>
-          <tr><td class="m">06-15</td><td>8,050</td><td class="bg">18,324</td><td>85.3%</td><td class="l">~17,000 users cut off in the 04-15 billing gap came back</td></tr>
-          <tr><td class="m">03-16</td><td>11,657</td><td>3,684</td><td>94.0%</td><td class="l">Payment method 39 outage starts: its users drop out (2.3)</td></tr>
-          <tr><td class="m">07-16</td><td>11,627</td><td class="bg">25,205</td><td>86.5%</td><td class="l">Payment method 39 users came back</td></tr>
-          <tr><td class="m">03-17</td><td>8,310</td><td>3,491</td><td>96.1%</td><td class="l">Latest month</td></tr>
+          <tr><td class="m">01-15</td><td class="am">131,441 · 100%</td><td>0 · 0%</td><td>0%</td><td class="l">Files start 01-01-15: every customer from before counts as new</td></tr>
+          <tr><td class="m">03-15</td><td class="am">27,285 · 16.4%</td><td>585 · 0.4%</td><td>83.3%</td><td class="l">Customers on longer plans make their first 2015 purchase: also counted as new</td></tr>
+          <tr><td class="m">06-15</td><td>8,050 · 4.5%</td><td class="bd">18,324 · 10.2%</td><td>85.3%</td><td class="l">About 17,000 users cut off in the 04-15 billing gap came back</td></tr>
+          <tr><td class="m">03-16</td><td>11,657 · 4.6%</td><td>3,684 · 1.4%</td><td>94.0%</td><td class="l">Payment method 39 outage starts: its users drop out (2.3)</td></tr>
+          <tr><td class="m">07-16</td><td>11,627 · 4.3%</td><td class="bd">25,205 · 9.3%</td><td>86.5%</td><td class="l">Payment method 39 users came back</td></tr>
+          <tr><td class="m">03-17</td><td>8,310 · 2.7%</td><td>3,491 · 1.2%</td><td>96.1%</td><td class="l">Latest month</td></tr>
         </tbody></table></div>
-      <p class="p22-foot">Yellow: counted as new only because the files start in 2015 · Orange: back after a billing problem · <button class="linkbtn" data-go="p2-trust">2.5 What we don't trust →</button></p>
+      <p class="v3-foot">Amber: counted as new only because the files start in 2015 · Red: back after a billing problem · <button class="linkbtn" data-go="p2-trust">2.5 What we don't trust →</button></p>
     </div>
 
-    <details class="card p22-fold"><summary>+ Definitions</summary><div class="in"><ul>
-      <li><b>Paying subscriber:</b> a user with at least one day of paid access in the month (same as 2.1). Each one is exactly one of the three below</li>
-      <li><b>New:</b> their first subscription in the files starts this month. This means first time paying in our data, not always a new app user</li>
-      <li><b>Reactivated:</b> they come back more than 30 days after their last subscription expired</li>
+    <details class="card v3-fold"><summary>+ Definitions</summary><ul>
+      <li><b>Paying subscriber:</b> at least one day of paid access in the month (same as 2.1). Each one is exactly one of the three below</li>
+      <li><b>New:</b> their first subscription in the files starts this month: first time paying in our data, not always a new app user</li>
+      <li><b>Reactivated:</b> back more than 30 days after their last subscription expired</li>
       <li><b>Renewing:</b> everyone else: renewed, or still inside a multi-month or annual plan</li>
-      <li><b>Free trials</b> are not counted here: they pay nothing</li>
-    </ul></div></details>
-
-    <details class="card p22-fold"><summary>+ Why 01-15 to 03-15 are left out</summary><div class="in">
-      <p>The files start on 01-01-15. Anything before is missing, so a customer who already paid in 2014 shows up as <b>New</b> at their first 2015 purchase. Example, user <span class="mono">u_00001a7cf51cb31e</span>:</p>
-      <div class="scroll ex"><table class="p22-t">
+    </ul></details>
+    <details class="card v3-fold"><summary>+ Why 01-15 to 03-15 are left out</summary><div class="v3-in">
+      <p>The files start on 01-01-15. A customer who already paid in 2014 shows up as <b>New</b> at their first 2015 purchase. Example, user <span class="mono">u_00001a7cf51cb31e</span>:</p>
+      <div class="v3-tw"><table class="v3-t">
         <thead><tr><th>What</th><th>Value</th></tr></thead>
         <tbody>
           <tr><td class="l">Registered (<span class="mono">registered_date</span>)</td><td>05-11-2005</td></tr>
           <tr><td class="l">First purchase in the files</td><td>24-01-15, auto-renew, $149</td></tr>
           <tr><td class="l">After that</td><td>Renews every month</td></tr>
-          <tr><td class="l">Counted in 01-15 as</td><td class="wu">New</td></tr>
+          <tr><td class="l">Counted in 01-15 as</td><td class="am">New</td></tr>
         </tbody></table></div>
       <p>So 01-15 shows 131,441 "new" (100%); 64,730 of them registered before 2013. In 02-15 and 03-15 customers on 2–12 month plans make their first 2015 purchase and also look new. From 04-15 the numbers are normal</p>
     </div></details>
-
     <p class="cx-src">SQL: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/sql/08_metrics.sql" target="_blank" rel="noopener">sql/08_metrics.sql ↗</a> (<span class="mono">mart_metrics_month</span>) · Report: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/04_metrics.md" target="_blank" rel="noopener">reports/04_metrics.md ↗</a></p>
-
-    <script>
-    (() => {
-    // mart_metrics_month, quarterly: [quarter, new %, reactivated %, renewing %, flag]
-    const Q = [["Q2-15",5.1,3.9,91.0,1],["Q3-15",6.1,1.2,92.8,0],["Q4-15",6.1,1.8,92.2,0],["Q1-16",5.7,2.0,92.4,0],["Q2-16",3.3,1.8,94.9,0],["Q3-16",3.5,4.2,92.2,1],["Q4-16",2.9,1.3,95.7,0],["Q1-17",2.8,1.6,95.5,0]];
-    // monthly: [mm-yy, new_paid, reactivated_paid]
-    const M = [["04-15",9620,820],["05-15",8517,928],["06-15",8050,18324],["07-15",11632,2249],["08-15",12734,2075],["09-15",11752,2597],["10-15",14728,2373],["11-15",13794,7084],["12-15",12653,2523],["01-16",17183,5466],["02-16",14041,5721],["03-16",11657,3684],["04-16",6788,5036],["05-16",8453,3805],["06-16",9025,3968],["07-16",11627,25205],["08-16",10378,6745],["09-16",7447,3418],["10-16",7749,3406],["11-16",7959,3588],["12-16",9803,4539],["01-17",8471,7964],["02-17",8810,3392],["03-17",8310,3491]];
-    const flag = (x, y, label, anchor) => {  // pole from the point up to a fixed top row, label beside the flag
-      const top = 16, d = anchor === "end" ? -1 : 1;
-      return `<line x1="${x}" x2="${x}" y1="${y - 6}" y2="${top}" stroke="var(--fl)" stroke-width="2"/>` +
-        `<path d="M${x},${top} l${12 * d},5 l${-12 * d},5 z" fill="var(--fl)"/>` +
-        `<text class="fl" x="${x + 16 * d}" y="${top + 9}" text-anchor="${anchor === "end" ? "end" : "start"}">${label}</text>`;
-    };
-    // A: grouped vertical bars by quarter (drawn at the real width, so text never shrinks)
-    function drawQ() {
-      const el = document.getElementById("p22-q"), W = Math.min(el.clientWidth, 700); if (!W) return;
-      const narrow = W < 480, H = narrow ? 300 : 340, L = narrow ? 34 : 44, R = 6, T = 50, B = 58, pw = W - L - R, ph = H - T - B, max = 8;
-      const y = (v) => T + ph - (v / max) * ph, band = pw / Q.length, bw = Math.min(22, band / (narrow ? 2.6 : 3));
-      let h = "";
-      for (let v = 0; v <= max; v += 2) h += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="${v ? "var(--gr)" : "var(--ax)"}"/><text x="${L - 8}" y="${y(v) + 4.5}" text-anchor="end">${v}%</text>`;
-      Q.forEach((q, i) => {
-        const cx = L + band * (i + 0.5);
-        [[q[1], "var(--nw)", -1], [q[2], "var(--re)", 1]].forEach(([v, c, s]) => {
-          const x0 = cx + (s < 0 ? -bw - 1 : 1);
-          h += `<rect x="${x0}" y="${y(v)}" width="${bw}" height="${T + ph - y(v)}" rx="3" fill="${c}"/>`;
-          h += `<text class="v" x="${x0 + bw / 2}" y="${y(v) - 6}" text-anchor="middle">${v.toFixed(1)}</text>`;
-        });
-        h += `<text x="${cx}" y="${T + ph + 20}" text-anchor="middle" style="fill:var(--fg);font-weight:600">${narrow ? q[0].replace("-", " ") : q[0]}</text>`;
-        h += `<text class="ren" x="${cx}" y="${T + ph + 40}" text-anchor="middle">${Math.round(q[3])}%</text>`;
-        if (q[4]) h += flag(cx + 1 + bw / 2, y(q[2]) - 18, "Billing gap", i > Q.length / 2 ? "end" : "start");
-      });
-      if (!narrow) h += `<text x="${L - 8}" y="${T + ph + 40}" text-anchor="end" class="ren">Renew</text>`;
-      el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="New and reactivated share of paying subscribers by quarter">${h}</svg>`;
-    }
-    // B: monthly lines
-    function drawM() {
-      const el = document.getElementById("p22-m"), W = Math.min(el.clientWidth, 700); if (!W) return;
-      const narrow = W < 480, H = narrow ? 300 : 340, L = narrow ? 40 : 48, R = 12, T = 50, B = 58, pw = W - L - R, ph = H - T - B, max = 28000;
-      const x = (i) => L + (pw / (M.length - 1)) * i, y = (v) => T + ph - (v / max) * ph, every = narrow ? 6 : 3;
-      let h = "";
-      for (let v = 0; v <= max; v += 7000) h += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="${v ? "var(--gr)" : "var(--ax)"}"/><text x="${L - 8}" y="${y(v) + 4.5}" text-anchor="end">${v ? v / 1000 + "k" : 0}</text>`;
-      M.forEach((m, i) => { if (i % every === 0) h += `<line x1="${x(i)}" x2="${x(i)}" y1="${T + ph}" y2="${T + ph + 5}" stroke="var(--ax)"/><text x="${x(i)}" y="${T + ph + 22}" text-anchor="middle">${m[0]}</text>`; });
-      const path = (k) => M.map((m, i) => (i ? "L" : "M") + x(i).toFixed(1) + "," + y(m[k]).toFixed(1)).join("");
-      h += `<path d="${path(1)}" fill="none" stroke="var(--nw)" stroke-width="2.6" stroke-linejoin="round"/>`;
-      h += `<path d="${path(2)}" fill="none" stroke="var(--re)" stroke-width="2.6" stroke-dasharray="6 5" stroke-linejoin="round"/>`;
-      [[2, narrow ? "18,324" : "06-15: 18,324", "start"], [15, narrow ? "25,205" : "07-16: 25,205", "end"]].forEach(([i, t, a]) => { h += `<circle cx="${x(i)}" cy="${y(M[i][2])}" r="5" fill="var(--fl)" stroke="var(--surface)" stroke-width="2"/>` + flag(x(i), y(M[i][2]), t, a); });
-      h += `<text class="v" x="${x(M.length - 1)}" y="${y(M[M.length - 1][1]) - 10}" text-anchor="end" style="fill:var(--nw)">8,310</text>`;
-      el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="New and reactivated paying users per month">${h}</svg>`;
-    }
-    const both = () => { drawQ(); drawM(); };
-    both();
-    if (window.ResizeObserver) { const ro = new ResizeObserver(() => { const w = document.getElementById("p22-q").clientWidth; if (w && w !== ro.w) { ro.w = w; both(); } }); ro.observe(document.getElementById("p22-q")); }
-    else addEventListener("resize", both);
-    })();
-    </script>
   </section>
 
-  <section class="view cx p2 p2x" id="view-p2-churn" data-own-brief="1" hidden>
-    <div class="card p2x-head">
-      <span class="p2x-tag">Brief 2.3 · Monthly Churn Rate</span>
-      <h1>2.3 · Monthly Churn — Stable, With Two Billing Gaps</h1>
+  <!-- 2.3 -->
+  <section class="view cx v3" id="view-p2-churn" data-own-brief="1" hidden>
+    <div class="card v3-head">
+      <span class="v3-tag">Brief 2.3 · Monthly churn rate</span>
+      <h1>2.3 · Monthly Churn</h1>
       <p>Share of paying subscribers whose plan ended and who did not buy again within 30 days</p>
     </div>
-    <div class="p2x-qa">
-      <p class="p2x-q"><b>Question:</b> Are customers staying or leaving, and is churn getting worse?</p>
-      <p class="p2x-a"><b>Answer:</b> Customers are staying. <span class="nv">3–5%</span> of paying subscribers leave each month, a little less than a year earlier (<span class="nv">3.9%</span> vs <span class="nv">4.5%</span>). The two <span class="rd">~14%</span> spikes (04-15, 03-16) are billing gaps, not real churn</p>
+    <div class="qa">
+      <p class="qa-q">Are customers staying or leaving, and is churn getting worse?</p>
+      <div class="qa-a"><p>Customers are staying, and churn is getting a little better. <b>3–5%</b> of paying subscribers leave each month: <b>3.9%</b> in the last 12 months vs <b>4.5%</b> the year before. The two <b>~14%</b> spikes (04-15, 03-16) are billing gaps, not real churn</p></div>
+    </div>
+    
+    <div class="card v3-card">
+      <h2>Churn rate by month</h2>
+      <p class="v3-c ok"><b>Stable:</b> about 4% a month in 2015 and 2016, 3.6% in 2017. Outside the two billing gaps no month is above 6.1%</p>
+      <div class="vz-lg"><span><i class="bar" style="--c:var(--v-mid)"></i>Churn rate (30-day rule)</span><span><i class="ln thick" style="--c:var(--v-navy)"></i>Yearly average, without billing gaps</span></div>
+      <div class="vz" id="p23-ch1"></div>
+      <p class="v3-foot">01-15 (no history) and 03-17 (needs April data) can't be measured · <button class="linkbtn" data-go="p2-trust">2.5 What we don't trust →</button></p>
     </div>
 
-    <div class="card p2-chart-card p2x-card">
-      <h2 class="p2-ct">Churn Rate by Month (30-day rule)</h2>
-      <div class="p2x-concl"><b>Stable:</b> outside the two billing gaps no month is above 6.1%. Almost all users in the spikes paid again within 1–4 months</div>
-      <div class="p2-legend" id="p2-lg-churn"></div>
-      <div class="p2-plot" id="p2-ch-churn"></div>
-      <p class="p2x-foot">01-15 (no history) and 03-17 (needs April data) can't be measured · <button class="linkbtn" data-go="p2-trust">2.5 What we don't trust →</button></p>
+    <div class="card v3-card">
+      <h2>Same month, year by year</h2>
+      <p class="v3-c ok"><b>Getting better:</b> every month from 06-16 to 02-17 is lower than the same month a year before (9 of 9)</p>
+      <div class="vz-lg"><span><i class="bar" style="--c:var(--v-grey)"></i>2015</span><span><i class="bar" style="--c:var(--v-mid)"></i>2016</span><span><i class="bar" style="--c:var(--v-navy)"></i>2017</span></div>
+      <div class="vz" id="p23-ch2"></div>
     </div>
 
-    <div class="card p2x-card">
-      <h2>Key Months Breakdown</h2>
-      <p class="p2x-foot">Billing gaps (red), December effect (amber), months we can't measure (grey)</p>
-      <div class="scroll"><table class="grid p2x-key">
+    <div class="card v3-card">
+      <h2>Key months</h2>
+      <p class="v3-foot">Billing gaps (red), December effect (amber), months we can't measure (grey)</p>
+      <div class="v3-tw"><table class="v3-t">
         <thead><tr><th>Month</th><th>Churn 30 days</th><th>Churn 32 days</th><th>What happened</th></tr></thead>
         <tbody>
           <tr><td class="m">04-15</td><td class="bd">13.9%</td><td>13.9%</td><td class="l bd">Billing gap: 17,435 auto-renew users expired on the same day · 99.5% paid again</td></tr>
@@ -1179,69 +856,65 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
         </tbody></table></div>
     </div>
 
-    <details class="card p2x-fold"><summary>+ Does the 30-day window matter?</summary><div class="p2x-in">
-      <div class="p2-chart-card p2x-flat">
-        <h2 class="p2-ct">30 vs 32 vs 45 days</h2>
-        <div class="p2x-concl"><b>No:</b> 32 and 45 days sit 0.1–0.5 points lower. Only December differs (~1.4 points)</div>
-        <div class="p2-legend" id="p2-lg-churnwin"></div>
-        <div class="p2-plot" id="p2-ch-churnwin"></div>
-      </div>
+    <details class="card v3-fold"><summary>+ Does the 30-day window matter?</summary><div class="v3-in">
+      <p class="v3-c info"><b>No:</b> 32 and 45 days sit 0.1–0.5% lower. Only December differs (about 1.4%)</p>
+      <div class="vz-lg"><span><i class="ln" style="--c:var(--v-navy)"></i>30 days (main)</span><span><i class="ln dash" style="--c:var(--v-mid)"></i>32 days</span><span><i class="ln dash" style="--c:var(--v-teal)"></i>45 days</span></div>
+      <div class="vz" id="p23-ch3"></div>
     </div></details>
-    <details class="card p2x-fold"><summary>+ Metric Definitions</summary><ul>
+    <details class="card v3-fold"><summary>+ Metric definitions</summary><ul>
       <li><b>Monthly churn rate:</b> paying subscribers whose subscription ended this month and who bought nothing within 30 days ÷ paying subscribers on the first day of the month</li>
       <li><b>Ended:</b> the membership expiry date falls in the month</li>
       <li><b>Free trials:</b> users who only ever had a free trial are counted apart, not as churn</li>
     </ul></details>
-    <details class="card p2x-fold"><summary>+ All months</summary><div class="p2x-in"><div class="scroll"><table class="grid p2x-key" id="p2-tb-churn"></table></div><p class="p2x-foot">Red rows: not trusted, see 2.5</p></div></details>
+    <details class="card v3-fold"><summary>+ All months</summary><div class="v3-in"><div class="v3-tw"><table class="v3-t" id="p2-tb-churn"></table></div><p class="v3-foot">Red rows: not trusted, see 2.5</p></div></details>
     <p class="cx-src">SQL: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/sql/08_metrics.sql" target="_blank" rel="noopener">sql/08_metrics.sql ↗</a> (<span class="mono">mart_churn_windows</span>) · Report: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/04_metrics.md" target="_blank" rel="noopener">reports/04_metrics.md ↗</a></p>
   </section>
 
-  <section class="view cx p2 p2x" id="view-p2-arpu" data-own-brief="1" hidden>
-    <div class="card p2x-head">
-      <span class="p2x-tag">Brief 2.4 · ARPU, Revenue &amp; Discount Depth</span>
-      <h1>2.4 · ARPU, Revenue &amp; Discounts — Growth From Volume, Not Price</h1>
-      <p>Revenue per paying subscriber, total monthly revenue, and average discount from list price</p>
+  <!-- 2.4 -->
+  <section class="view cx v3" id="view-p2-arpu" data-own-brief="1" hidden>
+    <div class="card v3-head">
+      <span class="v3-tag">Brief 2.4 · ARPU, revenue and discount depth</span>
+      <h1>2.4 · ARPU, Revenue &amp; Discounts</h1>
+      <p>Revenue per paying subscriber, total monthly revenue and discounts, in US dollars</p>
     </div>
-    <div class="p2x-qa">
-      <p class="p2x-q"><b>Question:</b> Does revenue grow from higher prices or from more customers? Was growth bought with discounts?</p>
-      <p class="p2x-a"><b>Answer:</b> From more customers. Q1-17 vs Q1-16: revenue <span class="gp">+24%</span>, paying subscribers <span class="gp">+20%</span>, revenue per subscriber only <span class="nv">+4%</span>. Paid discounts stopped in 11-15, so growth was not bought with discounts</p>
+    <div class="qa">
+      <p class="qa-q">Does revenue grow from higher prices or from more customers? Was growth bought with discounts?</p>
+      <div class="qa-a"><p>From more customers. Q1-17 vs Q1-16: revenue <b>+24%</b>, paying subscribers <b>+20%</b>, revenue per subscriber (ARPU) only <b>+4%</b>. Paid discounts stopped in 11-15, so growth was not bought with discounts</p></div>
     </div>
-    <div class="card p2x-card p2-lead">
+    
+    <div class="card v3-card">
       <h2>Where revenue growth came from · Q1-17 vs Q1-16</h2>
-      <div class="p2x-concl"><b>Volume, not price:</b> revenue grew 24% because there are 20% more paying subscribers. Revenue per subscriber (ARPU) added only 4%</div>
-      <div class="p2-bars" role="img" aria-label="Q1-17 vs Q1-16: revenue +24%, paying subscribers +20%, ARPU +4%">
-        <div class="r"><span class="k">Revenue</span><span class="t"><i style="width:80.8%"></i></span><b>+24%</b><span class="d">$90.4M → $112.3M</span></div>
-        <div class="r"><span class="k">Paying subscribers</span><span class="t"><i style="width:65.3%"></i></span><b>+20%</b><span class="d">252k → 301k a month</span></div>
-        <div class="r"><span class="k">ARPU</span><span class="t"><i class="lo" style="width:13.9%"></i></span><b>+4%</b><span class="d">$119 → $124</span></div>
-      </div>
-      <p class="p2x-foot">Q1 = months 01 – 03 · subscribers: average month · US dollars</p>
+      <p class="v3-c ok"><b>Volume, not price:</b> revenue grew 24% because there are 20% more paying subscribers. Revenue per subscriber (ARPU) added only 4%</p>
+      <div class="vz" id="p24-ch0"></div>
+      <p class="v3-foot">Q1 = months 01–03 · subscribers: average month · US dollars</p>
     </div>
 
-    <div class="card p2-chart-card p2x-card">
-      <h2 class="p2-ct">ARPU by Month</h2>
-      <div class="p2x-concl"><b>Price is flat:</b> ~$120–$128 since 2016. February is always lower (fewer days)</div>
-      <div class="p2-legend" id="p2-lg-arpu"></div>
-      <div class="p2-plot" id="p2-ch-arpu"></div>
-      <p class="p2x-foot">US dollars · axis starts at $80</p>
-    </div>
-    <div class="card p2-chart-card p2x-card">
-      <h2 class="p2-ct">Revenue by Month</h2>
-      <div class="p2x-concl"><b>Revenue more than doubled:</b> $18.2M (02-15) → $40.4M (03-17), moving with the number of paying subscribers</div>
-      <div class="p2-legend" id="p2-lg-rev"></div>
-      <div class="p2-plot" id="p2-ch-rev"></div>
-      <p class="p2x-foot">US dollars, millions</p>
-    </div>
-    <div class="card p2-chart-card p2x-card">
-      <h2 class="p2-ct">Discount Depth by Month</h2>
-      <div class="p2x-concl"><b>No discounts since 11-15:</b> early 2015 ~1 in 10 paid purchases got ~20% off; since 11-15 almost none</div>
-      <div class="p2-legend" id="p2-lg-disc"></div>
-      <div class="p2-plot" id="p2-ch-disc"></div>
+    <div class="card v3-card">
+      <h2>Revenue moves with paying subscribers</h2>
+      <p class="v3-c ok"><b>Revenue more than doubled:</b> $18.2M (02-15) → $40.4M (03-17), in step with the number of paying subscribers</p>
+      <div class="vz-lg"><span><i class="bar" style="--c:var(--v-sky)"></i>Revenue a month (left)</span><span><i class="ln" style="--c:var(--v-navy)"></i>Paying subscribers (right)</span></div>
+      <div class="vz" id="p24-ch1"></div>
     </div>
 
-    <div class="card p2x-card">
-      <h2>Key Months Breakdown</h2>
-      <p class="p2x-foot">Not trusted (red), filled in by us (amber), change in pricing (green)</p>
-      <div class="scroll"><table class="grid p2x-key">
+    <div class="card v3-card">
+      <h2>ARPU by month</h2>
+      <p class="v3-c info"><b>Price is flat:</b> about $120–$128 a month since 2016. February is lower only because it has fewer days</p>
+      <div class="vz-lg"><span><i class="ln" style="--c:var(--v-navy)"></i>ARPU = revenue for the month ÷ paying subscribers</span></div>
+      <div class="vz" id="p24-ch2"></div>
+      <p class="v3-foot">Axis starts at $100 · grey band: list price filled in by us (1a issue #2)</p>
+    </div>
+
+    <div class="card v3-card">
+      <h2>Discounts by month</h2>
+      <p class="v3-c ok"><b>No discounts since 11-15:</b> in early 2015 about 1 in 10 paid purchases got a discount; since 11-15 almost none. Free trials took their place</p>
+      <div class="vz-lg"><span><i class="bar" style="--c:var(--v-mid)"></i>Paid purchases with any discount from list price</span></div>
+      <div class="vz" id="p24-ch3"></div>
+    </div>
+
+    <div class="card v3-card">
+      <h2>Key months</h2>
+      <p class="v3-foot">Not trusted (red), filled in by us (amber), change in pricing (green)</p>
+      <div class="v3-tw"><table class="v3-t">
         <thead><tr><th>Month</th><th>ARPU</th><th>Discounted</th><th>What happened</th></tr></thead>
         <tbody>
           <tr><td class="m">01-15</td><td class="bd">$71</td><td>9.7%</td><td class="l bd">Payments made before 2015 are missing, so revenue is too low</td></tr>
@@ -1249,221 +922,236 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
           <tr><td class="m">11-15</td><td>$126</td><td class="gd">0.01%</td><td class="l gd">Paid discounts stop; free trials take their place</td></tr>
           <tr><td class="m">02-17 · 03-17</td><td>$114 · $133</td><td>0.09%</td><td class="l">28 vs 31 days: compare years, not single months</td></tr>
         </tbody></table></div>
-      <p class="p2x-foot"><button class="linkbtn" data-go="p2-trust">2.5 What we don't trust →</button></p>
+      <p class="v3-foot"><button class="linkbtn" data-go="p2-trust">2.5 What we don't trust →</button></p>
     </div>
 
-    <details class="card p2x-fold"><summary>+ Free-trial starts</summary><div class="p2x-in">
-      <div class="p2-chart-card p2x-flat">
-        <h2 class="p2-ct">Free trials replaced discounts</h2>
-        <div class="p2x-concl"><b>Two big waves:</b> 42,743 free starts in 06-15 and 58,821 in 10-16 – 11-16</div>
-        <div class="p2-legend" id="p2-lg-free"></div>
-        <div class="p2-plot" id="p2-ch-free"></div>
-      </div>
+    <details class="card v3-fold"><summary>+ Free-trial starts</summary><div class="v3-in">
+      <p class="v3-c info"><b>Two big waves:</b> 42,743 free starts in 06-15 and 58,821 in 10-16 – 11-16</p>
+      <div class="vz-lg"><span><i class="bar" style="--c:var(--v-teal-l)"></i>Free-trial starts a month</span></div>
+      <div class="vz" id="p24-ch4"></div>
     </div></details>
-    <details class="card p2x-fold"><summary>+ Metric Definitions</summary><ul>
-      <li><b>Recognised revenue:</b> each payment spread evenly over its plan days; a month gets the days that fall in it (an annual plan counts ~1/12 a month)</li>
-      <li><b>ARPU:</b> recognised revenue ÷ paying subscribers</li>
-      <li><b>Cash ARPU:</b> money taken in during the month ÷ paying subscribers</li>
-      <li><b>Discount depth:</b> total discount ÷ total list price, over paid purchases only. Free trials (100% off) are counted as free starts</li>
+    <details class="card v3-fold"><summary>+ Metric definitions</summary><ul>
+      <li><b>Revenue (recognised):</b> each payment spread evenly over its plan days; a month gets the days that fall in it (an annual plan counts about 1/12 a month)</li>
+      <li><b>ARPU:</b> revenue for the month ÷ paying subscribers</li>
+      <li><b>Discounted:</b> paid purchases that got any discount from list price ÷ all paid purchases</li>
+      <li><b>Discount depth:</b> total discount ÷ total list price, over paid purchases. Free trials (100% off) are counted as free starts</li>
     </ul></details>
-    <details class="card p2x-fold"><summary>+ All months</summary><div class="p2x-in"><div class="scroll"><table class="grid p2x-key" id="p2-tb-arpu"></table></div><p class="p2x-foot">Red rows: not trusted, see 2.5</p></div></details>
+    <details class="card v3-fold"><summary>+ All months</summary><div class="v3-in"><div class="v3-tw"><table class="v3-t" id="p2-tb-arpu"></table></div><p class="v3-foot">Red rows: not trusted, see 2.5</p></div></details>
     <p class="cx-src">SQL: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/sql/08_metrics.sql" target="_blank" rel="noopener">sql/08_metrics.sql ↗</a> · Report: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/04_metrics.md" target="_blank" rel="noopener">reports/04_metrics.md ↗</a></p>
   </section>
 
-  <section class="view cx p2 p2x" id="view-p2-trust" data-own-brief="1" hidden>
-    <div class="card p2x-head">
-      <span class="p2x-tag">Brief 2.5 · What We Don't Trust</span>
-      <h1>2.5 · What We Don't Trust — and Why</h1>
+  <!-- 2.5 -->
+  <section class="view cx v3" id="view-p2-trust" data-own-brief="1" hidden>
+    <div class="card v3-head">
+      <span class="v3-tag">Brief 2.5 · What we don't trust, and why</span>
+      <h1>2.5 · What We Don't Trust</h1>
       <p>Points in the 2.1–2.4 series that are not what they look like, and what we did about each</p>
     </div>
-    <div class="p2x-qa">
-      <p class="p2x-q"><b>Question:</b> Which months or metrics in 2.1–2.4 can't be read as they are, and why?</p>
-      <p class="p2x-a"><b>Answer:</b> Four problems. <span class="rd">01-15 – 03-15</span> (files start in 2015), <span class="rd">03-15 – 10-15</span> (price filled in by us), the <span class="rd">payment method 39 outage</span> (04-16 – 07-16) and <span class="rd">churn for 03-17</span> (needs April data). We flag them and leave them out of trends</p>
+    <div class="qa">
+      <p class="qa-q">Which months or metrics in 2.1–2.4 can't be read as they are, and why?</p>
+      <div class="qa-a"><p>Four problems: <b>01-15 – 03-15</b> (files start in 2015), <b>03-15 – 10-15</b> (price filled in by us), the <b>payment method 39 outage</b> (04-16 – 07-16) and <b>churn for 03-17</b> (needs April data). We flag them and leave them out of trends</p></div>
     </div>
 
-    <div class="card p2x-card p2x-wide">
-      <h2>Every Flagged Point, by Sub-section</h2>
-      <div class="scroll"><table class="grid p2x-key">
-        <thead><tr><th>Sub-section</th><th>Month · metric</th><th>What is wrong</th><th>Evidence</th><th>What we did</th></tr></thead>
+    <div class="card v3-card">
+      <h2>Every flagged point</h2>
+      <div class="v3-tw"><table class="v3-t">
+        <thead><tr><th>Tab</th><th>Month · metric</th><th>What is wrong</th><th>Evidence</th><th>What we did</th></tr></thead>
         <tbody>
-          <tr><td class="m"><button class="linkbtn" data-go="p2-active">2.1</button></td><td>All active users</td><td class="l">Free-trial waves add up to 46,000 users</td><td class="l">06-15, 10-16 – 11-16</td><td class="l">Headline counts paying only</td></tr>
-          <tr><td class="m"><button class="linkbtn" data-go="p2-active">2.1</button></td><td class="bd">Paying · 04-16 – 06-16</td><td class="l">Dip from the payment method 39 outage (below)</td><td class="l">257,452 (02-16) → 239,955 (04-16)</td><td class="l">Flagged, not lost customers</td></tr>
-          <tr><td class="m"><button class="linkbtn" data-go="p2-flow">2.2</button></td><td class="bd">New · 01-15 – 03-15</td><td class="l">Files start in 2015, so earlier customers look new</td><td class="l">100% "new" in 01-15; 27,285 in 03-15</td><td class="l">Left out of trends</td></tr>
-          <tr><td class="m"><button class="linkbtn" data-go="p2-flow">2.2</button></td><td class="bd">Reactivated · 06-15, 07-16</td><td class="l">Users back after a billing gap, not real win-backs</td><td class="l">17,208 and 16,047 lost in 04-15 and 03-16</td><td class="l">Flagged</td></tr>
-          <tr><td class="m"><button class="linkbtn" data-go="p2-churn">2.3</button></td><td class="bd">Churn · 04-15 (13.9%)</td><td class="l">17,435 auto-renew users expired on the same day</td><td class="l">99.5% paid again, mostly in 06-15</td><td class="l">Flagged, not real churn</td></tr>
-          <tr><td class="m"><button class="linkbtn" data-go="p2-churn">2.3</button></td><td class="bd">Churn · 03-16 (13.8%)</td><td class="l">Payment method 39 outage (below)</td><td class="l">16,468 lost (usual: ~670); 97% back in 07-16</td><td class="l">Flagged · ask billing</td></tr>
-          <tr><td class="m"><button class="linkbtn" data-go="p2-churn">2.3</button></td><td class="am">Churn · 12-15, 12-16</td><td class="l">Many renew on day 31–32, just past 30 days</td><td class="l">5.2% → 3.8% and 4.6% → 3.2% with 32 days</td><td class="l">Kept 30 days, noted</td></tr>
-          <tr><td class="m"><button class="linkbtn" data-go="p2-churn">2.3</button></td><td class="bd">Churn · 03-17</td><td class="l">The 30-day window needs April data</td><td class="l">14,396 outcomes can't be judged</td><td class="l">Not reported</td></tr>
-          <tr><td class="m"><button class="linkbtn" data-go="p2-arpu">2.4</button></td><td class="bd">Revenue, ARPU · 01-15</td><td class="l">Payments made before 2015 are missing</td><td class="l">ARPU $71 vs ~$130 later</td><td class="l">Left out of trends</td></tr>
-          <tr><td class="m"><button class="linkbtn" data-go="p2-arpu">2.4</button></td><td class="am">Revenue, ARPU, discount · 03-15 – 10-15</td><td class="l">Price missing on 214,207 paid rows, filled from a price list</td><td class="l">1a issue #2</td><td class="l">Used, lower confidence</td></tr>
-          <tr><td class="m"><button class="linkbtn" data-go="p2-arpu">2.4</button></td><td class="am">ARPU · month to month</td><td class="l">Follows the number of days in the month</td><td class="l">$114 (02-17) vs $133 (03-17)</td><td class="l">Compare years, not months</td></tr>
+          <tr><td class="m"><button class="linkbtn" data-go="p2-active">2.1</button></td><td class="l">All active users</td><td class="l">Free-trial waves add up to 46,000 users</td><td class="l">06-15, 10-16 – 11-16</td><td class="l">Headline counts paying only</td></tr>
+          <tr><td class="m"><button class="linkbtn" data-go="p2-active">2.1</button></td><td class="l bd">Paying · 04-16 – 06-16</td><td class="l">Dip from the payment method 39 outage (below)</td><td class="l">257,452 (02-16) → 239,955 (04-16)</td><td class="l">Flagged, not lost customers</td></tr>
+          <tr><td class="m"><button class="linkbtn" data-go="p2-flow">2.2</button></td><td class="l bd">New · 01-15 – 03-15</td><td class="l">Files start in 2015, so earlier customers look new</td><td class="l">100% "new" in 01-15; 27,285 in 03-15</td><td class="l">Left out of trends</td></tr>
+          <tr><td class="m"><button class="linkbtn" data-go="p2-flow">2.2</button></td><td class="l bd">Reactivated · 06-15, 07-16</td><td class="l">Users back after a billing gap, not real win-backs</td><td class="l">17,208 and 16,047 lost in 04-15 and 03-16</td><td class="l">Flagged</td></tr>
+          <tr><td class="m"><button class="linkbtn" data-go="p2-churn">2.3</button></td><td class="l bd">Churn · 04-15 (13.9%)</td><td class="l">17,435 auto-renew users expired on the same day</td><td class="l">99.5% paid again, mostly in 06-15</td><td class="l">Flagged, not real churn</td></tr>
+          <tr><td class="m"><button class="linkbtn" data-go="p2-churn">2.3</button></td><td class="l bd">Churn · 03-16 (13.8%)</td><td class="l">Payment method 39 outage (below)</td><td class="l">16,468 lost (usual: ~670); 97% back in 07-16</td><td class="l">Flagged · ask billing</td></tr>
+          <tr><td class="m"><button class="linkbtn" data-go="p2-churn">2.3</button></td><td class="l am">Churn · 12-15, 12-16</td><td class="l">Many renew on day 31–32, just past 30 days</td><td class="l">5.2% → 3.8% and 4.6% → 3.2% with 32 days</td><td class="l">Kept 30 days, noted</td></tr>
+          <tr><td class="m"><button class="linkbtn" data-go="p2-churn">2.3</button></td><td class="l bd">Churn · 03-17</td><td class="l">The 30-day window needs April data</td><td class="l">14,396 outcomes can't be judged</td><td class="l">Not reported</td></tr>
+          <tr><td class="m"><button class="linkbtn" data-go="p2-arpu">2.4</button></td><td class="l bd">Revenue, ARPU · 01-15</td><td class="l">Payments made before 2015 are missing</td><td class="l">ARPU $71 vs ~$130 later</td><td class="l">Left out of trends</td></tr>
+          <tr><td class="m"><button class="linkbtn" data-go="p2-arpu">2.4</button></td><td class="l am">Revenue, ARPU, discount · 03-15 – 10-15</td><td class="l">Price missing on 214,207 paid rows, filled from a price list</td><td class="l">1a issue #2</td><td class="l">Used, lower confidence</td></tr>
+          <tr><td class="m"><button class="linkbtn" data-go="p2-arpu">2.4</button></td><td class="l am">ARPU · month to month</td><td class="l">Follows the number of days in the month</td><td class="l">$114 (02-17) vs $133 (03-17)</td><td class="l">Compare years, not months</td></tr>
         </tbody></table></div>
-      <p class="p2x-foot">Not trusted (red) · read with care (amber)</p>
+      <p class="v3-foot">Red: not trusted · amber: read with care</p>
     </div>
 
-    <div class="card p2-chart-card p2x-card">
-      <h2 class="p2-ct">Payment Method 39: One Outage, Three Series</h2>
-      <div class="p2x-concl"><b>Billing problem, not users leaving:</b> one provider failed to renew 16,468 users in 03-16; 97% paid again in 07-16</div>
-      <ul class="p2x-list">
-        <li><b>2.1</b> a dip in paying subscribers, 04-16 – 06-16</li>
-        <li><b>2.3</b> a churn spike in 03-16 (13.8%)</li>
-        <li><b>2.2</b> a reactivated spike in 07-16 (9.3%)</li>
-      </ul>
-      <p class="p2x-foot">The chart shows the same users "leave" (churn spike) and "come back" (reactivated spike) months later. The data can't tell why; most likely failed payments, billing should confirm</p>
-      <div class="p2-legend" id="p2-lg-trust"></div>
-      <div class="p2-plot" id="p2-ch-trust"></div>
+    <div class="card v3-card">
+      <h2>Payment method 39: one outage, three series</h2>
+      <p class="v3-c warn"><b>Billing problem, not users leaving:</b> one provider failed to renew 16,468 users in 03-16; 97% paid again in 07-16. It shows up as a dip in 2.1, a churn spike in 2.3 and a reactivated spike in 2.2</p>
+      <div class="vz-lg"><span><i class="ln" style="--c:var(--v-navy)"></i>Churn rate</span><span><i class="ln" style="--c:var(--v-teal)"></i>Reactivated, % of paying</span></div>
+      <div class="vz" id="p25-ch1"></div>
+      <p class="v3-foot">The same users "leave" and "come back" months later. The data can't tell why; most likely failed payments, billing should confirm</p>
     </div>
     <p class="cx-src">SQL: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/sql/08_metrics.sql" target="_blank" rel="noopener">sql/08_metrics.sql ↗</a> · Report: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/04_metrics.md" target="_blank" rel="noopener">reports/04_metrics.md ↗</a></p>
   </section>
+
   <script>
-  /* Part 2 charts. One row per month: m, paying, active_any, new, reactivated, renewing, new%, react%, renew%,
-     churn30%, churn32%, churn45%, paid_churned, paying_som, recognised_rev(M), arpu, arpu_cash, discounted%, depth%, free_starts */
+  /* Part 2 charts and tables. P2_DATA: one row per month from mart_metrics_month / mart_churn_windows:
+     m, paying, active_any, new, reactivated, renewing, new%, react%, renew%, churn30%, churn32%, churn45%, paid_churned, paying_som,
+     recognised_rev(M), arpu, arpu_cash, discounted%, depth%, free_starts.  D21: 2.1 rows: month, all active, paying, free-trial users, payment method 39 paying users */
   (() => {
-  const P2_DATA = 
-[["2015-01",131441.0,133034.0,131441.0,0.0,0.0,100.0,0.0,0.0,28.73,25.78,25.35,1480.0,5152.0,9.38,71.37,184.15,9.65,1.6,1729.0],["2015-02",142169.0,143939.0,10858.0,162.0,131149.0,7.64,0.11,92.25,3.23,3.09,2.91,4196.0,129884.0,18.19,127.93,170.03,9.01,1.5,1411.0],["2015-03",166868.0,170074.0,27285.0,585.0,138998.0,16.35,0.35,83.3,3.78,3.72,3.45,5158.0,136403.0,22.47,134.64,164.43,7.22,1.22,2775.0],["2015-04",173128.0,176884.0,9620.0,820.0,162688.0,5.56,0.47,93.97,13.94,13.88,13.47,22223.0,159437.0,23.75,137.2,141.59,5.37,0.91,2045.0],["2015-05",161139.0,164574.0,8517.0,928.0,151694.0,5.29,0.58,94.14,4.29,3.73,3.27,6385.0,148709.0,22.83,141.69,151.89,3.47,0.59,1795.0],["2015-06",179194.0,220877.0,8050.0,18324.0,152820.0,4.49,10.23,85.28,4.56,4.55,4.6,6818.0,149590.0,21.67,120.92,146.18,5.18,0.91,42743.0],["2015-07",189659.0,195215.0,11632.0,2249.0,175778.0,6.13,1.19,92.68,3.73,3.66,3.38,6464.0,173465.0,26.73,140.95,145.36,4.32,0.77,3950.0],["2015-08",198520.0,207324.0,12734.0,2075.0,183711.0,6.41,1.05,92.54,3.73,3.66,3.4,6731.0,180362.0,27.02,136.08,144.54,3.55,0.63,5946.0],["2015-09",207464.0,218730.0,11752.0,2597.0,193115.0,5.66,1.25,93.08,6.07,5.99,5.75,11488.0,189206.0,27.48,132.44,138.32,2.75,0.49,6869.0],["2015-10",213907.0,226840.0,14728.0,2373.0,196806.0,6.89,1.11,92.01,4.67,4.6,4.35,9005.0,192802.0,28.88,135.01,128.99,0.63,0.11,7585.0],["2015-11",227523.0,244088.0,13794.0,7084.0,206645.0,6.06,3.11,90.82,3.82,3.77,3.52,7702.0,201390.0,28.62,125.79,136.82,0.01,0.0,14014.0],["2015-12",236038.0,256003.0,12653.0,2523.0,220862.0,5.36,1.07,93.57,5.18,3.77,3.41,11155.0,215453.0,31.76,134.58,138.22,0.01,0.0,19265.0],["2016-01",244746.0,260295.0,17183.0,5466.0,222097.0,7.02,2.23,90.75,5.0,4.33,4.05,10808.0,216017.0,28.53,116.55,134.58,0.01,0.0,6372.0],["2016-02",257452.0,265743.0,14041.0,5721.0,237690.0,5.45,2.22,92.32,5.42,5.18,4.66,12796.0,236135.0,31.23,121.31,119.32,0.01,0.0,10746.0],["2016-03",254318.0,265567.0,11657.0,3684.0,238977.0,4.58,1.45,93.97,13.78,13.7,12.89,32332.0,234622.0,30.64,120.48,117.16,0.01,0.0,4390.0],["2016-04",239955.0,245662.0,6788.0,5036.0,228131.0,2.83,2.1,95.07,4.98,4.91,4.57,11154.0,223907.0,29.1,121.28,123.91,0.01,0.0,3456.0],["2016-05",241657.0,246760.0,8453.0,3805.0,229399.0,3.5,1.57,94.93,4.89,4.81,4.51,11005.0,225160.0,30.47,126.08,123.34,0.01,0.0,2849.0],["2016-06",244016.0,250692.0,9025.0,3968.0,231023.0,3.7,1.63,94.68,4.26,3.91,3.5,9675.0,227122.0,29.55,121.1,122.59,0.01,0.0,5257.0],["2016-07",271819.0,279618.0,11627.0,25205.0,234987.0,4.28,9.27,86.45,3.61,3.53,3.25,8340.0,231235.0,31.68,116.54,124.38,0.0,0.0,9997.0],["2016-08",279560.0,289248.0,10378.0,6745.0,262437.0,3.71,2.41,93.88,3.38,3.33,3.1,8804.0,260265.0,35.4,126.62,126.06,0.0,0.0,7970.0],["2016-09",283352.0,298217.0,7447.0,3418.0,272487.0,2.63,1.21,96.17,3.5,3.45,3.16,9375.0,267900.0,34.93,123.28,124.68,0.06,0.01,11115.0],["2016-10",285582.0,307419.0,7749.0,3406.0,274427.0,2.71,1.19,96.09,3.24,3.2,2.99,8763.0,270317.0,36.71,128.56,126.87,0.06,0.01,22046.0],["2016-11",289108.0,335372.0,7959.0,3588.0,277561.0,2.75,1.24,96.01,3.12,3.08,2.91,8523.0,272961.0,35.47,122.68,125.09,0.07,0.02,36775.0],["2016-12",296009.0,302981.0,9803.0,4539.0,281667.0,3.31,1.53,95.15,4.64,3.2,3.0,12852.0,277147.0,37.36,126.2,125.96,0.08,0.02,1633.0],["2017-01",299719.0,302284.0,8471.0,7964.0,283284.0,2.83,2.66,94.52,3.8,3.75,3.56,10597.0,279041.0,37.49,125.09,127.86,0.07,0.02,2403.0],["2017-02",301797.0,303173.0,8810.0,3392.0,289595.0,2.92,1.12,95.96,3.37,3.18,1.55,9597.0,285190.0,34.45,114.16,125.16,0.09,0.02,3274.0],["2017-03",302950.0,305617.0,8310.0,3491.0,291149.0,2.74,1.15,96.1,0.13,0.0,0.0,357.0,283451.0,40.39,133.31,127.93,0.09,0.02,2270.0]]
-;
-  // censored (window runs past 2017-03-31): not shown. 45-day check for Feb 2017, all churn for Mar 2017
+  const { chart, mount, ml, qtr, n0, C } = VZ;
+  const P2_DATA = [["2015-01",131441.0,133034.0,131441.0,0.0,0.0,100.0,0.0,0.0,28.73,25.78,25.35,1480.0,5152.0,9.38,71.37,184.15,9.65,1.6,1729.0],["2015-02",142169.0,143939.0,10858.0,162.0,131149.0,7.64,0.11,92.25,3.23,3.09,2.91,4196.0,129884.0,18.19,127.93,170.03,9.01,1.5,1411.0],["2015-03",166868.0,170074.0,27285.0,585.0,138998.0,16.35,0.35,83.3,3.78,3.72,3.45,5158.0,136403.0,22.47,134.64,164.43,7.22,1.22,2775.0],["2015-04",173128.0,176884.0,9620.0,820.0,162688.0,5.56,0.47,93.97,13.94,13.88,13.47,22223.0,159437.0,23.75,137.2,141.59,5.37,0.91,2045.0],["2015-05",161139.0,164574.0,8517.0,928.0,151694.0,5.29,0.58,94.14,4.29,3.73,3.27,6385.0,148709.0,22.83,141.69,151.89,3.47,0.59,1795.0],["2015-06",179194.0,220877.0,8050.0,18324.0,152820.0,4.49,10.23,85.28,4.56,4.55,4.6,6818.0,149590.0,21.67,120.92,146.18,5.18,0.91,42743.0],["2015-07",189659.0,195215.0,11632.0,2249.0,175778.0,6.13,1.19,92.68,3.73,3.66,3.38,6464.0,173465.0,26.73,140.95,145.36,4.32,0.77,3950.0],["2015-08",198520.0,207324.0,12734.0,2075.0,183711.0,6.41,1.05,92.54,3.73,3.66,3.4,6731.0,180362.0,27.02,136.08,144.54,3.55,0.63,5946.0],["2015-09",207464.0,218730.0,11752.0,2597.0,193115.0,5.66,1.25,93.08,6.07,5.99,5.75,11488.0,189206.0,27.48,132.44,138.32,2.75,0.49,6869.0],["2015-10",213907.0,226840.0,14728.0,2373.0,196806.0,6.89,1.11,92.01,4.67,4.6,4.35,9005.0,192802.0,28.88,135.01,128.99,0.63,0.11,7585.0],["2015-11",227523.0,244088.0,13794.0,7084.0,206645.0,6.06,3.11,90.82,3.82,3.77,3.52,7702.0,201390.0,28.62,125.79,136.82,0.01,0.0,14014.0],["2015-12",236038.0,256003.0,12653.0,2523.0,220862.0,5.36,1.07,93.57,5.18,3.77,3.41,11155.0,215453.0,31.76,134.58,138.22,0.01,0.0,19265.0],["2016-01",244746.0,260295.0,17183.0,5466.0,222097.0,7.02,2.23,90.75,5.0,4.33,4.05,10808.0,216017.0,28.53,116.55,134.58,0.01,0.0,6372.0],["2016-02",257452.0,265743.0,14041.0,5721.0,237690.0,5.45,2.22,92.32,5.42,5.18,4.66,12796.0,236135.0,31.23,121.31,119.32,0.01,0.0,10746.0],["2016-03",254318.0,265567.0,11657.0,3684.0,238977.0,4.58,1.45,93.97,13.78,13.7,12.89,32332.0,234622.0,30.64,120.48,117.16,0.01,0.0,4390.0],["2016-04",239955.0,245662.0,6788.0,5036.0,228131.0,2.83,2.1,95.07,4.98,4.91,4.57,11154.0,223907.0,29.1,121.28,123.91,0.01,0.0,3456.0],["2016-05",241657.0,246760.0,8453.0,3805.0,229399.0,3.5,1.57,94.93,4.89,4.81,4.51,11005.0,225160.0,30.47,126.08,123.34,0.01,0.0,2849.0],["2016-06",244016.0,250692.0,9025.0,3968.0,231023.0,3.7,1.63,94.68,4.26,3.91,3.5,9675.0,227122.0,29.55,121.1,122.59,0.01,0.0,5257.0],["2016-07",271819.0,279618.0,11627.0,25205.0,234987.0,4.28,9.27,86.45,3.61,3.53,3.25,8340.0,231235.0,31.68,116.54,124.38,0.0,0.0,9997.0],["2016-08",279560.0,289248.0,10378.0,6745.0,262437.0,3.71,2.41,93.88,3.38,3.33,3.1,8804.0,260265.0,35.4,126.62,126.06,0.0,0.0,7970.0],["2016-09",283352.0,298217.0,7447.0,3418.0,272487.0,2.63,1.21,96.17,3.5,3.45,3.16,9375.0,267900.0,34.93,123.28,124.68,0.06,0.01,11115.0],["2016-10",285582.0,307419.0,7749.0,3406.0,274427.0,2.71,1.19,96.09,3.24,3.2,2.99,8763.0,270317.0,36.71,128.56,126.87,0.06,0.01,22046.0],["2016-11",289108.0,335372.0,7959.0,3588.0,277561.0,2.75,1.24,96.01,3.12,3.08,2.91,8523.0,272961.0,35.47,122.68,125.09,0.07,0.02,36775.0],["2016-12",296009.0,302981.0,9803.0,4539.0,281667.0,3.31,1.53,95.15,4.64,3.2,3.0,12852.0,277147.0,37.36,126.2,125.96,0.08,0.02,1633.0],["2017-01",299719.0,302284.0,8471.0,7964.0,283284.0,2.83,2.66,94.52,3.8,3.75,3.56,10597.0,279041.0,37.49,125.09,127.86,0.07,0.02,2403.0],["2017-02",301797.0,303173.0,8810.0,3392.0,289595.0,2.92,1.12,95.96,3.37,3.18,1.55,9597.0,285190.0,34.45,114.16,125.16,0.09,0.02,3274.0],["2017-03",302950.0,305617.0,8310.0,3491.0,291149.0,2.74,1.15,96.1,0.13,0.0,0.0,357.0,283451.0,40.39,133.31,127.93,0.09,0.02,2270.0]];
   P2_DATA.find((r) => r[0] === "2017-02")[11] = null;
   { const r = P2_DATA.find((r) => r[0] === "2017-03"); r[9] = r[10] = r[11] = r[12] = null; }
-  const F = { m: 0, p: 1, a: 2, n: 3, r: 4, rn: 5, np: 6, rp: 7, rnp: 8, c30: 9, c32: 10, c45: 11, pc: 12, som: 13, rev: 14, arpu: 15, ac: 16, dp: 17, dd: 18, fs: 19, g: 20, ps: 21 };
-  // derived: g = paying growth vs last month %, ps = % of active users who pay
-  P2_DATA.forEach((r, i) => { r[20] = i ? +(100 * (r[1] / P2_DATA[i - 1][1] - 1)).toFixed(2) : null; r[21] = +(100 * r[1] / r[2]).toFixed(1); });
-  // every date on Part 2 is mm-yy (e.g. 01-15); the second argument is kept for old calls
-  const mLabel = (m) => m.slice(5, 7) + "-" + m.slice(2, 4);
-  const n0 = (v) => Math.round(v).toLocaleString("en-US");
-  const fmt = { int: n0, k: (v) => (v === 0 ? "0" : Math.round(v / 1000) + "k"), pct: (v) => (v === null ? "n/a" : v.toFixed(1) + "%"), pct0: (v) => v + "%", num: (v) => v.toFixed(0), m: (v) => "$" + v.toFixed(1) + "M", mAxis: (v) => "$" + v + "M" };
-  const ns = "http://www.w3.org/2000/svg";
-  const val = (row, k) => (row[F[k]] === null || row[F[k]] === undefined ? null : row[F[k]]);
+  const F = { m: 0, p: 1, a: 2, n: 3, r: 4, c30: 9, c32: 10, c45: 11, pc: 12, som: 13, rev: 14, arpu: 15, dp: 17, dd: 18, fs: 19, rp: 7 };
+  const rng = (a, b) => P2_DATA.filter((r) => r[0] >= a && r[0] <= b);
+  const col = (rows, k) => rows.map((r) => r[F[k]]);
+  const pct1 = (v) => (v == null ? "n/a" : v.toFixed(1) + "%");
+  const avg = (a) => a.reduce((s, v) => s + v, 0) / a.length;
+  const tipRow = (name, v) => `<div>${name}: <strong>${v}</strong></div>`;
 
-  // spec: {id, from, to, series:[{k,name,color,dash}], min, max, step, yFmt, tipFmt, kind:"line"|"bar", notes:[{m,text,k}], shade:[from,to,label]}
-  function draw(spec) {
-    const el = document.getElementById("p2-ch-" + spec.id);
-    const lg = document.getElementById("p2-lg-" + spec.id);
-    if (lg && !lg.dataset.done) {
-      lg.innerHTML = spec.series.map((s) => `<span style="color:${s.color}"><i class="${spec.kind === "bar" ? "box" : s.dash ? "dash" : ""}"></i><span style="color:var(--fg)">${s.name}</span></span>` +
-          (s.neg && s.negName ? `<span style="color:${s.neg}"><i class="box"></i><span style="color:var(--fg)">${s.negName}</span></span>` : "")).join("") +
-        (spec.avgs ? `<span style="color:var(--fg)"><i></i><span>${spec.avgName || "Average"}</span></span>` : "") +
-        (spec.notes && spec.notes.length ? `<span><i class="flag"></i><span>${spec.noteLegend || "Billing gap (see What we don't trust)"}</span></span>` : "") +
-        (spec.shade ? `<span><i class="box" style="color:var(--p2-grid);border:1px solid var(--line)"></i><span>${spec.shade[2]}</span></span>` : "");
-      lg.dataset.done = "1";
-    }
-    const W = el.clientWidth; if (!W) return;
-    const narrow = W < 560;
-    const H = narrow ? 260 : 320, L = narrow ? 48 : 60, R = 16, T = 26, B = 40;
-    const rows = P2_DATA.filter((r) => r[0] >= spec.from && r[0] <= spec.to);
-    const N = rows.length, pw = W - L - R, ph = H - T - B;
-    const band = pw / N;
-    const x = (i) => L + band * (i + 0.5);
-    const y = (v) => T + ph - ((v - spec.min) / (spec.max - spec.min)) * ph;
-    const svg = document.createElementNS(ns, "svg");
-    svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("height", H);
-    svg.setAttribute("role", "img"); svg.setAttribute("aria-label", el.closest(".p2-chart-card").querySelector(".p2-ct").textContent);
-    let h = "";
-    if (spec.shade) {
-      const i0 = rows.findIndex((r) => r[0] >= spec.shade[0]), i1 = rows.findIndex((r) => r[0] > spec.shade[1]);
-      const xa = L + band * i0, xb = L + band * (i1 < 0 ? N : i1);
-      h += `<rect x="${xa}" y="${T}" width="${xb - xa}" height="${ph}" fill="var(--p2-grid)" opacity=".7"/>`;
-    }
-    for (let v = spec.min; v <= spec.max + 1e-9; v += spec.step) {
-      const yy = y(v);
-      h += `<line x1="${L}" x2="${W - R}" y1="${yy}" y2="${yy}" stroke="${Math.abs(v - Math.max(spec.min, 0)) < 1e-9 ? "var(--p2-axis)" : "var(--p2-grid)"}" stroke-width="1"/>`;
-      h += `<text x="${L - 8}" y="${yy + 4.5}" text-anchor="end">${spec.yFmt(+v.toFixed(6))}</text>`;
-    }
-    const every = narrow ? 6 : 3;
-    rows.forEach((r, i) => {
-      const mo = +r[0].slice(5);
-      if ((mo - 1) % every === 0) {
-        h += `<line x1="${x(i)}" x2="${x(i)}" y1="${T + ph}" y2="${T + ph + 5}" stroke="var(--p2-axis)"/>`;
-        h += `<text x="${x(i)}" y="${T + ph + 21}" text-anchor="middle">${mLabel(r[0])}</text>`;
-      }
-    });
-    if (spec.kind === "bar") {
-      const s = spec.series[0], bw = Math.max(3, band - 4), y0 = y(Math.max(spec.min, 0));
-      rows.forEach((r, i) => {
-        const v = val(r, s.k); if (v === null) return;
-        const yt = y(v), top = Math.min(yt, y0), hh = Math.abs(y0 - yt);
-        h += `<rect x="${x(i) - bw / 2}" y="${top}" width="${bw}" height="${hh}" rx="${Math.min(3, hh / 2, bw / 2)}" fill="${v < 0 && s.neg ? s.neg : s.color}"/>`;
-      });
-      (spec.avgs || []).forEach((a) => {  // average lines, one per period, labelled above
-        const i0 = rows.findIndex((r) => r[0] >= a.from), i1 = rows.map((r) => r[0] <= a.to).lastIndexOf(true);
-        if (i0 < 0 || i1 < 0) return;
-        const xa = L + band * i0 + 2, xb = L + band * (i1 + 1) - 2, ya = y(a.v);
-        h += `<line x1="${xa}" x2="${xb}" y1="${ya}" y2="${ya}" stroke="${a.color}" stroke-width="3.5" stroke-linecap="round"/>`;
-        const anc = a.anchor || "middle", lx = anc === "end" ? xb : anc === "start" ? xa : (xa + xb) / 2;
-        if (!narrow) h += `<text x="${lx}" y="${a.ly === undefined ? ya - 8 : y(a.ly)}" text-anchor="${anc}" style="fill:${a.color};font-weight:700;font-size:13px">${a.label}</text>`;
-      });
-    } else {
-      spec.series.forEach((s) => {
-        let d = "", pen = false;
-        rows.forEach((r, i) => { const v = val(r, s.k); if (v === null) { pen = false; return; } d += (pen ? "L" : "M") + x(i).toFixed(1) + "," + y(v).toFixed(1); pen = true; });
-        h += `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"${s.dash ? ' stroke-dasharray="6 5"' : ""}/>`;
-        const li = rows.length - 1, lv = val(rows[li], s.k);
-        if (lv !== null && !s.dash) h += `<circle cx="${x(li)}" cy="${y(lv)}" r="4.5" fill="${s.color}" stroke="var(--surface)" stroke-width="2"/>`;
-      });
-    }
-    (spec.notes || []).forEach((nt) => {
-      const i = rows.findIndex((r) => r[0] === nt.m); if (i < 0) return;
-      const v = val(rows[i], nt.k), yy = y(v);
-      const anchor = i > N * 0.8 ? "end" : i < N * 0.15 ? "start" : "middle";
-      h += `<g class="note"><circle cx="${x(i)}" cy="${yy}" r="6" fill="var(--c-orange)" stroke="var(--surface)" stroke-width="2"/>` +
-        `<text x="${x(i) + (anchor === "start" ? -6 : anchor === "end" ? 6 : 0)}" y="${nt.below ? yy + 24 : yy - 12}" text-anchor="${anchor}">${narrow && nt.short ? nt.short : nt.text}</text></g>`;
-    });
-    h += `<line class="p2-cross" x1="0" x2="0" y1="${T}" y2="${T + ph}" stroke="var(--muted)" stroke-dasharray="3 3" visibility="hidden"/>`;
-    h += `<rect x="${L}" y="${T}" width="${pw}" height="${ph}" fill="transparent" class="p2-hit"/>`;
-    svg.innerHTML = h;
-    el.innerHTML = ""; el.appendChild(svg);
-    const tip = document.createElement("div"); tip.className = "p2-tip"; tip.hidden = true; el.appendChild(tip);
-    const cross = svg.querySelector(".p2-cross"), hit = svg.querySelector(".p2-hit");
-    const move = (e) => {
-      const bb = svg.getBoundingClientRect(), px = (e.clientX - bb.left) * (W / bb.width);
-      const i = Math.max(0, Math.min(N - 1, Math.floor((px - L) / band))), r = rows[i];
-      cross.setAttribute("x1", x(i)); cross.setAttribute("x2", x(i)); cross.setAttribute("visibility", "visible");
-      tip.innerHTML = `<b>${mLabel(r[0], true)}</b>` + spec.series.map((s) => { const v = val(r, s.k); return `<div><i style="background:${s.color}"></i>${s.name}: <strong>${v === null ? "n/a" : (spec.tipFmt || spec.yFmt)(v)}</strong></div>`; }).join("") + (spec.tipExtra ? spec.tipExtra(r) : "");
-      tip.hidden = false;
-      const tx = x(i) * (bb.width / W), tw = tip.offsetWidth;
-      tip.style.left = Math.max(0, Math.min(bb.width - tw, tx + 14 > bb.width - tw ? tx - tw - 14 : tx + 14)) + "px";
-      tip.style.top = "10px";
-    };
-    hit.addEventListener("mousemove", move);
-    hit.addEventListener("mouseleave", () => { tip.hidden = true; cross.setAttribute("visibility", "hidden"); });
-  }
+  /* ---------- 2.1 ---------- */
+  const D = [["2015-01",133034,131441,1593,18210],["2015-02",143939,142169,1770,18707],["2015-03",170074,166868,3206,19175],["2015-04",176884,173128,3756,19123],["2015-05",164574,161139,3435,18995],["2015-06",220877,179194,41683,18935],["2015-07",195215,189659,5556,18861],["2015-08",207324,198520,8804,18927],["2015-09",218730,207464,11266,19000],["2015-10",226840,213907,12933,19051],["2015-11",244088,227523,16565,19199],["2015-12",256003,236038,19965,19277],["2016-01",260295,244746,15549,19380],["2016-02",265743,257452,8291,19432],["2016-03",265567,254318,11249,18813],["2016-04",245662,239955,5707,3085],["2016-05",246760,241657,5103,2378],["2016-06",250692,244016,6676,1844],["2016-07",279618,271819,7799,18906],["2016-08",289248,279560,9688,18823],["2016-09",298217,283352,14865,18688],["2016-10",307419,285582,21837,18510],["2016-11",335372,289108,46264,18185],["2016-12",302981,296009,6972,17916],["2017-01",302284,299719,2565,17642],["2017-02",303173,301797,1376,17369],["2017-03",305617,302950,2667,17172]];
+  const L21 = D.map((r) => ml(r[0])), share = D.map((r) => (100 * r[2]) / r[1]), WAVE = ["2015-06", "2016-11"];
+  mount("p21-ch1", (el) => chart(el, {
+    labels: L21, xShow: qtr, H: 290, T: 40, aria: "Share of active subscribers who pay, and paying and all active subscribers per month",
+    y: { min: 0, max: 100, step: 20, fmt: (v) => v + "%" }, y2: { min: 0, max: 400000, step: 80000, fmt: (v) => (v ? v / 1000 + "k" : "0") },
+    series: [
+      { type: "bar", values: share, color: C.sky, colorAt: (i) => (WAVE.includes(D[i][0]) ? C.blue : null), label: (v) => Math.round(v) + "%", labelAt: (i) => WAVE.includes(D[i][0]), labelColor: "var(--v-blue)" },
+      { type: "line", axis: "r", values: D.map((r) => r[1]), color: C.teal, dash: true, w: 2 },
+      { type: "line", axis: "r", values: D.map((r) => r[2]), color: C.navy, dots: true, w: 2.6 },
+    ],
+    flags: [{ i: 5, top: true, text: "06-15 Free-trial wave", short: "Trials", color: C.amber }, { i: 22, top: true, text: "11-16 Free-trial wave", short: "Trials", color: C.amber, anchor: "end" },
+      { i: 16, axis: "r", v: 300000, text: "04-16 Dip*", short: "Dip*", color: C.red }],
+    tip: (i) => `<b>${L21[i]}</b>` + tipRow("Paying", n0(D[i][2])) + tipRow("All active", n0(D[i][1])) + tipRow("Share paying", share[i].toFixed(1) + "%"),
+  }));
+  const R21 = D.slice(1), g21 = R21.map((r, i) => 100 * (r[2] / D[i][2] - 1)), Lg = R21.map((r) => ml(r[0]));
+  const ix = (yr) => { const a = R21.map((r, i) => (r[0].startsWith(yr) ? i : -1)).filter((i) => i >= 0); return [a[0], a[a.length - 1]]; };
+  mount("p21-ch2", (el) => chart(el, {
+    labels: Lg, xShow: qtr, H: 270, aria: "Paying subscribers, growth vs the month before, with yearly averages",
+    y: { min: -10, max: 20, step: 5, fmt: (v) => (v > 0 ? "+" : "") + v + "%" },
+    shade: [[ix("2017")[0], ix("2017")[1], "2017"]],
+    series: [{ type: "bar", values: g21, color: C.mid, colorAt: (i, v) => (v < 0 ? C.redL : null) }],
+    avgs: [{ from: ix("2015")[0], to: ix("2015")[1], v: 5.6, color: C.navy, label: "2015 avg +5.6%", short: "+5.6%" },
+      { from: ix("2016")[0], to: ix("2016")[1], v: 2.0, color: C.teal, label: "2016 avg +2.0%", short: "+2.0%" },
+      { from: ix("2017")[0], to: ix("2017")[1], v: 0.8, color: C.red, label: "+0.8%", anchor: "end", below: true }],
+    flags: [{ i: Lg.indexOf("07-16"), v: g21[Lg.indexOf("07-16")], text: "Rebound", color: C.teal }, { i: Lg.indexOf("04-16"), v: g21[Lg.indexOf("04-16")], below: true, text: "Outage*", color: C.red }],
+    tip: (i) => `<b>${Lg[i]}</b>` + tipRow("Growth", (g21[i] > 0 ? "+" : "") + g21[i].toFixed(1) + "%") + tipRow("Paying", n0(R21[i][2])),
+  }));
+  const KEY = [["2015-01", "Baseline", ""], ["2015-05", "Normal", ""], ["2015-06", "Free-trial wave 1 (12.9% paid later)", "am"], ["2015-07", "After the trial wave", ""],
+    ["2016-01", "Normal (payment method 39 active)", ""], ["2016-04", "Payment method 39 outage (−84%)", "bd"], ["2016-06", "Payment method 39 outage (−90%)", "bd"],
+    ["2016-07", "Payment method 39 back", "gd"], ["2016-10", "Normal", ""], ["2016-11", "Free-trial wave 2 (4.9% paid by 03-17)", "am"], ["2016-12", "After the trial wave", ""], ["2017-03", "Latest month", ""]];
+  document.getElementById("p21-key").innerHTML =
+    "<thead><tr><th>Month</th><th>Paying</th><th>Free-trial users</th><th>Share paying</th><th>Payment method 39</th><th>What happened</th></tr></thead><tbody>" +
+    KEY.map(([m, sig, sc]) => {
+      const r = D.find((d) => d[0] === m), p = (100 * r[2]) / r[1];
+      return `<tr><td class="m">${ml(m)}</td><td>${n0(r[2])}</td><td class="${r[3] > 20000 ? "am" : ""}">${n0(r[3])}</td><td class="${p < 90 ? "bd" : p < 95 ? "am" : ""}">${p.toFixed(1)}%</td>` +
+        `<td class="${sc === "bd" ? "bd" : sc === "gd" ? "gd" : ""}">${n0(r[4])}</td><td class="l ${sc}">${sig}</td></tr>`;
+    }).join("") + "</tbody>";
 
-  const C = { s1: "var(--s1)", s2: "var(--s2)", s3: "var(--s3)", s4: "var(--s4)" };
-  const SPECS = [
-    { id: "churn", from: "2015-02", to: "2017-02", min: 0, max: 16, step: 4, yFmt: fmt.pct0, tipFmt: fmt.pct,
-      notes: [{ m: "2015-04", k: "c30", text: "04-15: 13.9%", short: "13.9%" }, { m: "2016-03", k: "c30", text: "03-16: 13.8%", short: "13.8%" }],
-      series: [{ k: "c30", name: "Churn rate (30-day rule)", color: C.s1 }],
-      tipExtra: (r) => `<div style="color:var(--muted)">${n0(r[F.pc])} of ${n0(r[F.som])} paying subscribers lost</div>` },
-    { id: "churnwin", from: "2015-02", to: "2017-02", min: 0, max: 16, step: 4, yFmt: fmt.pct0, tipFmt: fmt.pct,
-      series: [{ k: "c30", name: "30 days (main)", color: C.s1 }, { k: "c32", name: "32 days", color: C.s2, dash: true }, { k: "c45", name: "45 days", color: C.s3, dash: true }] },
-    { id: "arpu", from: "2015-02", to: "2017-03", min: 80, max: 180, step: 20, yFmt: (v) => "$" + v.toFixed(0), tipFmt: (v) => "$" + v.toFixed(1),
-      series: [{ k: "arpu", name: "ARPU", color: C.s1 }, { k: "ac", name: "Cash ARPU", color: C.s2, dash: true }] },
-    { id: "rev", from: "2015-02", to: "2017-03", min: 0, max: 45, step: 5, yFmt: fmt.mAxis, tipFmt: fmt.m, kind: "bar",
-      series: [{ k: "rev", name: "Revenue per month", color: C.s1 }] },
-    { id: "disc", from: "2015-01", to: "2017-03", min: 0, max: 10, step: 2, yFmt: fmt.pct0, tipFmt: (v) => v.toFixed(2) + "%",
-      series: [{ k: "dp", name: "Purchases discounted", color: C.s1 }, { k: "dd", name: "Discount depth", color: C.s2 }] },
-    { id: "free", from: "2015-01", to: "2017-03", min: 0, max: 45000, step: 5000, yFmt: fmt.k, tipFmt: fmt.int, kind: "bar",
-      series: [{ k: "fs", name: "Free-trial starts per month", color: C.s3 }] },
-    { id: "trust", from: "2015-02", to: "2017-02", min: 0, max: 16, step: 2, yFmt: fmt.pct0, tipFmt: fmt.pct,
-      notes: [{ m: "2015-04", k: "c30", text: "Left" }, { m: "2015-06", k: "rp", text: "Back" }, { m: "2016-03", k: "c30", text: "Left" }, { m: "2016-07", k: "rp", text: "Back" }],
-      noteLegend: "Same users left, then came back",
-      series: [{ k: "c30", name: "Churn rate", color: C.s1 }, { k: "rp", name: "Reactivated, % of paying", color: C.s2 }] },
-  ];
-  const drawAll = () => SPECS.forEach((s) => { const el = document.getElementById("p2-ch-" + s.id); if (el && el.clientWidth && el.dataset.w != el.clientWidth) { el.dataset.w = el.clientWidth; draw(s); } });
-  SPECS.forEach((s) => draw(s));
-  if (window.ResizeObserver) { const ro = new ResizeObserver(drawAll); SPECS.forEach((s) => ro.observe(document.getElementById("p2-ch-" + s.id))); }
-  else addEventListener("resize", drawAll);
+  /* ---------- 2.2 ---------- */
+  const Q = [["Q2-15", 5.1, 3.9], ["Q3-15", 6.1, 1.2], ["Q4-15", 6.1, 1.8], ["Q1-16", 5.7, 2.0], ["Q2-16", 3.3, 1.8], ["Q3-16", 3.5, 4.2], ["Q4-16", 2.9, 1.3], ["Q1-17", 2.8, 1.6]];
+  mount("p22-q", (el) => chart(el, {
+    labels: Q.map((q) => q[0]), xShow: (lab, i, narrow) => !narrow || i % 2 === 0, H: 270, T: 34, gap: 0.84, aria: "New and reactivated share of paying subscribers by quarter",
+    y: { min: 0, max: 8, step: 2, fmt: (v) => v + "%" },
+    series: [{ type: "bar", values: Q.map((q) => q[1]), color: C.blue, label: (v) => v.toFixed(1) + "%", labelWide: true },
+      { type: "bar", values: Q.map((q) => q[2]), color: C.tealL, label: (v) => v.toFixed(1) + "%", labelWide: true }],
+    flags: [{ i: 0, v: 6.6, text: "Billing gap", short: "Gap", color: C.amber, anchor: "start" }, { i: 5, v: 5.6, text: "Billing gap", short: "Gap", color: C.amber }],
+    tip: (i) => `<b>${Q[i][0]}</b>` + tipRow("New", Q[i][1].toFixed(1) + "%") + tipRow("Reactivated", Q[i][2].toFixed(1) + "%"),
+  }));
+  const M22 = rng("2015-04", "2017-03"), L22 = M22.map((r) => ml(r[0])), nw = col(M22, "n"), re = col(M22, "r");
+  const yrAvg = (yr) => { const idx = M22.map((r, i) => (r[0].startsWith(yr) ? i : -1)).filter((i) => i >= 0); return { from: idx[0], to: idx[idx.length - 1], v: avg(idx.map((i) => nw[i])) }; };
+  mount("p22-m", (el) => chart(el, {
+    labels: L22, xShow: qtr, H: 270, T: 34, stacked: true, aria: "New and reactivated paying users per month",
+    y: { min: 0, max: 40000, step: 10000, fmt: (v) => (v ? v / 1000 + "k" : "0") },
+    series: [{ type: "bar", values: nw, color: C.mid }, { type: "bar", values: re, color: C.tealL }],
+    avgs: ["2015", "2016", "2017"].map((yr) => { const a = yrAvg(yr); return { ...a, color: C.navy, label: (yr === "2017" ? "" : yr + " avg ") + (a.v / 1000).toFixed(1) + "k", short: (a.v / 1000).toFixed(1) + "k", anchor: yr === "2017" ? "end" : "middle" }; }),
+    flags: [{ i: L22.indexOf("06-15"), v: nw[2] + re[2], text: "Billing-gap return", short: "Gap", color: C.amber, anchor: "start" },
+      { i: L22.indexOf("07-16"), v: nw[15] + re[15], text: "Billing-gap return", short: "Gap", color: C.amber }],
+    tip: (i) => `<b>${L22[i]}</b>` + tipRow("New", n0(nw[i])) + tipRow("Reactivated", n0(re[i])),
+  }));
 
-  // tables
+  /* ---------- 2.3 ---------- */
+  const R23 = rng("2015-02", "2017-02"), L23 = R23.map((r) => ml(r[0])), c30 = col(R23, "c30"), GAP = ["2015-04", "2016-03"];
+  const y23 = (yr) => { const idx = R23.map((r, i) => (r[0].startsWith(yr) ? i : -1)).filter((i) => i >= 0); return { from: idx[0], to: idx[idx.length - 1], v: avg(idx.filter((i) => !GAP.includes(R23[i][0])).map((i) => c30[i])) }; };
+  mount("p23-ch1", (el) => chart(el, {
+    labels: L23, xShow: qtr, H: 270, T: 34, aria: "Monthly churn rate, 30-day rule, with yearly averages",
+    y: { min: 0, max: 16, step: 4, fmt: (v) => v + "%" },
+    series: [{ type: "bar", values: c30, color: C.mid, colorAt: (i) => (GAP.includes(R23[i][0]) ? C.amber : null), label: (v) => v.toFixed(1) + "%", labelAt: (i) => GAP.includes(R23[i][0]), labelColor: "var(--v-amber)" }],
+    avgs: ["2015", "2016", "2017"].map((yr) => { const a = y23(yr); return { ...a, color: C.navy, label: (yr === "2017" ? "" : yr + " avg ") + a.v.toFixed(1) + "%", short: a.v.toFixed(1) + "%", anchor: yr === "2017" ? "end" : "middle" }; }),
+    flags: [{ i: L23.indexOf("04-15"), top: true, text: "Billing gap", short: "Gap", color: C.amber }, { i: L23.indexOf("03-16"), top: true, text: "Billing gap", short: "Gap", color: C.amber }],
+    tip: (i) => `<b>${L23[i]}</b>` + tipRow("Churn", pct1(c30[i])) + `<div class="mute">${n0(R23[i][F.pc])} of ${n0(R23[i][F.som])} paying lost</div>`,
+  }));
+  const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const byYear = (yr) => MON.map((_, k) => { const r = P2_DATA.find((d) => d[0] === `${yr}-${String(k + 1).padStart(2, "0")}`); return r && !(yr === "2015" && k === 0) ? r[F.c30] : null; });
+  const Y15 = byYear("2015"), Y16 = byYear("2016"), Y17 = byYear("2017");
+  mount("p23-ch2", (el) => chart(el, {
+    labels: MON, H: 270, T: 34, gap: 0.78, aria: "Churn rate by calendar month: 2015, 2016 and 2017",
+    y: { min: 0, max: 16, step: 4, fmt: (v) => v + "%" },
+    series: [{ type: "bar", values: Y15, color: C.grey, colorAt: (i) => (i === 3 ? C.amber : null) },
+      { type: "bar", values: Y16, color: C.mid, colorAt: (i) => (i === 2 ? C.amber : null) },
+      { type: "bar", values: Y17, color: C.navy }],
+    flags: [{ i: 2, top: true, text: "Billing gaps", short: "Gaps", color: C.amber, anchor: "start" }],
+    tip: (i) => `<b>${MON[i]}</b>` + tipRow("2015", pct1(Y15[i])) + tipRow("2016", pct1(Y16[i])) + (Y17[i] != null ? tipRow("2017", pct1(Y17[i])) : ""),
+  }));
+  mount("p23-ch3", (el) => chart(el, {
+    labels: L23, xShow: qtr, H: 250, aria: "Churn rate with a 30, 32 and 45 day window",
+    y: { min: 0, max: 16, step: 4, fmt: (v) => v + "%" },
+    series: [{ type: "line", values: c30, color: C.navy, w: 2.6 }, { type: "line", values: col(R23, "c32"), color: C.mid, dash: true }, { type: "line", values: col(R23, "c45"), color: C.teal, dash: true }],
+    tip: (i) => `<b>${L23[i]}</b>` + tipRow("30 days", pct1(c30[i])) + tipRow("32 days", pct1(R23[i][F.c32])) + tipRow("45 days", pct1(R23[i][F.c45])),
+  }));
+
+  /* ---------- 2.4 ---------- */
+  const G24 = [["Revenue", 24, "$90.4M → $112.3M"], ["Paying subscribers", 20, "252k → 301k a month"], ["ARPU", 4, "$119 → $124"]];
+  mount("p24-ch0", (el) => chart(el, {
+    labels: G24.map((g) => g[0]), H: 230, T: 30, gap: 0.42, aria: "Q1-17 vs Q1-16: revenue +24%, paying subscribers +20%, ARPU +4%",
+    y: { min: 0, max: 30, step: 10, fmt: (v) => (v ? "+" + v + "%" : "0%") },
+    series: [{ type: "bar", values: G24.map((g) => g[1]), color: C.blue, colorAt: (i) => (i === 2 ? C.sky : null), label: (v, i) => "+" + v + "%" }],
+    tip: (i) => `<b>${G24[i][0]}</b>` + tipRow("Q1-16 → Q1-17", G24[i][2]),
+  }));
+  const R24 = rng("2015-02", "2017-03"), L24 = R24.map((r) => ml(r[0]));
+  mount("p24-ch1", (el) => chart(el, {
+    labels: L24, xShow: qtr, H: 270, aria: "Revenue per month and paying subscribers",
+    y: { min: 0, max: 50, step: 10, fmt: (v) => (v ? "$" + v + "M" : "$0") }, y2: { min: 0, max: 400000, step: 80000, fmt: (v) => (v ? v / 1000 + "k" : "0") },
+    series: [{ type: "bar", values: col(R24, "rev"), color: C.sky }, { type: "line", axis: "r", values: col(R24, "p"), color: C.navy, w: 2.6, end: true }],
+    tip: (i) => `<b>${L24[i]}</b>` + tipRow("Revenue", "$" + R24[i][F.rev].toFixed(1) + "M") + tipRow("Paying", n0(R24[i][F.p])),
+  }));
+  const a24 = col(R24, "arpu"), feb = (lab) => lab.startsWith("02-");
+  mount("p24-ch2", (el) => chart(el, {
+    labels: L24, xShow: qtr, H: 250, T: 34, aria: "ARPU by month in US dollars",
+    y: { min: 100, max: 150, step: 10, fmt: (v) => "$" + v },
+    shade: [[L24.indexOf("03-15"), L24.indexOf("10-15"), ""]],
+    series: [{ type: "line", values: a24, color: C.navy, w: 2.6, dots: true, end: true }],
+    flags: [{ i: L24.indexOf("02-17"), v: a24[L24.indexOf("02-17")], below: true, text: "02-17: 28 days", short: "28 days", color: "var(--v-mute)", anchor: "end" }],
+    tip: (i) => `<b>${L24[i]}</b>` + tipRow("ARPU", "$" + a24[i].toFixed(1)) + (feb(L24[i]) ? `<div class="mute">February: fewer days</div>` : ""),
+  }));
+  const R24d = rng("2015-01", "2017-03"), L24d = R24d.map((r) => ml(r[0])), dp = col(R24d, "dp");
+  mount("p24-ch3", (el) => chart(el, {
+    labels: L24d, xShow: qtr, H: 250, T: 30, aria: "Share of paid purchases with a discount, by month",
+    y: { min: 0, max: 10, step: 2, fmt: (v) => v + "%" },
+    series: [{ type: "bar", values: dp, color: C.mid, label: (v) => v.toFixed(1) + "%", labelAt: (i) => i === 0, labelWide: true }],
+    flags: [{ i: L24d.indexOf("11-15"), v: 2.5, text: "11-15: discounts stop", short: "Stop", color: C.navy, anchor: "start" }],
+    tip: (i) => `<b>${L24d[i]}</b>` + tipRow("Discounted", dp[i].toFixed(2) + "%") + tipRow("Discount depth", R24d[i][F.dd].toFixed(2) + "%"),
+  }));
+  const fs = col(R24d, "fs");
+  mount("p24-ch4", (el) => chart(el, {
+    labels: L24d, xShow: qtr, H: 240, T: 30, aria: "Free-trial starts per month",
+    y: { min: 0, max: 45000, step: 15000, fmt: (v) => (v ? v / 1000 + "k" : "0") },
+    series: [{ type: "bar", values: fs, color: C.tealL }],
+    tip: (i) => `<b>${L24d[i]}</b>` + tipRow("Free-trial starts", n0(fs[i])),
+  }));
+
+  /* ---------- 2.5 ---------- */
+  const rp = col(R23, "rp");
+  mount("p25-ch1", (el) => chart(el, {
+    labels: L23, xShow: qtr, H: 260, T: 30, aria: "Churn rate and reactivated share: the same users leave, then come back",
+    y: { min: 0, max: 16, step: 4, fmt: (v) => v + "%" },
+    series: [{ type: "line", values: c30, color: C.navy, w: 2.6 }, { type: "line", values: rp, color: C.teal, w: 2.6 }],
+    flags: [{ i: L23.indexOf("04-15"), v: c30[L23.indexOf("04-15")], dot: c30[L23.indexOf("04-15")], text: "Left", color: C.red },
+      { i: L23.indexOf("06-15"), v: rp[L23.indexOf("06-15")], dot: rp[L23.indexOf("06-15")], text: "Back", color: C.teal, anchor: "start" },
+      { i: L23.indexOf("03-16"), v: c30[L23.indexOf("03-16")], dot: c30[L23.indexOf("03-16")], text: "Left", color: C.red },
+      { i: L23.indexOf("07-16"), v: rp[L23.indexOf("07-16")], dot: rp[L23.indexOf("07-16")], text: "Back", color: C.teal, anchor: "start" }],
+    tip: (i) => `<b>${L23[i]}</b>` + tipRow("Churn", pct1(c30[i])) + tipRow("Reactivated", pct1(rp[i])),
+  }));
+
+  /* ---------- all-months tables ---------- */
   const tbl = (id, head, cells, flag) => {
     document.getElementById(id).innerHTML = `<thead><tr>${head.map((x) => `<th>${x}</th>`).join("")}</tr></thead><tbody>` +
-      P2_DATA.map((r) => `<tr${flag && flag(r) ? ' class="flag"' : ""}>${cells(r).map((c) => `<td class="num">${c}</td>`).join("")}</tr>`).join("") + "</tbody>";
+      P2_DATA.map((r) => `<tr${flag && flag(r) ? ' class="flag"' : ""}>${cells(r).map((c, j) => `<td${j ? "" : ' class="m"'}>${c}</td>`).join("")}</tr>`).join("") + "</tbody>";
   };
-  tbl("p2-tb-churn", ["Month", "Paying on the 1st", "Lost (30-day)", "Churn 30-day", "Churn 32-day", "Churn 45-day"],
-    (r) => [mLabel(r[0], true), n0(r[F.som]), r[F.pc] === null ? "n/a" : n0(r[F.pc]), fmt.pct(r[F.c30]), fmt.pct(r[F.c32]), fmt.pct(r[F.c45])],
+  tbl("p2-tb-churn", ["Month", "Paying on the 1st", "Lost (30 days)", "Churn 30 days", "Churn 32 days", "Churn 45 days"],
+    (r) => [ml(r[0]), n0(r[F.som]), r[F.pc] === null ? "n/a" : n0(r[F.pc]), pct1(r[F.c30]), pct1(r[F.c32]), pct1(r[F.c45])],
     (r) => ["2015-01", "2015-04", "2016-03", "2017-03"].includes(r[0]));
-  tbl("p2-tb-arpu", ["Month", "Recognised revenue", "ARPU", "Cash ARPU", "Paid purchases discounted", "Discount depth", "Free-trial starts"],
-    (r) => [mLabel(r[0], true), fmt.m(r[F.rev]), "$" + r[F.arpu].toFixed(1), "$" + r[F.ac].toFixed(1), r[F.dp].toFixed(2) + "%", r[F.dd].toFixed(2) + "%", n0(r[F.fs])], (r) => r[0] >= "2015-01" && r[0] <= "2015-10");
+  tbl("p2-tb-arpu", ["Month", "Revenue", "ARPU", "Paid purchases discounted", "Discount depth", "Free-trial starts"],
+    (r) => [ml(r[0]), "$" + r[F.rev].toFixed(1) + "M", "$" + r[F.arpu].toFixed(1), r[F.dp].toFixed(2) + "%", r[F.dd].toFixed(2) + "%", n0(r[F.fs])], (r) => r[0] >= "2015-01" && r[0] <= "2015-10");
   })();
   </script>
 
@@ -1519,9 +1207,9 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     </div></header>
 
     <div class="qa">
-    <p class="qa-q"><b>Question:</b> Which factors matter most, and which only look like they matter because of confounding?</p>
+    <p class="qa-q">Which factors matter most, and which only look like they matter because of confounding?</p>
     <div class="cx-bottom qa-a">
-      <p><b>Answer:</b> Churn is about <b>how people pay</b> and <b>how new they are</b>, not who they are. Auto-renew and the first renewal matter most. Age, city and channel look important, but most of their gap disappears once we compare people with the same auto-renew setting and plan</p>
+      <p>Churn is about <b>how people pay</b> and <b>how new they are</b>, not who they are. Auto-renew and the first renewal matter most. Age, city and channel look important, but most of their gap disappears once we compare people with the same auto-renew setting and plan</p>
     </div>
     </div>
     <div class="cx-kpis">
@@ -1591,9 +1279,9 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     </div></header>
 
     <div class="qa">
-    <p class="qa-q"><b>Question:</b> What would we act on?</p>
+    <p class="qa-q">What would we act on?</p>
     <div class="cx-bottom qa-a">
-      <p><b>Answer:</b> Fix the <b>payment</b> and the <b>first month</b>, not the audience. Together these three moves could keep up to <b>~13,000</b> more subscribers a year if each lands as estimated (about <b>4%</b> of today's 303,000 paying base)</p>
+      <p>Fix the <b>payment</b> and the <b>first month</b>, not the audience. Together these three moves could keep up to <b>~13,000</b> more subscribers a year if each lands as estimated (about <b>4%</b> of today's 303,000 paying base)</p>
     </div>
     </div>
     <div class="p3-acts">
@@ -1698,7 +1386,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
   function hbar(id) {
     const s = H[id], el = document.getElementById("p3-ch-" + id), W = el.clientWidth; if (!W) return;
     const narrow = W < 520, Lw = narrow ? (id === "factors" ? 128 : 104) : (id === "factors" ? 168 : 132), R = 52, T = 8, B = 46;
-    const ns = s.series.length, bh = narrow ? 13 : 16, gap = 3, grp = ns * bh + (ns - 1) * gap, pad = narrow ? 14 : 18;
+    const ns = s.series.length, bh = narrow ? 10 : 11, gap = 2, grp = ns * bh + (ns - 1) * gap, pad = narrow ? 10 : 12;
     const ph = s.cats.length * (grp + pad), Ht = T + ph + B, pw = W - Lw - R;
     const x = (v) => Lw + (v / s.max) * pw;
     let h = "";
@@ -1830,7 +1518,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     </header>
 
     <div class="qa">
-    <p class="qa-q"><b>Question:</b> How do we test a discounted annual plan for 30-day subscribers at renewal?</p>
+    <p class="qa-q">How do we test a discounted annual plan for 30-day subscribers at renewal?</p>
     <div class="cx-bottom qa-a">
       <p><b>Hypothesis:</b> offering "12 months for the price of 10" at renewal raises <b>12-month net revenue per subscriber</b>, mainly by locking in people who pay by hand: half of them are gone within a year</p>
       <p><b>Risk:</b> auto-renew users already stay (97.9% renew each month). For them the discount may just hand money back. The test reads both groups separately</p>
@@ -1879,7 +1567,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     <div class="card cx-panel">
       <h2 class="p5-t">Sample size: one month of renewals is enough</h2>
       <p class="p5-so">The orange curve is the one that matters: people who pay by hand are few (11,800 per group in a month), so they set the enrolment length. One month lets us see a <b>2.5% change</b> in their 12-month revenue (about $28 per user). For all users, one month gives ~117,000 per group (far above this chart) and detects a <b>0.5%</b> change</p>
-      <div class="p5-sc"><svg class="p5-svg" viewBox="0 0 720 352" role="img" aria-labelledby="p5-ch-t"><title id="p5-ch-t">Users needed per group versus the smallest change in 12-month revenue we want to detect</title><line class="p5-grid" x1="72" x2="700" y1="300.0" y2="300.0"/><text class="p5-tick" x="62" y="304.0" text-anchor="end">0</text><line class="p5-grid" x1="72" x2="700" y1="231.0" y2="231.0"/><text class="p5-tick" x="62" y="235.0" text-anchor="end">20k</text><line class="p5-grid" x1="72" x2="700" y1="162.0" y2="162.0"/><text class="p5-tick" x="62" y="166.0" text-anchor="end">40k</text><line class="p5-grid" x1="72" x2="700" y1="93.0" y2="93.0"/><text class="p5-tick" x="62" y="97.0" text-anchor="end">60k</text><line class="p5-grid" x1="72" x2="700" y1="24.0" y2="24.0"/><text class="p5-tick" x="62" y="28.0" text-anchor="end">80k</text><line class="p5-axis" x1="72.0" x2="72.0" y1="300" y2="305"/><text class="p5-tick" x="72.0" y="322" text-anchor="middle">1%</text><line class="p5-axis" x1="229.0" x2="229.0" y1="300" y2="305"/><text class="p5-tick" x="229.0" y="322" text-anchor="middle">2%</text><line class="p5-axis" x1="386.0" x2="386.0" y1="300" y2="305"/><text class="p5-tick" x="386.0" y="322" text-anchor="middle">3%</text><line class="p5-axis" x1="543.0" x2="543.0" y1="300" y2="305"/><text class="p5-tick" x="543.0" y="322" text-anchor="middle">4%</text><line class="p5-axis" x1="700.0" x2="700.0" y1="300" y2="305"/><text class="p5-tick" x="700.0" y="322" text-anchor="middle">5%</text><line class="p5-axis" x1="72" x2="700" y1="300" y2="300"/><text class="p5-alab" x="386.0" y="346" text-anchor="middle">Smallest change in 12-month revenue we want to detect</text><text class="p5-alab" transform="translate(16 162.0) rotate(-90)" text-anchor="middle">Users needed per group</text><line class="p5-avail" x1="72" x2="700" y1="259.4" y2="259.4"/><text class="p5-note" x="700" y="252.4" text-anchor="end">Pays by hand, available in 1 month: 11,800 per group</text><polyline class="p5-line p5-c1" points="72.0,185.3 87.7,205.2 103.4,220.4 119.1,232.1 134.8,241.5 150.5,249.0 166.2,255.2 181.9,260.3 197.6,264.6 213.3,268.2 229.0,271.3 244.7,274.0 260.4,276.3 276.1,278.3 291.8,280.1 307.5,281.7 323.2,283.0 338.9,284.3 354.6,285.4 370.3,286.4 386.0,287.3 401.7,288.1 417.4,288.8 433.1,289.5 448.8,290.1 464.5,290.6 480.2,291.2 495.9,291.6 511.6,292.1 527.3,292.5 543.0,292.8 558.7,293.2 574.4,293.5 590.1,293.8 605.8,294.1 621.5,294.3 637.2,294.6 652.9,294.8 668.6,295.0 684.3,295.2 700.0,295.4"/><polyline class="p5-line p5-c2" points="72.0,207.8 87.7,223.8 103.4,235.9 119.1,245.4 134.8,252.9 150.5,259.0 166.2,264.0 181.9,268.1 197.6,271.5 213.3,274.4 229.0,276.9 244.7,279.1 260.4,280.9 276.1,282.6 291.8,284.0 307.5,285.2 323.2,286.4 338.9,287.3 354.6,288.2 370.3,289.0 386.0,289.8 401.7,290.4 417.4,291.0 433.1,291.5 448.8,292.0 464.5,292.5 480.2,292.9 495.9,293.3 511.6,293.6 527.3,293.9 543.0,294.2 558.7,294.5 574.4,294.8 590.1,295.0 605.8,295.2 621.5,295.4 637.2,295.6 652.9,295.8 668.6,296.0 684.3,296.2 700.0,296.3"/><polyline class="p5-line p5-c3" points="72.0,39.0 87.7,84.3 103.4,118.8 119.1,145.6 134.8,166.9 150.5,184.0 166.2,198.1 181.9,209.7 197.6,219.5 213.3,227.7 229.0,234.8 244.7,240.8 260.4,246.1 276.1,250.7 291.8,254.7 307.5,258.2 323.2,261.4 338.9,264.2 354.6,266.7 370.3,269.0 386.0,271.0 401.7,272.8 417.4,274.5 433.1,276.0 448.8,277.4 464.5,278.7 480.2,279.9 495.9,280.9 511.6,281.9 527.3,282.8 543.0,283.7 558.7,284.5 574.4,285.2 590.1,285.9 605.8,286.5 621.5,287.1 637.2,287.7 652.9,288.2 668.6,288.7 684.3,289.1 700.0,289.6"/><circle class="p5-dot" cx="312.2" cy="259.4" r="6"/><text class="p5-note b" x="322" y="242">2.5%</text></svg></div>
+      <div class="p5-sc"><svg class="p5-svg" viewBox="0 0 720 352" role="img" aria-labelledby="p5-ch-t"><title id="p5-ch-t">Users needed per group versus the smallest change in 12-month revenue we want to detect</title><text class="p5-alab" x="8" y="12">Users per group</text><line class="p5-grid" x1="72" x2="700" y1="300.0" y2="300.0"/><text class="p5-tick" x="62" y="304.0" text-anchor="end">0</text><line class="p5-grid" x1="72" x2="700" y1="231.0" y2="231.0"/><text class="p5-tick" x="62" y="235.0" text-anchor="end">20k</text><line class="p5-grid" x1="72" x2="700" y1="162.0" y2="162.0"/><text class="p5-tick" x="62" y="166.0" text-anchor="end">40k</text><line class="p5-grid" x1="72" x2="700" y1="93.0" y2="93.0"/><text class="p5-tick" x="62" y="97.0" text-anchor="end">60k</text><line class="p5-grid" x1="72" x2="700" y1="24.0" y2="24.0"/><text class="p5-tick" x="62" y="28.0" text-anchor="end">80k</text><line class="p5-axis" x1="72.0" x2="72.0" y1="300" y2="305"/><text class="p5-tick" x="72.0" y="322" text-anchor="middle">1%</text><line class="p5-axis" x1="229.0" x2="229.0" y1="300" y2="305"/><text class="p5-tick" x="229.0" y="322" text-anchor="middle">2%</text><line class="p5-axis" x1="386.0" x2="386.0" y1="300" y2="305"/><text class="p5-tick" x="386.0" y="322" text-anchor="middle">3%</text><line class="p5-axis" x1="543.0" x2="543.0" y1="300" y2="305"/><text class="p5-tick" x="543.0" y="322" text-anchor="middle">4%</text><line class="p5-axis" x1="700.0" x2="700.0" y1="300" y2="305"/><text class="p5-tick" x="700.0" y="322" text-anchor="middle">5%</text><line class="p5-axis" x1="72" x2="700" y1="300" y2="300"/><text class="p5-alab" x="386.0" y="346" text-anchor="middle">Smallest change in 12-month revenue we want to detect</text><line class="p5-avail" x1="72" x2="700" y1="259.4" y2="259.4"/><text class="p5-note" x="700" y="252.4" text-anchor="end">Pays by hand, available in 1 month: 11,800 per group</text><polyline class="p5-line p5-c1" points="72.0,185.3 87.7,205.2 103.4,220.4 119.1,232.1 134.8,241.5 150.5,249.0 166.2,255.2 181.9,260.3 197.6,264.6 213.3,268.2 229.0,271.3 244.7,274.0 260.4,276.3 276.1,278.3 291.8,280.1 307.5,281.7 323.2,283.0 338.9,284.3 354.6,285.4 370.3,286.4 386.0,287.3 401.7,288.1 417.4,288.8 433.1,289.5 448.8,290.1 464.5,290.6 480.2,291.2 495.9,291.6 511.6,292.1 527.3,292.5 543.0,292.8 558.7,293.2 574.4,293.5 590.1,293.8 605.8,294.1 621.5,294.3 637.2,294.6 652.9,294.8 668.6,295.0 684.3,295.2 700.0,295.4"/><polyline class="p5-line p5-c2" points="72.0,207.8 87.7,223.8 103.4,235.9 119.1,245.4 134.8,252.9 150.5,259.0 166.2,264.0 181.9,268.1 197.6,271.5 213.3,274.4 229.0,276.9 244.7,279.1 260.4,280.9 276.1,282.6 291.8,284.0 307.5,285.2 323.2,286.4 338.9,287.3 354.6,288.2 370.3,289.0 386.0,289.8 401.7,290.4 417.4,291.0 433.1,291.5 448.8,292.0 464.5,292.5 480.2,292.9 495.9,293.3 511.6,293.6 527.3,293.9 543.0,294.2 558.7,294.5 574.4,294.8 590.1,295.0 605.8,295.2 621.5,295.4 637.2,295.6 652.9,295.8 668.6,296.0 684.3,296.2 700.0,296.3"/><polyline class="p5-line p5-c3" points="72.0,39.0 87.7,84.3 103.4,118.8 119.1,145.6 134.8,166.9 150.5,184.0 166.2,198.1 181.9,209.7 197.6,219.5 213.3,227.7 229.0,234.8 244.7,240.8 260.4,246.1 276.1,250.7 291.8,254.7 307.5,258.2 323.2,261.4 338.9,264.2 354.6,266.7 370.3,269.0 386.0,271.0 401.7,272.8 417.4,274.5 433.1,276.0 448.8,277.4 464.5,278.7 480.2,279.9 495.9,280.9 511.6,281.9 527.3,282.8 543.0,283.7 558.7,284.5 574.4,285.2 590.1,285.9 605.8,286.5 621.5,287.1 637.2,287.7 652.9,288.2 668.6,288.7 684.3,289.1 700.0,289.6"/><circle class="p5-dot" cx="312.2" cy="259.4" r="6"/><text class="p5-note b" x="322" y="242">2.5%</text></svg></div>
       <div class="p5-leg"><span><i style="background:var(--p5-c3)"></i>Pays by hand</span><span><i style="background:var(--p5-c1)"></i>All eligible</span><span><i style="background:var(--p5-c2)"></i>Auto-renew</span><span><i class="d"></i>Available in 1 month (pays by hand)</span></div>
       <p class="cx-note" style="text-align:center">Two-sided test, 5% false-alarm rate, 80% power. Users per group = 2 × (1.96 + 0.84)² × SD² ÷ change². 12-month revenue per subscriber: $1,318 on average (SD $607); auto-renew $1,361 (SD $562); pays by hand $1,097 (SD $762)</p>
     </div>
@@ -1975,9 +1663,9 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
     </header>
 
     <div class="qa">
-    <p class="qa-q"><b>Question:</b> Which AI tools did we use, for what, and where was the AI wrong?</p>
+    <p class="qa-q">Which AI tools did we use, for what, and where was the AI wrong?</p>
     <div class="cx-bottom qa-a">
-      <p><b>Answer:</b> AI wrote most of the SQL and text; I set the questions, the rules and the checks. Every number in the hand-in is computed by SQL from the raw files, never typed by hand</p>
+      <p>AI wrote most of the SQL and text; I set the questions, the rules and the checks. Every number in the hand-in is computed by SQL from the raw files, never typed by hand</p>
       <p><b>Main rule:</b> one AI can check another, but <b>the data decides</b>. No AI claim went in before a DuckDB query confirmed it</p>
     </div>
     </div>
@@ -2126,9 +1814,9 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
       <p class="lede">For the CEO and the Head of Growth. The four leadership questions, answered as far as the data allows. Every number comes from Part 1 (data), Part 2 (metrics) and Part 3 (churn deep dive)</p>
     </div>
     <div class="qa">
-    <p class="qa-q"><b>Question:</b> How healthy is the base, what drives churn, did trials and prices work, and should we push annual plans?</p>
+    <p class="qa-q">How healthy is the base, what drives churn, did trials and prices work, and should we push annual plans?</p>
     <div class="card p4-bl qa-a">
-      <p><b>Answer:</b> <b>The subscriber base is healthy but growth is slowing:</b> Paying subscribers grew <b>+19%</b> in the last year (from +52% the year before), and monthly churn fell to about <b>3.6%</b>. The risk is fewer new payers and a slowly falling revenue per user. <b>Churn is about how people pay and how new they are, not who they are:</b> manual payers churn 20.1% per renewal vs 2.3% on auto-renew, and the first renewal loses 16.5% vs ~4% later</p>
+      <p><b>The subscriber base is healthy but growth is slowing:</b> Paying subscribers grew <b>+19%</b> in the last year (from +52% the year before), and monthly churn fell to about <b>3.6%</b>. The risk is fewer new payers; revenue per user is flat. <b>Churn is about how people pay and how new they are, not who they are:</b> manual payers churn 20.1% per renewal vs 2.3% on auto-renew, and the first renewal loses 16.5% vs ~4% later</p>
     </div>
     </div>
     <div class="p4-kpis">
@@ -2136,7 +1824,7 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
       <div class="card p4-kpi"><h3>Growth in a year</h3><b>+19%</b><span class="vd bad">Bad: slowing, was +52%</span><span>03-16 → 03-17</span></div>
       <div class="card p4-kpi"><h3>Monthly churn</h3><b>3.6%</b><span class="vd good">Good: was 5.0% in 2016</span><span>2017 average</span></div>
       <div class="card p4-kpi"><h3>New payers a month</h3><b>2.9%</b><span class="vd bad">Bad: was 3.9% in 2016</span><span>Share of payers, 2017</span></div>
-      <div class="card p4-kpi"><h3>Revenue per paying user</h3><b>−10%</b><span class="vd bad">Bad: falling</span><span>$133 (2015) → $120 (2017)</span></div>
+      <div class="card p4-kpi"><h3>Revenue per paying user</h3><b>+4%</b><span class="vd">Flat: growth is from volume</span><span>$119 → $124 (Q1-16 → Q1-17)</span></div>
     </div>
     <div class="p4-qs">
       <div class="card p4-q">
@@ -2146,7 +1834,7 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
           <li>+19% paying subscribers in the last year, down from +52%</li>
           <li>Monthly churn mostly 3–5%; 3.6% in 2017</li>
           <li>Renewing users are 94–96% of the base; new payers fell to 2.9% a month</li>
-          <li>Revenue per paying user down about 10% since 2015</li>
+          <li>Revenue per paying user flat: +4% (Q1-16 → Q1-17), growth comes from more payers</li>
         </ul>
       </div>
       <div class="card p4-q">
@@ -2178,6 +1866,12 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
         </ul>
       </div>
     </div>
+    <div class="card p4-fig">
+      <h2>Paying subscribers more than doubled, but the curve is flattening</h2>
+      <p class="so">Strong growth through 2016, slower since autumn 2016: the base is healthy, but new-payer growth needs attention</p>
+      <div class="p4-lg"><span><i style="background:#2563eb"></i>Paying subscribers (≥ 1 paid day in the month)</span><span><i style="background:#ea580c"></i>Dips after billing gaps (05-15, 04-16)</span></div>
+      <div id="p4-ch-subs"></div>
+    </div>
     <p class="src">Sources: <span class="mono">reports/04_metrics.md</span> (table <span class="mono">mart_metrics_month</span>), <span class="mono">reports/05_deep_dive.md</span> (table <span class="mono">mart_churn_factor_summary</span>), <span class="mono">reports/03_churn_validation.md</span>. Paying subscriber = at least one paid day in the month; churn = our 30-day rule, not <span class="mono">churn_labels.csv</span></p>
   </section>
 
@@ -2187,8 +1881,8 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
       <p class="lede">Each with the impact we expect, how sure we are, and what would change our mind</p>
     </div>
     <div class="qa">
-    <p class="qa-q"><b>Question:</b> Which three moves do we recommend, with impact, confidence and what would change our mind?</p>
-    <div class="cx-bottom qa-a"><p><b>Answer:</b> Up to ~13,000 subscribers kept a year (~4% of the 303,000 paying base), if each lands as estimated</p></div>
+    <p class="qa-q">Which three moves do we recommend, with impact, confidence and what would change our mind?</p>
+    <div class="cx-bottom qa-a"><p>Up to ~13,000 subscribers kept a year (~4% of the 303,000 paying base), if each lands as estimated</p></div>
     </div>
     <div class="p4-recs">
       <div class="card p4-rec" style="--rc:#2563eb">
@@ -2228,8 +1922,8 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
       <p class="lede">Where the data stops, and what it would take to close each gap</p>
     </div>
     <div class="qa">
-    <p class="qa-q"><b>Question:</b> Which questions can't we answer yet, and what would it take?</p>
-    <div class="cx-bottom qa-a"><p><b>Answer:</b> Two of the four questions are answered in full (health of the base, churn drivers). Free trials and prices, and annual plans, are only partly answered: they need the option b analysis and the 12-month annual-plan test</p></div>
+    <p class="qa-q">Which questions can't we answer yet, and what would it take?</p>
+    <div class="cx-bottom qa-a"><p>Two of the four questions are answered in full (health of the base, churn drivers). Free trials and prices, and annual plans, are only partly answered: they need the option b analysis and the 12-month annual-plan test</p></div>
     </div>
     <div class="card scroll"><table class="grid">
       <thead><tr><th>Question</th><th>Status</th><th>What is missing</th><th>What it would take</th></tr></thead>
@@ -2267,7 +1961,7 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
     // Part 2: paying subscribers, Jan 2015 - Mar 2017 (mart_metrics_month.paying_subscribers)
     const subs = [131441,142169,166868,173128,161139,179194,189659,198520,207464,213907,227523,236038,244746,257452,254318,239955,241657,244016,271819,279560,283352,285582,289108,296009,299719,301797,302950];
     {
-      const W = 700, H = 300, L = 56, R = 20, T = 16, B = 34, s = svg(W, H);
+      const W = 700, H = 250, L = 56, R = 20, T = 16, B = 34, s = svg(W, H);
       const { x, y } = frame(s, W, H, L, R, T, B, 350000, 50000, fmtK, subs.length, 0, 3);
       const g = el(s, "defs", {}); const lg = el(g, "linearGradient", { id: "p4g", x1: 0, x2: 0, y1: 0, y2: 1 });
       el(lg, "stop", { offset: "0", "stop-color": "#2563eb", "stop-opacity": ".28" }); el(lg, "stop", { offset: "1", "stop-color": "#16c4e0", "stop-opacity": ".03" });
@@ -2282,7 +1976,7 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
     // Part 2: monthly churn rate %, Feb 2015 - Feb 2017 (mart_metrics_month.churn_rate_pct, 30-day rule)
     const churn = [3.2,3.8,13.9,4.3,4.6,3.7,3.7,6.1,4.7,3.8,5.2,5.0,5.4,13.8,5.0,4.9,4.3,3.6,3.4,3.5,3.2,3.1,4.6,3.8,3.4];
     {
-      const W = 700, H = 300, L = 48, R = 20, T = 16, B = 34, s = svg(W, H), n = churn.length, i0 = 1;
+      const W = 700, H = 250, L = 48, R = 20, T = 16, B = 34, s = svg(W, H), n = churn.length, i0 = 1;
       const { x, y } = frame(s, W, H, L, R, T, B, 15, 3, (v) => v + "%", n, i0, 3);
       const bw = (W - L - R) / n * 0.62;
       churn.forEach((v, i) => {
@@ -2296,7 +1990,7 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
     // Part 3: churn gap (highest ÷ lowest group), as it looks vs fair comparison (reports/05_deep_dive.md)
     const drv = [["Auto-renew",8.9,4.5],["Payment method",27.0,4.4],["Tenure (1st renewal)",7.7,3.5],["Channel",8.2,2.1],["City",3.6,1.7],["Plan length",7.5,1.6],["Age band",3.9,1.3]];
     {
-      const W = 700, rowH = 38, T = 10, B = 34, L = 170, R = 50, H = T + B + drv.length * rowH, s = svg(W, H), xMax = 30;
+      const W = 700, rowH = 30, T = 10, B = 34, L = 170, R = 50, H = T + B + drv.length * rowH, s = svg(W, H), xMax = 30;
       const x = (v) => L + v / xMax * (W - L - R);
       for (let v = 0; v <= xMax; v += 5) {
         el(s, "line", { x1: x(v), x2: x(v), y1: T, y2: H - B, class: "ax", "stroke-dasharray": v ? "3 4" : "" });
@@ -2950,100 +2644,8 @@ main>.view:not(.p21){max-width:1280px;margin-inline:auto}
 })();
 </script>
 <style>
-/* ===== Part 2 design system (2.1–2.5): one type scale, thin lines, little colour, charts ≤700px, side-by-side charts aligned ===== */
 .brand .logo img{height:62px}
 @media (max-width:640px){.brand .logo img{height:46px}}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust){--t-h1:24px;--t-h2:18px;--t-body:15px;--t-small:13px;--t-axis:13px;--t-num:24px;font-size:var(--t-body);gap:18px;--shade:var(--p2-grid)}
-@media (max-width:640px){:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust){--t-h1:20px;--t-h2:17px;--t-body:15px;--t-small:13px;--t-axis:12px;--t-num:22px}}
-/* one column: everything centred, 900px; the 2.2 pair 1100px */
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust)>:is(.card,.qa,.p2x-qa,.p2-qa2,.p21-kpis,.p2x-kpis,.p21-bottom,.cx-src){max-width:900px!important;width:100%;margin-inline:auto}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) .p22-pair{max-width:1100px!important;width:100%;margin-inline:auto;gap:16px!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) .p2x-card.p2x-wide{max-width:1100px!important}
-/* cards: thin border, no shadow, no hover lift */
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) .card{border:1px solid var(--line)!important;border-radius:12px!important;box-shadow:none!important;transform:none!important}
-/* header */
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-head,.p22-head,.p2x-head){background:var(--surface)!important;padding:20px 26px!important;gap:8px!important;overflow:visible}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-head,.p22-head,.p2x-head)::after{content:none!important;display:none!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-head,.p22-head,.p2x-head) h1{font-size:var(--t-h1)!important;line-height:1.25;color:var(--navy)}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-head,.p22-head,.p2x-head) h1::before{content:none!important;display:none!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-tag,.p22-tag,.p2x-tag){border:0!important;font-size:var(--t-small)!important;padding:3px 12px!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-head,.p22-head,.p2x-head)>p{font-size:var(--t-body)!important;color:var(--muted);margin:0}
-/* question + answer: plain text, one thin side line */
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.qa,.p2x-qa,.p2-qa2){display:grid;gap:8px!important;border-left:3px solid var(--accent);padding:2px 0 2px 16px!important;background:none!important;line-height:1.6}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.qa-q,.p2x-q,.p22-qa,.p2x-a,.p2-qa2 p){margin:0;font-size:var(--t-body)!important;font-weight:400!important;color:var(--fg);background:none!important;border:0!important;border-radius:0!important;padding:0!important;line-height:1.6!important;box-shadow:none!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.qa-q,.p2x-q)::before{content:none!important;display:none!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.qa,.p2x-qa,.p2-qa2) b{color:var(--navy)!important;font-weight:700}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) .p2-qa2 a{color:var(--accent);font-size:var(--t-small);text-decoration:none}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.gp,.rd,.nv,.gb,.nb,.db,.rb){font-weight:600!important}
-/* number cards: small and low */
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-kpis,.p2x-kpis){gap:12px!important;grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr))!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-kpi,.p2x-kpi){padding:12px 10px!important;gap:2px!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-kpi,.p2x-kpi) h3{font-size:var(--t-small)!important;letter-spacing:.03em!important;line-height:1.3;color:var(--muted)!important;font-weight:600}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-kpi,.p2x-kpi) .per{font-size:var(--t-small)!important;color:var(--muted)}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-kpi,.p2x-kpi) b{font-size:var(--t-num)!important;line-height:1.25!important;color:var(--navy)!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-kpi,.p2x-kpi) .cmp{font-size:var(--t-small)!important;color:var(--muted);line-height:1.4}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-kpi,.p2x-kpi) :is(.up,.dn){font-weight:600!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) .p21-bottom{background:none!important;border:0!important;border-left:3px solid var(--navy)!important;border-radius:0!important;padding:2px 0 2px 16px!important;line-height:1.6!important;font-size:var(--t-body)}
-/* conclusions above charts: text with a thin side line */
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-concl,.p22-concl,.p2x-concl){background:none!important;border:0!important;border-left:3px solid color-mix(in srgb,var(--accent) 45%,var(--line))!important;border-radius:0!important;padding:2px 0 2px 14px!important;color:var(--fg)!important;font-size:var(--t-body)!important;line-height:1.55!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-concl,.p22-concl,.p2x-concl) b{color:var(--navy)!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) .p21-concl .ic{display:none}
-/* chart and section cards */
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-card,.p2x-card,.p22-card,.p22-keys){padding:20px 24px!important;gap:12px!important;align-content:start}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-card,.p2x-card,.p22-card,.p22-keys,.p2x-flat) h2{font-size:var(--t-h2)!important;line-height:1.3;color:var(--navy)!important;border-bottom:0!important;padding-bottom:0!important;display:block!important;margin:0}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-card,.p2x-card,.p22-card,.p22-keys,.p2x-flat) h2::before{content:none!important;display:none!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-lg,.p2-legend,.p22-lg){font-size:var(--t-small)!important;justify-content:center;color:var(--fg)}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-foot,.p22-foot,.p2x-foot,.cx-src){font-size:var(--t-small)!important;color:var(--muted);margin:0;line-height:1.5}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) .p22-notes{display:grid;gap:4px;align-content:start}
-/* charts: never wider than 700px, never tall and narrow */
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-plot,.p2-plot,.p22-plot){width:100%;max-width:700px!important;margin-inline:auto}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-plot,.p2-plot,.p22-plot) text{font-size:var(--t-axis)}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p2-plot .note text,.p22-plot text.v,.p22-plot text.ren,.p22-plot text.fl){font-size:var(--t-axis)!important}
-/* 2.2: A and B start at the same height (title, conclusion, legend, plot, notes share rows) */
-@supports (grid-template-rows:subgrid){
-  :is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) .p22-pair{grid-template-rows:repeat(5,auto)}
-  :is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) .p22-pair>.p22-card{grid-row:span 5;display:grid;grid-template-rows:subgrid;row-gap:12px}
-}
-/* 2.1 growth steps: plain */
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) .p21-steps div{background:none!important;border:1px solid var(--line)!important;padding:6px 14px!important;min-width:100px!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) .p21-steps div span{font-size:var(--t-small)!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) .p21-steps div i{font-size:var(--t-small)!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) .p21-steps div b{font-size:20px!important;color:var(--navy)!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) .p21-steps em{font-size:18px!important}
-/* 2.4 lead: growth split bars */
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) .p2-bars{display:grid;gap:10px;max-width:700px;width:100%;margin-inline:auto}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) .p2-bars .r{display:grid;grid-template-columns:150px 1fr 48px 150px;align-items:center;gap:12px}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) .p2-bars .k{font-weight:600;color:var(--fg)}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) .p2-bars .t{height:22px;background:var(--code-bg);border-radius:4px;overflow:hidden}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) .p2-bars .t i{display:block;height:100%;background:var(--s1);border-radius:4px}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) .p2-bars .t i.lo{background:color-mix(in srgb,var(--s1) 45%,var(--surface))}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) .p2-bars b{color:var(--navy);text-align:right;font-variant-numeric:tabular-nums}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) .p2-bars .d{font-size:var(--t-small);color:var(--muted);font-variant-numeric:tabular-nums}
-@media (max-width:640px){:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) .p2-bars .r{grid-template-columns:1fr 48px;row-gap:4px}:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) .p2-bars .k{grid-column:1/-1}:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) .p2-bars .d{grid-column:1/-1;margin-top:-2px}}
-/* tables: light grid lines like the rest of Part 2 */
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(table.p21-key,table.p2x-key,table.p22-t) :is(th,td){border:1px solid var(--line)!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust)>.cx-src{margin-inline:auto!important;padding-inline:0!important}
-/* folds */
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) details>summary{font-size:var(--t-body)!important;font-weight:700;color:var(--navy)!important;padding:12px 20px!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-fold,.p2x-fold,.p22-fold){padding:0!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-fold,.p2x-fold,.p22-fold) :is(ul,p,li){font-size:var(--t-body)}
-/* tables: as wide as needed, centred, light header, coloured text only */
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(table.p21-key,table.p2x-key,table.p22-t){width:auto!important;max-width:100%;margin-inline:auto;font-size:14px}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(table.p21-key,table.p2x-key,table.p22-t) th{background:var(--code-bg)!important;color:var(--navy)!important;font-size:var(--t-small)!important;text-transform:none!important;letter-spacing:0!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(table.p21-key,table.p2x-key,table.p22-t) :is(th,td){height:38px!important;padding:4px 12px!important;font-size:14px}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(table.p21-key,table.p2x-key,table.p22-t) th{font-size:var(--t-small)!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(table.p21-key,table.p2x-key,table.p22-t) td{background:none!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(table.p21-key,table.p2x-key,table.p22-t) td.m{color:var(--navy);white-space:nowrap;font-weight:700}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(table.p21-key,table.p2x-key,table.p22-t) :is(td.bd,td.am,td.gd,td.wu,td.bg){font-weight:600!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) table.p21-key :is(td.ok,td.m39){color:var(--fg)!important;font-weight:400!important}
-:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) tr.flag td{background:none!important}
-@media (max-width:640px){
-  :is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-head,.p22-head,.p2x-head){padding:16px!important}
-  :is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-card,.p2x-card,.p22-card,.p22-keys){padding:14px!important}
-  :is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(.p21-kpis,.p2x-kpis){grid-template-columns:repeat(2,1fr)!important}
-  :is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(table.p21-key,table.p2x-key,table.p22-t){width:max-content!important;max-width:none!important}
-  :is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) :is(table.p21-key,table.p2x-key,table.p22-t) :is(td.l,td:last-child){min-width:200px;white-space:normal}
-}
 </style>
 <style>
 /* ===== Parts 1, 3, 4, 5 + Introduction design system: same scale and look as Part 2 (one type scale, thin lines, little colour, charts <=700px) ===== */
@@ -3158,6 +2760,154 @@ main>.view:not(.p21){max-width:1280px;margin-inline:auto}
   :is(#view-task,#view-overview,#view-lineage,#view-churn,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .p5-sc,:is(#view-task,#view-overview,#view-lineage,#view-churn,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(#p4-ch-subs,#p4-ch-churn,#p4-ch-drivers){overflow-x:auto}
   :is(#view-task,#view-overview,#view-lineage,#view-churn,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .p5-sc svg,:is(#view-task,#view-overview,#view-lineage,#view-churn,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(#p4-ch-subs,#p4-ch-churn,#p4-ch-drivers) svg{min-width:600px}
   :is(#view-task,#view-overview,#view-lineage,#view-churn,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .p3-act dl{grid-template-columns:1fr}
+}
+</style>
+<style>
+:root{--font:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body{letter-spacing:-.005em}
+/* ===== Design v3, Parts 2-5 (Gemini-like): soft cards, one type scale, navy/blue/teal, Q + light-blue answer,
+   coloured conclusion box above each chart, charts max 700 x 270 (wide and short), flags inside the plot ===== */
+main{--v-navy:#1e3a8a;--v-blue:#2563eb;--v-mid:#60a5fa;--v-sky:#bfdbfe;--v-teal:#0d9488;--v-teal-l:#5eead4;--v-red:#dc2626;--v-red-l:#fca5a5;--v-amber:#d97706;--v-grey:#cbd5e1;
+  --v-ink:#0f172a;--v-mute:#64748b;--v-line:#e2e8f0;--v-grid:#e8eef5;--v-axis:#94a3b8;--v-bg:#f8fafc;
+  --v-ok:#059669;--v-ok-bg:#ecfdf5;--v-ok-ink:#065f46;--v-warn:#d97706;--v-warn-bg:#fffbeb;--v-warn-ink:#92400e;--v-info:#2563eb;--v-info-bg:#eff6ff;--v-info-ink:#1e3a8a;
+  --v-qa-bg:#eff6ff;--v-qa-line:#bfdbfe;--v-shade:#fef2f2;--v-good:#059669;--v-bad:#dc2626}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) main{--v-navy:#a9cbef;--v-blue:#60a5fa;--v-mid:#3b82f6;--v-sky:#1e3a5f;--v-teal:#2dd4bf;--v-teal-l:#14b8a6;--v-red:#f87171;--v-red-l:#b45454;--v-amber:#fbbf24;--v-grey:#475569;
+  --v-ink:#e2ebf6;--v-mute:#9fb0c6;--v-line:#28395a;--v-grid:#22324d;--v-axis:#6f819c;--v-ok:#4ade80;--v-ok-bg:#12291f;--v-ok-ink:#a7f3d0;--v-warn:#fbbf24;--v-warn-bg:#2d2412;--v-warn-ink:#fde68a;--v-info:#60a5fa;--v-info-bg:#13233d;--v-info-ink:#bfdbfe;--v-qa-bg:#13233d;--v-qa-line:#2b4a75;--v-shade:#3a1c1a;--v-good:#4ade80;--v-bad:#f87171}}
+:root[data-theme="dark"] main{--v-navy:#a9cbef;--v-blue:#60a5fa;--v-mid:#3b82f6;--v-sky:#1e3a5f;--v-teal:#2dd4bf;--v-teal-l:#14b8a6;--v-red:#f87171;--v-red-l:#b45454;--v-amber:#fbbf24;--v-grey:#475569;
+  --v-ink:#e2ebf6;--v-mute:#9fb0c6;--v-line:#28395a;--v-grid:#22324d;--v-axis:#6f819c;--v-ok:#4ade80;--v-ok-bg:#12291f;--v-ok-ink:#a7f3d0;--v-warn:#fbbf24;--v-warn-bg:#2d2412;--v-warn-ink:#fde68a;--v-info:#60a5fa;--v-info-bg:#13233d;--v-info-ink:#bfdbfe;--v-qa-bg:#13233d;--v-qa-line:#2b4a75;--v-shade:#3a1c1a;--v-good:#4ade80;--v-bad:#f87171}
+
+/* one column, 900px wide, centred; type: h1 22, h2 17, body 15, small 13, axis 12 */
+:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b){gap:16px!important;font-size:15px;color:var(--v-ink)}
+:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b)>*:not(script):not(style){width:100%;max-width:900px!important;margin-inline:auto!important}
+:is(#view-p3a,#view-p5b)>:is(.p3-two,div.card.cx-panel:has(td .tag)){max-width:1100px!important}
+:is(#view-p4)>:is(.p4-qs,.p4-kpis){max-width:1100px!important}
+:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b)>.sub-ref{margin-left:max(0px,calc((100% - 900px) / 2))!important;width:auto!important}
+#view-p3a>.sub-ref:has(+ .p3-two){margin-left:max(0px,calc((100% - 1100px) / 2))!important}
+
+/* cards: white, thin border, soft corners */
+:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .card{background:var(--surface)!important;border:1px solid var(--v-line)!important;border-radius:12px!important;box-shadow:none!important;transform:none!important}
+
+/* header card: tag, title, one line */
+:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.v3-head,.vhead){padding:20px 24px!important;display:grid;gap:6px!important;background:var(--surface)!important}
+:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.v3-head,.vhead)::after{content:none!important;display:none!important}
+:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.v3-tag,.vtag){justify-self:start;background:var(--v-info-bg)!important;color:var(--v-info-ink)!important;border:0!important;font-size:13px!important;font-weight:700;border-radius:999px;padding:3px 12px!important}
+:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.v3-head,.vhead) h1{font-size:22px!important;line-height:1.25;color:var(--v-ink)!important;display:block!important;margin:0}
+:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.v3-head,.vhead) h1::before{content:none!important;display:none!important}
+:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.v3-head,.vhead)>p{margin:0;color:var(--v-mute)!important;font-size:14px!important}
+
+/* Q, the question in bold; then the answer (main conclusion) in a light-blue box */
+:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .qa{display:grid!important;gap:10px!important;border:0!important;padding:0!important;background:none!important}
+:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .qa>.qa-q.qa-q{margin:0;display:flex!important;align-items:baseline;gap:10px;font-size:16px!important;font-weight:700!important;color:var(--v-ink)!important;line-height:1.45}
+:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .qa>.qa-q.qa-q::before{content:"Q"!important;display:inline-grid!important;place-items:center;flex:none;width:26px;height:26px;border-radius:7px;background:var(--v-navy);color:var(--surface);font-size:14px;font-weight:700;transform:translateY(-1px)}
+:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .qa>.qa-a.qa-a{margin:0;display:grid;gap:8px;background:var(--v-qa-bg)!important;border:1px solid var(--v-qa-line)!important;border-left:4px solid var(--v-navy)!important;border-radius:10px!important;padding:14px 18px!important;font-size:15px!important;line-height:1.6!important;color:var(--v-ink)!important}
+:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .qa>.qa-a.qa-a :is(p,li){margin:0;background:none!important;color:var(--v-ink)!important;font-size:15px!important;font-weight:400!important}
+:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .qa>.qa-a.qa-a b{color:var(--v-navy)!important;font-weight:700!important}
+
+/* number cards (only where they help): small, coloured top line, number, one comparison */
+.v3-kpis{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr))}
+.v3-kpi{padding:14px 12px!important;display:grid;gap:3px;align-content:start;text-align:center;border-top:3px solid var(--v-ok)!important}
+.v3-kpi.bad{border-top-color:var(--v-bad)!important}.v3-kpi.neu{border-top-color:var(--v-blue)!important}
+.v3-kpi .k{font-size:13px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--v-mute)}
+.v3-kpi .per{font-size:13px;color:var(--v-mute)}
+.v3-kpi b{font-size:24px;line-height:1.25;color:var(--v-navy);font-variant-numeric:tabular-nums;margin:2px 0}
+.v3-kpi .cmp{font-size:13px;color:var(--v-mute);line-height:1.4}
+.v3-kpi .cmp i{font-style:normal;font-weight:700}.v3-kpi .up{color:var(--v-good)}.v3-kpi .dn{color:var(--v-bad)}
+
+/* chart card: title, coloured conclusion, legend, plot, one-line note */
+.v3-card{padding:20px 24px!important;display:grid;gap:12px;min-width:0}
+.v3-card>h2{margin:0;font-size:17px!important;color:var(--v-ink)!important;border:0!important;padding:0!important}
+.v3-card>h2::before{content:none!important}
+.v3-c{margin:0;padding:10px 14px;border-radius:8px;border-left:3px solid var(--v-ok);background:var(--v-ok-bg);color:var(--v-ok-ink);font-size:14.5px;line-height:1.55}
+.v3-c b{color:inherit}
+.v3-c.warn{border-left-color:var(--v-warn);background:var(--v-warn-bg);color:var(--v-warn-ink)}
+.v3-c.info{border-left-color:var(--v-info);background:var(--v-info-bg);color:var(--v-info-ink)}
+.v3-foot{margin:0;font-size:13px;color:var(--v-mute);line-height:1.5}
+.v3-foot .linkbtn{font-size:13px}
+.v3-in{padding:0 20px 20px;display:grid;gap:12px}
+.v3-in>p{margin:0;line-height:1.6}
+
+/* legend: series only (flags are drawn inside the plot) */
+.vz-lg{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 20px;font-size:13px;color:var(--v-ink)}
+.vz-lg span{display:inline-flex;align-items:center;gap:7px}
+.vz-lg i{display:inline-block;width:12px;height:12px;border-radius:3px;background:var(--c)}
+.vz-lg i.ln{width:20px;height:0;border-radius:0;background:none;border-top:2.5px solid var(--c)}
+.vz-lg i.ln.dash{border-top-style:dashed}
+.vz-lg i.ln.thick{border-top-width:3.5px;border-radius:2px}
+/* plot: max 700 wide, height set by the engine (270 or less) */
+.vz{position:relative;width:100%;max-width:700px;margin:0 auto;min-height:40px}
+.vz svg{display:block;width:100%;height:auto;overflow:visible}
+.vz text{font-family:var(--font)}
+.vz .vz-ax{font-size:12px;fill:var(--v-mute)}
+.vz .vz-val{font-size:12px;font-weight:700;fill:var(--v-ink)}
+.vz .vz-avg{font-size:13px;font-weight:700;paint-order:stroke;stroke:var(--surface);stroke-width:4px}
+.vz .vz-flag text{font-size:12px;font-weight:700}
+.vz .vz-shl{font-size:12px;font-weight:700;fill:var(--v-red)}
+.vz .vz-grid{stroke:var(--v-grid);stroke-dasharray:3 3}
+.vz .vz-base{stroke:var(--v-axis)}
+.vz .vz-shade{fill:var(--v-shade);opacity:.8}
+#p24-ch2 .vz-shade{fill:var(--v-grey);opacity:.35}
+.vz .vz-cross{stroke:var(--v-axis);stroke-dasharray:3 3}
+.vz-tip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--v-line);border-radius:8px;padding:8px 12px;font-size:13px;box-shadow:0 4px 14px rgba(15,23,42,.1);white-space:nowrap;z-index:2}
+.vz-tip b{display:block;color:var(--v-navy);margin-bottom:2px}
+.vz-tip .mute{color:var(--v-mute)}
+
+/* tables: only as wide as the content, centred, navy header, same 40px rows */
+.v3-tw{max-width:100%;overflow-x:auto;display:block}
+.v3-tw>table.v3-t{margin-inline:auto}
+table.v3-t td.l{min-width:200px}
+table.v3-t{border-collapse:collapse;width:auto;font-size:14px;font-variant-numeric:tabular-nums}
+table.v3-t :is(th,td){height:40px;padding:6px 12px;border:1px solid var(--v-line)!important;text-align:center;vertical-align:middle;line-height:1.35}
+table.v3-t th{background:var(--v-navy);color:var(--surface);font-size:13px;font-weight:700;white-space:nowrap}
+table.v3-t td.m{font-weight:700;background:var(--v-bg);white-space:nowrap}
+table.v3-t td.l{text-align:left}
+table.v3-t td.bd{color:var(--v-bad);font-weight:700}
+table.v3-t td.am{color:var(--v-warn-ink);background:var(--v-warn-bg);font-weight:700}
+table.v3-t td.gd{color:var(--v-ok-ink);background:var(--v-ok-bg);font-weight:700}
+table.v3-t td.na{color:var(--v-mute);background:var(--v-bg)}
+table.v3-t tr.flag td{background:var(--v-shade)}
+table.v3-t .linkbtn{font-weight:700}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) table.v3-t td.m{background:var(--code-bg)}}
+
+/* folds: one low bar, closed by default */
+details.v3-fold{padding:0!important}
+:is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust) details.v3-fold>summary{list-style:none;cursor:pointer;padding:12px 20px!important;font-size:15px!important;font-weight:700;color:var(--v-navy)!important;line-height:1.4}
+details.v3-fold>summary::-webkit-details-marker{display:none}
+details.v3-fold>ul{margin:0;padding:0 24px 18px 40px;display:grid;gap:6px;line-height:1.6}
+
+/* Parts 3-5: same look for their own pieces */
+:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.p3-ct,.cx-h,.p5-t,.p3-act h2,.p3-no h2,.p3-lim h2,.p4-rec h2,.p4-fig h2){font-size:17px!important;color:var(--v-ink)!important;border:0!important;padding:0!important}
+:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.p3-cc,.p5-so,.p4-fig .so){margin:0!important;padding:10px 14px!important;border-radius:8px!important;border:0!important;border-left:3px solid var(--v-ok)!important;background:var(--v-ok-bg)!important;color:var(--v-ok-ink)!important;font-size:14.5px!important;line-height:1.55!important;max-width:none!important}
+:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.p3-cc,.p5-so,.p4-fig .so) b{color:inherit!important}
+:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.p3-cc,.p5-so,.p4-fig .so).warn{border-left-color:var(--v-warn)!important;background:var(--v-warn-bg)!important;color:var(--v-warn-ink)!important}
+:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.p3-cc,.p5-so,.p4-fig .so).info{border-left-color:var(--v-info)!important;background:var(--v-info-bg)!important;color:var(--v-info-ink)!important}
+:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.p3-lg,.p5-leg,.p4-lg){font-size:13px!important;justify-content:center;color:var(--v-ink)!important}
+:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.cx-note,.cx-src,.src){font-size:13px!important;color:var(--v-mute)!important}
+:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.cx-kpi,.p4-kpi){border-top:3px solid var(--v-blue)!important}
+:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.cx-kpi,.p4-kpi):has(.vd.good){border-top-color:var(--v-ok)!important}
+:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.cx-kpi,.p4-kpi):has(.vd.bad){border-top-color:var(--v-bad)!important}
+:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.cx-kpi,.p4-kpi) h3{font-size:13px!important;letter-spacing:.03em!important;text-transform:uppercase!important;color:var(--v-mute)!important;font-weight:700!important}
+:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.cx-kpi,.p4-kpi) b{font-size:24px!important;color:var(--v-navy)!important}
+:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .vd.good{color:var(--v-good)!important}
+:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .vd.bad{color:var(--v-bad)!important}
+:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(table.grid,table.cx-tbl){width:auto!important;margin-inline:auto!important;font-size:14px!important}
+:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(table.grid,table.cx-tbl) :is(th,td){height:40px!important;padding:6px 12px!important;border:1px solid var(--v-line)!important}
+:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(table.grid,table.cx-tbl) th{background:var(--v-navy)!important;color:var(--surface)!important;font-size:13px!important}
+:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) details>summary{font-size:15px!important;color:var(--v-navy)!important}
+:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .brief-ref{background:var(--v-info-bg)!important;color:var(--v-info-ink)!important;font-size:13px!important}
+:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .brief-ref b{background:var(--v-navy)!important;color:var(--surface)!important}
+/* Part 3-5 chart palette: navy / blue / grey / teal instead of the bright set */
+.p3{--q1:var(--v-blue)!important;--q2:var(--v-grey)!important;--q3:var(--v-amber)!important;--q4:var(--v-teal)!important;--q-grid:var(--v-grid)!important;--q-axis:var(--v-axis)!important}
+:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.p3-plot,.p5-sc,.p4-fig) text{font-size:12px}
+:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.p3-plot,.p5-sc,.p4-fig) :is(text.cat,text.val,text.ax,.tk,.vl){font-size:13px!important}
+
+@media (max-width:640px){
+  #view-p4 .p4-kpi h3{white-space:normal!important}
+  #view-p4 :is(.p4-kpis,.p4-qs){grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #view-p4 .p4-qs{grid-template-columns:minmax(0,1fr)!important}
+  main .view{min-width:0;overflow-x:clip}
+  .v3-card,.v3-head{padding:14px!important}
+  .v3-kpis{grid-template-columns:repeat(2,1fr)}
+  table.v3-t{font-size:13px}
 }
 </style>
 </body>
