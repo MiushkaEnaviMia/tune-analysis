@@ -3215,7 +3215,7 @@ main{--sp-a:#1e3a8a;--sp-b:#d97706;--sp-c:#0d9488;--sp-d:#60a5fa;--sp-e:#94a3b8}
   /* 2.4 ARPU by auto-renew: revenue of auto-renew purchases ÷ paying subscribers on auto-renew (same for manual), from 02-15 like the Total chart */
   const s24 = M.indexOf("2015-02"), L24 = L.slice(s24), aA = D.arpu["Auto-renew"].slice(s24), aM = D.arpu.Manual.slice(s24);
   addSplit("p24-ch2", { ...v3, name: "Auto-renew vs Manual",
-    concl: "<b>Both payment types now pay about the same:</b> ARPU was $134 with auto-renew and $131 for people who pay by hand in 03-17. In 2015 auto-renew paid about $20 more a month ($138 vs $119 in 09-15)",
+    concl: "<b>Both groups pay about the same:</b> $134 a month on auto-renew, $131 for people who pay by hand (03-17)",
     legend: vzLg([["--sp-a", "Auto-renew", 1], ["--sp-b", "Manual (pays by hand)", 1]]),
     foot: "ARPU = revenue for the month from the group's purchases ÷ the group's paying subscribers · axis starts at $100",
     draw: (el) => chart(el, {
@@ -3228,7 +3228,7 @@ main{--sp-a:#1e3a8a;--sp-b:#d97706;--sp-c:#0d9488;--sp-d:#60a5fa;--sp-e:#94a3b8}
   /* 2.4 free-trial starts by acquisition_channel */
   const FC = ["Channel 9", "Channel 3", "Channel 7", "Channel 4", "Other"], FCC = ["--sp-a", "--sp-d", "--sp-c", "--sp-b", "--sp-e"], FV = FC.map((c) => D.free[c]);
   addSplit("p24-ch4", { ...v3, name: "By channel",
-    concl: "<b>The two trial waves came from different channels:</b> Channels 3 and 9 brought 36,040 of the 42,743 free starts in 06-15, while Channel 4 brought 28,194 of the 58,821 in 10-16 – 11-16",
+    concl: "<b>Each trial wave came from a different channel:</b> Channel 4 brought 28,194 of the 58,821 free starts in 10-16 – 11-16; the 06-15 wave came mostly from Channels 3 and 9",
     legend: vzLg(FC.map((c, j) => [FCC[j], c === "Other" ? "Other (mostly Unknown)" : c])),
     foot: "Free-trial starts a month · acquisition_channel from users.csv (codes only, no names)",
     draw: (el) => chart(el, {
@@ -3247,19 +3247,19 @@ main{--sp-a:#1e3a8a;--sp-b:#d97706;--sp-c:#0d9488;--sp-d:#60a5fa;--sp-e:#94a3b8}
       const e = document.getElementById("p3-ch-" + id + "-split"); if (e) e.id = "p3-ch-" + id + "S";  // hbar looks up p3-ch-<key>
     };
     p3("age", { spec: { max: 30, step: 5, cats: ["4-17", "18-24", "25-34", "35-44", "45-92", "Unknown"], series: ser([2.81, 2.61, 2.51, 2.63, 2.3, 2.11], [17.71, 17.01, 21.16, 27.49, 23.31, 21.73]) },
-      concl: "<b>Inside each payment type, young users do not churn more:</b> with auto-renew every age band churns 2.1–2.8%; paying by hand, under-25s churn 17–18% and 35-44 the most at 27.5%. Under-25s look worse only because most of them pay by hand (67% of 4-17)",
+      concl: "<b>Age does not change churn once you know how people pay:</b> on auto-renew every age group churns 2–3%, paying by hand 17–28%",
       foot: "Churn per renewal, 01-16 – 02-17 · the two bars of a band average to its Total churn, weighted by its auto-renew share" });
     p3("chan", { spec: { max: 25, step: 5, cats: ["Channel 7", "Channel 9", "Channel 3", "Channel 4"], series: ser([1.64, 2.73, 3.44, 3.59], [21.06, 20.04, 19.08, 21.53]) },
-      concl: "<b>Inside each payment type the channels are close:</b> with auto-renew churn runs from 1.6% (Channel 7) to 3.6% (Channel 4); paying by hand every channel churns 19–22%. Channel 4 looks worst because 62% of its renewals are paid by hand",
+      concl: "<b>Channel does not change churn much once you know how people pay:</b> on auto-renew every channel churns 2–4%, paying by hand 19–22%",
       foot: "Not in users.csv left out here: only 0.2% of its renewals are paid by hand (about 700)" });
     p3("ten", { spec: { max: 40, step: 5, cats: ["0-1 months", "2-3 months", "4-6 months", "7-12 months", "13-24 months", "25+ months"], series: ser([8.66, 2.76, 1.67, 2.09, 2.0, 1.36], [35.39, 20.25, 19.66, 17.45, 18.12, 14.85]) },
-      concl: "<b>The first renewal is the riskiest for both payment types:</b> 8.7% with auto-renew and 35.4% paying by hand leave at their first renewal, against 1.4% and 14.9% after 25+ months",
+      concl: "<b>The first renewal is the riskiest for everyone:</b> 35% of people who pay by hand leave at it (15% after two years), 9% on auto-renew (1% after two years)",
       foot: "Tenure = months since the user's first paid subscription" });
   }
 
   /* Part 4: paying subscribers, auto-renew vs manual (mart_p2_splits paying_by_renew) */
   addSplit("p4-ch-subs", { pcls: "so", fcls: "so", plotCls: "vz", name: "Auto-renew vs Manual",
-    concl: "<b>The slowdown comes from people who pay by hand:</b> they have been flat for a year (74,869 in 03-16, 74,413 in 03-17), while auto-renew grew 27% (179,449 → 228,537)",
+    concl: "<b>Only auto-renew is still growing:</b> 228,537 subscribers in 03-17, up 27% in a year, while people who pay by hand stayed at about 74,000",
     legend: vzLg([["--sp-a", "Auto-renew"], ["--sp-b", "Manual (pays by hand)"]]), foot: "",
     draw: (el) => chart(el, {
       labels: L, xShow: qtr, H: 270, stacked: true, aria: "Paying subscribers per month split into auto-renew and manual",
