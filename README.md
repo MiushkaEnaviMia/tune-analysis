@@ -60,7 +60,7 @@ Optional:
 |---|---|---|---|
 | **Part 1 · Data engineering** | | | |
 | 1a | Data quality: 21 issues, ranked by impact | [1a](https://miushkaenavimia.github.io/tune-analysis/#dq) | `reports/01_data_quality.md` (also `.xlsx`, `.html`) |
-| 1b | Clean layer: table map, cleaning rules, SQL on every table | [1b.1](https://miushkaenavimia.github.io/tune-analysis/#lineage) · [1b.2](https://miushkaenavimia.github.io/tune-analysis/#explorer) | `reports/02_data_model.md` |
+| 1b | Clean layer: table map, cleaning rules (duplicates, overlapping transactions and early renewals, cancellations, implausible values), SQL on every table | [1b.1](https://miushkaenavimia.github.io/tune-analysis/#lineage) · [1b.2](https://miushkaenavimia.github.io/tune-analysis/#explorer) | `reports/02_data_model.md` |
 | 1c | Billing's churn labels checked against our rule | [1c](https://miushkaenavimia.github.io/tune-analysis/#churn) | `reports/03_churn_validation.md` |
 | **Part 2 · Core metrics** | | | |
 | 2 | Active, new, renewing, reactivated, churn, ARPU, discounts | [Part 2](https://miushkaenavimia.github.io/tune-analysis/#p2-active) | `reports/04_metrics.md` |

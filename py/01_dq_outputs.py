@@ -1427,12 +1427,12 @@ Every number is computed from DuckDB at build time, and every detection query is
 <section id="legend"><h2>How to read this report</h2>
 {legend_cards}
 </section>
-<section><h2>Ranked issues</h2>
+<section><div class="bref"><b>1a · Rank</b><span>Rank the issues by how much they affect the answers leadership is asking for</span></div><h2>Ranked issues</h2>
 <p class="tnote"><b>What the rank is based on:</b> severity, i.e. how much the answers to the four leadership questions (Q1-Q4) would change if the issue were ignored, as the brief asks. Within the same severity, Data Bugs come first, because they cannot be fully fixed.
 <span class="hk"><i class="hk-b"></i>Asked in the brief</span><span class="hk"><i class="hk-a"></i>Added by us</span></p>
 {chip_row()}
 {ranked_table()}</section>
-<section><h2>Issue detail</h2><p class="lede">Each issue: what is broken, why it matters, and the decision. The query and the two options are folded under each one.</p>
+<section><div class="bref"><b>1a · Each issue</b><span>What it is and the query, how big it is (rows, users, %), why it matters, what we decided</span></div><h2>Issue detail</h2><p class="lede">Each issue: what is broken, why it matters, and the decision. The query and the two options are folded under each one.</p>
 <div class="cards">{"".join(card(i) for i in ISSUES)}</div></section>
 <section><h2>Checked and not an issue</h2><div class="scroll"><table class="notissues"><thead><tr><th>Check</th><th>What</th><th>Finding</th></tr></thead><tbody>{not_rows}</tbody></table></div></section>
 <section><h2>Second-opinion review (Gemini)</h2><p class="lede">An independent AI review of the same files; every number it gave was re-run in DuckDB before being accepted.</p>
@@ -1471,7 +1471,7 @@ page = f"""<title>Tune Data-Quality Report</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&family=IBM+Plex+Sans+Hebrew:wght@400;600;700&display=swap">
-<style>{CSS}</style>
+<style>{CSS}.bref{{width:fit-content;justify-self:start;align-self:flex-start;display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#1f3864;background:#ddebf7;border:1px solid #a9c8e6;border-radius:999px;padding:4px 14px 4px 4px;margin:0 0 10px}}.bref b{{background:#2e75b6;color:#fff;border-radius:999px;padding:1px 10px;font-weight:700;white-space:nowrap}}</style>
 <div class="wrap">
 {body_html}
 </div>

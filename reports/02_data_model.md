@@ -175,6 +175,19 @@ The key fact about this billing system: **`expires_at` is the membership expiry 
 
 ## Cleaning rules
 
+### The brief's four groups
+
+The brief asks for rules on duplicates, overlapping or conflicting transactions, cancellations, and implausible values. Each group in short (rule numbers refer to the full table below):
+
+| Group | Rule | Result | Rules |
+|:---:|---|---|:---:|
+| Duplicates | Exact copies of a whole row inside one export are dropped (lowest src_row kept). The same event in both exports keeps the export_2 row; the export_1 expiry is saved as `expires_at_asof_feb`. Different events on the same user and day, and stacked purchases, are NOT duplicates: user + day is not a key | 832 + 747 rows removed; 5,727,342 → 5,725,763 events | 2, 3, 4, 5 |
+| Overlapping or conflicting | Early renewals: a renewal bought before the old expiry adds its days on top of it, so periods overlap. Each period gets `covered_start` / `covered_end`, which never overlap, and stays in the same episode (renewing early = retained). Several purchases in one month: `fct_user_month` has one row per user and month, built from covered days. Same-day events follow a fixed order (`event_seq`) | 1,216,557 periods with `is_early_renewal = 1`, 0 overlaps; 104,977 user-months with 2+ purchases, 0 duplicate rows | 4, 6, 7, and "How periods, coverage and episodes are built" |
+| Cancellations | A cancel ends its period at the cancel row's expiry (it can move the end earlier), never before the start; `is_cancelled = 1`. Its amount is not revenue. A cancel on the first purchase day applies to that purchase; a cancel with no earlier purchase changes nothing | 213,766 periods cancelled; 5,866 first-day cancels; 7,415 orphan cancels | 7, 11, 12, 16 |
+| Implausible values | Age outside 4-92 → NULL; missing gender → 'unknown'; missing 2015 plan days → price lookup; expiry 1970 or before the purchase → purchase date + plan days; expiry > 2 years past the data end → flagged; paid above list → discount floored at 0 | 1,136,998 ages; 214,188 plan days; 1,691 expiries; 1,738 far-future; 13 above list | 8, 10, 13, 14, 15, 17, 18, 19 |
+
+### All rules
+
 | # | Rule | Issue | Rows affected | Where |
 |:---:|:---:|:---:|:---:|:---:|
 | 1 | Union both exports in a separate step (`base_transactions`); they are split on expiry, not on date. Add src_file / src_row for lineage; the raw tables stay as delivered | T1-T3 | 89,728 old purchases live only in export_2 | 00_union_exports |
