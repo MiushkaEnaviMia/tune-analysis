@@ -346,7 +346,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
   <section class="view ts" id="view-task">
     <div style="display:grid;gap:6px">
       <h1>Task &amp; status</h1>
-      <p class="lede">What the take-home asks for, step by step, and how far each step is. <span id="ts-updated"></span></p>
+      <p class="lede">What the take-home asks for, step by step, and how far each step is <span id="ts-updated"></span></p>
     </div>
     <div class="card brief">
       <div class="label">The task in short</div>
@@ -467,11 +467,11 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
 <tr><td><span class="ctag duplicates">Duplicates</span></td><td class="l"><b>Exact copies</b> of a whole row inside one export: dropped, the lowest <code class='mono'>src_row</code> is kept (T7)<br><b>Same event in both exports</b>: the export_2 row is kept, the export_1 expiry is saved as <code class='mono'>expires_at_asof_feb</code> (T4)<br>Not treated as duplicates: different events on the same user and day, and stacked purchases (T24), because user + day is not a key</td><td class="l">832 + 747 rows removed<br>5,727,342 → 5,725,763 events</td><td class="mono">02_stg_transactions</td></tr>
 <tr><td><span class="ctag overlapping">Overlapping</span></td><td class="l"><b>Early renewals</b>: a renewal bought before the old expiry adds its days on top of it, so the periods overlap. Each period gets <code class='mono'>covered_start</code> / <code class='mono'>covered_end</code>, which never overlap, and it stays in the same episode (renewing early = retained)<br><b>Several purchases in one month</b>: <code class='mono'>fct_user_month</code> has one row per user and month, built from the covered days, so a user is counted once<br><b>Same-day events</b>: a fixed order, cancel → purchase → expiry → <code class='mono'>src_row</code> (<code class='mono'>event_seq</code>)</td><td class="l">1,216,557 periods with <code class='mono'>is_early_renewal</code> = 1; 0 overlaps<br>104,977 user-months with 2+ purchases; 0 duplicate rows<br>151,932 events on a busy day</td><td class="mono">02_stg_transactions, 03_fct_subscription, 05_fct_user_month</td></tr>
 <tr><td><span class="ctag cancellations">Cancellations</span></td><td class="l">A cancel ends its period at the cancel row's expiry (it can move the end earlier), never before the start; <code class='mono'>is_cancelled</code> = 1<br>The cancel row's amount is not revenue<br>A cancel on the first purchase day applies to that purchase; a cancel with no earlier purchase changes nothing</td><td class="l">213,766 periods cancelled<br>5,866 first-day cancels<br>7,415 orphan cancels</td><td class="mono">02_stg_transactions, 03_fct_subscription</td></tr>
-<tr><td><span class="ctag implausible">Implausible</span></td><td class="l">Age outside 4-92 → NULL; missing gender → 'unknown'<br>Missing plan days and list price (Mar-Oct 2015) → plan days from the price lookup<br>Expiry 1970-01-01 or before the purchase → purchase date + plan days<br>Expiry more than 2 years after the data end → kept and flagged<br>Paid above list price → discount floored at 0</td><td class="l">1,136,998 ages; 1,106,850 genders<br>214,188 rows<br>1,691 rows<br>1,738 rows<br>13 rows</td><td class="mono">02_stg_users, 02_stg_transactions</td></tr>
+<tr><td><span class="ctag implausible">Implausible</span></td><td class="l">Age outside 4-92 → NULL; missing gender → 'unknown'<br>Missing plan days and list price (03-15 – 10-15) → plan days from the price lookup<br>Expiry 1970-01-01 or before the purchase → purchase date + plan days<br>Expiry more than 2 years after the data end → kept and flagged<br>Paid above list price → discount floored at 0</td><td class="l">1,136,998 ages; 1,106,850 genders<br>214,188 rows<br>1,691 rows<br>1,738 rows<br>13 rows</td><td class="mono">02_stg_users, 02_stg_transactions</td></tr>
     </tbody></table></div></div>
     <details class="card lin-sec fold"><summary><h2>+ All 21 rules, one per 1a issue</h2><span>Same order as the 1a ranked table; counts are the 1a counts on the raw files</span></summary><div class="scroll"><table class="grid rules"><thead><tr><th>1a #</th><th>Check</th><th>Rule</th><th>Rows affected</th><th>Type</th></tr></thead><tbody>
 <tr><td>1</td><td class="mono">L6</td><td class="l">Billing labels kept as delivered; churn is rebuilt with the brief's rule and compared in 1c</td><td class="l">26,126 users</td><td><span class="ctag overlapping">Overlapping</span></td></tr>
-<tr><td>2</td><td class="mono">T9</td><td class="l">Missing plan days and list price (Mar-Oct 2015): plan days from the price lookup, dates as fallback, <code class='mono'>list_price</code> = <code class='mono'>amount_paid</code></td><td class="l">214,188 rows</td><td><span class="ctag implausible">Implausible</span></td></tr>
+<tr><td>2</td><td class="mono">T9</td><td class="l">Missing plan days and list price (03-15 – 10-15): plan days from the price lookup, dates as fallback, <code class='mono'>list_price</code> = <code class='mono'>amount_paid</code></td><td class="l">214,188 rows</td><td><span class="ctag implausible">Implausible</span></td></tr>
 <tr><td>3</td><td class="mono">T2</td><td class="l">Both exports unioned into <code class='mono'>base_transactions</code> with <code class='mono'>src_file</code> / <code class='mono'>src_row</code>; they are split on expiry, not on date</td><td class="l">89,728 old purchases only in export_2</td><td><span class="ctag overlapping">Overlapping</span></td></tr>
 <tr><td>4</td><td class="mono">T23</td><td class="l"><code class='mono'>dim_user</code> covers every user ID seen anywhere; users missing from users.csv get <code class='mono'>is_in_users</code> = 0 and 'Unknown' attributes</td><td class="l">109,330 users</td><td><span class="ctag implausible">Implausible</span></td></tr>
 <tr><td>5</td><td class="mono">U11</td><td class="l">Age outside 4-92 set to NULL; <code class='mono'>age_band</code> has 'Unknown'; no imputation</td><td class="l">1,136,998</td><td><span class="ctag implausible">Implausible</span></td></tr>
@@ -504,7 +504,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     <tr><td class="l">Reactivated in fct_user_month = later episodes in fct_subscription</td><td>147,477 = 748,144 − 600,667 ✓</td></tr>
     <tr><td class="l">Two full runs give identical table fingerprints</td><td>✓</td></tr>
     </tbody></table></div></details>
-    <details class="card lin-sec fold"><summary><h2>+ Known limits</h2><span>What the rules cannot settle</span></summary><ul><li>The same-day order (cancel before purchase) is a rule, not a fact: the files have no timestamp or event ID. It is documented, deterministic and has one data-driven exception (a cancel on the first purchase day, issue 11)</li><li>T16/T17 derived expiries use purchase date + plan days. For an early renewal the true expiry would be later; this affects 1,691 rows</li><li>March-2017 churn is censored by construction (the 30-day window needs April data). Billing's labels use April data we don't have; Part 1c deals with that</li><li>Cancel-row amounts (160,720 rows, 23.2M) are read as the cancelled plan's price, not a payment: interpreted, not documented. If billing confirms they are refunds, revenue needs a negative adjustment</li><li>Left-censoring: data starts 2015-01-01, so the 133,585 users first seen in Jan 2015 may have subscribed earlier. Their "new" is flagged (<code class="mono">flag_first_seen_jan2015</code>); Jan-2015 new counts must not be read as acquisition</li></ul>
+    <details class="card lin-sec fold"><summary><h2>+ Known limits</h2><span>What the rules cannot settle</span></summary><ul><li>The same-day order (cancel before purchase) is a rule, not a fact: the files have no timestamp or event ID. It is documented, deterministic and has one data-driven exception (a cancel on the first purchase day, issue 11)</li><li>T16/T17 derived expiries use purchase date + plan days. For an early renewal the true expiry would be later; this affects 1,691 rows</li><li>March-2017 churn is censored by construction (the 30-day window needs April data). Billing's labels use April data we don't have; Part 1c deals with that</li><li>Cancel-row amounts (160,720 rows, 23.2M) are read as the cancelled plan's price, not a payment: interpreted, not documented. If billing confirms they are refunds, revenue needs a negative adjustment</li><li>Left-censoring: data starts 01-01-15, so the 133,585 users first seen in 01-15 may have subscribed earlier. Their "new" is flagged (<code class="mono">flag_first_seen_jan2015</code>); New counts in 01-15 must not be read as acquisition</li></ul>
     <p class="note">Full write-up, including the T9 change from 1a and a critique of an alternative star schema: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/02_data_model.md" target="_blank" rel="noopener">reports/02_data_model.md ↗</a></p></details>
     </div>
   </section>
@@ -520,7 +520,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     </header>
 
     <div class="qa">
-    <p class="qa-q"><b>Q</b> Does our churn rule agree with billing's <span class="mono">churn_labels</span>, and where and why do they disagree?</p>
+    <p class="qa-q"><b>Q</b> Does our churn rule agree with billing's <span class="mono">churn_labels</span>, where and why do they disagree, and what can't this data tell us?</p>
     <div class="cx-bottom qa-a">
       <p><b class="qa-l">Answer:</b> <b>Mostly yes on clean cases, but 13.6% of billing's labels are wrong</b></p><p><span class="mono">churn_labels.csv</span> matches 96.5% on clean 03-17 cases, yet 32,953 labels (13.6%) are systematic errors, most of all 97.7% of 90+ day upgrades flagged as churned</p><p><b>Decision:</b> Do <b>not</b> use <span class="mono">churn_labels.csv</span> for Parts 2 &amp; 3; we use our own validated SQL churn rule instead (<span class="mono">fct_user_month</span>)</p>
     </div>
@@ -552,7 +552,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
         <p class="cx-lead"><b>Over half of billing's errors (53%) come from one bug:</b> it ignored <span class="mono">export_2</span>, so February renewals were missed</p>
         <div class="cx-leg"><span><i style="background:var(--c-blue)"></i>Wrong users in billing's March list</span><span><i style="background:var(--c-orange)"></i>Wrong churn flag</span><span><i style="background:var(--c-grey)"></i>Other (small groups)</span></div>
         <svg class="cx-colsvg" viewBox="0 0 560 338" role="img" aria-label="Billing errors by reason, percent of 39,018"><line x1="46" x2="550" y1="292.0" y2="292.0" class="ax"/><text x="38" y="296.0" text-anchor="end">0%</text><line x1="46" x2="550" y1="226.5" y2="226.5" class="gr"/><text x="38" y="230.5" text-anchor="end">25%</text><line x1="46" x2="550" y1="161.0" y2="161.0" class="gr"/><text x="38" y="165.0" text-anchor="end">50%</text><line x1="46" x2="550" y1="95.5" y2="95.5" class="gr"/><text x="38" y="99.5" text-anchor="end">75%</text><line x1="46" x2="550" y1="30.0" y2="30.0" class="gr"/><text x="38" y="34.0" text-anchor="end">100%</text><rect x="61.0" y="152.8" width="54" height="139.2" rx="3" fill="var(--c-blue)"><title>Ignored export_2: 20,733 users (53.1%)</title></rect><text x="88.0" y="130.8" text-anchor="middle" class="n">20,733</text><text x="88.0" y="145.8" text-anchor="middle" class="p">53.1%</text><text x="88.0" y="312" text-anchor="middle" class="lb">Ignored</text><text x="88.0" y="329" text-anchor="middle" class="lb">export_2</text><rect x="145.0" y="251.3" width="54" height="40.7" rx="3" fill="var(--c-blue)"><title>Dropped March 1: 6,065 users (15.5%)</title></rect><text x="172.0" y="229.3" text-anchor="middle" class="n">6,065</text><text x="172.0" y="244.3" text-anchor="middle" class="p">15.5%</text><text x="172.0" y="312" text-anchor="middle" class="lb">Dropped</text><text x="172.0" y="329" text-anchor="middle" class="lb">March 1</text><rect x="229.0" y="268.9" width="54" height="23.1" rx="3" fill="var(--c-orange)"><title>90+ day plans: 3,436 users (8.8%)</title></rect><text x="256.0" y="246.9" text-anchor="middle" class="n">3,436</text><text x="256.0" y="261.9" text-anchor="middle" class="p">8.8%</text><text x="256.0" y="312" text-anchor="middle" class="lb">90+ day</text><text x="256.0" y="329" text-anchor="middle" class="lb">plans</text><rect x="313.0" y="270.2" width="54" height="21.8" rx="3" fill="var(--c-blue)"><title>Expired before March: 3,251 users (8.3%)</title></rect><text x="340.0" y="248.2" text-anchor="middle" class="n">3,251</text><text x="340.0" y="263.2" text-anchor="middle" class="p">8.3%</text><text x="340.0" y="312" text-anchor="middle" class="lb">Expired</text><text x="340.0" y="329" text-anchor="middle" class="lb">before March</text><rect x="397.0" y="271.3" width="54" height="20.7" rx="3" fill="var(--c-grey)"><title>Other errors: 3,082 users (7.9%)</title></rect><text x="424.0" y="249.3" text-anchor="middle" class="n">3,082</text><text x="424.0" y="264.3" text-anchor="middle" class="p">7.9%</text><text x="424.0" y="312" text-anchor="middle" class="lb">Other</text><text x="424.0" y="329" text-anchor="middle" class="lb">errors</text><rect x="481.0" y="275.5" width="54" height="16.5" rx="3" fill="var(--c-orange)"><title>Early renewals: 2,451 users (6.3%)</title></rect><text x="508.0" y="253.5" text-anchor="middle" class="n">2,451</text><text x="508.0" y="268.5" text-anchor="middle" class="p">6.3%</text><text x="508.0" y="312" text-anchor="middle" class="lb">Early</text><text x="508.0" y="329" text-anchor="middle" class="lb">renewals</text></svg>
-        <p class="cx-note">% of 39,018 users where billing disagrees with us = 32,953 wrong rows in <span class="mono">churn_labels.csv</span> + 6,065 March-1 expiries billing left out. Other = 1,352 + 1,017 + 639 + 72 + 2 (see Full breakdown)<br>Not counted: 10,740 users whose 30-day window ends in April. The files stop on Mar 31, so this is a data limit, not a billing error</p>
+        <p class="cx-note">% of 39,018 users where billing disagrees with us = 32,953 wrong rows in <span class="mono">churn_labels.csv</span> + 6,065 March-1 expiries billing left out. Other = 1,352 + 1,017 + 639 + 72 + 2 (see Full breakdown)<br>Not counted: 10,740 users whose 30-day window ends in April. The files stop on 31-03-17, so this is a data limit, not a billing error</p>
       </div>
     </div>
     </div>
@@ -561,7 +561,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     <div class="card cx-panel">
       <h2 class="cx-h">What this data cannot tell us</h2>
       <ul class="cx-lim">
-          <li>What happened in April to the 10,740 (4.4%) users whose 30-day window crossed 2017-03-31</li>
+          <li>What happened in April to the 10,740 (4.4%) users whose 30-day window crossed 31-03-17</li>
           <li>Whether April refunds reversed any March renewals</li>
           <li>Billing's exact SQL/code logic (only inferred from label patterns)</li>
           <li>Whether <span class="mono">expires_at</span> is inclusive (last day of access) or exclusive (first day without access), affecting March-1 expiries</li>
@@ -776,9 +776,9 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <p>Quarterly mix and monthly trends, 02-15 – 03-17</p>
     </div>
     <div class="qa">
-      <p class="qa-q">Where do monthly subscribers come from (New, Renewing, Reactivated), and how has the mix shifted over time?</p>
+      <p class="qa-q">Each month, how many paying subscribers are New, Renewing or Reactivated, and how has the mix shifted over time?</p>
       <div class="qa-a">
-      <p><b class="qa-l">Answer:</b> <b>Almost all growth comes from Renewing (96.1% of paying in 03-17), while New (2.7%) and Reactivated (1.2%) stay small and New is shrinking; the mix keeps shifting toward Renewing</b></p><p><b>Renewing</b> 291,149 in 03-17, count <b class="p22-up">+22%</b> vs 03-16 · <b>New</b> 8,310, fell in both count (<b class="p22-dn">−29%</b>) and share (4.6% → 2.7%) · <b>Reactivated</b> 3,491, 1–3% share except the two billing-gap spikes (06-15, 07-16)</p>
+      <p><b class="qa-l">Answer:</b> <b>96.1% of paying subscribers in 03-17 are Renewing, 2.7% New and 1.2% Reactivated; New is shrinking, so the mix keeps shifting toward Renewing</b></p><p><b>Renewing</b> 291,149 in 03-17, count <b class="p22-up">+22%</b> vs 03-16 · <b>New</b> 8,310, fell in both count (<b class="p22-dn">−29%</b>) and share (4.6% → 2.7%) · <b>Reactivated</b> 3,491, 1–3% share except the two billing-gap spikes (06-15, 07-16)</p>
     </div>
     </div>
 
@@ -834,7 +834,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
           <tr><td class="l">After that</td><td>Renews every month</td></tr>
           <tr><td class="l">Counted in 01-15 as</td><td class="am">New</td></tr>
         </tbody></table></div>
-      <p>64,730 of the 131,441 registered before 2013. 02-15 and 03-15 still show extra New (customers on 2–12 month plans); from 04-15 the numbers are normal</p>
+      <p>64,730 of the 131,441 registered before 2013. 02-15 and 03-15 still show extra New (in 03-15, 17,998 customers from 2014 first charged on one day); from 04-15 the numbers are close to normal</p>
       <p><b>06-15 Reactivated spike (18,324, 10.2% share):</b> mostly the 17,208 paying users lost in the 04-15 billing gap coming back, not real win-backs</p>
       <p><b>07-16 Reactivated spike (25,205, 9.3% share):</b> payment method 39 users back after its outage, 18,813 (03-16) → 1,844 (06-16) → 18,906 (07-16) · <button class="linkbtn" data-go="p2-trust">2.5 What we don't trust →</button></p>
     </div></details>
@@ -845,7 +845,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
         <thead><tr><th>Month</th><th>New · count · share</th><th>Reactivated · count · share</th><th>Renewing · share</th><th>What happened</th></tr></thead>
         <tbody>
           <tr><td class="m">01-15</td><td class="am">131,441 · 100%</td><td>0 · 0%</td><td>0%</td><td class="l">Files start 01-01-15: every earlier customer counts as New</td></tr>
-          <tr><td class="m">03-15</td><td class="am">27,285 · 16.4%</td><td>585 · 0.4%</td><td>83.3%</td><td class="l">Longer-plan customers make their first 2015 purchase: also New</td></tr>
+          <tr><td class="m">03-15</td><td class="am">27,285 · 16.4%</td><td>585 · 0.4%</td><td>83.3%</td><td class="l">17,998 customers from 2014 first charged on the last day of 03-15: also New</td></tr>
           <tr><td class="m">06-15</td><td>8,050 · 4.5%</td><td class="in">18,324 · 10.2%</td><td>85.3%</td><td class="l">17,208 users cut off in the 04-15 billing gap come back</td></tr>
           <tr><td class="m">03-16</td><td>11,657 · 4.6%</td><td>3,684 · 1.4%</td><td>94.0%</td><td class="l bd">Payment method 39 outage starts: its users drop out</td></tr>
           <tr><td class="m">07-16</td><td>11,627 · 4.3%</td><td class="in">25,205 · 9.3%</td><td>86.5%</td><td class="l">Payment method 39 users come back</td></tr>
@@ -872,7 +872,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     <div class="qa">
       <p class="qa-q">How has the monthly churn rate changed over time?</p>
       <div class="qa-a">
-      <p><b class="qa-l">Answer:</b> <b>Customers are staying, and churn is getting a little better</b></p><p>Average churn share a month, Avg 03-16 – 02-17: <b data-r30="3.9%">4.3%</b> (Avg 02-15 – 02-16: <span data-r30="4.5%">5.0%</span>, <b class="chg-good" data-r30="−13%">−14%</b>) · averages leave out the <span data-r30="two billing-gap months (04-15, 03-16)">three billing-gap months (04-15, 01-16, 03-16)</span>, where the charge failed on the company's side and most users paid again</p>
+      <p><b class="qa-l">Answer:</b> <b>Monthly churn is stable and edging down: fewer paying subscribers leave each month than a year before</b></p><p>Average churn share a month, Avg 03-16 – 02-17: <b data-r30="3.9%">4.3%</b> (Avg 02-15 – 02-16: <span data-r30="4.5%">5.0%</span>, <b class="chg-good" data-r30="−13%">−14%</b>) · averages leave out the <span data-r30="two billing-gap months (04-15, 03-16)">three billing-gap months (04-15, 01-16, 03-16)</span>, where the charge failed on the company's side and most users paid again</p>
     </div>
     <p class="p23-def" data-r30="<b>Churn</b> (side check) = the plan ended this month and the user did not pay again within <b>30 days</b>, for everyone · the main rule waits only 3 days for Auto-renew"><b>Churn</b> = the plan ended this month and the user did not pay again within <b>3 days</b> (Auto-renew) or <b>30 days</b> (Pays by hand) · why: 98.5% of Auto-renew users who come back are back by day 3 (only 0.3% more by day 7), Pays by hand users take up to 30 days</p>
     <div class="cr-tg"></div>
@@ -963,9 +963,9 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <p>Revenue, ARPU, ARPPU and discounts by month, in $ (02-15 – 03-17)</p>
     </div>
     <div class="qa">
-      <p class="qa-q">Does revenue grow because more people pay or because each pays more, and did discounts drive it?</p>
+      <p class="qa-q">How have revenue, ARPU and discount depth changed over time, and what drives revenue?</p>
       <div class="qa-a">
-      <p><b class="qa-l">Answer:</b> <b>Revenue grew because more people pay, not because each pays more, and discounts did not drive it</b></p><p>Revenue <b class="chg-good">+24%</b> (Q1-17 vs Q1-16) = active subscribers <b class="chg-good">+15%</b> × share paying <b>+4%</b> (96% → 99%) × ARPPU (revenue per paying subscriber) <b>+4%</b> ($119 → $124), so about 2/3 of the growth is more subscribers</p><p>Revenue per subscriber did not grow: ARPU fell from 2015 to 2016 and then stayed flat, and discounts ended in 11-15, before both quarters</p>
+      <p><b class="qa-l">Answer:</b> <b>Revenue grew mostly because more people pay, not because each pays more, and discounts did not drive it</b></p><p>Revenue <b class="chg-good">+24%</b> (Q1-17 vs Q1-16): about 2/3 from more active subscribers, the rest from a higher share paying (96% → 99%) and ARPPU, revenue per paying subscriber (<b>+4%</b>, $119 → $124)</p><p>ARPU fell from 2015 to 2016 and then stayed about flat · discounts ended in 11-15, before both quarters</p>
     </div>
     </div>
     
@@ -1061,35 +1061,29 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
   <section class="view cx v3" id="view-p2-trust" data-own-brief="1" hidden>
     <div class="card v3-head">
       <span class="v3-tag">Brief 2.5 · What we don't trust, and why</span>
-      <h1>2.5 · What We Don't Trust — Five Periods Flagged</h1>
-      <p>Points in 2.1–2.4 that are not what they look like, and what we did about each (01-15 – 03-17)</p>
+      <h1>2.5 · What We Don't Trust — Seven Periods Flagged</h1>
+      <p>Months in 2.1–2.4 that are not what they look like, and what each one blocks (01-15 – 03-17)</p>
     </div>
     <div class="qa">
       <p class="qa-q">Which months or metrics in 2.1–2.4 can't be read as they are, and why?</p>
       <div class="qa-a">
-      <p><b class="qa-l">Answer:</b> <b>Five periods can't be read as they are; we flag them and leave them out of trends</b></p>
-      <ul class="p25-ans">
-        <li><b>01-15 – 03-15</b> · files start in 2015, so earlier customers look New and early revenue is missing</li>
-        <li><b>04-15 → 06-15</b> · billing gap: churn jumps, then the same users come back as Reactivated</li>
-        <li><b>01-16</b> · payment method 39 charged late, so churn looks high</li>
-        <li><b>03-16 – 07-16</b> · payment method 39 outage: churn jumps, paying dips, users back in 07-16</li>
-        <li><b>03-17</b> · churn needs 04-17 data</li>
-      </ul>
-      <p class="p25-care">Read with care: <b>03-15 – 10-15</b> revenue and ARPU use prices we filled in</p>
+      <p><b class="qa-l">Answer:</b> <b>Seven periods: five can't be read as they are (red), two are read with care (amber)</b></p>
+      <p>Some months have data problems: the files start on 01-01-15, payment providers had billing gaps and an outage, prices are missing in 2015, and the data ends in 03-17. Read as they are, they show false churn spikes, false New and wrong revenue, so we keep them in the charts, mark them, and leave the red ones out of averages and trends</p>
     </div>
     </div>
 
     <div class="card v3-card">
-      <h2>The Five Periods: What Is Wrong and What We Did</h2>
+      <h2>The Seven Periods: Problem, Impact, What We Can't Analyse</h2>
       <div class="v3-tw"><table class="v3-t p25-t">
-        <thead><tr><th>Period</th><th>Tabs</th><th>What is wrong</th><th>What we did</th></tr></thead>
+        <thead><tr><th>Period</th><th>Problem</th><th>Impact</th><th>Can't analyse</th></tr></thead>
         <tbody>
-          <tr><td class="m bd">01-15 – 03-15</td><td class="m"><button class="linkbtn" data-go="p2-flow">2.2</button> <button class="linkbtn" data-go="p2-arpu">2.4</button></td><td class="l">Files start in 2015: earlier customers look New (100% New in 01-15) and payments before 2015 are missing (ARPPU $71 vs ~$130 later)</td><td class="l">Left out of trends</td></tr>
-          <tr><td class="m bd">04-15 → 06-15</td><td class="m"><button class="linkbtn" data-go="p2-churn">2.3</button> <button class="linkbtn" data-go="p2-flow">2.2</button></td><td class="l">17,435 Auto-renew users not charged on the same day (churn 14.3%); 99.5% paid again, mostly in 06-15</td><td class="l">Flagged, not real churn</td></tr>
-          <tr><td class="m bd">01-16</td><td class="m"><button class="linkbtn" data-go="p2-churn">2.3</button></td><td class="l">Payment method 39 charged 15,970 Auto-renew users on the last day of the month, past the 3-day window (churn 13.0%)</td><td class="l">Left out of averages</td></tr>
-          <tr><td class="m bd">03-16 – 07-16</td><td class="m"><button class="linkbtn" data-go="p2-active">2.1</button> <button class="linkbtn" data-go="p2-churn">2.3</button> <button class="linkbtn" data-go="p2-flow">2.2</button></td><td class="l">Payment method 39 outage: 16,468 lost in 03-16 (usual ~670), paying 257,452 → 239,955, 97% back in 07-16</td><td class="l">Flagged · ask billing</td></tr>
-          <tr><td class="m bd">03-17</td><td class="m"><button class="linkbtn" data-go="p2-churn">2.3</button></td><td class="l">Churn for Pays by hand needs 04-17 data: 14,396 outcomes can't be judged</td><td class="l">Not reported</td></tr>
-          <tr><td class="m am">03-15 – 10-15</td><td class="m"><button class="linkbtn" data-go="p2-arpu">2.4</button></td><td class="l">Price missing on 214,207 paid rows, filled from a price list</td><td class="l">Used, lower confidence</td></tr>
+          <tr><td class="m bd" data-h="Period">01-15 – 03-15</td><td class="l" data-h="Problem">Files start 01-01-15, so customers who paid in 2014 look New; ends in 03-15 because 17,998 of them were first charged on its last day</td><td class="l" data-h="Impact">New share 100% in 01-15 and 16.4% (27,285) in 03-15, vs 5.6% in 04-15 · ARPPU $71 in 01-15 vs $128 in 02-15</td><td class="l" data-h="Can't analyse">New trend · churn and revenue in 01-15</td></tr>
+          <tr><td class="m am" data-h="Period">03-15 – 10-15</td><td class="l" data-h="Problem">Price missing on 214,207 paid purchases (17% of paid purchases), filled from a price list</td><td class="l" data-h="Impact">Revenue and ARPPU rest partly on prices we filled in</td><td class="l" data-h="Can't analyse">Exact 2015 revenue and price changes</td></tr>
+          <tr><td class="m bd" data-h="Period">04-15 → 06-15</td><td class="l" data-h="Problem">17,435 Auto-renew users not charged at the end of 04-15; 99.5% paid again, mostly in 06-15</td><td class="l" data-h="Impact">Churn 14.3% in 04-15 (usual ~4%) · Reactivated share 10.2% (18,324) in 06-15</td><td class="l" data-h="Can't analyse">Real churn and real comebacks</td></tr>
+          <tr><td class="m am" data-h="Period">04-15 – 02-16</td><td class="l" data-h="Problem">Customers on 2014 annual plans renew for the first time and look New</td><td class="l" data-h="Impact">About 1,000 extra New a month (annual-plan New ~1,300 a month vs ~370 from 04-16)</td><td class="l" data-h="Can't analyse">Exact New count · compare New from 03-16 on</td></tr>
+          <tr><td class="m bd" data-h="Period">01-16</td><td class="l" data-h="Problem">Payment method 39 charged 15,970 Auto-renew users on the last day of the month, after the 3-day window</td><td class="l" data-h="Impact">Churn 13.0% (5.0% with 30 days for all)</td><td class="l" data-h="Can't analyse">Auto-renew churn in 01-16</td></tr>
+          <tr><td class="m bd" data-h="Period">03-16 – 07-16</td><td class="l" data-h="Problem">Payment method 39 outage: 16,468 Auto-renew users not charged (usual ~670); 97% paid again in 07-16</td><td class="l" data-h="Impact">Churn 14.0% in 03-16 · paying count 254,318 → 239,955 in 04-16 · Reactivated share 9.3% (25,205) in 07-16</td><td class="l" data-h="Can't analyse">Real churn and paying growth</td></tr>
+          <tr><td class="m bd" data-h="Period">03-17</td><td class="l" data-h="Problem">Data ends in 03-17: Pays by hand needs 30 days after the plan ends to judge churn</td><td class="l" data-h="Impact">Churn 1.7%, vs 4.3% average a month (03-16 – 02-17)</td><td class="l" data-h="Can't analyse">Churn in 03-17</td></tr>
         </tbody></table></div>
       <p class="v3-foot">Red: not trusted · amber: read with care</p>
     </div>
@@ -1503,7 +1497,7 @@ const P23_TYPE = [["2015-02",1.99,2249,15.49,1943,0.09,4],["2015-03",2.33,2673,1
       </div>
       <div class="card p3-card">
         <h2 class="p3-ct">Impact: Subscribers Kept a Year per Move</h2>
-        <p class="p3-cc"><b>We could keep up to <span data-r30="~13,000">~16,000</span> subscribers kept a year:</b> Pays by hand is 13% of renewals but <span data-r30="57%">52%</span> of all churn</p>
+        <p class="p3-cc"><b>We could keep up to <span data-r30="~13,000">~16,000</span> subscribers a year:</b> Pays by hand is 13% of renewals but <span data-r30="57%">52%</span> of all churn</p>
         <div class="scroll"><table class="grid">
           <thead><tr><th>Move</th><th>Who it targets</th><th>Kept a year</th></tr></thead>
           <tbody>
@@ -1890,13 +1884,13 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
     <header class="cx-head">
       <div>
         <h1>5b · AI Process Log</h1>
-        <p class="cx-sub">Which AI tools I used, how I prompted them, and where they were wrong</p>
+        <p class="cx-sub">Tools, key prompts and AI mistakes, in full in <span class="mono">reports/07_ai_log.md</span></p>
       </div>
       
     </header>
 
     <div class="qa">
-    <p class="qa-q">Which AI tools did we use, for what, and where was the AI wrong?</p>
+    <p class="qa-q">Which AI tools did we use, for what and with which prompts, and where was the AI wrong, how was it caught and what changed?</p>
     <div class="cx-bottom qa-a">
       <p><b class="qa-l">Answer:</b> <b>We used Claude, Gemini and NotebookLM; the AI was wrong 9 times, all caught before hand-in</b></p><p><b>Claude</b> main analyst (SQL pipeline, checks, this site) · <b>Gemini</b> critical second opinion · <b>NotebookLM</b> debrief prep · mistakes: 3 Gemini, 6 Claude; 6 caught by me, 3 by re-checking the data</p><p><b>Main rule:</b> one AI can check another, but <b>the data decides</b>; no AI claim went in before a DuckDB query confirmed it</p>
     </div>
@@ -2049,7 +2043,7 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
     <div class="qa">
     <p class="qa-q">How healthy is the base, what drives churn, did trials and prices work, and should we push annual plans?</p>
     <div class="card p4-bl qa-a">
-      <p><b class="qa-l">Answer:</b> <b>The base is healthy but growth is slowing; churn is driven by how people pay; trials and prices are not proven; annual plans need a test before we push them</b></p><p><b>Health:</b> paying subscribers 03-16 → 03-17 <b>+19%</b> (03-15 → 03-16: +52%); monthly churn Avg 03-16 – 02-17 <b data-r30="3.9%">4.3%</b> (Avg 02-15 – 02-16: <span data-r30="4.5%">5.0%</span>, <b class="chg-good" data-r30="−13%">−14%</b>); New's share fell to 2.8%</p><p><b>Churn drivers:</b> Pays by hand 20.1% vs Auto-renew <span data-r30="2.3%">2.8%</span> per renewal; first renewal <span data-r30="16.5% vs ~4%">17.1% vs ~4.5%</span> later</p><p><b>Trials and prices:</b> discounts stopped in 11-15 and promotion moved to free trials, but whether trials paid off is not measured</p><p><b>Annual plans:</b> paid by hand they lose 2.7% a month vs 18.5% on 30-day plans, but committed users pick them (test in 5a)</p>
+      <p><b class="qa-l">Answer:</b> <b>The base is healthy but growth is slowing; churn is driven by how people pay; trials and prices are not proven; annual plans need a test before we push them</b></p><p><b>Health:</b> paying subscribers 03-16 → 03-17 <b>+19%</b> (03-15 → 03-16: +52%); monthly churn Avg 03-16 – 02-17 <b data-r30="3.9%">4.3%</b> (Avg 02-15 – 02-16: <span data-r30="4.5%">5.0%</span>, <b class="chg-good" data-r30="−13%">−14%</b>); New's share fell to 2.8% (Q1-17)</p><p><b>Churn drivers:</b> Pays by hand 20.1% vs Auto-renew <span data-r30="2.3%">2.8%</span> per renewal; first renewal <span data-r30="16.5% vs ~4%">17.1% vs ~4.5%</span> later</p><p><b>Trials and prices:</b> discounts stopped in 11-15 and promotion moved to free trials, but whether trials paid off is not measured</p><p><b>Annual plans:</b> paid by hand they lose 2.7% a month vs 18.5% on 30-day plans, but committed users pick them (test in 5a)</p>
     </div>
     <div class="cr-tg"></div>
     </div>
@@ -2106,7 +2100,7 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
       <div class="p4-lg"><span><i style="background:#2563eb"></i>Paying subscribers (≥ 1 paid day in the month)</span><span><i style="background:#ea580c"></i>Dips after billing gaps (05-15, 04-16)</span></div>
       <div id="p4-ch-subs"></div>
     </div>
-    <p class="src">Sources: <span class="mono">reports/04_metrics.md</span> (table <span class="mono">mart_metrics_month</span>), <span class="mono">reports/05_deep_dive.md</span> (table <span class="mono">mart_churn_factor_summary</span>), <span class="mono">reports/03_churn_validation.md</span>. Paying subscriber = at least one paid day in the month; monthly churn = 3 days Auto-renew, 30 days Pays by hand; churn per renewal (Part 3) = 30 days; never <span class="mono">churn_labels.csv</span></p>
+    <p class="src">Sources: <span class="mono">reports/04_metrics.md</span> (table <span class="mono">mart_metrics_month</span>), <span class="mono">reports/05_deep_dive.md</span> (table <span class="mono">mart_churn_factor_summary</span>), <span class="mono">reports/03_churn_validation.md</span>. Paying subscriber = at least one paid day in the month; monthly churn = 3 days Auto-renew, 30 days Pays by hand; churn per renewal (Part 3) = the same rule; never <span class="mono">churn_labels.csv</span></p>
   </section>
 
   <section class="view p4" id="view-p4-recs" hidden>
@@ -3219,13 +3213,9 @@ table.v3-t td.l,:is(#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps
 #view-p2-flow .vz .vz-val{font-size:13px}
 #view-p2-flow .vz .vz-val.vz-sm{font-size:11px}
 #view-p2-flow table.v3-t td.in{color:var(--v-info-ink);background:var(--v-info-bg);font-weight:700}
-#view-p2-trust .qa-a ul.p25-ans{list-style:none;margin:0;padding:0;display:grid;gap:4px}
-#view-p2-trust .qa-a ul.p25-ans li{padding-left:12px;border-left:3px solid var(--v-bad)}
-#view-p2-trust .qa-a p.p25-care{padding-left:12px;border-left:3px solid var(--v-warn);color:var(--v-mute)!important}
-#view-p2-trust table.p25-t td.l{min-width:0}
-#view-p2-trust table.p25-t td.l:nth-child(3){min-width:300px}
-#view-p2-trust table.p25-t td.l:last-child{white-space:nowrap}
-@media (max-width:640px){#view-p2-trust .p25-t{display:block}#view-p2-trust .p25-t thead{display:none}#view-p2-trust .p25-t :is(tbody,tr){display:block}#view-p2-trust .p25-t tr{display:grid;grid-template-columns:auto 1fr;border-bottom:1px solid var(--v-line);padding:8px 0}#view-p2-trust .p25-t td{display:block;height:auto!important;border:0!important;padding:3px 10px!important;text-align:left!important;min-width:0!important;white-space:normal!important;background:none!important}#view-p2-trust .p25-t td.l{grid-column:1/-1}#view-p2-trust .p25-t td.l:last-child{color:var(--v-mute);font-size:13px}#view-p2-trust .p25-t td.m:nth-child(2){text-align:right!important}}
+#view-p2-trust table.p25-t td.l{min-width:0;max-width:300px}
+#view-p2-trust table.p25-t td.l:last-child{max-width:190px}
+@media (max-width:640px){#view-p2-trust .p25-t{display:block}#view-p2-trust .p25-t thead{display:none}#view-p2-trust .p25-t :is(tbody,tr){display:block}#view-p2-trust .p25-t tr{border-bottom:1px solid var(--v-line);padding:8px 0}#view-p2-trust .p25-t td{display:block;height:auto!important;border:0!important;padding:3px 10px!important;text-align:left!important;min-width:0!important;max-width:none!important;white-space:normal!important;background:none!important}#view-p2-trust .p25-t td.l::before{content:attr(data-h) ": ";font-weight:700;color:var(--v-mute)}}
 #view-p2-flow>.p22-two{max-width:1100px!important;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}
 #view-p2-flow>.p22-two>.v3-card{grid-row:span 6;grid-template-rows:subgrid;row-gap:12px}
 @media (max-width:860px){#view-p2-flow>.p22-two{grid-template-columns:minmax(0,1fr)}}
