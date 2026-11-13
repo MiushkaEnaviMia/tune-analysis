@@ -39,7 +39,7 @@ Churn is our own rule from 1b/1c, not billing's `churn_labels.csv`.
   - *Concern 2, is growth slowing? Confirmed.* Average MoM growth of Paid Active: 5.6% (2015), 2.0% (2016), 0.8% (01-17 – 03-17). Year on year: +52.4% (03-15 → 03-16), +19.1% (03-16 → 03-17).
   - *04-16 – 06-16 dip:* paid users on payment method 39 fell from 18,813 (03-16) to 3,085 (04-16) and 1,844 (06-16), back to 18,906 in 07-16: a billing pause, not loss (see *What we don't trust*).
   - *Why 302,950 and not 306,957:* the higher number counts raw transaction rows (transaction date to expiry, non-cancel rows). We count on the clean data, where a cancellation ends access and overlapping plans count once.
-- **New vs renewing vs reactivated:** renewing users are 94–96% of the base since 2016. New paying users fell from 3.9% of the base (2016) to 2.9% (2017); 2015's 6.9% is overstated by the warm-up (see below). In absolute terms 122,110 new paying users in 2016, about 8,600 a month in 2017.
+- **New vs renewing vs reactivated:** renewing users are 94–96% of the base since 2016. New fell in both share and count: its share of paying subscribers went from 3.9% (2016) to 2.9% (2017), and its count from 122,110 in 2016 (about 10,200 a month) to about 8,600 a month in 2017. 2015's 6.9% share is overstated by the warm-up (see below). Renewing rose in both: higher share and more users every year.
 - **Monthly churn:** typically 3–5%. Feb 2015 – Feb 2016 averages 4.5% (without Apr 2015); Apr 2016 – Feb 2017 averages 3.9%; the last 6 months 3.1–4.6%. The 32- and 45-day windows move the level by 0.1–0.5 points, except December (see below).
 - **ARPU:** 114–141 a month, slowly down from ~133 (2015) to ~120 (2017). Monthly recognised revenue grew from 27.0M (Aug 2015) to 40.4M (Mar 2017). Annual plans are 10.7% of all revenue, so cash and recognised ARPU stay close.
 - **Discounts:** in Jan 2015 9.7% of paid purchases had a discount (~20% off, 1.6% of list price overall). Discounts stopped by Oct 2015 and have been ~0.1% of purchases since. Promotion moved to free trials: 42,743 free starts in Jun 2015 and 58,821 in Oct–Nov 2016.
@@ -49,9 +49,9 @@ Churn is our own rule from 1b/1c, not billing's `churn_labels.csv`.
 | Series / month | Problem | Evidence | What we did |
 |---|---|---|---|
 | Jan 2015 (all series) | Warm-up month: purchases before 2015 are not in the files, so every Jan-2015 user looks "new" and start-of-month subscribers are only 5,152. | `new_pct` = 100%, churn rate 28.7% | Excluded from trends; series start Feb 2015. |
-| "New" Feb–Mar 2015 (7.6%, 16.4%) | Same warm-up: users on plans bought before 2015 look new at their first 2015 purchase, so the 2015 new share is overstated. | Mar 2015: 27,285 "new" paying users, 2.5× any later month | Read the drop in new users from 2016 on, not from 2015. |
-| Churn Apr 2015 (13.9%) | A billing gap, not churn: 17,435 auto-renew users all expire on 2015-04-30, plans imputed (98%), and 99.5% buy again in Jun 2015. | Same users = the Jun 2015 reactivation spike (10.2%) | Flagged; read the underlying level as ~4%. |
-| Churn Mar 2016 (13.8%) | Provider-specific gap: payment method 39 lost 16,468 auto-renew users (normal month: ~670); 97% came back in Jul 2016. | Same users = the Jul 2016 reactivation spike (9.3%) | Flagged; likely involuntary (payment failure). Ask billing. |
+| "New" Feb–Mar 2015 (7.6%, 16.4%) | Same warm-up: users on plans bought before 2015 look new at their first 2015 purchase, so the 2015 new share is overstated. | Mar 2015: 27,285 "new" paying users, 2.5× any later month | Read the drop in New (share and count) from 2016 on, not from 2015. |
+| Churn Apr 2015 (13.9%) | A billing gap, not churn: 17,435 auto-renew users all expire on 2015-04-30, plans imputed (98%), and 99.5% buy again in Jun 2015. | Same users = the Jun 2015 Reactivated spike (10.2%) | Flagged; read the underlying level as ~4%. |
+| Churn Mar 2016 (13.8%) | Provider-specific gap: payment method 39 lost 16,468 auto-renew users (normal month: ~670); 97% came back in Jul 2016. | Same users = the Jul 2016 Reactivated spike (9.3%) | Flagged; likely involuntary (payment failure). Ask billing. |
 | Churn Dec 2015, Dec 2016 | Window-sensitive: many December expiries renew on day 31–32. 30-day churn 5.2% / 4.6% drops to 3.8% / 3.2% with 32 days. | `mart_churn_windows` | Report 30-day (brief's rule), note the 32-day level. |
 | Churn Mar 2017 | Censored: the 30-day window needs April data. | 14,396 censored episodes | Not reported. The 45-day check is also censored for Feb 2017 (1.6%). |
 | Mar–Oct 2015 revenue, ARPU, discount | 214,207 paid rows had plan length and list price filled from a price lookup (1a, T9). | 1a issue #2 | Use, with lower confidence. |
@@ -59,3 +59,11 @@ Churn is our own rule from 1b/1c, not billing's `churn_labels.csv`.
 | 30-day churn vs `fct_user_month` | Counts differ by < 1% (5% in Dec 2015) because here episodes are rebuilt with a running membership end. | Validation query in `08_metrics.sql` | Accepted; both shown in SQL. |
 
 Note: `run_all.py` does not yet run `sql/08_metrics.sql`; run it after `05`.
+
+## 2.3 add-on · churn by subscriber type and the 3 / 30-day window
+
+Built by `sql/10_churn_by_type.sql`: `mart_churn_by_type` (month × type, 30-day rule; the type totals equal `mart_churn_windows` at 30 days in every month), `mart_churn_mixed_window`, `mart_return_curve`.
+
+- Average 04-16 – 02-17: monthly paid by hand 19.6%, 90+ day plans 3.2%, monthly auto-renew 2.2%. Auto-renew is 76% of paying subscribers (02-17), so both monthly groups lose about 4,000–4,500 a month.
+- Why 3 / 30 days (from the Part 1c window study, recomputed on the clean data): 98.5% of auto-renew returners are back by day 3; people paying by hand reach 94–96% only by day 30.
+- 30 days stays the main figure: the 3 / 30 rule adds about 0.3 points a month, but in 06-15, 01-16 (5.0% → 13.0%) and 02-17 it counts a payment provider charging a whole batch late on one day as churn (method 39 on the last day of 01-16, method 41 in mid 03-17, methods 37–40 on the 1st of 07-15).
