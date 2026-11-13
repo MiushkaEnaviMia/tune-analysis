@@ -1764,7 +1764,7 @@ const P23_TYPE = [["2015-02",1.99,2249,15.49,1943,0.09,4],["2015-03",2.33,2673,1
       <p class="qa-q">How do we test a discounted annual plan for 30-day subscribers at renewal?</p>
       <div class="qa-a">
         <p><b class="qa-l">Answer:</b> <b>A 50 / 50 randomised offer at renewal, judged on 12-month net revenue per assigned user</b></p>
-        <p>One month of renewals is enough users · decide at month 3, confirm at month 12 · main risk: auto-renew users already renew 97.9% of the time, so the discount may only give money back</p>
+        <p>Risk: auto-renew users already renew 97.9%, so the discount may only give money back</p>
       </div>
     </div>
 
@@ -1773,10 +1773,10 @@ const P23_TYPE = [["2015-02",1.99,2249,15.49,1943,0.09,4],["2015-03",2.33,2673,1
       <p class="qa-q">What is randomised, and who is eligible?</p>
       <div class="qa-a"><div class="scroll"><table class="cx-tbl p5-st">
         <tbody>
-          <tr><td><b>Unit</b></td><td>The user (<span class="mono">user_id</span>), assigned once for the whole test, so no one sees both offers on later renewals</td></tr>
-          <tr><td><b>Eligible</b></td><td>Paid 30-day subscriber, 7 days before expiry, no future period already bought, not on a free trial</td></tr>
-          <tr><td><b>Split</b></td><td>50 / 50, balanced within auto-renew vs pays by hand and within price ($99 / $149 / other)</td></tr>
-          <tr><td><b>Offer</b></td><td>Annual plan at 10 × the user's own monthly price (about 17% off). The $1,788 list price costs 50% more than 12 months at $99, and 39.4% pay $99</td></tr>
+          <tr><td><b>Unit</b></td><td>The user, assigned once, so no one sees both offers</td></tr>
+          <tr><td><b>Eligible</b></td><td>Paid 30-day subscriber, 7 days before expiry, not on a trial</td></tr>
+          <tr><td><b>Split</b></td><td>50 / 50, balanced by payment type and price</td></tr>
+          <tr><td><b>Offer</b></td><td>Annual plan at 10 × their own monthly price (~17% off)</td></tr>
         </tbody>
       </table></div></div>
     </div>
@@ -1787,10 +1787,10 @@ const P23_TYPE = [["2015-02",1.99,2249,15.49,1943,0.09,4],["2015-03",2.33,2673,1
       <div class="qa-a"><div class="scroll"><table class="cx-tbl p5-st">
         <thead><tr><th>Metric</th><th>Baseline</th><th>Why</th></tr></thead>
         <tbody>
-          <tr class="hi"><td><b>Primary:</b> 12-month net revenue per assigned user</td><td class="num">$1,318</td><td>Counts everyone assigned, takers or not; comparing only takers would flatter the offer</td></tr>
-          <tr><td>Secondary: annual take-up</td><td class="num">0.13%</td><td>Today's switch rate with no offer</td></tr>
-          <tr><td>Guardrail: renewal at the offer, any plan</td><td class="num">96.3%</td><td>The offer must not push people away (pays by hand: 82.0%)</td></tr>
-          <tr><td>Guardrail: 12-month revenue, auto-renew</td><td class="num">$1,361</td><td>No discount for people who would pay full price anyway</td></tr>
+          <tr class="hi"><td><b>Primary:</b> 12-month net revenue per assigned user</td><td class="num">$1,318</td><td>Counts takers and non-takers alike</td></tr>
+          <tr><td>Secondary: annual take-up</td><td class="num">0.13%</td><td>Today, with no offer</td></tr>
+          <tr><td>Guardrail: renewal at the offer, any plan</td><td class="num">96.3%</td><td>Offer must not push people away</td></tr>
+          <tr><td>Guardrail: 12-month revenue, auto-renew</td><td class="num">$1,361</td><td>No discount for those who pay anyway</td></tr>
           <tr><td>Guardrail: annual cancelled within 30 days</td><td class="num">0.3%</td><td>Regret buys</td></tr>
         </tbody>
       </table></div></div>
@@ -1809,7 +1809,7 @@ const P23_TYPE = [["2015-02",1.99,2249,15.49,1943,0.09,4],["2015-03",2.33,2673,1
             <tr><td><b>Pays by hand</b></td><td class="num">$1,097 (SD $762)</td><td class="num">11,800</td><td class="num">2.5%</td></tr>
           </tbody>
         </table></div>
-        <p class="p5-f">Users per group = 2 × (1.96 + 0.84)² × SD² ÷ change² · two-sided, 5% false-alarm rate, 80% power · revenue from subscribers expiring 01-16 – 03-16</p>
+        <p class="p5-f">n = 2 × (1.96 + 0.84)² × SD² ÷ change² · 5% false alarms, 80% power</p>
       </div>
     </div>
 
@@ -1821,11 +1821,10 @@ const P23_TYPE = [["2015-02",1.99,2249,15.49,1943,0.09,4],["2015-03",2.33,2673,1
         <div class="scroll"><table class="cx-tbl p5-st">
           <thead><tr><th>When</th><th>What we read</th></tr></thead>
           <tbody>
-            <tr><td class="num">Month 1</td><td>Enrol: every 30-day subscriber passes renewal once</td></tr>
-            <tr><td class="num">Months 1–2</td><td>Take-up, renewal guardrail, refunds · stop early if renewal drops</td></tr>
-            <tr class="hi"><td class="num">Month 3</td><td>Go / no-go per payer type, on earned revenue: an annual payment counts 1/12 a month, not all on day 1</td></tr>
-            <tr class="hi"><td class="num">Month 12</td><td>Final read on actual 12-month cash, both groups</td></tr>
-            <tr><td class="num">Months 13–14</td><td>Do annual buyers renew? Today 69.0%; a 10% no-offer holdout stays until then</td></tr>
+            <tr><td class="num">Months 1–2</td><td>Enrol; watch guardrails, stop if renewal drops</td></tr>
+            <tr class="hi"><td class="num">Month 3</td><td>Go / no-go on earned revenue: an annual payment counts 1/12 a month</td></tr>
+            <tr class="hi"><td class="num">Month 12</td><td>Confirm on actual 12-month cash</td></tr>
+            <tr><td class="num">Months 13–14</td><td>Do annual buyers renew? Today 69.0%</td></tr>
           </tbody>
         </table></div>
       </div>
@@ -1835,7 +1834,7 @@ const P23_TYPE = [["2015-02",1.99,2249,15.49,1943,0.09,4],["2015-03",2.33,2673,1
     <div class="qa">
       <p class="qa-q">What SQL would analyze it?</p>
       <div class="qa-a">
-        <p>Runs on our clean layer plus the hypothetical <span class="mono">experiment_assignments(user_id, variant, assigned_at)</span>; tested on a fake assignment</p>
+        <p>Joins <span class="mono">experiment_assignments</span> to our clean layer; tested on a fake assignment</p>
         <details class="p5-sql"><summary>Show the SQL</summary>
 <pre>with a as (
   select e.user_id, e.variant, e.assigned_at::date as d0, max(s.is_auto_renew) as is_auto_renew
@@ -1869,31 +1868,29 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
   </section>
 
   <section class="view cx p5" id="view-p5b" hidden>
+    <style>
+      #view-p5b .p5b-tools p b{color:var(--navy)}
+      #view-p5b .p5b-q{font-style:italic}
+      #view-p5b .qa-a .cx-tbl td .tag{margin-right:6px}
+      @media (max-width:640px){#view-p5b .qa-a table.p5-w td[data-l]::before{content:attr(data-l) ": ";font-weight:700;color:var(--muted);font-style:normal}}
+    </style>
     <header class="cx-head">
       <div>
         <h1>5b · AI Process Log</h1>
-        <p class="cx-sub">Claude Code, Gemini and NotebookLM in parallel · no AI number went in until a DuckDB query on the full data confirmed it</p>
+        <p class="cx-sub">No AI number went in until a DuckDB query on the full data confirmed it</p>
       </div>
     </header>
 
     <div class="brief-ref sub-ref"><b>5b · Tools</b><span>Which tools you used, and for what</span></div>
     <div class="qa">
       <p class="qa-q">Which tools were used, and for what?</p>
-      <div class="qa-a">
-        <p><b>Run like a small team: 115 Claude Code sub-sessions, several at a time, Gemini as reviewer and editor, NotebookLM for listening</b></p>
-        <div class="scroll"><table class="cx-tbl p5-w"><colgroup><col style="width:24%"><col style="width:44%"><col style="width:32%"></colgroup>
-          <thead><tr><th>Tool · mode</th><th>Used for</th><th>Why it saved time or tokens</th></tr></thead>
-          <tbody>
-            <tr><td><b>Claude Code · Opus 5.5</b></td><td>SQL pipeline in DuckDB, clean layer, churn check, metrics, reports, this site</td><td>The strongest model where a wrong number is costly</td></tr>
-            <tr><td><b>Claude Code · Sonnet, Fable</b></td><td>Narrow, well-specified side tasks and second reads</td><td>Cheaper models where depth is not needed</td></tr>
-            <tr><td><b>Parallel sub-sessions</b></td><td>One session per brief part or tab, side by side; each reports back in a few lines</td><td>Parallel work; short contexts instead of one long chat</td></tr>
-            <tr><td><b>Fresh vs fork</b></td><td>91 fresh sessions with a short brief; 24 forks only when the full history was needed</td><td>A fresh session does not re-read the history</td></tr>
-            <tr><td><b>Auto mode + memory</b></td><td>Routine commands ran without approval prompts; decisions (churn window, Q / A format, chart rules) saved as memory</td><td>No waiting, no re-explaining rules in each session</td></tr>
-            <tr><td><b>Gemini · critical review</b></td><td>Independent review of the 1a issues and of the churn window</td><td>A second model checks the first</td></tr>
-            <tr><td><b>Gemini · design and wording</b></td><td>Page and chart drafts; sharper wording of definitions and chart conclusions (e.g. 2.2)</td><td>Design and wording ran while Claude computed</td></tr>
-            <tr><td><b>NotebookLM</b></td><td>Audio overviews of the technical reports, and debrief prep</td><td>Long reports taken in while working</td></tr>
-          </tbody>
-        </table></div>
+      <div class="qa-a p5b-tools">
+        <p><b>Each model and mode had a clear job, chosen to save time and tokens</b></p>
+        <p><b>Claude Code with Opus 5.5</b> was the main builder: the DuckDB pipeline, every query, the reports and this site. The work ran as about 115 sub-sessions, several at a time. 91 started fresh with a short brief, so each kept a small context; 24 were forks, used only when a task needed the full history</p>
+        <p><b>Sonnet 5.5</b> handled a narrow side task at lower cost. <b>Fable</b> was kept for a few very complex tasks</p>
+        <p><b>Auto mode</b> let sessions run without approving every step, and <b>memory files</b> carried decisions, such as the churn window and naming rules, from one session to the next</p>
+        <p><b>Gemini</b> was the second opinion: a critical review of 1a and of the churn window, drafts of page and chart design, and sharper wording, for example the 2.2 definitions and the chart conclusions</p>
+        <p><b>NotebookLM</b> turned the reports into audio overviews, heard while working</p>
       </div>
     </div>
 
@@ -1901,38 +1898,34 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
     <div class="qa">
       <p class="qa-q">Which prompts steered the work?</p>
       <div class="qa-a">
-        <p><b>Each prompt below changed a number or a rule on this site</b> · translated from Hebrew and tightened</p>
-        <div class="scroll"><table class="cx-tbl p5-w"><colgroup><col style="width:5%"><col style="width:52%"><col style="width:43%"></colgroup>
-          <thead><tr><th>#</th><th>Prompt</th><th>What it changed</th></tr></thead>
-          <tbody>
-            <tr><td class="c">1</td><td><b>To Gemini:</b> "Review this data-quality report as a senior analyst. Be critical and specific, no praise. If you cannot verify a claim without the data, say so"</td><td>An independent second check of every 1a issue</td></tr>
-            <tr><td class="c">2</td><td>"Gemini shows renewals jumping right after day 30. That looks wrong: re-run it in DuckDB on both export files"</td><td>Gemini had read 1.35M of 5.72M rows: the day-31 spike is 0.35%, not 17.5%</td></tr>
-            <tr><td class="c">3</td><td>"You were wrong, payment type does change the window. Test 1 or 7 days for auto-renew, and 14 to 30 days for pays by hand, split by plan length"</td><td>Churn window: 3 days auto-renew, 30 days pays by hand. Auto-renew churn is 2.7% a month, not 2.2%</td></tr>
-            <tr><td class="c">4</td><td>"What exactly does 1c ask? On what basis did you decide? We already found you were wrong not to split: why was that ignored?"</td><td>1c keeps billing's own 30-day rule, since it tests their labels; Parts 2–3 use the split window</td></tr>
-            <tr><td class="c">5</td><td>"A churn file with the wrong users is an error leadership already sees, not a possible one: why isn't it #1? Then check for any other ranking mistake"</td><td>Billing's labels became issue #1 (13.6% wrong); plan length moved to Critical; early renewals (578,644 rows) added</td></tr>
-            <tr><td class="c">6</td><td>"The first bar fills 100% and mixes two denominators (241,665 and 222,018). Put all billing errors on one base so they add up to 100% and none are hidden"</td><td>1c chart on one base of 39,018 users; two hidden reasons added (expired before March 3,251, other 3,082)</td></tr>
-            <tr><td class="c">7</td><td>"You load the raw files with two added columns. Shouldn't they first be loaded untouched, in a separate step? If not, why?"</td><td>One raw table per file, checked 1 : 1 against the CSVs; cleaning moved to staging</td></tr>
-            <tr><td class="c">8</td><td>"Why not say plainly that ARPU falls until 2016, apart from the free-trial waves, and then stays flat? Isn't that the key point?"</td><td>2.4 now leads with it: ARPU $129 in 2015, $118 in 2016 (−8%), then flat</td></tr>
-          </tbody>
-        </table></div>
-      </div>
+        <p><b>Short, pointed questions that made the AI check its own choices</b> · translated from Hebrew</p>
+        <div class="scroll"><table class="cx-tbl p5-w"><colgroup><col style="width:58%"><col style="width:42%"></colgroup>
+        <thead><tr><th>Prompt</th><th>What it changed</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag g">Gemini</span><span class="p5b-q">"You are a senior data analyst reviewing someone else's report. Be critical and specific. Do not praise. If you can't verify a claim without the data, say so"</span></td><td data-l="Changed">An independent review of 1a. Each claim was re-run in DuckDB before use</td></tr>
+          <tr><td><span class="tag c">Claude</span><span class="p5b-q">"Shouldn't we first load the files exactly as they are, and only in the next layer combine them and add columns like which file a row came from? If not, why?"</span></td><td data-l="Changed">One raw table per file, checked 1 : 1 against the CSV. Combining moved to its own step, <span class="mono">base_transactions</span></td></tr>
+          <tr><td><span class="tag c">Claude</span><span class="p5b-q">"What did 1c ask? On what basis did you decide? We checked and found that not splitting was wrong, so why ignore it?"</span></td><td data-l="Changed">1c keeps billing's 30-day rule, so the labels are compared like for like. Parts 2–3 use the split window</td></tr>
+          <tr><td><span class="tag c">Claude</span><span class="p5b-q">"The first bar fills 100% of the width and mixes two bases, 241,665 and 222,018. Put all billing errors on one base"</span></td><td data-l="Changed">1c chart on one base of 39,018 users. Two reasons it had hidden are now shown: 3,251 and 3,082</td></tr>
+          <tr><td><span class="tag c">Claude</span><span class="p5b-q">"Why not say clearly that ARPU falls until 2016, apart from the free waves, and then holds? How is that not the key point?"</span></td><td data-l="Changed">2.4 now leads with it: $129 → $118</td></tr>
+        </tbody>
+      </table></div></div>
     </div>
 
     <div class="brief-ref sub-ref"><b>5b · AI mistakes</b><span>At least two cases where the AI was wrong, how each was caught, what changed</span></div>
     <div class="qa">
       <p class="qa-q">Where was the AI wrong, how was it caught, and what changed?</p>
       <div class="qa-a">
-        <p><b>Four mistakes would have changed leadership's answers; the costliest was Claude's own</b></p>
-        <div class="scroll"><table class="cx-tbl p5-w"><colgroup><col style="width:11%"><col style="width:45%"><col style="width:18%"><col style="width:26%"></colgroup>
-          <thead><tr><th>Tool</th><th>What it got wrong</th><th>Caught by</th><th>What changed</th></tr></thead>
-          <tbody>
-            <tr class="hi"><td class="c"><span class="tag c">Claude</span></td><td>Matched the two exports on user + day, which is not unique: ~10,800 real purchases would have been dropped as duplicates (real conflicts: 747)</td><td>Claude, while building the clean layer</td><td>Match on the whole event (user, day, method, plan, amount, cancel)</td></tr>
-            <tr><td class="c"><span class="tag c">Claude</span></td><td>Ranked billing's churn labels Medium, without re-reading the brief's ranking rule</td><td>Me (prompt 5)</td><td>Labels are issue #1 in 1a</td></tr>
-            <tr><td class="c"><span class="tag g">Gemini</span></td><td>Reported a day-31 renewal spike (17.5%; real 0.35%) and 33.4% churn (real 43.5%), from a partial file</td><td>Me (prompt 2)</td><td>Every second opinion is re-run on the full data first</td></tr>
-            <tr><td class="c"><span class="tag c">Claude</span></td><td>Said plan type does not change the churn window, hiding auto-renew churn (2.2% instead of 2.7%)</td><td>Me (prompt 3)</td><td>2.3 uses 3 days auto-renew, 30 days pays by hand</td></tr>
-          </tbody>
-        </table></div>
-      </div>
+        <p><b>5 mistakes that would have changed the answers: 3 caught by me, 2 by Claude re-checking against the data</b></p>
+        <div class="scroll"><table class="cx-tbl p5-w"><colgroup><col style="width:33%"><col style="width:37%"><col style="width:30%"></colgroup>
+        <thead><tr><th>What the AI got wrong</th><th>How it was caught</th><th>What changed</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag c">Claude</span>Matched the two exports on user + day and found 11,560 "conflicts". About 10,800 real purchases would have been dropped</td><td data-l="Caught">Claude itself, while building the clean layer: only 747 are real conflicts</td><td data-l="Changed">Match on the whole event: user, day, method, plan, amount, cancel</td></tr>
+          <tr><td><span class="tag g">Gemini</span>A renewal spike on day 31 of 17.5%</td><td data-l="Caught">Me: the day-30 jump looked odd, so I had Claude re-run it on both export files. Gemini had read 1.35M of 5.72M rows</td><td data-l="Changed">The real spike is 0.35%. Every second opinion is now re-run on the full data</td></tr>
+          <tr><td><span class="tag g">Gemini</span>"All 109,330 users missing from <span class="mono">users.csv</span> are paying users"</td><td data-l="Caught">Claude, re-running it in DuckDB</td><td data-l="Changed">Only 53,023 ever paid. The issue is sized on them</td></tr>
+          <tr><td><span class="tag c">Claude</span>"Plan type doesn't change the churn window"</td><td data-l="Caught">Me: <span class="p5b-q">"You were wrong, payment type changes it. Test 1 or 7 days for auto-renew, 14–30 days by hand, split by plan length"</span></td><td data-l="Changed">3 days for auto-renew, 30 by hand. Auto-renew churn is 2.7%, not 2.2%</td></tr>
+          <tr><td><span class="tag c">Claude</span>Ranked billing's churn labels as Medium</td><td data-l="Caught">Me: <span class="p5b-q">"A churn file with wrong users is an error leadership already sees. Why isn't it #1? Check for other ranking mistakes"</span></td><td data-l="Changed">Labels are issue #1, 13.6% wrong. 2015 plan length moved to Critical. Early renewals added: 578,644 rows</td></tr>
+        </tbody>
+      </table></div></div>
     </div>
     <p class="cx-src">Full log, including smaller mistakes: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/07_ai_log.md" target="_blank" rel="noopener">reports/07_ai_log.md ↗</a></p>
   </section>
