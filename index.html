@@ -519,16 +519,20 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <img class="cx-logo" src="tune_logo.png" alt="Tune">
     </header>
 
+    <div class="qa">
+    <p class="qa-q">Does our churn rule agree with billing's <span class="mono">churn_labels</span>, and where and why do they disagree?</p>
+    <div class="cx-bottom qa-a">
+      <p><b>Answer:</b> While billing's <span class="mono">churn_labels.csv</span> matches 96.5% on clean March cases, it contains 32,953 (13.6%) systematic errors — most critically flagging 97.7% of 90+ day upgrades as churned</p>
+      <p><b>Decision:</b> Do <b>not</b> use <span class="mono">churn_labels.csv</span> for Parts 2 &amp; 3. We use our own validated SQL churn rule instead (<span class="mono">fct_user_month</span>).</p>
+    </div>
+    </div>
+
     <div class="cx-kpis">
       <div class="card cx-kpi blue"><b>96.5%</b><h3>Core Agreement</h3><span>197,972 of 205,213 observable shared users</span></div>
       <div class="card cx-kpi orange"><b>32,953 <small>(13.6%)</small></b><h3>Billing Label Errors</h3><span>Of 241,665 labels — reasons in the chart below</span></div>
       <div class="card cx-kpi grey"><b>10,740 <small>(4.4%*)</small></b><h3>Missing April Data</h3><span>30-day window ends in April (files stop Mar 31)</span><span style="display:block;margin-top:6px;font-size:.85em;opacity:.8">* Of 241,665 labels. Out of our 222,018-user March 2017 cohort it is 4.8%</span></div>
     </div>
 
-    <div class="cx-bottom">
-      <p><b>Main Conclusion:</b> While billing's <span class="mono">churn_labels.csv</span> matches 96.5% on clean March cases, it contains 32,953 (13.6%) systematic errors — most critically flagging 97.7% of 90+ day upgrades as churned</p>
-      <p><b>Decision:</b> Do <b>not</b> use <span class="mono">churn_labels.csv</span> for Parts 2 &amp; 3. We use our own validated SQL churn rule instead (<span class="mono">fct_user_month</span>).</p>
-    </div>
 
     <div class="cx-two">
       <div class="sub-col"><div class="brief-ref sub-ref"><b>1c · Agreement</b><span>Report agreement, including a confusion matrix</span></div>
@@ -550,7 +554,8 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
         <div class="cx-leg"><span><i style="background:var(--c-blue)"></i>Wrong users in billing's March list</span><span><i style="background:var(--c-orange)"></i>Wrong churn flag</span><span><i style="background:var(--c-grey)"></i>Other (small groups)</span></div>
         <svg class="cx-colsvg" viewBox="0 0 560 338" role="img" aria-label="Billing errors by reason, percent of 39,018"><line x1="46" x2="550" y1="292.0" y2="292.0" class="ax"/><text x="38" y="296.0" text-anchor="end">0%</text><line x1="46" x2="550" y1="226.5" y2="226.5" class="gr"/><text x="38" y="230.5" text-anchor="end">25%</text><line x1="46" x2="550" y1="161.0" y2="161.0" class="gr"/><text x="38" y="165.0" text-anchor="end">50%</text><line x1="46" x2="550" y1="95.5" y2="95.5" class="gr"/><text x="38" y="99.5" text-anchor="end">75%</text><line x1="46" x2="550" y1="30.0" y2="30.0" class="gr"/><text x="38" y="34.0" text-anchor="end">100%</text><rect x="61.0" y="152.8" width="54" height="139.2" rx="3" fill="var(--c-blue)"><title>Ignored export_2: 20,733 users (53.1%)</title></rect><text x="88.0" y="130.8" text-anchor="middle" class="n">20,733</text><text x="88.0" y="145.8" text-anchor="middle" class="p">53.1%</text><text x="88.0" y="312" text-anchor="middle" class="lb">Ignored</text><text x="88.0" y="329" text-anchor="middle" class="lb">export_2</text><rect x="145.0" y="251.3" width="54" height="40.7" rx="3" fill="var(--c-blue)"><title>Dropped March 1: 6,065 users (15.5%)</title></rect><text x="172.0" y="229.3" text-anchor="middle" class="n">6,065</text><text x="172.0" y="244.3" text-anchor="middle" class="p">15.5%</text><text x="172.0" y="312" text-anchor="middle" class="lb">Dropped</text><text x="172.0" y="329" text-anchor="middle" class="lb">March 1</text><rect x="229.0" y="268.9" width="54" height="23.1" rx="3" fill="var(--c-orange)"><title>90+ day plans: 3,436 users (8.8%)</title></rect><text x="256.0" y="246.9" text-anchor="middle" class="n">3,436</text><text x="256.0" y="261.9" text-anchor="middle" class="p">8.8%</text><text x="256.0" y="312" text-anchor="middle" class="lb">90+ day</text><text x="256.0" y="329" text-anchor="middle" class="lb">plans</text><rect x="313.0" y="270.2" width="54" height="21.8" rx="3" fill="var(--c-blue)"><title>Expired before March: 3,251 users (8.3%)</title></rect><text x="340.0" y="248.2" text-anchor="middle" class="n">3,251</text><text x="340.0" y="263.2" text-anchor="middle" class="p">8.3%</text><text x="340.0" y="312" text-anchor="middle" class="lb">Expired</text><text x="340.0" y="329" text-anchor="middle" class="lb">before March</text><rect x="397.0" y="271.3" width="54" height="20.7" rx="3" fill="var(--c-grey)"><title>Other errors: 3,082 users (7.9%)</title></rect><text x="424.0" y="249.3" text-anchor="middle" class="n">3,082</text><text x="424.0" y="264.3" text-anchor="middle" class="p">7.9%</text><text x="424.0" y="312" text-anchor="middle" class="lb">Other</text><text x="424.0" y="329" text-anchor="middle" class="lb">errors</text><rect x="481.0" y="275.5" width="54" height="16.5" rx="3" fill="var(--c-orange)"><title>Early renewals: 2,451 users (6.3%)</title></rect><text x="508.0" y="253.5" text-anchor="middle" class="n">2,451</text><text x="508.0" y="268.5" text-anchor="middle" class="p">6.3%</text><text x="508.0" y="312" text-anchor="middle" class="lb">Early</text><text x="508.0" y="329" text-anchor="middle" class="lb">renewals</text></svg>
         <p class="cx-note">% of 39,018 users where billing disagrees with us = 32,953 wrong rows in <span class="mono">churn_labels.csv</span> + 6,065 March-1 expiries billing left out. Other = 1,352 + 1,017 + 639 + 72 + 2 (see Full breakdown)<br>Not counted: 10,740 users whose 30-day window ends in April. The files stop on Mar 31, so this is a data limit, not a billing error</p>
-      </div></div>
+      </div>
+    </div>
     </div>
 
     <div class="brief-ref sub-ref"><b>1c · Limits</b><span>State plainly what this data cannot determine</span></div>
@@ -622,6 +627,66 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
   .p2 details.card summary{cursor:pointer;padding:18px 24px;font-size:var(--fs-h3);font-weight:700;color:var(--accent)}
   .p2 details.card > div{padding:0 24px 24px;display:grid;gap:10px}
   .p2 tr.flag td{background:var(--c-bad-bg)}
+  /* 2.3-2.5 layout (scoped to .p2x so 2.1 and 2.2 are untouched) */
+  .p2x{--g:#16a34a;--r:#dc2626;--am:#b45309}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .p2x{--g:#4ade80;--r:#f87171;--am:#fbbf24}}
+  :root[data-theme="dark"] .p2x{--g:#4ade80;--r:#f87171;--am:#fbbf24}
+  .p2x{font-size:var(--fs-body)}
+  .p2x .p2x-head{padding:26px 30px;display:grid;gap:12px}
+  .p2x .p2x-tag{justify-self:start;background:var(--accent-soft);color:var(--navy);font-weight:700;font-size:var(--fs-small);border-radius:999px;padding:5px 14px}
+  .p2x .p2x-head h1{font-size:var(--fs-title)}
+  .p2x .p2x-head p{color:var(--muted)}
+  .p2x .p2x-qa{display:grid;gap:10px}
+  .p2x .p2x-q{margin:0;font-size:var(--fs-h3);font-weight:700;color:var(--fg)}
+  .p2x .p2x-a{margin:0;background:var(--c-note-bg);border:1px solid color-mix(in srgb,var(--accent) 25%,transparent);border-left:6px solid var(--navy);border-radius:10px;padding:18px 24px;line-height:1.7}
+  .p2x .p2x-a>b{color:var(--navy)}
+  .p2x .gp{color:var(--g);font-weight:700}.p2x .rd{color:var(--r);font-weight:700}.p2x .nv{color:var(--navy);font-weight:700}
+  .p2x .p2x-card{padding:24px 28px;display:grid;gap:14px;min-width:0;width:100%;max-width:900px;margin:0 auto}
+  .p2x .p2x-card.p2x-wide{max-width:1100px}
+  .p2x .p2x-card h2,.p2x .p2x-flat h2{font-size:var(--fs-h2);color:var(--fg)}
+  .p2x .p2-ct::before{display:none}
+  .p2x .p2x-flat{padding:0;display:grid;gap:14px}
+  .p2x .p2x-concl{border-left:5px solid var(--g);background:color-mix(in srgb,var(--g) 9%,transparent);border-radius:8px;padding:12px 18px;line-height:1.6}
+  .p2x .p2x-concl b{color:var(--g)}
+  .p2x .p2x-concl.warn{border-left-color:var(--am);background:color-mix(in srgb,var(--am) 9%,transparent)}
+  .p2x .p2x-concl.warn b{color:var(--am)}
+  .p2x .p2-legend{justify-content:center}
+  .p2x .p2-plot{max-width:760px;margin:0 auto}
+  .p2x .p2x-foot{margin:0;font-size:var(--fs-small);color:var(--muted)}
+  .p2x .p2x-list{margin:0;padding-left:22px;display:grid;gap:4px}
+  .p2x .p2x-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:16px;max-width:900px;width:100%;margin:0 auto}
+  .p2x .p2x-kpi{padding:20px 14px;text-align:center;display:grid;gap:6px;align-content:start;border-top:5px solid var(--g)}
+  .p2x .p2x-kpi h3{font-size:var(--fs-small);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .p2x .p2x-kpi .per{font-size:var(--fs-small);color:var(--muted)}
+  .p2x .p2x-kpi b{font-size:var(--fs-figure);line-height:1.15;color:var(--navy);font-variant-numeric:tabular-nums}
+  .p2x .p2x-kpi .cmp{font-size:var(--fs-table)}
+  .p2x .p2x-kpi .up{color:var(--g);font-weight:700}
+  .p2x .p2x-fold{padding:0;width:100%;max-width:900px;margin:0 auto}
+  .p2x .p2x-fold summary{cursor:pointer;padding:18px 24px;font-size:var(--fs-h3);font-weight:700;color:var(--navy)}
+  .p2x .p2x-fold ul{margin:0;padding:0 24px 20px 44px;display:grid;gap:8px;line-height:1.6}
+  .p2x .p2x-in{padding:0 24px 24px;display:grid;gap:12px}
+  /* one table style: same font, same row height, never full width */
+  .p2x table.p2x-key{width:100%;font-size:var(--fs-table)}
+  .p2x table.p2x-key th,.p2x table.p2x-key td{height:48px;padding:4px 12px;line-height:1.3;text-align:center;font-variant-numeric:tabular-nums}
+  .p2x table.p2x-key th{background:var(--navy);color:var(--on-dark)}
+  .p2x table.p2x-key td.l{text-align:left}
+  .p2x table.p2x-key td.m{font-weight:700;background:var(--code-bg);white-space:nowrap}
+  .p2x table.p2x-key td.bd{background:var(--c-bad-bg);color:var(--c-bad);font-weight:700}
+  .p2x table.p2x-key td.am{background:var(--warn-soft);color:var(--warn);font-weight:700}
+  .p2x table.p2x-key td.gd{background:var(--c-ok-bg);color:var(--c-ok);font-weight:700}
+  .p2x table.p2x-key td.na{color:var(--muted);background:var(--code-bg)}
+  .p2x table.p2x-key td.l.bd,.p2x table.p2x-key td.l.am,.p2x table.p2x-key td.l.gd{font-weight:600}
+  .p2-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:22px;max-width:1100px;width:100%;margin:0 auto}
+  .p2-trio{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:22px;max-width:1240px;width:100%;margin:0 auto}
+  .p2-one{max-width:820px;width:100%;margin:0 auto}
+  .p2-keys{padding:24px 26px;display:grid;gap:12px;max-width:1000px;width:100%;margin:0 auto}
+  .p2-keys td.num{white-space:nowrap}
+  .p2-qa p{margin:0}
+  .p2-m39{max-width:820px;width:100%;margin:0 auto}
+  .p2-list{margin:0;padding-left:22px;display:grid;gap:4px;font-size:var(--fs-body)}
+  /* narrow, centred charts across Part 2 */
+  .p2 .p2-plot{max-width:760px;margin:0 auto}
+  .p2 .p2-legend{max-width:760px;margin:4px auto 0;justify-content:center}
   </style>
   <section class="view cx p2 p21" id="view-p2-active" data-own-brief="1" hidden>
     <style>
@@ -914,135 +979,331 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     </script>
   </section>
 
-  <section class="view cx p2" id="view-p2-flow" hidden>
-    <header class="cx-head"><div>
-      <h1>2 · New, Renewing &amp; Reactivated</h1>
-      <p class="cx-sub">Where each month's paying subscribers come from, as % of that month's paying subscribers</p>
-    </div></header>
-    <div class="cx-kpis">
-      <div class="card cx-kpi blue"><b>95–96%</b><h3>Renewing</h3><span>Of paying subscribers, most months since mid-2016</span></div>
-      <div class="card cx-kpi orange"><b>2.9%</b><h3>New</h3><span>2017 average · 2016: 3.9%</span></div>
-      <div class="card cx-kpi grey"><b>1–2%</b><h3>Reactivated</h3><span>Typical month, outside two billing spikes</span></div>
+  <section class="view cx p2 p22" id="view-p2-flow" data-own-brief="1" hidden>
+    <style>
+    .p22{--nw:#2563eb;--re:#0d9488;--fl:#c2410c;--fl-bg:#fff4ec;--gr:#e3eaf3;--ax:#8a97a8}
+    @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .p22{--nw:#60a5fa;--re:#2dd4bf;--fl:#fb923c;--fl-bg:#3a2414;--gr:#24344f;--ax:#6f819c}}
+    :root[data-theme="dark"] .p22{--nw:#60a5fa;--re:#2dd4bf;--fl:#fb923c;--fl-bg:#3a2414;--gr:#24344f;--ax:#6f819c}
+    .p22-head{padding:26px 30px;display:grid;gap:10px}
+    .p22-tag{justify-self:start;background:var(--accent-soft);color:var(--navy);font-weight:700;font-size:var(--fs-small);border-radius:999px;padding:5px 14px}
+    .p22-head h1{font-size:var(--fs-title)}
+    .p22-head p{color:var(--muted)}
+    .p22-qa{background:var(--c-note-bg);border:1px solid color-mix(in srgb,var(--accent) 25%,transparent);border-left:6px solid var(--navy);border-radius:10px;padding:18px 24px;display:grid;gap:8px;line-height:1.65}
+    .p22-qa p{margin:0}
+    .p22-qa b.k{color:var(--navy)}
+    .p22 .nb{color:var(--nw);font-weight:700}.p22 .rb{color:var(--re);font-weight:700}.p22 .gb{color:var(--c-ok);font-weight:700}.p22 .db{color:var(--c-bad);font-weight:700}
+    .p22-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:22px;max-width:1120px;width:100%;margin:0 auto}
+    .p22-card{padding:22px 24px;display:grid;gap:12px;align-content:start;min-width:0}
+    .p22-card h2{font-size:var(--fs-h2)}
+    .p22-concl{border-left:5px solid var(--c-ok);background:var(--c-ok-bg);border-radius:8px;padding:10px 16px;line-height:1.55}
+    .p22-concl.warn{border-left-color:var(--fl);background:var(--fl-bg)}
+    .p22-lg{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 20px;font-size:var(--fs-table)}
+    .p22-lg span{display:inline-flex;align-items:center;gap:8px}
+    .p22-lg i{display:inline-block;width:14px;height:14px;border-radius:3px}
+    .p22-lg i.ln{width:22px;height:0;border-top:3px solid;border-radius:2px}
+    .p22-lg i.ln.dash{border-top-style:dashed}
+    .p22-plot svg{display:block;width:100%;height:auto;overflow:visible}
+    .p22-plot text{font-family:var(--font);font-size:13px;fill:var(--muted)}
+    .p22-plot text.v{fill:var(--fg);font-weight:700;font-size:12.5px}
+    .p22-plot text.ren{fill:var(--c-ok);font-weight:700;font-size:12.5px}
+    .p22-plot text.fl{fill:var(--fl);font-weight:700;font-size:12.5px}
+    .p22-foot{font-size:var(--fs-small);color:var(--muted)}
+    .p22-keys{padding:22px 24px;display:grid;gap:12px;max-width:960px;width:100%;margin:0 auto}
+    .p22-keys h2{font-size:var(--fs-h2)}
+    .p22 table.p22-t{width:100%;border-collapse:collapse;font-size:var(--fs-table)}
+    .p22 table.p22-t th,.p22 table.p22-t td{height:42px;padding:0 12px;border-bottom:1px solid var(--line);text-align:center;vertical-align:middle;white-space:nowrap;font-variant-numeric:tabular-nums}
+    .p22 table.p22-t th{background:var(--navy);color:var(--on-dark);font-size:var(--fs-label);letter-spacing:.04em;text-transform:uppercase}
+    .p22 table.p22-t td.m{font-weight:700;background:var(--code-bg)}
+    .p22 table.p22-t td.l{text-align:left;white-space:normal}
+    .p22 table.p22-t td.wu{background:var(--warn-soft);color:var(--warn);font-weight:700}
+    .p22 table.p22-t td.bg{background:var(--fl-bg);color:var(--fl);font-weight:700}
+    .p22-fold{padding:0}
+    .p22-fold summary{cursor:pointer;padding:16px 24px;font-size:var(--fs-h3);font-weight:700;color:var(--navy)}
+    .p22-fold .in{padding:0 24px 20px;display:grid;gap:12px;line-height:1.6}
+    .p22-fold ul{margin:0;padding-left:22px;display:grid;gap:6px}
+    .p22-fold .ex{max-width:760px}
+    </style>
+
+    <div class="card p22-head">
+      <span class="p22-tag">Brief 2.2 · New vs Renewing vs Reactivated</span>
+      <h1>2.2 · New, Renewing &amp; Reactivated Subscribers</h1>
+      <p>Each month's paying subscribers split into three groups, 02-15 to 03-17</p>
     </div>
-    <div class="cx-bottom">
-      <p><b>Bottom line:</b> Growth now comes from <b>keeping</b> subscribers, not from winning new ones. New paying users fell from <b>3.9%</b> of the base in 2016 to <b>2.9%</b> in 2017 (about 8,600 a month).</p>
+
+    <div class="qa">
+    <p class="qa-q">Where do paying subscribers come from (new, renewing, reactivated), and how has the mix changed?</p>
+    <div class="p22-qa">
+      <p><b class="k">Answer:</b> Growth comes from keeping existing customers: <span class="gb">95.5%</span> of paying subscribers renew (Q1-17). New subscribers keep falling: from <span class="nb">6.1%</span> of paying subscribers in Q4-15 to <span class="db">2.8%</span> in Q1-17 (about 13,700 → 8,500 a month)</p>
     </div>
-    <div class="card p2-chart-card">
-      <h2 class="p2-ct">New subscribers are a shrinking share of the base</h2>
-      <p class="p2-cc">The new share drifts down from 5–7% in 2015 to under 3% in 2017. The two reactivation spikes (<b>Jun 2015</b>, <b>Jul 2016</b>) are users coming back after a billing gap, not real win-backs. Early 2015 is shaded: users who bought before 2015 look "new" there.</p>
-      <div class="p2-legend" id="p2-lg-flow"></div>
-      <div class="p2-plot" id="p2-ch-flow"></div>
-      <p class="p2-axisnote">Renewing = 100% − new − reactivated (shown in the table)</p>
     </div>
-    <div class="p2-def"><b>Definitions</b> (every paying subscriber is exactly one): <b>New</b> = their first-ever subscription starts this month. <b>Reactivated</b> = they come back more than 30 days after their last subscription expired. <b>Renewing</b> = everyone else: renewed, or still inside a multi-month or annual plan</div>
-    <details class="card lin-sec fold"><summary><h2>+ Monthly numbers</h2></summary><div class="fold-in"><div class="scroll"><table class="grid" id="p2-tb-flow"></table></div><p class="p2-axisnote">Red rows: not trusted, see <i>What we don't trust</i></p></div></details>
-    <p class="cx-src">SQL: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/sql/08_metrics.sql" target="_blank" rel="noopener">sql/08_metrics.sql ↗</a> · Report: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/04_metrics.md" target="_blank" rel="noopener">reports/04_metrics.md ↗</a></p>
+
+    <div class="p22-pair">
+      <div class="card p22-card">
+        <h2>A · New and reactivated share, by quarter</h2>
+        <div class="p22-concl"><b>New share fell by half:</b> 6.1% (Q3–Q4-15) → 2.8% (Q1-17). Renewing (green, under each quarter) grew to 95–96%</div>
+        <div class="p22-lg"><span><i style="background:var(--nw)"></i>New, % of paying</span><span><i style="background:var(--re)"></i>Reactivated, % of paying</span><span><i style="background:var(--fl)"></i>Billing-gap return</span></div>
+        <div class="p22-plot" id="p22-q"></div>
+        <p class="p22-foot">Q1-15 left out: files start 01-15, so existing customers look new · <button class="linkbtn" data-go="p2-trust">2.5 →</button></p>
+      </div>
+      <div class="card p22-card">
+        <h2>B · New and reactivated users, by month</h2>
+        <div class="p22-concl warn"><b>New is shrinking:</b> ~11,500 a month in 2015 → ~8,500 in 2017. The two reactivated spikes are users back after a billing problem, not real win-backs</div>
+        <div class="p22-lg"><span><i class="ln" style="color:var(--nw)"></i>New</span><span><i class="ln dash" style="color:var(--re)"></i>Reactivated</span><span><i style="background:var(--fl)"></i>Billing-gap return</span></div>
+        <div class="p22-plot" id="p22-m"></div>
+        <p class="p22-foot">From 04-15 · free trials are not counted (not paying)</p>
+        <p class="p22-foot"><b>New</b> = first paid month seen in the files, not always a new app user: only about half registered in the 2 months before</p>
+      </div>
+    </div>
+
+    <div class="card p22-keys">
+      <h2>Months with an event</h2>
+      <div class="scroll"><table class="p22-t">
+        <thead><tr><th>Month</th><th>New</th><th>Reactivated</th><th>Renewing %</th><th>What happened</th></tr></thead>
+        <tbody>
+          <tr><td class="m">01-15</td><td class="wu">131,441</td><td>0</td><td>0%</td><td class="l">Files start 01-01-15: every customer from before counts as new</td></tr>
+          <tr><td class="m">03-15</td><td class="wu">27,285</td><td>585</td><td>83.3%</td><td class="l">Customers on longer plans make their first 2015 purchase: also counted as new</td></tr>
+          <tr><td class="m">06-15</td><td>8,050</td><td class="bg">18,324</td><td>85.3%</td><td class="l">~17,000 users cut off in the 04-15 billing gap came back</td></tr>
+          <tr><td class="m">03-16</td><td>11,657</td><td>3,684</td><td>94.0%</td><td class="l">Payment method 39 outage starts: its users drop out (2.3)</td></tr>
+          <tr><td class="m">07-16</td><td>11,627</td><td class="bg">25,205</td><td>86.5%</td><td class="l">Payment method 39 users came back</td></tr>
+          <tr><td class="m">03-17</td><td>8,310</td><td>3,491</td><td>96.1%</td><td class="l">Latest month</td></tr>
+        </tbody></table></div>
+      <p class="p22-foot">Yellow: counted as new only because the files start in 2015 · Orange: back after a billing problem · <button class="linkbtn" data-go="p2-trust">2.5 What we don't trust →</button></p>
+    </div>
+
+    <details class="card p22-fold"><summary>+ Definitions</summary><div class="in"><ul>
+      <li><b>Paying subscriber:</b> a user with at least one day of paid access in the month (same as 2.1). Each one is exactly one of the three below</li>
+      <li><b>New:</b> their first subscription in the files starts this month. This means first time paying in our data, not always a new app user</li>
+      <li><b>Reactivated:</b> they come back more than 30 days after their last subscription expired</li>
+      <li><b>Renewing:</b> everyone else: renewed, or still inside a multi-month or annual plan</li>
+      <li><b>Free trials</b> are not counted here: they pay nothing</li>
+    </ul></div></details>
+
+    <details class="card p22-fold"><summary>+ Why 01-15 to 03-15 are left out</summary><div class="in">
+      <p>The files start on 01-01-15. Anything before is missing, so a customer who already paid in 2014 shows up as <b>New</b> at their first 2015 purchase. Example, user <span class="mono">u_00001a7cf51cb31e</span>:</p>
+      <div class="scroll ex"><table class="p22-t">
+        <thead><tr><th>What</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td class="l">Registered (<span class="mono">registered_date</span>)</td><td>05-11-2005</td></tr>
+          <tr><td class="l">First purchase in the files</td><td>24-01-15, auto-renew, 149</td></tr>
+          <tr><td class="l">After that</td><td>Renews every month</td></tr>
+          <tr><td class="l">Counted in 01-15 as</td><td class="wu">New</td></tr>
+        </tbody></table></div>
+      <p>So 01-15 shows 131,441 "new" (100%); 64,730 of them registered before 2013. In 02-15 and 03-15 customers on 2–12 month plans make their first 2015 purchase and also look new. From 04-15 the numbers are normal</p>
+    </div></details>
+
+    <p class="cx-src">SQL: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/sql/08_metrics.sql" target="_blank" rel="noopener">sql/08_metrics.sql ↗</a> (<span class="mono">mart_metrics_month</span>) · Report: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/04_metrics.md" target="_blank" rel="noopener">reports/04_metrics.md ↗</a></p>
+
+    <script>
+    (() => {
+    // mart_metrics_month, quarterly: [quarter, new %, reactivated %, renewing %, flag]
+    const Q = [["Q2-15",5.1,3.9,91.0,1],["Q3-15",6.1,1.2,92.8,0],["Q4-15",6.1,1.8,92.2,0],["Q1-16",5.7,2.0,92.4,0],["Q2-16",3.3,1.8,94.9,0],["Q3-16",3.5,4.2,92.2,1],["Q4-16",2.9,1.3,95.7,0],["Q1-17",2.8,1.6,95.5,0]];
+    // monthly: [mm-yy, new_paid, reactivated_paid]
+    const M = [["04-15",9620,820],["05-15",8517,928],["06-15",8050,18324],["07-15",11632,2249],["08-15",12734,2075],["09-15",11752,2597],["10-15",14728,2373],["11-15",13794,7084],["12-15",12653,2523],["01-16",17183,5466],["02-16",14041,5721],["03-16",11657,3684],["04-16",6788,5036],["05-16",8453,3805],["06-16",9025,3968],["07-16",11627,25205],["08-16",10378,6745],["09-16",7447,3418],["10-16",7749,3406],["11-16",7959,3588],["12-16",9803,4539],["01-17",8471,7964],["02-17",8810,3392],["03-17",8310,3491]];
+    const flag = (x, y, label, anchor) => {  // pole from the point up to a fixed top row, label beside the flag
+      const top = 16, d = anchor === "end" ? -1 : 1;
+      return `<line x1="${x}" x2="${x}" y1="${y - 6}" y2="${top}" stroke="var(--fl)" stroke-width="2"/>` +
+        `<path d="M${x},${top} l${12 * d},5 l${-12 * d},5 z" fill="var(--fl)"/>` +
+        `<text class="fl" x="${x + 16 * d}" y="${top + 9}" text-anchor="${anchor === "end" ? "end" : "start"}">${label}</text>`;
+    };
+    // A: grouped vertical bars by quarter
+    { const W = 560, H = 340, L = 44, R = 10, T = 50, B = 58, pw = W - L - R, ph = H - T - B, max = 8;
+      const y = (v) => T + ph - (v / max) * ph, band = pw / Q.length, bw = Math.min(22, band / 3);
+      let h = "";
+      for (let v = 0; v <= max; v += 2) h += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="${v ? "var(--gr)" : "var(--ax)"}"/><text x="${L - 8}" y="${y(v) + 4.5}" text-anchor="end">${v}%</text>`;
+      Q.forEach((q, i) => {
+        const cx = L + band * (i + 0.5);
+        [[q[1], "var(--nw)", -1], [q[2], "var(--re)", 1]].forEach(([v, c, s]) => {
+          const x0 = cx + (s < 0 ? -bw - 2 : 2);
+          h += `<rect x="${x0}" y="${y(v)}" width="${bw}" height="${T + ph - y(v)}" rx="3" fill="${c}"/>`;
+          h += `<text class="v" x="${x0 + bw / 2}" y="${y(v) - 6}" text-anchor="middle">${v.toFixed(1)}</text>`;
+        });
+        h += `<text x="${cx}" y="${T + ph + 20}" text-anchor="middle" style="fill:var(--fg);font-weight:600">${q[0]}</text>`;
+        h += `<text class="ren" x="${cx}" y="${T + ph + 40}" text-anchor="middle">${Math.round(q[3])}%</text>`;
+        if (q[4]) h += flag(cx + 2 + bw / 2, y(q[2]) - 18, "Billing gap", i > Q.length / 2 ? "end" : "start");
+      });
+      h += `<text x="${L - 8}" y="${T + ph + 40}" text-anchor="end" class="ren">Renew</text>`;
+      document.getElementById("p22-q").innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="New and reactivated share of paying subscribers by quarter">${h}</svg>`;
+    }
+    // B: monthly lines
+    { const W = 560, H = 340, L = 48, R = 12, T = 50, B = 36, pw = W - L - R, ph = H - T - B, max = 28000;
+      const x = (i) => L + (pw / (M.length - 1)) * i, y = (v) => T + ph - (v / max) * ph;
+      let h = "";
+      for (let v = 0; v <= max; v += 7000) h += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="${v ? "var(--gr)" : "var(--ax)"}"/><text x="${L - 8}" y="${y(v) + 4.5}" text-anchor="end">${v ? v / 1000 + "k" : 0}</text>`;
+      M.forEach((m, i) => { if (i % 3 === 0) h += `<line x1="${x(i)}" x2="${x(i)}" y1="${T + ph}" y2="${T + ph + 5}" stroke="var(--ax)"/><text x="${x(i)}" y="${T + ph + 22}" text-anchor="middle">${m[0]}</text>`; });
+      const path = (k) => M.map((m, i) => (i ? "L" : "M") + x(i).toFixed(1) + "," + y(m[k]).toFixed(1)).join("");
+      h += `<path d="${path(1)}" fill="none" stroke="var(--nw)" stroke-width="2.6" stroke-linejoin="round"/>`;
+      h += `<path d="${path(2)}" fill="none" stroke="var(--re)" stroke-width="2.6" stroke-dasharray="6 5" stroke-linejoin="round"/>`;
+      [[2, "06-15: 18,324", "start"], [15, "07-16: 25,205", "end"]].forEach(([i, t, a]) => { h += `<circle cx="${x(i)}" cy="${y(M[i][2])}" r="5" fill="var(--fl)" stroke="var(--surface)" stroke-width="2"/>` + flag(x(i), y(M[i][2]), t, a); });
+      h += `<text class="v" x="${x(M.length - 1)}" y="${y(M[M.length - 1][1]) - 10}" text-anchor="end" style="fill:var(--nw)">8,310</text>`;
+      document.getElementById("p22-m").innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="New and reactivated paying users per month">${h}</svg>`;
+    }
+    })();
+    </script>
   </section>
 
-  <section class="view cx p2" id="view-p2-churn" hidden>
-    <header class="cx-head"><div>
-      <h1>2 · Monthly Churn Rate</h1>
-      <p class="cx-sub">Paying subscribers lost each month, our own 30-day rule (32 and 45 days as checks)</p>
-    </div></header>
-    <div class="cx-kpis">
-      <div class="card cx-kpi blue"><b>3.4%</b><h3>Churn, Feb 2017</h3><span>Last month we can measure</span></div>
-      <div class="card cx-kpi blue"><b>3.9%</b><h3>Average, last 11 months</h3><span>Apr 2016 – Feb 2017 · a year earlier: 4.5%</span></div>
-      <div class="card cx-kpi orange"><b>2 spikes</b><h3>Billing Gaps, Not Churn</h3><span>~14% in Apr 2015 and Mar 2016 · 98–99% came back</span></div>
+  <section class="view cx p2 p2x" id="view-p2-churn" data-own-brief="1" hidden>
+    <div class="card p2x-head">
+      <span class="p2x-tag">Brief 2.3 · Monthly Churn Rate</span>
+      <h1>2.3 · Monthly Churn — Stable, With Two Billing Gaps</h1>
+      <p>Share of paying subscribers whose plan ended and who did not buy again within 30 days</p>
     </div>
-    <div class="cx-bottom">
-      <p><b>Bottom line:</b> Real churn is <b>3–5% a month</b> and edging down. The two 14% spikes are billing gaps: almost all of those users bought again within 1–4 months.</p>
+    <div class="p2x-qa">
+      <p class="p2x-q">Are customers staying or leaving, and is churn getting worse?</p>
+      <p class="p2x-a"><b>Answer:</b> Customers are staying. <span class="nv">3–5%</span> of paying subscribers leave each month, a little less than a year earlier (<span class="nv">3.9%</span> vs <span class="nv">4.5%</span>). The two <span class="rd">~14%</span> spikes (04-15, 03-16) are billing gaps, not real churn</p>
     </div>
-    <div class="card p2-chart-card">
-      <h2 class="p2-ct">Churn is stable at 3–5%, and the window choice barely matters</h2>
-      <p class="p2-cc">The 32- and 45-day checks sit <b>0.1–0.5 points</b> below the 30-day line, so the result doesn't hang on the window. The exception is <b>December</b>: many renew on day 31–32, so 30-day churn reads ~1.4 points higher. Jan 2015 (no history) and Mar 2017 (needs April data) are left out.</p>
+
+    <div class="card p2-chart-card p2x-card">
+      <h2 class="p2-ct">Churn Rate by Month (30-day rule)</h2>
+      <div class="p2x-concl"><b>Conclusion: stable.</b> Outside the two billing gaps no month is above 6.1%. Almost all users in the spikes paid again within 1–4 months</div>
       <div class="p2-legend" id="p2-lg-churn"></div>
       <div class="p2-plot" id="p2-ch-churn"></div>
+      <p class="p2x-foot">01-15 (no history) and 03-17 (needs April data) can't be measured · <button class="linkbtn" data-go="p2-trust">2.5 What we don't trust →</button></p>
     </div>
-    <div class="p2-def"><b>Definition</b> <b>Monthly churn rate</b> = paying subscribers whose subscription ended this month and who bought nothing within 30 days, ÷ paying subscribers on the first day of the month. "Ended" = the membership expiry date falls in the month. Users who only ever had a free trial are counted apart, not as churn</div>
-    <details class="card lin-sec fold"><summary><h2>+ Monthly numbers</h2></summary><div class="fold-in"><div class="scroll"><table class="grid" id="p2-tb-churn"></table></div><p class="p2-axisnote">Red rows: not trusted, see <i>What we don't trust</i></p></div></details>
+
+    <div class="card p2x-card">
+      <h2>Key Months Breakdown</h2>
+      <p class="p2x-foot">Billing gaps (red), December effect (amber), months we can't measure (grey)</p>
+      <div class="scroll"><table class="grid p2x-key">
+        <thead><tr><th>Month</th><th>Churn 30 days</th><th>Churn 32 days</th><th>What happened</th></tr></thead>
+        <tbody>
+          <tr><td class="m">04-15</td><td class="bd">13.9%</td><td>13.9%</td><td class="l bd">Billing gap: 17,435 auto-renew users expired on the same day · 99.5% paid again</td></tr>
+          <tr><td class="m">12-15</td><td class="am">5.2%</td><td class="gd">3.8%</td><td class="l">Many renew on day 31–32, just past the 30-day window</td></tr>
+          <tr><td class="m">03-16</td><td class="bd">13.8%</td><td>13.7%</td><td class="l bd">Payment method 39 outage: 16,468 users lost (usual: ~670) · 97% back in 07-16</td></tr>
+          <tr><td class="m">12-16</td><td class="am">4.6%</td><td class="gd">3.2%</td><td class="l">Same December effect</td></tr>
+          <tr><td class="m">02-17</td><td class="gd">3.4%</td><td>3.2%</td><td class="l">Last month we can measure</td></tr>
+          <tr><td class="m">03-17</td><td class="na">n/a</td><td class="na">n/a</td><td class="l na">The 30-day window needs April data, not in the files</td></tr>
+        </tbody></table></div>
+    </div>
+
+    <details class="card p2x-fold"><summary>+ Does the 30-day window matter?</summary><div class="p2x-in">
+      <div class="p2-chart-card p2x-flat">
+        <h2 class="p2-ct">30 vs 32 vs 45 days</h2>
+        <div class="p2x-concl"><b>Conclusion: no.</b> 32 and 45 days sit 0.1–0.5 points lower. Only December differs (~1.4 points)</div>
+        <div class="p2-legend" id="p2-lg-churnwin"></div>
+        <div class="p2-plot" id="p2-ch-churnwin"></div>
+      </div>
+    </div></details>
+    <details class="card p2x-fold"><summary>+ Metric Definitions</summary><ul>
+      <li><b>Monthly churn rate:</b> paying subscribers whose subscription ended this month and who bought nothing within 30 days ÷ paying subscribers on the first day of the month</li>
+      <li><b>Ended:</b> the membership expiry date falls in the month</li>
+      <li><b>Free trials:</b> users who only ever had a free trial are counted apart, not as churn</li>
+    </ul></details>
+    <details class="card p2x-fold"><summary>+ All months</summary><div class="p2x-in"><div class="scroll"><table class="grid p2x-key" id="p2-tb-churn"></table></div><p class="p2x-foot">Red rows: not trusted, see 2.5</p></div></details>
     <p class="cx-src">SQL: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/sql/08_metrics.sql" target="_blank" rel="noopener">sql/08_metrics.sql ↗</a> (<span class="mono">mart_churn_windows</span>) · Report: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/04_metrics.md" target="_blank" rel="noopener">reports/04_metrics.md ↗</a></p>
   </section>
 
-  <section class="view cx p2" id="view-p2-arpu" hidden>
-    <header class="cx-head"><div>
-      <h1>2 · ARPU, Revenue &amp; Discounts</h1>
-      <p class="cx-sub">Revenue per paying subscriber, monthly revenue, and how much was given away</p>
-    </div></header>
-    <div class="cx-kpis">
-      <div class="card cx-kpi blue"><b>~125</b><h3>ARPU, 2016–2017</h3><span>Per paying subscriber per month · 2015: 133</span></div>
-      <div class="card cx-kpi blue"><b>+32%</b><h3>Monthly Revenue</h3><span>Mar 2017 vs Mar 2016 (30.6M → 40.4M)</span></div>
-      <div class="card cx-kpi orange"><b>0.1%</b><h3>Purchases Discounted</h3><span>Since Nov 2015 · was 9.7% in Jan 2015</span></div>
+  <section class="view cx p2 p2x" id="view-p2-arpu" data-own-brief="1" hidden>
+    <div class="card p2x-head">
+      <span class="p2x-tag">Brief 2.4 · ARPU, Revenue &amp; Discount Depth</span>
+      <h1>2.4 · ARPU, Revenue &amp; Discounts — Growth From Volume, Not Price</h1>
+      <p>Revenue per paying subscriber, total monthly revenue, and average discount from list price</p>
     </div>
-    <div class="cx-bottom">
-      <p><b>Bottom line:</b> Revenue grows with the base, not with price: ARPU dropped <b>8%</b> from 2015 to 2016, then held flat. Paid discounts were switched off in late 2015; promotion moved to <b>free trials</b>.</p>
+    <div class="p2x-qa">
+      <p class="p2x-q">Does revenue grow from higher prices or from more customers? Was growth bought with discounts?</p>
+      <p class="p2x-a"><b>Answer:</b> From more customers. Q1-17 vs Q1-16: revenue <span class="gp">+24%</span>, paying subscribers <span class="gp">+20%</span>, revenue per subscriber only <span class="nv">+4%</span>. Paid discounts stopped in 11-15, so growth was not bought with discounts</p>
     </div>
-    <div class="cx-two">
-      <div class="sub-col"><div class="brief-ref sub-ref"><b>2.4 · ARPU</b><span>ARPU over time</span></div>
-    <div class="card p2-chart-card">
-        <h2 class="p2-ct">ARPU is flat at ~120–128 since 2016</h2>
-        <p class="p2-cc">Since 2016 both views agree, so annual plans paying upfront (<b>10.7%</b> of revenue) don't distort it. Monthly wiggles follow the number of days in a month (February is always lower).</p>
-        <div class="p2-legend" id="p2-lg-arpu"></div>
-        <div class="p2-plot" id="p2-ch-arpu"></div>
-        <p class="p2-axisnote">Axis starts at 80 to show the change; currency = local units</p>
-      </div></div>
-      <div class="sub-col"><div class="brief-ref sub-ref"><b>2.4 · Revenue</b><span>Anything else revenue needs</span></div>
-    <div class="card p2-chart-card">
-        <h2 class="p2-ct">Monthly revenue more than doubled</h2>
-        <p class="p2-cc">Recognised revenue grew from <b>18.2M</b> (Feb 2015) to <b>40.4M</b> (Mar 2017), tracking the subscriber base almost one to one</p>
-        <div class="p2-legend" id="p2-lg-rev"></div>
-        <div class="p2-plot" id="p2-ch-rev"></div>
-        <p class="p2-axisnote">Millions of local currency units</p>
-      </div></div>
+    <div class="p2x-kpis">
+      <div class="card p2x-kpi"><h3>ARPU</h3><span class="per">Q1-17 (3-mo avg)</span><b>124</b><span class="cmp"><span class="up">↑ +4%</span> vs Q1-16 (119)</span></div>
+      <div class="card p2x-kpi"><h3>Monthly Revenue</h3><span class="per">Q1-17 total</span><b>112.3M</b><span class="cmp"><span class="up">↑ +24%</span> vs Q1-16 (90.4M)</span></div>
+      <div class="card p2x-kpi"><h3>Purchases Discounted</h3><span class="per">03-17</span><b>0.09%</b><span class="cmp">01-15: 9.7%</span></div>
     </div>
-    <div class="brief-ref sub-ref"><b>2.4 · Discount depth</b><span>Discount depth over time</span></div>
-    <div class="card p2-chart-card">
-        <h2 class="p2-ct">Paid discounts ended in late 2015</h2>
-        <p class="p2-cc">In early 2015 about <b>1 in 10</b> paid purchases got ~20% off (1.6% of list price overall). From November 2015 it is close to <b>zero</b>.</p>
-        <div class="p2-legend" id="p2-lg-disc"></div>
-        <div class="p2-plot" id="p2-ch-disc"></div>
+
+    <div class="card p2-chart-card p2x-card">
+      <h2 class="p2-ct">ARPU by Month</h2>
+      <div class="p2x-concl"><b>Conclusion: price is flat.</b> ~120–128 since 2016. February is always lower (fewer days)</div>
+      <div class="p2-legend" id="p2-lg-arpu"></div>
+      <div class="p2-plot" id="p2-ch-arpu"></div>
+      <p class="p2x-foot">Axis starts at 80 · local currency</p>
     </div>
-    <div class="p2-def"><b>Definitions</b> <b>Recognised revenue</b> = each payment spread evenly over its plan days; a month gets the days that fall in it (an annual plan counts ~1/12 a month). <b>ARPU</b> = recognised revenue ÷ paying subscribers. <b>Cash ARPU</b> = money taken in the month ÷ paying subscribers. <b>Discount depth</b> = total discount ÷ total list price, over paid purchases only. Free trials (100% off) are counted as <b>free starts</b>.</div>
-    <details class="card lin-sec fold"><summary><h2>+ Free-trial starts</h2></summary><div class="fold-in">
-      <div class="p2-chart-card">
+    <div class="card p2-chart-card p2x-card">
+      <h2 class="p2-ct">Revenue by Month</h2>
+      <div class="p2x-concl"><b>Conclusion: revenue more than doubled.</b> 18.2M (02-15) → 40.4M (03-17), moving with the number of paying subscribers</div>
+      <div class="p2-legend" id="p2-lg-rev"></div>
+      <div class="p2-plot" id="p2-ch-rev"></div>
+      <p class="p2x-foot">Millions, local currency</p>
+    </div>
+    <div class="card p2-chart-card p2x-card">
+      <h2 class="p2-ct">Discount Depth by Month</h2>
+      <div class="p2x-concl"><b>Conclusion: no discounts since 11-15.</b> Early 2015 ~1 in 10 paid purchases got ~20% off; since 11-15 almost none</div>
+      <div class="p2-legend" id="p2-lg-disc"></div>
+      <div class="p2-plot" id="p2-ch-disc"></div>
+    </div>
+
+    <div class="card p2x-card">
+      <h2>Key Months Breakdown</h2>
+      <p class="p2x-foot">Not trusted (red), filled in by us (amber), change in pricing (green)</p>
+      <div class="scroll"><table class="grid p2x-key">
+        <thead><tr><th>Month</th><th>ARPU</th><th>Discounted</th><th>What happened</th></tr></thead>
+        <tbody>
+          <tr><td class="m">01-15</td><td class="bd">71</td><td>9.7%</td><td class="l bd">Payments made before 2015 are missing, so revenue is too low</td></tr>
+          <tr><td class="m">03-15 – 10-15</td><td class="am">121–142</td><td>0.6–7.2%</td><td class="l am">Price missing on 214,207 paid rows, filled from a price list</td></tr>
+          <tr><td class="m">11-15</td><td>126</td><td class="gd">0.01%</td><td class="l gd">Paid discounts stop; free trials take their place</td></tr>
+          <tr><td class="m">02-17 · 03-17</td><td>114 · 133</td><td>0.09%</td><td class="l">28 vs 31 days: compare years, not single months</td></tr>
+        </tbody></table></div>
+      <p class="p2x-foot"><button class="linkbtn" data-go="p2-trust">2.5 What we don't trust →</button></p>
+    </div>
+
+    <details class="card p2x-fold"><summary>+ Free-trial starts</summary><div class="p2x-in">
+      <div class="p2-chart-card p2x-flat">
         <h2 class="p2-ct">Free trials replaced discounts</h2>
-        <p class="p2-cc">Two big waves: <b>42,743</b> free starts in Jun 2015 and <b>58,821</b> in Oct–Nov 2016. Whether they paid off is Part 3b.</p>
+        <div class="p2x-concl"><b>Two big waves:</b> 42,743 free starts in 06-15 and 58,821 in 10-16 – 11-16</div>
         <div class="p2-legend" id="p2-lg-free"></div>
         <div class="p2-plot" id="p2-ch-free"></div>
       </div>
     </div></details>
-    <details class="card lin-sec fold"><summary><h2>+ Monthly numbers</h2></summary><div class="fold-in"><div class="scroll"><table class="grid" id="p2-tb-arpu"></table></div><p class="p2-axisnote">Red rows: not trusted, see <i>What we don't trust</i></p></div></details>
+    <details class="card p2x-fold"><summary>+ Metric Definitions</summary><ul>
+      <li><b>Recognised revenue:</b> each payment spread evenly over its plan days; a month gets the days that fall in it (an annual plan counts ~1/12 a month)</li>
+      <li><b>ARPU:</b> recognised revenue ÷ paying subscribers</li>
+      <li><b>Cash ARPU:</b> money taken in during the month ÷ paying subscribers</li>
+      <li><b>Discount depth:</b> total discount ÷ total list price, over paid purchases only. Free trials (100% off) are counted as free starts</li>
+    </ul></details>
+    <details class="card p2x-fold"><summary>+ All months</summary><div class="p2x-in"><div class="scroll"><table class="grid p2x-key" id="p2-tb-arpu"></table></div><p class="p2x-foot">Red rows: not trusted, see 2.5</p></div></details>
     <p class="cx-src">SQL: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/sql/08_metrics.sql" target="_blank" rel="noopener">sql/08_metrics.sql ↗</a> · Report: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/04_metrics.md" target="_blank" rel="noopener">reports/04_metrics.md ↗</a></p>
   </section>
 
-  <section class="view cx p2" id="view-p2-trust" hidden>
-    <header class="cx-head"><div>
-      <h1>2 · What We Don't Trust</h1>
-      <p class="cx-sub">Points in the Part 2 series that are not what they look like, and how we handle them</p>
-    </div></header>
-    <div class="cx-bottom">
-      <p><b>Bottom line:</b> Two churn spikes (~14%) are <b>billing gaps</b>, not lost customers: 98–99% of those users came back. Read churn as <b>3–5%</b>, skip January 2015, and don't report March 2017 churn.</p>
+  <section class="view cx p2 p2x" id="view-p2-trust" data-own-brief="1" hidden>
+    <div class="card p2x-head">
+      <span class="p2x-tag">Brief 2.5 · What We Don't Trust</span>
+      <h1>2.5 · What We Don't Trust — and Why</h1>
+      <p>Points in the 2.1–2.4 series that are not what they look like, and what we did about each</p>
     </div>
-    <div class="card"><div class="scroll"><table class="grid">
-      <thead><tr><th>Series · month</th><th>What is wrong</th><th>Evidence</th><th>What we did</th></tr></thead>
-      <tbody>
-        <tr><td>All series · Jan 2015</td><td class="l">Warm-up: purchases before 2015 are not in the files, so everyone looks new</td><td class="l">100% "new"; only 5,152 subscribers on Jan 1</td><td class="l">Left out of trends</td></tr>
-        <tr><td>New · Feb–Mar 2015</td><td class="l">Same warm-up: older users look new at their first 2015 purchase</td><td class="l">27,285 "new" in Mar 2015, 2.5× any later month</td><td class="l">Read the trend from 2016</td></tr>
-        <tr class="flag"><td>Churn · Apr 2015 (13.9%)</td><td class="l">Billing gap: 17,435 auto-renew users all expire on Apr 30, plan length filled in by us</td><td class="l">99.5% bought again, nearly all in Jun 2015</td><td class="l">Flagged, not real churn</td></tr>
-        <tr class="flag"><td>Churn · Mar 2016 (13.8%)</td><td class="l">One provider: payment method 39 lost 16,468 auto-renew users (usual month: ~670)</td><td class="l">97% came back in Jul 2016</td><td class="l">Flagged; likely failed payments. Ask billing</td></tr>
-        <tr><td>Churn · Dec 2015, Dec 2016</td><td class="l">Many renew on day 31–32, just outside the 30-day window</td><td class="l">5.2% → 3.8% and 4.6% → 3.2% with a 32-day window</td><td class="l">Keep 30 days (the brief's rule), note it</td></tr>
-        <tr><td>Churn · Mar 2017</td><td class="l">Unknown: the 30-day window needs April data</td><td class="l">14,396 outcomes can't be judged</td><td class="l">Not reported</td></tr>
-        <tr><td>Revenue, ARPU, discount · Mar–Oct 2015</td><td class="l">Plan length and price missing on 214,207 paid rows, filled from a price list (1a)</td><td class="l">1a issue #2</td><td class="l">Used, lower confidence</td></tr>
-        <tr><td>"All active users"</td><td class="l">Free-trial waves inflate it by up to 46,000</td><td class="l">Jun 2015, Oct–Nov 2016</td><td class="l">Headline counts paying subscribers only</td></tr>
-        <tr><td>ARPU · month to month</td><td class="l">Follows days in the month (Feb lower, 31-day months higher)</td><td class="l">Feb 2017: 114 vs Mar 2017: 133</td><td class="l">Compare years, not single months</td></tr>
-      </tbody></table></div></div>
-    <details class="card lin-sec fold"><summary><h2>+ Churn vs reactivation chart</h2></summary><div class="fold-in">
-    <div class="p2-chart-card">
-      <h2 class="p2-ct">The same users "churn" and "reactivate" months later</h2>
-      <p class="p2-cc">Each churn spike is mirrored by a reactivation spike: <b>17,208</b> users lost in Apr 2015 came back in Jun 2015, and <b>16,047</b> users of payment method 39 lost in Mar 2016 came back in Jul 2016. That pattern points to billing, not to customers deciding to leave.</p>
+    <div class="p2x-qa">
+      <p class="p2x-q">Which months or metrics in 2.1–2.4 can't be read as they are, and why?</p>
+      <p class="p2x-a"><b>Answer:</b> Four problems. <span class="rd">01-15 – 03-15</span> (files start in 2015), <span class="rd">03-15 – 10-15</span> (price filled in by us), the <span class="rd">payment method 39 outage</span> (04-16 – 07-16) and <span class="rd">churn for 03-17</span> (needs April data). We flag them and leave them out of trends</p>
+    </div>
+
+    <div class="card p2x-card p2x-wide">
+      <h2>Every Flagged Point, by Sub-section</h2>
+      <div class="scroll"><table class="grid p2x-key">
+        <thead><tr><th>Sub-section</th><th>Month · metric</th><th>What is wrong</th><th>Evidence</th><th>What we did</th></tr></thead>
+        <tbody>
+          <tr><td class="m"><button class="linkbtn" data-go="p2-active">2.1</button></td><td>All active users</td><td class="l">Free-trial waves add up to 46,000 users</td><td class="l">06-15, 10-16 – 11-16</td><td class="l">Headline counts paying only</td></tr>
+          <tr><td class="m"><button class="linkbtn" data-go="p2-active">2.1</button></td><td class="bd">Paying · 04-16 – 06-16</td><td class="l">Dip from the payment method 39 outage (below)</td><td class="l">257,452 (02-16) → 239,955 (04-16)</td><td class="l">Flagged, not lost customers</td></tr>
+          <tr><td class="m"><button class="linkbtn" data-go="p2-flow">2.2</button></td><td class="bd">New · 01-15 – 03-15</td><td class="l">Files start in 2015, so earlier customers look new</td><td class="l">100% "new" in 01-15; 27,285 in 03-15</td><td class="l">Left out of trends</td></tr>
+          <tr><td class="m"><button class="linkbtn" data-go="p2-flow">2.2</button></td><td class="bd">Reactivated · 06-15, 07-16</td><td class="l">Users back after a billing gap, not real win-backs</td><td class="l">17,208 and 16,047 lost in 04-15 and 03-16</td><td class="l">Flagged</td></tr>
+          <tr><td class="m"><button class="linkbtn" data-go="p2-churn">2.3</button></td><td class="bd">Churn · 04-15 (13.9%)</td><td class="l">17,435 auto-renew users expired on the same day</td><td class="l">99.5% paid again, mostly in 06-15</td><td class="l">Flagged, not real churn</td></tr>
+          <tr><td class="m"><button class="linkbtn" data-go="p2-churn">2.3</button></td><td class="bd">Churn · 03-16 (13.8%)</td><td class="l">Payment method 39 outage (below)</td><td class="l">16,468 lost (usual: ~670); 97% back in 07-16</td><td class="l">Flagged · ask billing</td></tr>
+          <tr><td class="m"><button class="linkbtn" data-go="p2-churn">2.3</button></td><td class="am">Churn · 12-15, 12-16</td><td class="l">Many renew on day 31–32, just past 30 days</td><td class="l">5.2% → 3.8% and 4.6% → 3.2% with 32 days</td><td class="l">Kept 30 days, noted</td></tr>
+          <tr><td class="m"><button class="linkbtn" data-go="p2-churn">2.3</button></td><td class="bd">Churn · 03-17</td><td class="l">The 30-day window needs April data</td><td class="l">14,396 outcomes can't be judged</td><td class="l">Not reported</td></tr>
+          <tr><td class="m"><button class="linkbtn" data-go="p2-arpu">2.4</button></td><td class="bd">Revenue, ARPU · 01-15</td><td class="l">Payments made before 2015 are missing</td><td class="l">ARPU 71 vs ~130 later</td><td class="l">Left out of trends</td></tr>
+          <tr><td class="m"><button class="linkbtn" data-go="p2-arpu">2.4</button></td><td class="am">Revenue, ARPU, discount · 03-15 – 10-15</td><td class="l">Price missing on 214,207 paid rows, filled from a price list</td><td class="l">1a issue #2</td><td class="l">Used, lower confidence</td></tr>
+          <tr><td class="m"><button class="linkbtn" data-go="p2-arpu">2.4</button></td><td class="am">ARPU · month to month</td><td class="l">Follows the number of days in the month</td><td class="l">114 (02-17) vs 133 (03-17)</td><td class="l">Compare years, not months</td></tr>
+        </tbody></table></div>
+      <p class="p2x-foot">Not trusted (red) · read with care (amber)</p>
+    </div>
+
+    <div class="card p2-chart-card p2x-card">
+      <h2 class="p2-ct">Payment Method 39: One Outage, Three Series</h2>
+      <div class="p2x-concl warn"><b>Conclusion: billing problem, not users leaving.</b> One provider failed to renew 16,468 users in 03-16; 97% paid again in 07-16</div>
+      <ul class="p2x-list">
+        <li><b>2.1</b> a dip in paying subscribers, 04-16 – 06-16</li>
+        <li><b>2.3</b> a churn spike in 03-16 (13.8%)</li>
+        <li><b>2.2</b> a reactivated spike in 07-16 (9.3%)</li>
+      </ul>
+      <p class="p2x-foot">The chart shows the same users "leave" (churn spike) and "come back" (reactivated spike) months later. The data can't tell why; most likely failed payments, billing should confirm</p>
       <div class="p2-legend" id="p2-lg-trust"></div>
       <div class="p2-plot" id="p2-ch-trust"></div>
     </div>
-    </div></details>
     <p class="cx-src">SQL: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/sql/08_metrics.sql" target="_blank" rel="noopener">sql/08_metrics.sql ↗</a> · Report: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/04_metrics.md" target="_blank" rel="noopener">reports/04_metrics.md ↗</a></p>
   </section>
   <script>
@@ -1055,9 +1316,11 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
   // censored (window runs past 2017-03-31): not shown. 45-day check for Feb 2017, all churn for Mar 2017
   P2_DATA.find((r) => r[0] === "2017-02")[11] = null;
   { const r = P2_DATA.find((r) => r[0] === "2017-03"); r[9] = r[10] = r[11] = r[12] = null; }
-  const F = { m: 0, p: 1, a: 2, n: 3, r: 4, rn: 5, np: 6, rp: 7, rnp: 8, c30: 9, c32: 10, c45: 11, pc: 12, som: 13, rev: 14, arpu: 15, ac: 16, dp: 17, dd: 18, fs: 19 };
-  const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  const mLabel = (m, long) => MON[+m.slice(5) - 1] + (long ? " " + m.slice(0, 4) : " " + m.slice(2, 4));
+  const F = { m: 0, p: 1, a: 2, n: 3, r: 4, rn: 5, np: 6, rp: 7, rnp: 8, c30: 9, c32: 10, c45: 11, pc: 12, som: 13, rev: 14, arpu: 15, ac: 16, dp: 17, dd: 18, fs: 19, g: 20, ps: 21 };
+  // derived: g = paying growth vs last month %, ps = % of active users who pay
+  P2_DATA.forEach((r, i) => { r[20] = i ? +(100 * (r[1] / P2_DATA[i - 1][1] - 1)).toFixed(2) : null; r[21] = +(100 * r[1] / r[2]).toFixed(1); });
+  // every date on Part 2 is mm-yy (e.g. 01-15); the second argument is kept for old calls
+  const mLabel = (m) => m.slice(5, 7) + "-" + m.slice(2, 4);
   const n0 = (v) => Math.round(v).toLocaleString("en-US");
   const fmt = { int: n0, k: (v) => (v === 0 ? "0" : Math.round(v / 1000) + "k"), pct: (v) => (v === null ? "n/a" : v.toFixed(1) + "%"), pct0: (v) => v + "%", num: (v) => v.toFixed(0), m: (v) => v.toFixed(1) + "M", mAxis: (v) => v + "M" };
   const ns = "http://www.w3.org/2000/svg";
@@ -1068,7 +1331,9 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     const el = document.getElementById("p2-ch-" + spec.id);
     const lg = document.getElementById("p2-lg-" + spec.id);
     if (lg && !lg.dataset.done) {
-      lg.innerHTML = spec.series.map((s) => `<span style="color:${s.color}"><i class="${spec.kind === "bar" ? "box" : s.dash ? "dash" : ""}"></i><span style="color:var(--fg)">${s.name}</span></span>`).join("") +
+      lg.innerHTML = spec.series.map((s) => `<span style="color:${s.color}"><i class="${spec.kind === "bar" ? "box" : s.dash ? "dash" : ""}"></i><span style="color:var(--fg)">${s.name}</span></span>` +
+          (s.neg && s.negName ? `<span style="color:${s.neg}"><i class="box"></i><span style="color:var(--fg)">${s.negName}</span></span>` : "")).join("") +
+        (spec.avgs ? `<span style="color:var(--fg)"><i></i><span>${spec.avgName || "Average"}</span></span>` : "") +
         (spec.notes && spec.notes.length ? `<span><i class="flag"></i><span>${spec.noteLegend || "Billing gap (see What we don't trust)"}</span></span>` : "") +
         (spec.shade ? `<span><i class="box" style="color:var(--p2-grid);border:1px solid var(--line)"></i><span>${spec.shade[2]}</span></span>` : "");
       lg.dataset.done = "1";
@@ -1092,7 +1357,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     }
     for (let v = spec.min; v <= spec.max + 1e-9; v += spec.step) {
       const yy = y(v);
-      h += `<line x1="${L}" x2="${W - R}" y1="${yy}" y2="${yy}" stroke="${v === spec.min ? "var(--p2-axis)" : "var(--p2-grid)"}" stroke-width="1"/>`;
+      h += `<line x1="${L}" x2="${W - R}" y1="${yy}" y2="${yy}" stroke="${Math.abs(v - Math.max(spec.min, 0)) < 1e-9 ? "var(--p2-axis)" : "var(--p2-grid)"}" stroke-width="1"/>`;
       h += `<text x="${L - 8}" y="${yy + 4.5}" text-anchor="end">${spec.yFmt(+v.toFixed(6))}</text>`;
     }
     const every = narrow ? 6 : 3;
@@ -1104,11 +1369,19 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       }
     });
     if (spec.kind === "bar") {
-      const s = spec.series[0], bw = Math.max(3, band - 4);
+      const s = spec.series[0], bw = Math.max(3, band - 4), y0 = y(Math.max(spec.min, 0));
       rows.forEach((r, i) => {
         const v = val(r, s.k); if (v === null) return;
-        const yt = y(v), hh = Math.max(0, T + ph - yt), rr = Math.min(4, hh / 2, bw / 2);
-        h += `<path d="M${x(i) - bw / 2},${T + ph} V${yt + rr} Q${x(i) - bw / 2},${yt} ${x(i) - bw / 2 + rr},${yt} H${x(i) + bw / 2 - rr} Q${x(i) + bw / 2},${yt} ${x(i) + bw / 2},${yt + rr} V${T + ph} Z" fill="${s.color}"/>`;
+        const yt = y(v), top = Math.min(yt, y0), hh = Math.abs(y0 - yt);
+        h += `<rect x="${x(i) - bw / 2}" y="${top}" width="${bw}" height="${hh}" rx="${Math.min(3, hh / 2, bw / 2)}" fill="${v < 0 && s.neg ? s.neg : s.color}"/>`;
+      });
+      (spec.avgs || []).forEach((a) => {  // average lines, one per period, labelled above
+        const i0 = rows.findIndex((r) => r[0] >= a.from), i1 = rows.map((r) => r[0] <= a.to).lastIndexOf(true);
+        if (i0 < 0 || i1 < 0) return;
+        const xa = L + band * i0 + 2, xb = L + band * (i1 + 1) - 2, ya = y(a.v);
+        h += `<line x1="${xa}" x2="${xb}" y1="${ya}" y2="${ya}" stroke="${a.color}" stroke-width="3.5" stroke-linecap="round"/>`;
+        const anc = a.anchor || "middle", lx = anc === "end" ? xb : anc === "start" ? xa : (xa + xb) / 2;
+        if (!narrow) h += `<text x="${lx}" y="${a.ly === undefined ? ya - 8 : y(a.ly)}" text-anchor="${anc}" style="fill:${a.color};font-weight:700;font-size:13px">${a.label}</text>`;
       });
     } else {
       spec.series.forEach((s) => {
@@ -1124,7 +1397,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       const v = val(rows[i], nt.k), yy = y(v);
       const anchor = i > N * 0.8 ? "end" : i < N * 0.15 ? "start" : "middle";
       h += `<g class="note"><circle cx="${x(i)}" cy="${yy}" r="6" fill="var(--c-orange)" stroke="var(--surface)" stroke-width="2"/>` +
-        `<text x="${x(i) + (anchor === "start" ? -6 : anchor === "end" ? 6 : 0)}" y="${yy - 12}" text-anchor="${anchor}">${narrow && nt.short ? nt.short : nt.text}</text></g>`;
+        `<text x="${x(i) + (anchor === "start" ? -6 : anchor === "end" ? 6 : 0)}" y="${nt.below ? yy + 24 : yy - 12}" text-anchor="${anchor}">${narrow && nt.short ? nt.short : nt.text}</text></g>`;
     });
     h += `<line class="p2-cross" x1="0" x2="0" y1="${T}" y2="${T + ph}" stroke="var(--muted)" stroke-dasharray="3 3" visibility="hidden"/>`;
     h += `<rect x="${L}" y="${T}" width="${pw}" height="${ph}" fill="transparent" class="p2-hit"/>`;
@@ -1148,27 +1421,24 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
 
   const C = { s1: "var(--s1)", s2: "var(--s2)", s3: "var(--s3)", s4: "var(--s4)" };
   const SPECS = [
-    { id: "flow", from: "2015-02", to: "2017-03", min: 0, max: 18, step: 3, yFmt: fmt.pct0, tipFmt: fmt.pct,
-      shade: ["2015-02", "2015-03", "Warm-up months (overstated)"],
-      notes: [{ m: "2015-06", k: "rp", text: "Jun 2015" }, { m: "2016-07", k: "rp", text: "Jul 2016" }], noteLegend: "Users returning after a billing gap",
-      series: [{ k: "np", name: "New, % of paying subscribers", color: C.s1 }, { k: "rp", name: "Reactivated, % of paying subscribers", color: C.s2 }],
-      tipExtra: (r) => `<div style="color:var(--muted)">Renewing: ${r[F.rnp].toFixed(1)}%</div>` },
-    { id: "churn", from: "2015-02", to: "2017-02", min: 0, max: 16, step: 2, yFmt: fmt.pct0, tipFmt: fmt.pct,
-      notes: [{ m: "2015-04", k: "c30", text: "Apr 2015: 13.9%", short: "13.9%" }, { m: "2016-03", k: "c30", text: "Mar 2016: 13.8%", short: "13.8%" }],
-      series: [{ k: "c30", name: "30-day window (main)", color: C.s1 }, { k: "c32", name: "32-day check", color: C.s2, dash: true }, { k: "c45", name: "45-day check", color: C.s3, dash: true }],
+    { id: "churn", from: "2015-02", to: "2017-02", min: 0, max: 16, step: 4, yFmt: fmt.pct0, tipFmt: fmt.pct,
+      notes: [{ m: "2015-04", k: "c30", text: "04-15: 13.9%", short: "13.9%" }, { m: "2016-03", k: "c30", text: "03-16: 13.8%", short: "13.8%" }],
+      series: [{ k: "c30", name: "Churn rate (30-day rule)", color: C.s1 }],
       tipExtra: (r) => `<div style="color:var(--muted)">${n0(r[F.pc])} of ${n0(r[F.som])} paying subscribers lost</div>` },
+    { id: "churnwin", from: "2015-02", to: "2017-02", min: 0, max: 16, step: 4, yFmt: fmt.pct0, tipFmt: fmt.pct,
+      series: [{ k: "c30", name: "30 days (main)", color: C.s1 }, { k: "c32", name: "32 days", color: C.s2, dash: true }, { k: "c45", name: "45 days", color: C.s3, dash: true }] },
     { id: "arpu", from: "2015-02", to: "2017-03", min: 80, max: 180, step: 20, yFmt: fmt.num, tipFmt: (v) => v.toFixed(1),
-      series: [{ k: "arpu", name: "ARPU (recognised revenue)", color: C.s1 }, { k: "ac", name: "Cash ARPU (money taken in)", color: C.s2, dash: true }] },
+      series: [{ k: "arpu", name: "ARPU", color: C.s1 }, { k: "ac", name: "Cash ARPU", color: C.s2, dash: true }] },
     { id: "rev", from: "2015-02", to: "2017-03", min: 0, max: 45, step: 5, yFmt: fmt.mAxis, tipFmt: fmt.m, kind: "bar",
-      series: [{ k: "rev", name: "Recognised revenue per month", color: C.s1 }] },
+      series: [{ k: "rev", name: "Revenue per month", color: C.s1 }] },
     { id: "disc", from: "2015-01", to: "2017-03", min: 0, max: 10, step: 2, yFmt: fmt.pct0, tipFmt: (v) => v.toFixed(2) + "%",
-      series: [{ k: "dp", name: "Paid purchases with a discount", color: C.s1 }, { k: "dd", name: "Discount depth (% of list price)", color: C.s2 }] },
+      series: [{ k: "dp", name: "Purchases discounted", color: C.s1 }, { k: "dd", name: "Discount depth", color: C.s2 }] },
     { id: "free", from: "2015-01", to: "2017-03", min: 0, max: 45000, step: 5000, yFmt: fmt.k, tipFmt: fmt.int, kind: "bar",
       series: [{ k: "fs", name: "Free-trial starts per month", color: C.s3 }] },
     { id: "trust", from: "2015-02", to: "2017-02", min: 0, max: 16, step: 2, yFmt: fmt.pct0, tipFmt: fmt.pct,
-      notes: [{ m: "2015-04", k: "c30", text: "Lost" }, { m: "2015-06", k: "rp", text: "Back" }, { m: "2016-03", k: "c30", text: "Lost" }, { m: "2016-07", k: "rp", text: "Back" }],
-      noteLegend: "Same users lost, then back",
-      series: [{ k: "c30", name: "Churn rate (30-day)", color: C.s1 }, { k: "rp", name: "Reactivated, % of paying subscribers", color: C.s2 }] },
+      notes: [{ m: "2015-04", k: "c30", text: "Left" }, { m: "2015-06", k: "rp", text: "Back" }, { m: "2016-03", k: "c30", text: "Left" }, { m: "2016-07", k: "rp", text: "Back" }],
+      noteLegend: "Same users left, then came back",
+      series: [{ k: "c30", name: "Churn rate", color: C.s1 }, { k: "rp", name: "Reactivated, % of paying", color: C.s2 }] },
   ];
   const drawAll = () => SPECS.forEach((s) => { const el = document.getElementById("p2-ch-" + s.id); if (el && el.clientWidth && el.dataset.w != el.clientWidth) { el.dataset.w = el.clientWidth; draw(s); } });
   SPECS.forEach((s) => draw(s));
@@ -1180,13 +1450,11 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     document.getElementById(id).innerHTML = `<thead><tr>${head.map((x) => `<th>${x}</th>`).join("")}</tr></thead><tbody>` +
       P2_DATA.map((r) => `<tr${flag && flag(r) ? ' class="flag"' : ""}>${cells(r).map((c) => `<td class="num">${c}</td>`).join("")}</tr>`).join("") + "</tbody>";
   };
-  tbl("p2-tb-flow", ["Month", "Paying subscribers", "New", "Reactivated", "Renewing", "New %", "Reactivated %", "Renewing %"],
-    (r) => [mLabel(r[0], true), n0(r[F.p]), n0(r[F.n]), n0(r[F.r]), n0(r[F.rn]), fmt.pct(r[F.np]), fmt.pct(r[F.rp]), fmt.pct(r[F.rnp])], (r) => r[0] <= "2015-03");
   tbl("p2-tb-churn", ["Month", "Paying on the 1st", "Lost (30-day)", "Churn 30-day", "Churn 32-day", "Churn 45-day"],
     (r) => [mLabel(r[0], true), n0(r[F.som]), r[F.pc] === null ? "n/a" : n0(r[F.pc]), fmt.pct(r[F.c30]), fmt.pct(r[F.c32]), fmt.pct(r[F.c45])],
     (r) => ["2015-01", "2015-04", "2016-03", "2017-03"].includes(r[0]));
   tbl("p2-tb-arpu", ["Month", "Recognised revenue", "ARPU", "Cash ARPU", "Paid purchases discounted", "Discount depth", "Free-trial starts"],
-    (r) => [mLabel(r[0], true), fmt.m(r[F.rev]), r[F.arpu].toFixed(1), r[F.ac].toFixed(1), r[F.dp].toFixed(2) + "%", r[F.dd].toFixed(2) + "%", n0(r[F.fs])], (r) => r[0] === "2015-01");
+    (r) => [mLabel(r[0], true), fmt.m(r[F.rev]), r[F.arpu].toFixed(1), r[F.ac].toFixed(1), r[F.dp].toFixed(2) + "%", r[F.dd].toFixed(2) + "%", n0(r[F.fs])], (r) => r[0] >= "2015-01" && r[0] <= "2015-10");
   })();
   </script>
 
@@ -1240,13 +1508,17 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <h1>3a · What Drives Churn</h1>
       <p class="cx-sub">Churn at each renewal, by plan length, payment method, auto-renew, channel, age band, city and tenure · Jan 2016 – Mar 2017</p>
     </div></header>
+
+    <div class="qa">
+    <p class="qa-q">Which factors matter most, and which only look like they matter because of confounding?</p>
+    <div class="cx-bottom qa-a">
+      <p><b>Answer:</b> Churn is about <b>how people pay</b> and <b>how new they are</b>, not who they are. Auto-renew and the first renewal matter most. Age, city and channel look important, but most of their gap disappears once we compare people with the same auto-renew setting and plan.</p>
+    </div>
+    </div>
     <div class="cx-kpis">
       <div class="card cx-kpi blue"><b>4.6%</b><h3>Churn per Renewal</h3><span>Of 3.0M paid renewals that came due</span></div>
       <div class="card cx-kpi orange"><b>9×</b><h3>Manual vs Auto-renew</h3><span>20.1% of manual payers leave · 2.3% with auto-renew</span></div>
       <div class="card cx-kpi grey"><b>16.5%</b><h3>First Renewal</h3><span>Leave at their first renewal · 3.8% after a year</span></div>
-    </div>
-    <div class="cx-bottom">
-      <p><b>Bottom line:</b> Churn is about <b>how people pay</b> and <b>how new they are</b>, not who they are. Auto-renew and the first renewal matter most. Age, city and channel look important, but most of their gap disappears once we compare people with the same auto-renew setting and plan.</p>
     </div>
 
     <div class="brief-ref sub-ref"><b>3a · Matter most</b><span>Which factors matter most</span></div>
@@ -1317,8 +1589,12 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <h1>3a · What We Would Act On</h1>
       <p class="cx-sub">Three moves aimed at the drivers that survive a fair comparison, and what we would leave alone</p>
     </div></header>
-    <div class="cx-bottom">
-      <p><b>Bottom line:</b> Fix the <b>payment</b> and the <b>first month</b>, not the audience. Together these three moves could keep up to <b>~13,000</b> more subscribers a year if each lands as estimated (about <b>4%</b> of today's 303,000 paying base).</p>
+
+    <div class="qa">
+    <p class="qa-q">What would we act on?</p>
+    <div class="cx-bottom qa-a">
+      <p><b>Answer:</b> Fix the <b>payment</b> and the <b>first month</b>, not the audience. Together these three moves could keep up to <b>~13,000</b> more subscribers a year if each lands as estimated (about <b>4%</b> of today's 303,000 paying base).</p>
+    </div>
     </div>
     <div class="p3-acts">
       <div class="card p3-act">
@@ -1556,16 +1832,20 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <img class="cx-logo" src="tune_logo.png" alt="Tune">
     </header>
 
+    <div class="qa">
+    <p class="qa-q">How do we test a discounted annual plan for 30-day subscribers at renewal?</p>
+    <div class="cx-bottom qa-a">
+      <p><b>Hypothesis:</b> offering "12 months for the price of 10" at renewal raises <b>12-month net revenue per subscriber</b>, mainly by locking in people who pay by hand: half of them are gone within a year</p>
+      <p><b>Risk:</b> auto-renew users already stay (97.9% renew each month). For them the discount may just hand money back. The test reads both groups separately.</p>
+    </div>
+    </div>
+
     <div class="cx-kpis">
       <div class="card cx-kpi blue"><b>233,800</b><h3>Eligible per Month</h3><span>Paid 30-day subscribers reaching expiry (Oct 2016 – Jan 2017); 10.1% pay by hand</span></div>
       <div class="card cx-kpi orange"><b>1 month</b><h3>Enrolment Needed</h3><span>~117,000 users per group; detects a 0.5% revenue change overall, 2.5% for people who pay by hand</span></div>
       <div class="card cx-kpi grey"><b>Month 12</b><h3>Final Read</h3><span>Annual cash arrives on day 1, so early revenue looks good by default</span></div>
     </div>
 
-    <div class="cx-bottom">
-      <p><b>Hypothesis:</b> offering "12 months for the price of 10" at renewal raises <b>12-month net revenue per subscriber</b>, mainly by locking in people who pay by hand: half of them are gone within a year</p>
-      <p><b>Risk:</b> auto-renew users already stay (97.9% renew each month). For them the discount may just hand money back. The test reads both groups separately.</p>
-    </div>
 
     <div class="cx-two">
       <div class="sub-col"><div class="brief-ref sub-ref"><b>5a · Unit and eligibility</b><span>Unit of randomization and eligibility</span></div>
@@ -1698,16 +1978,20 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
       <img class="cx-logo" src="tune_logo.png" alt="Tune">
     </header>
 
+    <div class="qa">
+    <p class="qa-q">Which AI tools did we use, for what, and where was the AI wrong?</p>
+    <div class="cx-bottom qa-a">
+      <p><b>Answer:</b> AI wrote most of the SQL and text; I set the questions, the rules and the checks. Every number in the hand-in is computed by SQL from the raw files, never typed by hand.</p>
+      <p><b>Main rule:</b> one AI can check another, but <b>the data decides</b>. No AI claim went in before a DuckDB query confirmed it.</p>
+    </div>
+    </div>
+
     <div class="cx-kpis">
       <div class="card cx-kpi blue"><b>9</b><h3>Confirmed AI Mistakes</h3><span>3 from Gemini, 6 from Claude, each one changed the work</span></div>
       <div class="card cx-kpi orange"><b>6 of 9</b><h3>Caught by Me</h3><span>Numbers or rankings that didn't make sense, pushed back on</span></div>
       <div class="card cx-kpi grey"><b>3 of 9</b><h3>Caught by Checking the Data</h3><span>Claude re-ran the claim in DuckDB and the data said no</span></div>
     </div>
 
-    <div class="cx-bottom">
-      <p><b>Bottom line:</b> AI wrote most of the SQL and text; I set the questions, the rules and the checks. Every number in the hand-in is computed by SQL from the raw files, never typed by hand.</p>
-      <p><b>Main rule:</b> one AI can check another, but <b>the data decides</b>. No AI claim went in before a DuckDB query confirmed it.</p>
-    </div>
 
     <div class="brief-ref sub-ref"><b>5b · Tools</b><span>Which tools were used, and for what</span></div>
     <div class="card cx-panel">
@@ -1854,9 +2138,11 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
       <h1>4 · Executive summary</h1>
       <p class="lede">For the CEO and the Head of Growth. The four leadership questions, answered as far as the data allows. Every number comes from Part 1 (data), Part 2 (metrics) and Part 3 (churn deep dive).</p>
     </div>
-    <div class="card p4-bl">
-      <div class="label">Bottom line</div>
-      <p><b>The subscriber base is healthy but growth is slowing</b> Paying subscribers grew <b>+19%</b> in the last year (from +52% the year before), and monthly churn fell to about <b>3.6%</b>. The risk is fewer new payers and a slowly falling revenue per user. <b>Churn is about how people pay and how new they are, not who they are:</b> manual payers churn 20.1% per renewal vs 2.3% on auto-renew, and the first renewal loses 16.5% vs ~4% later.</p>
+    <div class="qa">
+    <p class="qa-q">How healthy is the base, what drives churn, did trials and prices work, and should we push annual plans?</p>
+    <div class="card p4-bl qa-a">
+      <p><b>Answer:</b> <b>The subscriber base is healthy but growth is slowing</b> Paying subscribers grew <b>+19%</b> in the last year (from +52% the year before), and monthly churn fell to about <b>3.6%</b>. The risk is fewer new payers and a slowly falling revenue per user. <b>Churn is about how people pay and how new they are, not who they are:</b> manual payers churn 20.1% per renewal vs 2.3% on auto-renew, and the first renewal loses 16.5% vs ~4% later.</p>
+    </div>
     </div>
     <div class="p4-kpis">
       <div class="card p4-kpi" style="--k:#2563eb"><b>302,950</b><span>paying subscribers, Mar 2017 (+130% since Jan 2015)</span></div>
@@ -1927,7 +2213,11 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
   <section class="view p4" id="view-p4-recs" hidden>
     <div style="display:grid;gap:6px">
       <h1>4 · Three recommendations</h1>
-      <p class="lede">Each with the impact we expect, how sure we are, and what would change our mind. Together: up to ~13,000 subscribers kept a year (~4% of the 303,000 paying base), if each lands as estimated.</p>
+      <p class="lede">Each with the impact we expect, how sure we are, and what would change our mind</p>
+    </div>
+    <div class="qa">
+    <p class="qa-q">Which three moves do we recommend, with impact, confidence and what would change our mind?</p>
+    <div class="cx-bottom qa-a"><p><b>Answer:</b> Up to ~13,000 subscribers kept a year (~4% of the 303,000 paying base), if each lands as estimated</p></div>
     </div>
     <div class="p4-recs">
       <div class="card p4-rec" style="--rc:#2563eb">
@@ -1973,6 +2263,9 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
     <div style="display:grid;gap:6px">
       <h1>4 · What we can't answer yet</h1>
       <p class="lede">Where the data stops, and what it would take to close each gap</p>
+    </div>
+    <div class="qa">
+    <p class="qa-q">Which questions can't we answer yet, and what would it take?</p>
     </div>
     <div class="card scroll"><table class="grid">
       <thead><tr><th>Question</th><th>Status</th><th>What is missing</th><th>What it would take</th></tr></thead>
@@ -2093,7 +2386,7 @@ const ISSUES = { raw_users: "U1-U11: age 0 or out of range, gender missing, regi
 const GROUPS = {
   intro: [["task", "Task & status"], ["overview", "Overview"]],
   p1: [["dq", "1a · Data quality"], ["lineage", "1b.1 · Clean layer & data model"], ["explorer", "1b.2 · Explorer & SQL"], ["churn", "1c · Churn check"]],
-  p2: [["p2-active", "Active subscribers"], ["p2-flow", "New · renewing · reactivated"], ["p2-churn", "Monthly churn"], ["p2-arpu", "ARPU & discounts"], ["p2-trust", "What we don't trust"]],
+  p2: [["p2-active", "2.1 · Active subscribers"], ["p2-flow", "2.2 · New · renewing · reactivated"], ["p2-churn", "2.3 · Monthly churn"], ["p2-arpu", "2.4 · ARPU & discounts"], ["p2-trust", "2.5 · What we don't trust"]],
   p3: [["p3a", "3a · Which factors matter"], ["p3a-act", "3a · What we would act on"]],
   p4: [["p4", "4.1 · Four questions"], ["p4-recs", "4.2 · Three recommendations"], ["p4-gaps", "4.3 · What we can't answer yet"]],
   p5: [["p5a", "5a · Annual-plan test"], ["p5b", "5b · AI process log"]],
@@ -2573,6 +2866,78 @@ a.brand:hover .logo{transform:translateY(-1px);box-shadow:0 2px 4px rgba(20,35,5
 @media (max-width:640px){.brand .logo{padding:5px 10px}.brand .logo img{height:40px!important}.brand-t{padding-left:12px}}
 @media (prefers-reduced-motion:reduce){a.brand .logo{transition:none}a.brand:hover .logo{transform:none}}
 </style>
+<style>
+/* ===== Design QA pass: one look for every tab (header card, question + answer, number cards, titles, tables, folds). 2.1 (.p21) excluded ===== */
+.view[data-part="intro"]:not(.p21){--vicon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm0 8v5m0-8h.01'/%3E%3C/svg%3E")}
+.view[data-part="p1"]:not(.p21){--vicon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cellipse cx='12' cy='6' rx='7' ry='3'/%3E%3Cpath d='M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6'/%3E%3C/svg%3E")}
+.view[data-part="p2"]:not(.p21){--vicon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20h16M7 16v-5M12 16V7M17 16v-8'/%3E%3C/svg%3E")}
+.view[data-part="p3"]:not(.p21){--vicon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='6'/%3E%3Cpath d='m20 20-4.5-4.5'/%3E%3C/svg%3E")}
+.view[data-part="p4"]:not(.p21){--vicon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 3h7l5 5v13H7zM14 3v5h5M10 13h6M10 17h6'/%3E%3C/svg%3E")}
+.view[data-part="p5"]:not(.p21){--vicon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 3h6M10 3v6L5 19a1.5 1.5 0 0 0 1.3 2h11.4A1.5 1.5 0 0 0 19 19l-5-10V3M8 15h8'/%3E%3C/svg%3E")}
+/* sub-tabs stay on one line */
+.subnav-in{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.subnav-in::-webkit-scrollbar{display:none}
+.stab{padding:11px 9px;white-space:nowrap;font-size:15px!important}
+/* same page width on every tab */
+main>.view:not(.p21){max-width:1280px;margin-inline:auto}
+.p4{max-width:1280px}
+/* header card: brief tag, icon, title, one-line subtitle */
+.vhead,.p2x .p2x-head,.p22 .p22-head{padding:24px 30px;display:grid;gap:10px;position:relative;overflow:hidden;background:linear-gradient(120deg,color-mix(in srgb,var(--accent-soft) 55%,var(--surface)),var(--surface) 60%)}
+.vhead::after,.p2x .p2x-head::after,.p22 .p22-head::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,#2563eb,#16c4e0);opacity:.75}
+.vtag,.p2x .p2x-tag,.p22 .p22-tag{justify-self:start;background:var(--accent-soft);color:var(--navy);font-weight:700;font-size:var(--fs-small);border-radius:999px;padding:5px 14px;border:1px solid color-mix(in srgb,var(--accent) 25%,transparent)}
+.vhead h1,.p2x .p2x-head h1,.p22 .p22-head h1{font-size:var(--fs-title);display:flex;align-items:center;gap:14px}
+.vhead h1::before,.p2x .p2x-head h1::before,.p22 .p22-head h1::before{content:"";flex:none;width:40px;height:40px;border-radius:12px;background:var(--accent-soft) var(--vicon) center/22px no-repeat;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 22%,transparent)}
+.vhead>p,.p2x .p2x-head>p,.p22 .p22-head>p{color:var(--muted);max-width:95ch;margin:0}
+.vhead .legend{margin-top:2px}
+/* question in bold, then the answer on light blue */
+.qa{display:grid;gap:10px}
+.qa-q{margin:0;font-size:var(--fs-h3);font-weight:700;color:var(--fg)}
+.qa-q::before,.p2x .p2x-q::before{content:"Q";display:inline-grid;place-items:center;width:24px;height:24px;margin-right:10px;border-radius:7px;background:var(--navy);color:var(--on-dark);font-size:var(--fs-small);vertical-align:2px}
+.qa-a,.cx-bottom,.p4-bl,.p22 .p22-qa,.p2x .p2x-a{background:var(--c-note-bg,#e9f6fd)!important;border:1px solid color-mix(in srgb,var(--accent) 25%,transparent)!important;border-left:6px solid var(--navy)!important;border-radius:10px!important;padding:18px 24px!important;line-height:1.7!important;box-shadow:none}
+.qa-a b,.cx-bottom b{color:var(--navy)}
+.qa-a p,.cx-bottom p{margin:0;max-width:110ch}
+.cx-bottom{display:grid;gap:10px}
+.view:not(.p21) .qa{max-width:1100px;width:100%;margin-inline:auto}
+/* number cards: one style (2.4 style) */
+.cx-kpis,.p4-kpis{max-width:1100px;width:100%;margin-inline:auto;gap:16px}
+.cx-kpi,.p4-kpi{padding:20px 14px!important;text-align:center;display:grid;gap:6px;align-content:start;border-top:5px solid var(--c-blue)!important}
+.cx-kpi.orange{border-top-color:var(--c-orange)!important}.cx-kpi.grey{border-top-color:var(--c-grey)!important}
+.p4-kpi{border-top-color:var(--k)!important}
+.cx-kpi h3{order:-1;font-size:var(--fs-small)!important;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)!important}
+.cx-kpi b,.p4-kpi b,.p2x .p2x-kpi b{font-size:var(--fs-figure)!important;line-height:1.15;color:var(--navy)!important;font-variant-numeric:tabular-nums}
+.cx-kpi span,.p4-kpi span{font-size:var(--fs-table)!important;color:var(--muted)}
+.cx-kpi,.p4-kpi,.p2x .p2x-kpi{transition:transform .15s,box-shadow .15s}
+.cx-kpi:hover,.p4-kpi:hover,.p2x .p2x-kpi:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(20,35,58,.08)}
+/* cards: soft shadow, same corners */
+.view:not(.p21) .card{border-radius:12px;box-shadow:0 1px 2px rgba(20,35,58,.04),0 4px 14px rgba(20,35,58,.04)}
+/* section titles: one size, one colour, a short accent bar and a subtle line under it */
+.view:not(.p21) :is(.lin-sec>h2,.cx-h,.p2-ct,.p3-ct,.p5 .p5-t,.p3-act h2,.p3-no h2,.p3-lim h2,.p22-card h2,.p4-rec h2,.p4-fig h2){font-size:var(--fs-h2)!important;color:var(--navy)!important;display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.view:not(.p21) :is(.lin-sec>h2,.cx-h,.p3-ct,.p5 .p5-t,.p3-act h2,.p3-no h2,.p3-lim h2,.p22-card h2,.p4-fig h2)::before,.p2x .p2-ct::before{content:"";display:block!important;width:6px;height:22px;border-radius:3px;background:linear-gradient(180deg,#2563eb,#16c4e0);flex:none}
+.p3-act h2,.p4-rec h2{border-bottom:0!important;padding-bottom:0!important}
+.p3-act,.p4-rec{border-left-color:var(--c-blue,#2e6db4)!important}
+/* subtle divider between the brief sub-question blocks */
+.view:not(.p21) .sub-ref:not(.sub-col>.sub-ref){margin-top:18px;position:relative}
+.view:not(.p21) .sub-ref:not(.sub-col>.sub-ref)::before{content:"";position:absolute;left:0;right:-2000px;top:-14px;height:1px;background:linear-gradient(90deg,var(--line),transparent 60%)}
+.view:not(.p21) .sub-ref{overflow:visible}
+/* conclusion above each chart: green box (amber stays for warnings) */
+.p3-cc,.p5 .p5-so,.p4-fig .so,.p2-cc{border-left:5px solid #16a34a;background:color-mix(in srgb,#16a34a 8%,transparent);border-radius:8px;padding:12px 18px;line-height:1.6;color:var(--fg)!important;margin-top:0!important;max-width:none!important}
+/* tables: narrow, centred, same row height, same font */
+.view:not(.p21):not(#view-explorer) :is(table.grid,table.cx-tbl,table.cx-cm){margin-inline:auto;max-width:min(100%,1000px)!important;font-size:var(--fs-table)}
+.view:not(.p21):not(#view-explorer) :is(table.grid,table.cx-tbl,table.cx-cm) :is(th,td){height:44px;padding:6px 12px!important;line-height:1.35;vertical-align:middle}
+.view:not(.p21):not(#view-explorer) .card.scroll:has(>table){width:fit-content;max-width:100%;margin-inline:auto}
+.view:not(.p21):not(#view-explorer) .scroll:has(>table){display:block}
+.p2x table.p2x-key :is(th,td){height:44px!important}
+/* folds: one "+" marker, same title look everywhere */
+.view:not(.p21) details>summary{list-style:none}
+.view:not(.p21) details>summary::-webkit-details-marker{display:none}
+.view:not(.p21) details.fold>summary h2::before,.view:not(.p21) details.fold>summary h2::after{display:none!important;content:none!important}
+.view:not(.p21) details.fold>summary h2,.view:not(.p21) details>summary{font-size:var(--fs-h3)!important;color:var(--navy)!important;font-weight:700;border-bottom:0!important;padding-bottom:0}
+.view:not(.p21) details.card>summary:hover{color:var(--accent)!important}
+.view:not(.p21) details.card{transition:box-shadow .15s}
+.view:not(.p21) details.card:hover{box-shadow:0 6px 18px rgba(20,35,58,.07)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .vhead,:root:not([data-theme="light"]) .p2x .p2x-head,:root:not([data-theme="light"]) .p22 .p22-head{background:var(--surface)}}
+:root[data-theme="dark"] .vhead,:root[data-theme="dark"] .p2x .p2x-head,:root[data-theme="dark"] .p22 .p22-head{background:var(--surface)}
+@media (max-width:640px){.vhead,.p2x .p2x-head,.p22 .p22-head{padding:18px}.vhead h1::before,.p2x .p2x-head h1::before,.p22 .p22-head h1::before{width:34px;height:34px}}
+</style>
 <script>
 /* Which brief item each section answers: shown as a tag at the top of the section */
 (() => {
@@ -2596,13 +2961,27 @@ a.brand:hover .logo{transform:translateY(-1px);box-shadow:0 2px 4px rgba(20,35,5
     p5a: ["Brief 5a", "Annual-plan promotion test"],
     p5b: ["Brief 5b", "AI process log"],
   };
+  const PART = (id) => id === "task" || id === "overview" ? "intro" : id === "dq" || id === "lineage" || id === "explorer" || id === "churn" ? "p1" : id.slice(0, 2);
   for (const [id, [k, t]] of Object.entries(BRIEF)) {
     const v = document.getElementById("view-" + id);
-    if (!v || v.querySelector(":scope > .brief-ref") || v.dataset.ownBrief) continue;
-    const tag = document.createElement("div");
-    tag.className = "brief-ref";
-    tag.innerHTML = `<b>${k}</b><span>${t}</span>`;
-    v.prepend(tag);
+    if (!v) continue;
+    v.dataset.part = PART(id);
+    if (v.querySelector(":scope > .brief-ref:not(.sub-ref)") || v.dataset.ownBrief) continue;
+    // the tab's own title block: the 1c/3/5 header, or the first block holding the h1
+    const head = v.querySelector(":scope > header.cx-head") || [...v.children].find((c) => c.matches("div") && c.querySelector(":scope > h1"));
+    if (head) {
+      const card = document.createElement("div");
+      card.className = "card vhead";
+      card.innerHTML = `<span class="vtag">${k} · ${t}</span>`;
+      head.before(card);
+      card.append(...head.querySelectorAll(":scope > h1, :scope > p, :scope > div > h1, :scope > div > p, :scope > .legend"));
+      head.remove();
+    } else {
+      const tag = document.createElement("div");
+      tag.className = "brief-ref";
+      tag.innerHTML = `<b>${k}</b><span>${t}</span>`;
+      v.prepend(tag);
+    }
   }
 })();
 </script>
