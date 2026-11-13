@@ -10,6 +10,8 @@ Churn is our own rule from 1b/1c, not billing's `churn_labels.csv`.
 |---|---|
 | **Paying subscriber** (month m) | User with ≥ 1 day of **paid** access in m (`fct_user_month.is_active_paid = 1`). Free-trial and unpriced free days don't count. |
 | Active user (any) | ≥ 1 day of any access in m, free included (`is_active = 1`). Shown only for contrast. |
+| % of active users who pay | Paying subscribers ÷ active users (any), same month. |
+| Monthly growth | Paying subscribers in m ÷ paying subscribers in m − 1, minus 1. Yearly average = plain average of that year's months (01-15 has no earlier month). |
 | **New** | Paying subscriber whose first-ever episode starts in m (`is_new = 1`). |
 | **Reactivated** | Paying subscriber whose later episode starts in m: came back > 30 days after the previous expiry (`is_reactivated = 1`). |
 | **Renewing** | Every other paying subscriber: renewed, or still inside a multi-month / annual plan. New + reactivated + renewing = paying subscribers (checked). |
@@ -31,7 +33,12 @@ Churn is our own rule from 1b/1c, not billing's `churn_labels.csv`.
 | Monthly churn rate (30-day, average) | 5.2% | 5.0% | 3.6% |
 | ARPU (recognised, average) | 133.4 | 122.6 | 119.6 |
 
-- **Active subscribers:** 131,441 paying in Jan 2015 → 302,950 in Mar 2017 (+130%). Year on year, Mar 2016 → Mar 2017: +19% (254,318 → 302,950), down from +52% the year before. Growth is real but slowing.
+- **Active subscribers (2.1):**
+  - *03-17 snapshot:* All Active 305,617 (+6% vs last-12-month average 288,920, +25% vs 27-month average 245,046). Paid Active 302,950 (+9% vs 277,960, +29% vs 234,040). Paid Active % 99.1% (96.4% last 12m, 95.7% all 27m).
+  - *Concern 1, are subscribers paying? Ruled out.* 92%–99% of active users pay in normal months. Free-trial waves pulled the share down for one month each: 81.1% in 06-15 (41,683 trial users, 12.9% later paid), 86.2% in 11-16 (46,264, 4.9% paid by 03-17).
+  - *Concern 2, is growth slowing? Confirmed.* Average MoM growth of Paid Active: 5.6% (2015), 2.0% (2016), 0.8% (01-17 – 03-17). Year on year: +52.4% (03-15 → 03-16), +19.1% (03-16 → 03-17).
+  - *04-16 – 06-16 dip:* paid users on payment method 39 fell from 18,813 (03-16) to 3,085 (04-16) and 1,844 (06-16), back to 18,906 in 07-16: a billing pause, not loss (see *What we don't trust*).
+  - *Why 302,950 and not 306,957:* the higher number counts raw transaction rows (transaction date to expiry, non-cancel rows). We count on the clean data, where a cancellation ends access and overlapping plans count once.
 - **New vs renewing vs reactivated:** renewing users are 94–96% of the base since 2016. New paying users fell from 3.9% of the base (2016) to 2.9% (2017); 2015's 6.9% is overstated by the warm-up (see below). In absolute terms 122,110 new paying users in 2016, about 8,600 a month in 2017.
 - **Monthly churn:** typically 3–5%. Feb 2015 – Feb 2016 averages 4.5% (without Apr 2015); Apr 2016 – Feb 2017 averages 3.9%; the last 6 months 3.1–4.6%. The 32- and 45-day windows move the level by 0.1–0.5 points, except December (see below).
 - **ARPU:** 114–141 a month, slowly down from ~133 (2015) to ~120 (2017). Monthly recognised revenue grew from 27.0M (Aug 2015) to 40.4M (Mar 2017). Annual plans are 10.7% of all revenue, so cash and recognised ARPU stay close.

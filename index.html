@@ -623,28 +623,295 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
   .p2 details.card > div{padding:0 24px 24px;display:grid;gap:10px}
   .p2 tr.flag td{background:var(--c-bad-bg)}
   </style>
-  <section class="view cx p2" id="view-p2-active" hidden>
-    <header class="cx-head"><div>
-      <h1>2 · Active Subscribers</h1>
-      <p class="cx-sub">Paying subscribers each month, Jan 2015 – Mar 2017 (<span class="mono">fct_user_month</span>)</p>
-    </div></header>
-    <div class="cx-kpis">
-      <div class="card cx-kpi blue"><b>302,950</b><h3>Paying Subscribers</h3><span>March 2017</span></div>
-      <div class="card cx-kpi blue"><b>+130%</b><h3>Since January 2015</h3><span>From 131,441 paying subscribers</span></div>
-      <div class="card cx-kpi orange"><b>+19%</b><h3>Last 12 Months</h3><span>Mar 2016 → Mar 2017 · the year before: +52%</span></div>
+  <section class="view cx p2 p21" id="view-p2-active" data-own-brief="1" hidden>
+    <style>
+    .p21{--g:#16a34a;--r:#dc2626;--am:#b45309;--bar:#bfe6fb;--bar-hi:#0b84c6;--ln1:#1e3a8a;--ln2:#0d9488;--pos:#93c5fd;--neg:#fca5a5;--shade:#fee2e2;--y15:#1e3a8a;--y16:#0e9fb5;--y17:#dc2626}
+    @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .p21{--g:#4ade80;--r:#f87171;--am:#fbbf24;--bar:#1d3b57;--bar-hi:#38a8e8;--ln1:#a9cbef;--ln2:#2dd4bf;--pos:#3b6fb0;--neg:#b45454;--shade:#3a1c1a;--y15:#a9cbef;--y16:#2dd4bf;--y17:#f87171}}
+    :root[data-theme="dark"] .p21{--g:#4ade80;--r:#f87171;--am:#fbbf24;--bar:#1d3b57;--bar-hi:#38a8e8;--ln1:#a9cbef;--ln2:#2dd4bf;--pos:#3b6fb0;--neg:#b45454;--shade:#3a1c1a;--y15:#a9cbef;--y16:#2dd4bf;--y17:#f87171}
+    .p21-head{padding:26px 30px;display:grid;gap:18px;background:linear-gradient(120deg,var(--surface) 0%,var(--surface) 55%,color-mix(in srgb,var(--accent) 10%,var(--surface)) 100%)}
+    .p21-head-top{display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .p21-head-txt{display:grid;gap:12px;min-width:0}
+    .p21-logo{height:76px;width:auto;flex:none;background:#fff;border-radius:16px;padding:10px 16px;box-shadow:0 2px 4px rgba(20,35,58,.06),0 10px 26px rgba(37,99,235,.16)}
+    .p21-qa{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+    .p21-q{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;text-decoration:none;color:var(--fg);border:1px solid color-mix(in srgb,var(--g) 35%,transparent);background:color-mix(in srgb,var(--g) 8%,var(--surface));transition:transform .15s,box-shadow .15s}
+    .p21-q:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(20,35,58,.1)}
+    .p21-q.warn{border-color:color-mix(in srgb,var(--am) 40%,transparent);background:color-mix(in srgb,var(--am) 8%,var(--surface))}
+    .p21 .qn{flex:none;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--navy);color:var(--on-dark);font-weight:800;font-size:13px}
+    .p21-q .qt{font-weight:600;flex:1}
+    .p21-q .qa-ans{display:inline-flex;align-items:center;gap:7px;font-weight:800;color:var(--g);white-space:nowrap}
+    .p21-q.warn .qa-ans{color:var(--am)}
+    .p21 .ic{flex:none;display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--g);color:#fff;font-weight:900;font-size:13px}
+    .p21 .warn .ic{background:var(--am)}
+    .p21-qh{display:flex;align-items:center;gap:12px}
+    .p21-card{scroll-margin-top:210px}
+    .p21-qh .qn.warn{background:var(--am)}
+    .kic{justify-self:center;display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:color-mix(in srgb,var(--g) 13%,transparent);color:var(--g)}
+    .p21-kpi.bad .kic{background:color-mix(in srgb,var(--r) 12%,transparent);color:var(--r)}
+    .kic svg,.bic svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .p21-bottom{display:flex;gap:14px;align-items:flex-start}
+    .bic{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--navy);color:var(--on-dark);margin-top:2px}
+    .p21-concl{display:flex;gap:12px;align-items:flex-start}
+    .p21-concl .ic{margin-top:1px}
+    .p21-steps{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
+    .p21-steps div{display:grid;justify-items:center;gap:2px;min-width:120px;padding:10px 16px;border-radius:12px;background:var(--code-bg);border:1px solid var(--line)}
+    .p21-steps div span{font-size:var(--fs-small);color:var(--muted);font-weight:600}
+    .p21-steps div b{font-size:24px;color:var(--navy);line-height:1.2}
+    .p21-steps div i{font-style:normal;font-size:var(--fs-label);color:var(--muted)}
+    .p21-steps div.hot{background:color-mix(in srgb,var(--r) 9%,var(--surface));border-color:color-mix(in srgb,var(--r) 35%,transparent)}
+    .p21-steps div.hot b{color:var(--r)}
+    .p21-steps em{font-style:normal;font-size:22px;color:var(--muted);font-weight:700}
+    .p21-kpi{transition:transform .15s,box-shadow .15s}
+    .p21-kpi:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(20,35,58,.1)}
+    @media (max-width:640px){.p21-head-top{flex-direction:column-reverse;align-items:flex-start}.p21-logo{height:58px}.p21-q{flex-wrap:wrap}.p21-steps em{display:none}}
+    .p21-tag{justify-self:start;background:var(--accent-soft);color:var(--navy);font-weight:700;font-size:var(--fs-small);border-radius:999px;padding:5px 14px}
+    .p21-head h1{font-size:var(--fs-title)}
+    .p21-head p{color:var(--muted)}
+    .p21-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}
+    .p21-kpi{padding:20px 14px;text-align:center;display:grid;gap:6px;align-content:start;border-top:5px solid var(--g)}
+    .p21-kpi.bad{border-top-color:var(--r)}
+    .p21-kpi h3{font-size:var(--fs-small);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+    .p21-kpi .per{font-size:var(--fs-small);color:var(--muted)}
+    .p21-kpi b{font-size:var(--fs-figure);line-height:1.15;color:var(--navy);font-variant-numeric:tabular-nums}
+    .p21-kpi .cmp{font-size:var(--fs-table);line-height:1.5}
+    .p21-kpi .up{color:var(--g);font-weight:700}.p21-kpi .dn{color:var(--r);font-weight:700}
+    .p21-bottom{background:var(--c-note-bg);border:1px solid color-mix(in srgb,var(--accent) 25%,transparent);border-left:6px solid var(--navy);border-radius:10px;padding:18px 24px;line-height:1.7}
+    .p21-bottom b.k{color:var(--navy)}
+    .p21 .gp{color:var(--g);font-weight:700}.p21 .rd{color:var(--r);font-weight:700}.p21 .nv{color:var(--navy);font-weight:700}
+    .p21-fold{padding:0}
+    .p21-fold summary{cursor:pointer;padding:18px 24px;font-size:var(--fs-h3);font-weight:700;color:var(--navy)}
+    .p21-fold ul{margin:0;padding:0 24px 20px 44px;display:grid;gap:8px;line-height:1.6}
+    .p21-card{padding:24px 28px;display:grid;gap:14px;min-width:0}
+    .p21-card h2{font-size:var(--fs-h2)}
+    .p21-concl{border-left:5px solid var(--g);background:color-mix(in srgb,var(--g) 9%,transparent);border-radius:8px;padding:12px 18px;line-height:1.6}
+    .p21-concl b{color:var(--g)}
+    .p21-concl.warn{border-left-color:var(--am);background:color-mix(in srgb,var(--am) 9%,transparent);color:var(--am)}
+    .p21-concl.warn b{color:var(--am)}
+    .p21-lg{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 22px;font-size:var(--fs-table)}
+    .p21-lg span{display:inline-flex;align-items:center;gap:8px}
+    .p21-lg i{display:inline-block;width:22px;height:0;border-top:3px solid}
+    .p21-lg i.box{width:16px;height:12px;border:0;border-radius:2px}
+    .p21-lg i.dash{border-top-style:dashed}
+    .p21-plot{position:relative;width:100%;max-width:760px;margin:0 auto}
+    .p21-plot svg{display:block;width:100%;overflow:visible}
+    .p21-plot text{font-family:var(--font);font-size:12.5px;fill:var(--muted)}
+    .p21-foot{font-size:var(--fs-small);color:var(--muted)}
+    .p21-key{max-width:1000px;margin:0 auto}
+    .p21-key th{background:var(--navy);color:var(--on-dark)}
+    .p21-key td{text-align:center;font-variant-numeric:tabular-nums}
+    .p21-key td.m{font-weight:700;background:var(--code-bg)}
+    .p21-key td.m39{background:var(--accent-soft);color:var(--navy);font-weight:600}
+    .p21-key td.ok{background:var(--c-ok-bg);color:var(--c-ok)}
+    .p21-key td.am{background:var(--warn-soft);color:var(--warn);font-weight:700}
+    .p21-key td.bd{background:var(--c-bad-bg);color:var(--c-bad);font-weight:700}
+    .p21-key td.gd{background:var(--c-ok-bg);color:var(--c-ok);font-weight:700}
+    .p21-tip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:var(--fs-small);box-shadow:0 4px 14px rgba(20,35,58,.12);white-space:nowrap;z-index:2}
+    .p21-tip b{display:block;color:var(--navy)}
+    </style>
+
+    <div class="card p21-head">
+      <div class="p21-head-top">
+        <div class="p21-head-txt">
+          <span class="p21-tag">Brief 2.1 · Active Subscribers Over Time</span>
+          <h1>2.1 · Active Subscribers — Quality, Paying Share &amp; Growth Deceleration</h1>
+          <p>Validating both leadership concerns: (1) Are subscribers truly paying? (2) Is nominal growth masking a slowdown?</p>
+        </div>
+        <img class="p21-logo" src="tune_logo.png" alt="Tune">
+      </div>
+      <div class="p21-qa">
+        <a class="p21-q ok" href="#p21-c1" data-scroll="p21-c1"><span class="qn">Q1</span><span class="qt">Are subscribers truly paying?</span><span class="qa-ans"><span class="ic">✓</span>Yes · 99.1% pay</span></a>
+        <a class="p21-q warn" href="#p21-c2" data-scroll="p21-c2"><span class="qn">Q2</span><span class="qt">Is growth slowing down?</span><span class="qa-ans"><span class="ic">!</span>Yes · 5.6% → 0.8% a month</span></a>
+      </div>
     </div>
-    <div class="cx-bottom">
-      <p><b>Bottom line:</b> The paying base more than doubled in 27 months, but growth is slowing: <b>+52%</b> in the year to March 2016, <b>+19%</b> in the year to March 2017</p>
+
+    <div class="p21-kpis">
+      <div class="card p21-kpi"><span class="kic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-7 9a7 7 0 0 1 14 0M17 11a3 3 0 1 0 0-6M22 20a6 6 0 0 0-4-5.6"/></svg></span><h3>All Active Subscribers</h3><span class="per">03-17</span><b>305,617</b>
+        <span class="cmp"><span class="up">↑ +6%</span> vs last 12m<br>(288,920)<br><span class="up">↑ +25%</span> vs all 27m<br>(245,046)</span></div>
+      <div class="card p21-kpi"><span class="kic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg></span><h3>Paid Active Subscribers</h3><span class="per">03-17</span><b>302,950</b>
+        <span class="cmp"><span class="up">↑ +9%</span> vs last 12m<br>(277,960)<br><span class="up">↑ +29%</span> vs all 27m<br>(234,040)</span></div>
+      <div class="card p21-kpi"><span class="kic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 5 5 19"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></svg></span><h3>Paid Active %</h3><span class="per">03-17</span><b>99.1%</b>
+        <span class="cmp"><span class="up">↑ +3%</span> vs last 12m<br>(96.4%)<br><span class="up">↑ +4%</span> vs all 27m<br>(95.7%)</span></div>
+      <div class="card p21-kpi bad"><span class="kic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7l6 6 4-4 8 8M21 11v6h-6"/></svg></span><h3>Avg Monthly Growth (Paid)</h3><span class="per">01-17 – 03-17 (3-mo avg)</span><b>0.8%/mo</b>
+        <span class="cmp"><span class="dn">↓ -49%</span> vs last 12m<br>(1.5%/mo)<br><span class="dn">↓ -77%</span> vs all 27m<br>(3.4%/mo)</span></div>
+      <div class="card p21-kpi bad"><span class="kic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></span><h3>Paid Active Annual Growth</h3><span class="per">03-16 → 03-17</span><b>19.1%</b>
+        <span class="cmp"><span class="dn">↓ -64%</span> vs 03-15 → 03-16<br>(52.4%)</span></div>
     </div>
-    <div class="card p2-chart-card">
-      <h2 class="p2-ct">Paying subscribers keep growing, at a slower pace</h2>
-      <p class="p2-cc">The base climbs almost every month. The dip in spring 2016 and the jump in July 2016 are the <b>same ~16,000 users</b> of one payment provider leaving and coming back (see <i>What we don't trust</i>). Free-trial waves add up to <b>46,000</b> non-paying users on top, so we count paying subscribers only.</p>
-      <div class="p2-legend" id="p2-lg-active"></div>
-      <div class="p2-plot" id="p2-ch-active"></div>
+
+    <div class="p21-bottom"><span class="bic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg></span><div><b class="k">Bottom Line:</b> Paid Active reached <span class="nv">302,950</span> (<span class="gp">+9.0%</span> vs last 12m) with <span class="gp">99.1%</span> paying, confirming genuine paid growth. However, Paid Active growth slowed from <span class="gp">+52.4%</span> in Year 1 to <span class="rd">+19.1%</span> in Year 2 (and to <span class="rd">+0.8%/mo</span> in 01-17 – 03-17), signaling a plateau</div></div>
+
+    <details class="card p21-fold"><summary>+ Metric Definitions</summary><ul>
+      <li><b>All Active Subscribers:</b> Distinct <span class="mono">user_id</span> with ≥1 day of access (paid or free) in the month, on the clean data (<span class="mono">is_active = 1</span>)</li>
+      <li><b>Paid Active Subscribers:</b> Distinct <span class="mono">user_id</span> with ≥1 day of paid access in the month (<span class="mono">is_active_paid = 1</span>, <span class="mono">amount_paid &gt; 0</span>). A cancellation ends access, overlapping plans count once</li>
+      <li><b>Paid Active %:</b> Paid Active Subscribers ÷ All Active Subscribers in the same month</li>
+      <li><b>MoM % / YoY %:</b> Relative change in Paid Active vs. prior month (MoM) or same month prior year (YoY)</li>
+      <li><b>Delta %:</b> Always calculated as <span class="mono">(Current ÷ Baseline) − 1</span></li>
+    </ul></details>
+
+    <div class="card p21-card" id="p21-c1">
+      <h2 class="p21-qh"><span class="qn">Q1</span>Concern 1: Are Subscribers Actually Paying?</h2>
+      <div class="p21-concl"><span class="ic">✓</span><div><b>Conclusion: Concern ruled out.</b> 92%–99% of active subscribers are genuine paying users in normal months; the two free-trial spikes only lasted one month each and did not inflate the underlying paying trend</div></div>
+      <div class="p21-lg"><span><i class="box" style="background:var(--bar)"></i>Paid Active %</span><span><i style="border-color:var(--ln1)"></i>Paid Active Subscribers</span><span><i class="dash" style="border-color:var(--ln2)"></i>All Active Subscribers (incl. Free)</span></div>
+      <div class="p21-plot" id="p21-ch1"></div>
+      <p class="p21-foot">*04-16 – 06-16 dip is a temporary Payment Method 39 billing pause — see Technical Note below</p>
     </div>
-    <div class="p2-def"><b>Definition</b> A <b>paying subscriber</b> in a month = a user with at least one day of <b>paid</b> access in that month (<span class="mono">is_active_paid = 1</span>). Free-trial days don't count. The dashed line also counts free days (<span class="mono">is_active = 1</span>)</div>
-    <details class="card lin-sec fold"><summary><h2>+ Monthly numbers</h2></summary><div class="fold-in"><div class="scroll"><table class="grid" id="p2-tb-active"></table></div></div></details>
+
+    <div class="card p21-card" id="p21-c2">
+      <h2 class="p21-qh"><span class="qn warn">Q2</span>Concern 2: Monthly Growth Rate (MoM %)</h2>
+      <div class="p21-concl warn"><span class="ic">!</span><div><b>Conclusion: Concern confirmed.</b> Monthly growth slowed from +5.6%/mo (2015) to +2.0%/mo (2016) and <span class="rd">+0.8%/mo (01-17 – 03-17)</span></div></div>
+      <div class="p21-steps"><div><span>2015</span><b>+5.6%</b><i>a month</i></div><em>→</em><div><span>2016</span><b>+2.0%</b><i>a month</i></div><em>→</em><div class="hot"><span>01-17 – 03-17</span><b>+0.8%</b><i>a month</i></div></div>
+      <div class="p21-plot" id="p21-ch2"></div>
+    </div>
+
+    <details class="card p21-fold"><summary>+ *Technical Note: 04-16 – 06-16 Dip (Payment Method 39 Outage)</summary><ul>
+      <li>Paid users on Payment Method 39 fell from <b>18,813</b> (03-16) to <b>3,085</b> (04-16) and <b>1,844</b> (06-16), then went back to <b>18,906</b> in 07-16</li>
+      <li>The same users came back in 07-16 (the <b>Rebound</b> bar), so this is a billing pause at one provider, not users leaving</li>
+      <li>We do not count it as real loss of subscribers · <button class="linkbtn" data-go="p2-trust">2.5 What we don't trust →</button></li>
+    </ul></details>
+
+    <div class="card p21-card">
+      <h2>Key Months Breakdown</h2>
+      <p class="p21-foot">Highlighting free-trial spikes (amber), % paying drops (red), and Payment Method 39 (Provider #39) outage &amp; recovery (red → green)</p>
+      <div class="scroll"><table class="grid p21-key" id="p21-key"></table></div>
+    </div>
+
     <p class="cx-src">SQL: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/sql/08_metrics.sql" target="_blank" rel="noopener">sql/08_metrics.sql ↗</a> · Report: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/04_metrics.md" target="_blank" rel="noopener">reports/04_metrics.md ↗</a></p>
+
+    <script>
+    /* 2.1 charts and table. Rows: month, all active, paid active, free trial users (active, paid=0), payment method 39 paid users.
+       Source: mart_metrics_month (active_any, paying_subscribers) and fct_subscription (payment_method = 39, is_free = 0). */
+    (() => {
+    const D = [["2015-01",133034,131441,1593,18210],["2015-02",143939,142169,1770,18707],["2015-03",170074,166868,3206,19175],["2015-04",176884,173128,3756,19123],["2015-05",164574,161139,3435,18995],["2015-06",220877,179194,41683,18935],["2015-07",195215,189659,5556,18861],["2015-08",207324,198520,8804,18927],["2015-09",218730,207464,11266,19000],["2015-10",226840,213907,12933,19051],["2015-11",244088,227523,16565,19199],["2015-12",256003,236038,19965,19277],["2016-01",260295,244746,15549,19380],["2016-02",265743,257452,8291,19432],["2016-03",265567,254318,11249,18813],["2016-04",245662,239955,5707,3085],["2016-05",246760,241657,5103,2378],["2016-06",250692,244016,6676,1844],["2016-07",279618,271819,7799,18906],["2016-08",289248,279560,9688,18823],["2016-09",298217,283352,14865,18688],["2016-10",307419,285582,21837,18510],["2016-11",335372,289108,46264,18185],["2016-12",302981,296009,6972,17916],["2017-01",302284,299719,2565,17642],["2017-02",303173,301797,1376,17369],["2017-03",305617,302950,2667,17172]];
+    const ml = (m) => m.slice(5, 7) + "-" + m.slice(2, 4);
+    const n0 = (v) => Math.round(v).toLocaleString("en-US");
+    const pct = (r) => (100 * r[2]) / r[1];
+    const mom = D.map((r, i) => (i ? 100 * (r[2] / D[i - 1][2] - 1) : null));
+    const WAVES = ["2015-06", "2016-11"];
+
+    function frame(el, H) {
+      const W = Math.min(el.clientWidth, 760); if (!W) return null;
+      el.innerHTML = "";
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("height", H);
+      el.appendChild(svg);
+      const tip = document.createElement("div"); tip.className = "p21-tip"; tip.hidden = true; el.appendChild(tip);
+      return { W, svg, tip };
+    }
+    // x labels every 3 months, plus the last month when it has room
+    function xLabels(rows, x, y, band) {
+      let h = "", last = -1e9;
+      rows.forEach((r, i) => {
+        const mo = +r[0].slice(5), isLast = i === rows.length - 1;
+        if ((mo - 1) % 3 === 0 || isLast) {
+          if (x(i) - last < 46) return;
+          h += `<text x="${x(i)}" y="${y}" text-anchor="middle">${ml(r[0])}</text>`; last = x(i);
+        }
+      });
+      return h;
+    }
+    function flag(xc, yc, text, color, anchor) {
+      const w = text.length * 6.9 + 22, x0 = anchor === "end" ? xc - w : anchor === "start" ? xc : xc - w / 2;
+      return `<g><rect x="${x0}" y="${yc - 13}" width="${w}" height="24" rx="5" fill="var(--surface)" stroke="${color}" stroke-width="1.5"/>` +
+        `<text x="${x0 + w / 2}" y="${yc + 3.5}" text-anchor="middle" style="fill:${color};font-weight:700;font-size:12px">⚑ ${text}</text></g>`;
+    }
+    function hover(f, n, L, band, T, ph, html) {
+      const { svg, tip, W } = f;
+      svg.insertAdjacentHTML("beforeend", `<rect x="${L}" y="${T}" width="${band * n}" height="${ph}" fill="transparent" class="hit"/>`);
+      const hit = svg.querySelector(".hit");
+      hit.addEventListener("mousemove", (e) => {
+        const bb = svg.getBoundingClientRect(), px = (e.clientX - bb.left) * (W / bb.width);
+        const i = Math.max(0, Math.min(n - 1, Math.floor((px - L) / band)));
+        tip.innerHTML = html(i); tip.hidden = false;
+        const tx = (L + band * (i + 0.5)) * (bb.width / W), tw = tip.offsetWidth;
+        tip.style.left = Math.max(0, Math.min(bb.width - tw, tx + 14 > bb.width - tw ? tx - tw - 14 : tx + 14)) + "px"; tip.style.top = "8px";
+      });
+      hit.addEventListener("mouseleave", () => (tip.hidden = true));
+    }
+
+    // Concern 1: Paid Active % bars (left axis) + Paid / All active lines (right axis)
+    function ch1() {
+      const el = document.getElementById("p21-ch1"), f = frame(el, 360); if (!f) return;
+      const { W, svg } = f, L = 46, R = 50, T = 40, B = 34, ph = 360 - T - B, n = D.length, band = (W - L - R) / n;
+      const x = (i) => L + band * (i + 0.5), yl = (v) => T + ph - (v / 100) * ph, yr = (v) => T + ph - (v / 400000) * ph;
+      let h = "";
+      for (let k = 0; k <= 5; k++) {
+        const v = k * 20, yy = yl(v);
+        h += `<line x1="${L}" x2="${W - R}" y1="${yy}" y2="${yy}" stroke="${k ? "var(--line)" : "var(--muted)"}" stroke-dasharray="${k ? "4 4" : ""}"/>`;
+        h += `<text x="${L - 8}" y="${yy + 4}" text-anchor="end">${v}%</text>`;
+      }
+      for (let k = 0; k <= 4; k++) h += `<text x="${W - R + 8}" y="${yr(k * 100000) + 4}">${k ? k * 100 + "K" : 0}</text>`;
+      const bw = Math.max(4, band * 0.62);
+      D.forEach((r, i) => {
+        const p = pct(r), hi = WAVES.includes(r[0]);
+        h += `<rect x="${x(i) - bw / 2}" y="${yl(p)}" width="${bw}" height="${yl(0) - yl(p)}" rx="2" fill="${hi ? "var(--bar-hi)" : "var(--bar)"}"/>`;
+        if (hi) h += `<text x="${x(i)}" y="${yl(p) - 6}" text-anchor="middle" style="fill:var(--bar-hi);font-weight:800;font-size:12px">${Math.round(p)}%</text>`;
+      });
+      const path = (k) => D.map((r, i) => (i ? "L" : "M") + x(i).toFixed(1) + "," + yr(r[k]).toFixed(1)).join("");
+      h += `<path d="${path(1)}" fill="none" stroke="var(--ln2)" stroke-width="2.2" stroke-dasharray="6 5"/>`;
+      h += `<path d="${path(2)}" fill="none" stroke="var(--ln1)" stroke-width="2.6"/>`;
+      D.forEach((r, i) => (h += `<circle cx="${x(i)}" cy="${yr(r[2])}" r="3" fill="var(--ln1)"/>`));
+      h += xLabels(D, x, T + ph + 22, band);
+      const iw1 = D.findIndex((r) => r[0] === "2015-06"), iw2 = D.findIndex((r) => r[0] === "2016-11"), idp = D.findIndex((r) => r[0] === "2016-05");
+      const narrow = W < 560;
+      h += flag(x(iw1), narrow ? yl(22) : T + 16, narrow ? "06-15 Trials" : "06-15 Free-Trial Wave", "var(--c-orange)", narrow ? "start" : "middle");
+      h += flag(x(idp), T + 40, narrow ? "Dip*" : "04-16 Dip*", "var(--r)", "middle");
+      h += flag(x(iw2), T - 18, narrow ? "11-16 Trials" : "11-16 Free-Trial Wave", "var(--c-orange)", "end");
+      svg.innerHTML = h;
+      hover(f, n, L, band, T, ph, (i) => { const r = D[i]; return `<b>${ml(r[0])}</b>Paid Active: <strong>${n0(r[2])}</strong><br>All Active: <strong>${n0(r[1])}</strong><br>Paid Active %: <strong>${pct(r).toFixed(1)}%</strong>`; });
+    }
+
+    // Concern 2: MoM % bars, yearly average lines, 2017 shaded
+    function ch2() {
+      const el = document.getElementById("p21-ch2"), f = frame(el, 340); if (!f) return;
+      const { W, svg } = f, rows = D.slice(1), g = mom.slice(1), L = 52, R = 16, T = 30, B = 34, ph = 340 - T - B, n = rows.length, band = (W - L - R) / n;
+      const x = (i) => L + band * (i + 0.5), y = (v) => T + ph - ((v + 12) / 32) * ph;
+      let h = "";
+      const i17 = rows.findIndex((r) => r[0] >= "2017-01");
+      h += `<rect x="${L + band * i17}" y="${T}" width="${band * (n - i17)}" height="${ph}" fill="var(--shade)" opacity=".6"/>`;
+      [-10, -5, 0, 5, 10, 15, 20].forEach((v) => {
+        h += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="${v ? "var(--line)" : "var(--muted)"}" stroke-width="${v ? 1 : 1.5}" stroke-dasharray="${v ? "4 4" : ""}"/>`;
+        h += `<text x="${L - 8}" y="${y(v) + 4}" text-anchor="end">${v > 0 ? "+" : ""}${v}%</text>`;
+      });
+      const bw = Math.max(4, band * 0.62);
+      g.forEach((v, i) => { const top = Math.min(y(v), y(0)); h += `<rect x="${x(i) - bw / 2}" y="${top}" width="${bw}" height="${Math.abs(y(v) - y(0))}" rx="2" fill="${v < 0 ? "var(--neg)" : "var(--pos)"}"/>`; });
+      const narrow = W < 560;
+      [["2015", 5.6, "2015 Avg: +5.6%/mo", "var(--y15)"], ["2016", 2.0, "2016 Avg: +2.0%/mo", "var(--y16)"], ["2017", 0.8, "2017: +0.8%", "var(--y17)"]].forEach(([yr, v, lab, c]) => {
+        const idx = rows.map((r, i) => (r[0].startsWith(yr) ? i : -1)).filter((i) => i >= 0), a = L + band * idx[0], b = L + band * (idx[idx.length - 1] + 1);
+        h += `<line x1="${a}" x2="${b}" y1="${y(v)}" y2="${y(v)}" stroke="${c}" stroke-width="4" stroke-linecap="round"/>`;
+        const anc = yr === "2017" ? "end" : "middle", lx = yr === "2017" ? b : (a + b) / 2;
+        h += `<text x="${lx}" y="${narrow && yr === "2017" ? y(v) + 20 : y(v) - 9}" text-anchor="${anc}" style="fill:${c};font-weight:800;font-size:${narrow ? 12 : 16}px;paint-order:stroke;stroke:var(--surface);stroke-width:4px">${narrow ? lab.replace(" Avg", "").replace("/mo", "") : lab}</text>`;
+      });
+      const ir = rows.findIndex((r) => r[0] === "2016-07"), io = rows.findIndex((r) => r[0] === "2016-04");
+      h += flag(x(ir), y(g[ir]) - 18, "Rebound", "var(--y16)", "middle");
+      h += flag(x(io), y(g[io]) + 20, "Outage*", "var(--r)", "middle");
+      h += xLabels(rows, x, T + ph + 22, band);
+      svg.innerHTML = h;
+      hover(f, n, L, band, T, ph, (i) => `<b>${ml(rows[i][0])}</b>Paid Active MoM: <strong>${g[i] > 0 ? "+" : ""}${g[i].toFixed(1)}%</strong><br>Paid Active: <strong>${n0(rows[i][2])}</strong>`);
+    }
+
+    // Key Months Breakdown
+    const KEY = [["2015-01", "Baseline", ""], ["2015-05", "Normal", ""], ["2015-06", "Trial Wave 1 (12.9% conv.)", "am"], ["2015-07", "Post-trial drop", ""],
+      ["2016-01", "Normal (Payment Method 39 active)", ""], ["2016-04", "Payment Method 39 Outage (-84%)", "bd"], ["2016-06", "Payment Method 39 Outage (-90%)", "bd"],
+      ["2016-07", "Payment Method 39 Back", "gd"], ["2016-10", "Normal", ""], ["2016-11", "Trial Wave 2 (4.9% conv. by 03-17)", "am"], ["2016-12", "Post-trial drop", ""], ["2017-03", "Latest month", ""]];
+    const pmin = 130000, pmax = 310000;
+    document.getElementById("p21-key").innerHTML =
+      "<thead><tr><th>Month</th><th>Paid Active</th><th>Free Trial Users (paid=0)</th><th>% Paying of Active</th><th>Payment Method 39 Users</th><th>Signal / Evidence</th></tr></thead><tbody>" +
+      KEY.map(([m, sig, sc]) => {
+        const r = D.find((d) => d[0] === m), p = pct(r), shade = Math.round(8 + 22 * (r[2] - pmin) / (pmax - pmin));
+        const fc = r[3] > 20000 ? "am" : "", pc = p < 90 ? "bd" : p < 95 ? "am" : "ok";
+        const mc = sc === "bd" ? "bd" : sc === "gd" ? "gd" : "m39";
+        return `<tr><td class="m">${ml(m)}</td><td style="background:color-mix(in srgb,var(--accent) ${shade}%,transparent);font-weight:600">${n0(r[2])}</td>` +
+          `<td class="${fc}">${n0(r[3])}</td><td class="${pc}">${p.toFixed(1)}%</td><td class="${mc}">${n0(r[4])}</td><td class="${sc}">${sig}</td></tr>`;
+      }).join("") + "</tbody>";
+
+    // Q1 / Q2 chips scroll to their answer without changing the tab in the URL
+    document.querySelectorAll("#view-p2-active [data-scroll]").forEach((a) => a.addEventListener("click", (e) => {
+      e.preventDefault(); document.getElementById(a.dataset.scroll).scrollIntoView({ behavior: "smooth", block: "start" });
+    }));
+    const all = () => { ch1(); ch2(); };
+    all();
+    if (window.ResizeObserver) { const ro = new ResizeObserver(() => { const w = document.getElementById("p21-ch1").clientWidth; if (w && w !== ro.w) { ro.w = w; all(); } }); ro.observe(document.getElementById("p21-ch1")); }
+    else addEventListener("resize", all);
+    })();
+    </script>
   </section>
 
   <section class="view cx p2" id="view-p2-flow" hidden>
@@ -881,8 +1148,6 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
 
   const C = { s1: "var(--s1)", s2: "var(--s2)", s3: "var(--s3)", s4: "var(--s4)" };
   const SPECS = [
-    { id: "active", from: "2015-01", to: "2017-03", min: 0, max: 350000, step: 50000, yFmt: fmt.k, tipFmt: fmt.int,
-      series: [{ k: "p", name: "Paying subscribers", color: C.s1 }, { k: "a", name: "All active users (incl. free trials)", color: C.s3, dash: true }] },
     { id: "flow", from: "2015-02", to: "2017-03", min: 0, max: 18, step: 3, yFmt: fmt.pct0, tipFmt: fmt.pct,
       shade: ["2015-02", "2015-03", "Warm-up months (overstated)"],
       notes: [{ m: "2015-06", k: "rp", text: "Jun 2015" }, { m: "2016-07", k: "rp", text: "Jul 2016" }], noteLegend: "Users returning after a billing gap",
@@ -915,8 +1180,6 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     document.getElementById(id).innerHTML = `<thead><tr>${head.map((x) => `<th>${x}</th>`).join("")}</tr></thead><tbody>` +
       P2_DATA.map((r) => `<tr${flag && flag(r) ? ' class="flag"' : ""}>${cells(r).map((c) => `<td class="num">${c}</td>`).join("")}</tr>`).join("") + "</tbody>";
   };
-  tbl("p2-tb-active", ["Month", "Paying subscribers", "All active users", "Change vs last month"],
-    (r) => { const i = P2_DATA.indexOf(r), prev = i ? P2_DATA[i - 1][F.p] : null; return [mLabel(r[0], true), n0(r[F.p]), n0(r[F.a]), prev ? (r[F.p] >= prev ? "+" : "") + (100 * (r[F.p] / prev - 1)).toFixed(1) + "%" : "–"]; });
   tbl("p2-tb-flow", ["Month", "Paying subscribers", "New", "Reactivated", "Renewing", "New %", "Reactivated %", "Renewing %"],
     (r) => [mLabel(r[0], true), n0(r[F.p]), n0(r[F.n]), n0(r[F.r]), n0(r[F.rn]), fmt.pct(r[F.np]), fmt.pct(r[F.rp]), fmt.pct(r[F.rnp])], (r) => r[0] <= "2015-03");
   tbl("p2-tb-churn", ["Month", "Paying on the 1st", "Lost (30-day)", "Churn 30-day", "Churn 32-day", "Churn 45-day"],
@@ -2302,12 +2565,12 @@ a.brand{text-decoration:none;color:inherit;gap:16px;border-radius:16px;padding:4
 a.brand:hover{background:color-mix(in srgb,var(--accent-soft) 60%,transparent)}
 .brand .logo{background:#fff;border-radius:14px;padding:7px 14px;box-shadow:0 1px 2px rgba(20,35,58,.08),0 6px 18px rgba(37,99,235,.14);transition:transform .2s,box-shadow .2s}
 a.brand:hover .logo{transform:translateY(-1px);box-shadow:0 2px 4px rgba(20,35,58,.08),0 10px 24px rgba(37,99,235,.22)}
-.brand .logo img{height:40px!important;clip-path:none!important}
+.brand .logo img{height:52px!important;clip-path:none!important}
 .brand .logo::after{display:none!important}
 .brand-t{display:grid;gap:1px;padding-left:16px;border-left:2px solid transparent;border-image:linear-gradient(180deg,#2563eb,#16c4e0) 1;line-height:1.25}
 .brand-t b{font-size:var(--fs-h3);font-weight:700;color:var(--navy);letter-spacing:-.01em}
 .brand-t small{font-size:var(--fs-small);font-weight:500;color:var(--muted);border:0;padding:0;letter-spacing:.01em}
-@media (max-width:640px){.brand .logo{padding:5px 10px}.brand .logo img{height:32px!important}.brand-t{padding-left:12px}}
+@media (max-width:640px){.brand .logo{padding:5px 10px}.brand .logo img{height:40px!important}.brand-t{padding-left:12px}}
 @media (prefers-reduced-motion:reduce){a.brand .logo{transition:none}a.brand:hover .logo{transform:none}}
 </style>
 <script>
@@ -2335,7 +2598,7 @@ a.brand:hover .logo{transform:translateY(-1px);box-shadow:0 2px 4px rgba(20,35,5
   };
   for (const [id, [k, t]] of Object.entries(BRIEF)) {
     const v = document.getElementById("view-" + id);
-    if (!v || v.querySelector(":scope > .brief-ref")) continue;
+    if (!v || v.querySelector(":scope > .brief-ref") || v.dataset.ownBrief) continue;
     const tag = document.createElement("div");
     tag.className = "brief-ref";
     tag.innerHTML = `<b>${k}</b><span>${t}</span>`;
