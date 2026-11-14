@@ -1,6 +1,6 @@
 # 5b · AI process log
 
-**Bottom line:** AI wrote most of the SQL and text; I set the questions, the rules and the checks. AI was wrong at least 9 times in ways that mattered. 6 of them were caught by me, 3 by cross-checking one AI against the data. Every number in the hand-in is now computed by SQL from the raw files, never typed by hand.
+**Bottom line:** AI wrote most of the SQL and text; I set the questions, the rules and the checks. AI was wrong at least 10 times in ways that mattered. 7 of them were caught by me, 3 by cross-checking one AI against the data. Every number in the hand-in is now computed by SQL from the raw files, never typed by hand.
 
 ## 1. Tools and what each did
 
@@ -41,6 +41,7 @@ Paraphrased from the chat (originally in Hebrew), except the first, which is a f
 | 7 | Claude | Inconsistent ranking: 2015 missing plan length under-rated, and early renewals (578,644 rows) missing from the list. | Missing plan length touches 39.7% of users active Mar-Oct 2015. Kept, the list would have under-stated two problems that change the churn and plan answers. | Plan length moved to Critical; early renewals added at High (first rated Medium, then corrected). | **Me**, by asking about wrongly computed plan durations. |
 | 8 | Claude | Loaded both exports straight into one "raw" table and added `src_file` / `src_row` at load. | Not a wrong number, a design flaw: the raw layer mixed loading with modelling (combining files, adding columns), so it could no longer be checked 1:1 against the files. | Split into exact raw tables (`raw_transactions_export_1`, `_2`), one per file, plus a separate step, `base_transactions` (`sql/00_union_exports.sql`), that combines them and adds lineage. Every downstream table was checked identical before and after. | **Me**, by asking whether loading the files as-is first, then combining in its own step, would be more correct. |
 | 9 | Claude | Put only the transactions through STAGING; the users file was cleaned inside `dim_user`. | Not a wrong number, a design flaw: cleaning was split between two layers, so STAGING was not "the one place where cleaning happens". | New `stg_users` table holds all user cleaning; `dim_user` reads it. Every other table checked identical. | **Me**, by asking. |
+| 10 | Claude | Counted a user who paid on the last day of a month as having access for that whole month. | The billing failures looked shorter and cheaper than they really were. | Check that each metric measures what the question asks, not just something close to it. | **Me**: the dates did not make sense. |
 
 **Cases 6-7 in detail: the AI's original 1a ranking vs the final one** (the original is the first version uploaded to GitHub; only issues that moved are shown):
 
