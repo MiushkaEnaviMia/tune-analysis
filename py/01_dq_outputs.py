@@ -1478,6 +1478,11 @@ page = f"""<title>Tune Data-Quality Report</title>
 <script type="application/json" id="dq-data">{DATA_JSON}</script>
 <script>{JS}</script>
 """
+# "Why 4 and 92" evidence card (static fragment), placed right after the age issue card (U11)
+_age = ROOT / "py/dq_age_why.html"
+if _age.exists() and 'id="why-4-92"' not in page:
+    _k = page.find('id="U11"'); _e = page.find("</article>", _k) + len("</article>")
+    page = page[:_e] + "\n" + _age.read_text() + page[_e:]
 import runpy
 page = runpy.run_path(str(ROOT / "py/nodot.py"))["nodot"](page)  # style: no period at the end of a box line, cell or bullet
 (ROOT / "reports/01_data_quality.html").write_text(page)
