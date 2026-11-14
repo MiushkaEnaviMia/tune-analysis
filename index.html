@@ -515,7 +515,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     <header class="cx-head">
       <div>
         <h1>1c · Churn Definition Validation</h1>
-        <p class="cx-sub">Clean SQL implementation of the 03-17 churn rule vs. billing's <span class="mono">churn_labels.csv</span> (241,665 users)</p>
+        <p class="cx-sub">Our SQL version of the 03-17 churn rule, compared with billing's <span class="mono">churn_labels.csv</span> (241,665 users)</p>
       </div>
       
     </header>
@@ -545,7 +545,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
             <tr><th scope="row">Churned (1)</th><td class="bad"><b>2</b><span>0.001%</span></td><td class="ok"><b>95</b><span>0.05%</span></td></tr>
           </tbody>
         </table></div>
-        <p class="cx-note">* Excludes 10,740 (4.4%) April-window users, 25,712 (10.6%) only in billing labels, and 6,065 (2.7% of ours) March-1 expiries omitted by billing</p>
+        <p class="cx-note">* Left out: 10,740 users (4.4%) whose 30-day window ends in April, after the data stops · 25,712 (10.6%) who appear only in billing's labels · 6,065 (2.7% of ours) whose plan expired on 1 March, which billing left out</p>
       </div></div>
       <div class="sub-col"><div class="brief-ref sub-ref"><b>1c · Disagreements</b><span>Where and why our rule and the labels disagree</span></div>
     <div class="card cx-panel">
@@ -604,7 +604,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
   window.VZ = (() => {
     function chart(el, o) {
       const cw = el.clientWidth; if (!cw) return;
-      const W = Math.min(cw, 700), narrow = W < 520, H = Math.round((o.H || 270) * (narrow ? 0.85 : 1));
+      const W = Math.min(cw, 900), narrow = W < 520, H = Math.round((o.H || 270) * (narrow ? 0.85 : 1));
       const n = o.labels.length, L = o.L || (narrow ? 42 : 52), R = o.y2 ? (narrow ? 42 : 52) : (o.R || 14), T = o.T || 26, B = 30;
       const pw = W - L - R, ph = H - T - B, band = pw / n, x = (i) => L + band * (i + 0.5);
       const mk = (ax) => (v) => T + ph - ((v - ax.min) / (ax.max - ax.min)) * ph;
@@ -626,7 +626,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
         if (!show || x(i) - last < (narrow ? 34 : 40)) return;
         h += `<text x="${x(i)}" y="${T + ph + 20}" text-anchor="middle" class="vz-ax">${lab}</text>`; last = x(i);
       });
-      const bars = o.series.filter((s) => s.type === "bar"), gw = band * (o.gap || 0.7);
+      const bars = o.series.filter((s) => s.type === "bar"), gw = band * (o.gap || 0.8);
       if (o.stacked) {
         const acc = new Array(n).fill(0), bw = Math.max(3, gw); let slab = "";
         bars.forEach((s) => s.values.forEach((v, i) => {
@@ -699,7 +699,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       run(); if (window.ResizeObserver) new ResizeObserver(run).observe(el); else addEventListener("resize", run);
     }
     const ml = (m) => m.slice(5, 7) + "-" + m.slice(2, 4);
-    const qtr = (lab, i, narrow) => { const mo = +lab.slice(0, 2); return narrow ? (mo - 1) % 4 === 0 : (mo - 1) % 3 === 0; };
+    const qtr = (lab, i, narrow) => { const mo = +lab.slice(0, 2); return narrow ? (mo - 1) % 4 === 0 : (mo - 1) % 2 === 0; };
     const n0 = (v) => Math.round(v).toLocaleString("en-US");
     const C = { navy: "var(--v-navy)", blue: "var(--v-blue)", mid: "var(--v-mid)", sky: "var(--v-sky)", teal: "var(--v-teal)", tealL: "var(--v-teal-l)", red: "var(--v-red)", redL: "var(--v-red-l)", amber: "var(--v-amber)", grey: "var(--v-grey)" };
     return { chart, mount, ml, qtr, n0, C };
@@ -809,7 +809,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
         <p class="v3-c ok"><b>Core retention scales steadily:</b> Renewing tracks Total paying up to <b>291,149</b> in 03-17 (<b class="p22-up">+22%</b> vs 03-16)</p>
         <div class="vz-lg p22-lg"><span><i class="ln dash" style="--c:var(--p22-tot)"></i>Total paying</span><span><i class="ln thick" style="--c:var(--p22-ren)"></i>Renewing</span></div>
         <div class="vz" id="p22-l1"></div>
-        <p class="v3-foot">From 04-15: earlier months show extra New because files start 01-01-15</p>
+        <p class="v3-foot">Starts at 04-15: before that, customers from 2014 look New because the files start on 01-01-15</p>
       </div>
       <div class="card v3-card">
         <h2>Growth Engine: New vs Reactivated</h2>
@@ -858,7 +858,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
 
     <details class="card v3-fold"><summary>+ All months</summary><div class="v3-in">
       <div class="v3-tw"><table class="v3-t" id="p2-tb-flow"></table></div>
-      <p class="v3-foot">Shaded: 01-15 to 03-15, extra New because files start 01-01-15</p>
+      <p class="v3-foot">Shaded 01-15 – 03-15: customers from 2014 look New because the files start on 01-01-15</p>
     </div></details>
     <p class="cx-src">SQL: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/sql/08_metrics.sql" target="_blank" rel="noopener">sql/08_metrics.sql ↗</a> (<span class="mono">mart_metrics_month</span>) · Report: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/04_metrics.md" target="_blank" rel="noopener">reports/04_metrics.md ↗</a></p>
   </section>
@@ -889,7 +889,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
         <li><b style="color:var(--v-mute)">⚑ Billing gap</b>: the charge failed on the company's side, users did not really leave · <span data-r30="04-15 (13.9%): 17,435 Auto-renew users not charged on the same day, 99.5% paid again · 03-16 (13.8%): payment method 39 outage, 97% came back">04-15 (14.3%): 17,435 Auto-renew users not charged on the same day, 99.5% paid again · 01-16 (13.0%): payment method 39 charged 15,970 users late · 03-16 (14.0%): payment method 39 outage, 97% came back</span></li>
         <li><b style="color:var(--v-navy)">⚑ 02-17</b>: latest month we can measure; a little high because 3,511 payment method 41 users were charged late, in mid 03-17</li>
       </ul>
-      <p class="v3-foot">01-15 (no history) and 03-17 (needs April data) can't be measured · <button class="linkbtn" data-go="p2-trust">2.5 What we don't trust →</button></p>
+      <p class="v3-foot">Churn can't be measured for 01-15 (no earlier month in the files) or 03-17 (it needs April data, which the files don't have) · <button class="linkbtn" data-go="p2-trust">2.5 What we don't trust →</button></p>
     </div>
 
     <div class="card v3-card">
@@ -905,7 +905,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <p class="v3-c info"><b>How users start decides how many stay:</b> most start months still have 60–78% of their users at M3, the free-trial months (06-15, 09-16 – 11-16) only 18–41%</p>
       <div class="coh-f" data-coh></div>
       <div class="v3-tw"><table class="v3-t coh-t" id="p23-coh"></table></div>
-      <p class="coh-ins"><b>M2, not M1, is the early signal:</b> in the 16 start months where most users paid from day one, M2 tracks M6 closely (correlation 0.88), M1 hardly (0.33), as a plan bought mid-month still covers M1 · no clear seasonality: the same month a year apart can differ widely (M3 47.9% for 12-15, 78.0% for 12-16) and follows the share that started free</p>
+      <p class="coh-ins"><b>Retention in M2, not M1, shows early who will stay:</b> in the 16 start months where most users paid from day one, M2 moves closely with M6 (correlation 0.88) and M1 hardly does (0.33), because a plan bought mid-month still covers M1 · There is no clear seasonal pattern: the same calendar month a year apart can differ widely (M3 47.9% for 12-15, 78.0% for 12-16), and the difference follows how many users started free</p>
       <p class="v3-foot"><b>~ Forecast:</b> last real month × the step in the bottom row (median change of up to 12 latest paid start months; M1→M2: 3 latest) · up to 6 months ahead · tested on 03-16 – 02-17: off by 1.4% one month ahead, 6.6% six months ahead</p>
       <p class="v3-foot">Start month = month of the user's first subscription period, free or paid · M1 = the calendar month after it · cell = % of the start month's users with premium access on at least one day of that month (<span class="p22-f" data-go="lineage" title="Computed field: how it is built, tab 1b.1">retention_pct*</span>) · Started free = the first period was a free trial or free period · 01-15 – 03-15 left out: they include customers from before 2015</p>
     </div>
@@ -924,13 +924,13 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
         </tbody></table></div>
       <p class="v3-foot">% of returners back by each day after the plan ended · returners = bought again within 60 days (plans ending 01-15 – 01-17) · Window = the day after which one more day brings back under about 0.5% of returners</p>
       <h3 class="v3-sub">Side Check: Main Rule vs 30 Days for All</h3>
-      <p class="v3-c info"><b>Both rules tell the same story:</b> 30 days for all gives a slightly lower average churn share (Avg 03-16 – 02-17: 3.9% · Avg 02-15 – 02-16: 4.5%) and falls the same way; the main rule counts late provider charges as churn, so 01-16 is flagged</p>
+      <p class="v3-c info"><b>Both rules tell the same story:</b> 30 days for all gives a slightly lower average churn share (Avg 03-16 – 02-17: 3.9% · Avg 02-15 – 02-16: 4.5%) and falls the same way; the main rule counts users whose payment provider charged them late as churn, which is why 01-16 jumps</p>
       <div class="vz-lg"><span><i class="ln thick" style="--c:var(--v-navy)"></i>3 days Auto-renew · 30 days Pays by hand (main)</span><span><i class="ln dash" style="--c:var(--v-mute)"></i>30 days for all</span></div>
       <div class="vz" id="p23-ch5"></div>
       <ul class="vz-flg">
         <li><b style="color:var(--v-mute)">⚑ 01-16 Method 39 charged late</b>: 15,970 users of payment method 39 were charged together on the last day of 01-16, so the main rule counts them as churn (13.0%), 30 days for all does not (5.0%)</li>
       </ul>
-      <p class="v3-foot">Same effect, smaller, in 06-15 (methods 37–40 charged together at the start of 07-15) and 02-17 (3,511 method 41 users charged together in mid 03-17)</p>
+      <p class="v3-foot">The same late-charge effect, smaller, shows in 06-15 (methods 37–40 charged together at the start of 07-15) and 02-17 (3,511 method 41 users charged together in mid 03-17)</p>
     </div>
 
     <details class="card v3-fold"><summary>+ Same month, year by year</summary><div class="v3-in">
@@ -991,7 +991,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
         <div class="eq-c u"><span class="k">ARPPU</span><b>+4%</b><span class="ft">$119 → $124</span></div>
       </div>
       <div class="p24-sh"><span class="lb">Share of the growth</span><div class="bar" role="img" aria-label="Share of revenue growth: active subscribers 65%, share paying 17%, ARPPU 18%"><span class="a" style="flex:65">65%</span><span class="c" style="flex:17">17%</span><span class="u" style="flex:18">18%</span></div></div>
-      <p class="v3-foot">Q1 = months 01–03 · active and paying = monthly average · paying subscribers +20% (252k → 301k) = active +15% × share paying +4% · parts multiply, so shares of the growth are counted on a log scale to add up to 100%</p>
+      <p class="v3-foot">Q1 = months 01–03 · active and paying = monthly average · paying subscribers +20% (252k → 301k) = active +15% × share paying +4% · the three parts multiply, so each part's share of the growth is worked out on a log scale, which makes the shares add up to 100%</p>
     </div>
 
     <div class="card v3-card">
@@ -1018,7 +1018,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
 
     <div class="card v3-card">
       <h2>Cumulative ARPU by Start Month</h2>
-      <p class="v3-c info"><b>A free-trial start month brings in a fraction of a paid one:</b> by M12 most start months bring $908–$1,162 per user, the 06-15 free-trial month $287; 11-16 is at $127 by M3, against $479 for 12-16</p>
+      <p class="v3-c info"><b>Users who start in a free-trial month bring in far less money:</b> by M12 most start months bring $908–$1,162 per user, but users who started in 06-15 (free trials) only $287 · by M3, users who started in 11-16 brought $127 each, against $479 for 12-16</p>
       <div class="coh-f" data-coh></div>
       <div class="v3-tw"><table class="v3-t coh-t" id="p24-coh"></table></div>
       <p class="v3-foot"><b>~ Forecast:</b> last real month × the step in the bottom row (median change of the 3 latest paid start months) · up to 6 months ahead · tested on 03-16 – 02-17: off by 0.8% one month ahead, 7.3% six months ahead, usually a little low</p>
@@ -1149,12 +1149,12 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     <div class="card v3-head">
       <span class="v3-tag">Brief 2.5 · What we don't trust, and why</span>
       <h1>2.5 · What We Don't Trust — Seven Periods Flagged</h1>
-      <p>Months in 2.1–2.4 that are not what they look like, and what each one blocks (01-15 – 03-17)</p>
+      <p>Seven periods where a data problem makes the charts in 2.1–2.4 misleading, and what we can't measure because of it (01-15 – 03-17)</p>
     </div>
     <div class="qa">
       <p class="qa-q">Which months or metrics in 2.1–2.4 can't be read as they are, and why?</p>
       <div class="qa-a">
-      <p><b class="qa-l">Answer:</b> <b>Seven periods: five can't be read as they are (red), two are read with care (amber)</b></p>
+      <p><b class="qa-l">Answer:</b> <b>Seven periods: five we don't trust (red), two we use with care (amber)</b></p>
       <p>Some months have data problems: the files start on 01-01-15, payment providers had billing gaps and an outage, prices are missing in 2015, and the data ends in 03-17. Read as they are, they show false churn spikes, false New and wrong revenue, so we keep them in the charts, mark them, and leave the red ones out of averages and trends</p>
     </div>
     </div>
@@ -1265,7 +1265,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       `<div class="mute">${n0(QS[i].p / QS[i].k)} paying a month</div>`,
   }));
   const M22 = rng("2015-04", "2017-03"), L22 = M22.map((r) => ml(r[0])), nw = col(M22, "n"), re = col(M22, "r"), pay = col(M22, "p"), ren = M22.map((r) => r[5]);
-  const half = (lab) => (+lab.slice(0, 2) - 1) % 3 === 0; // every 3 months: 01, 04, 07, 10
+  const half = (lab, i, narrow) => (+lab.slice(0, 2) - 1) % (narrow ? 3 : 2) === 0; // every 2 months (every 3 on phones)
   const kF = (v) => (v ? v / 1000 + "K" : "0");
   mount("p22-l1", (el) => chart(el, {
     labels: L22, xShow: half, H: 260, T: 20, aria: "Total paying subscribers and renewing subscribers per month",
@@ -1560,7 +1560,7 @@ const P23_TYPE = [["2015-02",1.99,2249,15.49,1943,0.09,4],["2015-03",2.33,2673,1
 
     <details class="card lin-sec fold"><summary><h2>+ All groups (table)</h2></summary><div class="fold-in">
       <div class="scroll"><table class="grid" id="p3-tb"></table></div>
-      <p class="cx-note">Same payment mix = churn with the average auto-renew and plan mix. Empty cells: no renewals in that group</p>
+      <p class="cx-note">Same payment mix = churn worked out as if every group had the same share of Auto-renew and the same mix of plan lengths · Empty cells: no renewals in that group</p>
     </div></details>
     <p class="cx-src">SQL: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/sql/09_deep_dive.sql" target="_blank" rel="noopener">sql/09_deep_dive.sql ↗</a> (30 days for all) · <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/sql/13_churn_rule_3_30.sql" target="_blank" rel="noopener">sql/13_churn_rule_3_30.sql ↗</a> (main rule, tables <span class="mono">*_3d</span>) · Report: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/05_deep_dive.md" target="_blank" rel="noopener">reports/05_deep_dive.md ↗</a> · Tables: <span class="mono">mart_churn_drivers</span>, <span class="mono">mart_churn_factor_summary</span>, <span class="mono">mart_churn_plan_monthly</span>, <span class="mono">mart_churn_method_quarter</span></p>
   </section>
@@ -1568,7 +1568,7 @@ const P23_TYPE = [["2015-02",1.99,2249,15.49,1943,0.09,4],["2015-03",2.33,2673,1
   <section class="view cx p3" id="view-p3a-act" hidden>
     <header class="cx-head"><div>
       <h1>3a · What We Would Act On — Payment and the First Renewal</h1>
-      <p class="cx-sub">Three moves aimed at the drivers that hold with the same payment mix, and what we would leave alone (01-16 – 02-17)</p>
+      <p class="cx-sub">Three moves aimed at the churn drivers that still matter once the payment mix is evened out, and what we would leave alone (01-16 – 02-17)</p>
     </div></header>
 
     <div class="brief-ref sub-ref"><b>3a · Act on</b><span>What would you act on?</span></div>
@@ -1597,7 +1597,7 @@ const P23_TYPE = [["2015-02",1.99,2249,15.49,1943,0.09,4],["2015-03",2.33,2673,1
             <tr><td class="l"><b>3 · Watch failed payments per provider, every day</b><br>Alert on a jump in failed charges</td><td class="l">Method 40 users; the 2016 provider incident lost <b>16,468</b> users in one month</td><td><b data-r30="~5,500">~7,900</b><br>if method 40 matches method 41</td></tr>
           </tbody>
         </table></div>
-        <p class="cx-note">Move 1 assumes moved users churn half as much as today, not as little as current auto-renew users. Confidence and what would change our mind: tab 4.2</p>
+        <p class="cx-note">Move 1 assumes users who switch to Auto-renew churn half as much as they do today, not as little as today's Auto-renew users · Confidence and what would change our mind: tab 4.2</p>
       </div>
       <div class="card p3-no">
         <h2>What we would not act on</h2>
@@ -2177,7 +2177,7 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
         <p class="so warn"><b>Trial waves did not lift New:</b> 42,743 trial starts in 06-15 and 36,775 in 11-16, while New stayed near 8,000 a month</p>
         <div class="p4-lg"><span><i style="background:#93c5fd"></i>Free-trial starts</span><span><i style="background:#ea580c"></i>New paying subscribers</span></div>
         <div id="p4-ch-trial"></div>
-        <p class="cx-note">From 04-15: earlier months show extra New because the files start 01-01-15</p>
+        <p class="cx-note">Starts at 04-15: before that, customers from 2014 look New because the files start on 01-01-15</p>
       </div>
       <div class="card p4-fig">
         <h2>The Two Trial Waves</h2>
@@ -2300,7 +2300,7 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
     const subs = [131441,142169,166868,173128,161139,179194,189659,198520,207464,213907,227523,236038,244746,257452,254318,239955,241657,244016,271819,279560,283352,285582,289108,296009,299719,301797,302950];
     {
       const W = 700, H = 250, L = 56, R = 20, T = 16, B = 34, s = svg(W, H);
-      const { x, y } = frame(s, W, H, L, R, T, B, 350000, 50000, fmtK, subs.length, 0, 3);
+      const { x, y } = frame(s, W, H, L, R, T, B, 350000, 50000, fmtK, subs.length, 0, 2);
       const g = el(s, "defs", {}); const lg = el(g, "linearGradient", { id: "p4g", x1: 0, x2: 0, y1: 0, y2: 1 });
       el(lg, "stop", { offset: "0", "stop-color": "#2563eb", "stop-opacity": ".28" }); el(lg, "stop", { offset: "1", "stop-color": "#16c4e0", "stop-opacity": ".03" });
       const pts = subs.map((v, i) => `${x(i)},${y(v)}`);
@@ -2315,8 +2315,8 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
     const churn = [3.5,4.2,14.3,4.9,6.8,4.2,4.3,6.3,5.3,4.1,5.4,13.0,5.6,14.0,5.2,5.1,4.5,4.0,3.6,3.8,3.7,3.4,5.0,4.1,4.9];
     {
       const W = 700, H = 250, L = 48, R = 20, T = 16, B = 34, s = svg(W, H), n = churn.length, i0 = 1;
-      const { x, y } = frame(s, W, H, L, R, T, B, 15, 3, (v) => v + "%", n, i0, 3);
-      const bw = (W - L - R) / n * 0.62;
+      const { x, y } = frame(s, W, H, L, R, T, B, 15, 3, (v) => v + "%", n, i0, 2);
+      const bw = (W - L - R) / n * 0.72;
       churn.forEach((v, i) => {
         const k = (i0 + i) % 12, gap = i === 2 || i === 11 || i === 13, dec = k === 11;
         const r = el(s, "rect", { x: x(i) - bw / 2, y: y(v), width: bw, height: y(0) - y(v), rx: 3, fill: gap ? "#ea580c" : dec ? "#94a3b8" : "#2563eb" });
@@ -3040,10 +3040,10 @@ main>.view:not(.p21){max-width:1280px;margin-inline:auto}
 :is(#view-task,#view-overview,#view-lineage,#view-churn,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .p4-st.yes{color:var(--good)!important}
 :is(#view-task,#view-overview,#view-lineage,#view-churn,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) tr.hi td{background:color-mix(in srgb,var(--accent-soft) 60%,transparent)!important}
 :is(#view-task,#view-overview,#view-lineage,#view-churn,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .p5-tl b.w,:is(#view-task,#view-overview,#view-lineage,#view-churn,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .p5-tl li.key b.w{color:var(--navy)!important}
-/* charts: never wider than 700px */
-:is(#view-task,#view-overview,#view-lineage,#view-churn,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.p3-plot,.p5-sc,#p4-ch-subs,#p4-ch-churn,#p4-ch-drivers){width:100%;max-width:700px!important;margin-inline:auto}
-:is(#view-task,#view-overview,#view-lineage,#view-churn,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .p5-svg{max-width:700px!important}
-:is(#view-task,#view-overview,#view-lineage,#view-churn,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .p4-fig svg{max-width:700px!important;margin-inline:auto}
+/* charts: fill the white card, never wider than 900px */
+:is(#view-task,#view-overview,#view-lineage,#view-churn,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.p3-plot,.p5-sc,#p4-ch-subs,#p4-ch-churn,#p4-ch-drivers){width:100%;max-width:900px!important;margin-inline:auto}
+:is(#view-task,#view-overview,#view-lineage,#view-churn,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .p5-svg{max-width:900px!important}
+:is(#view-task,#view-overview,#view-lineage,#view-churn,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .p4-fig svg{max-width:900px!important;margin-inline:auto}
 :is(#view-task,#view-overview,#view-lineage,#view-churn,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) .p4-fig :is(.tk,.vl){font-size:13px!important}
 :is(#view-task,#view-overview,#view-lineage,#view-churn,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.p3-lg,.p5-leg,.p4-lg){font-size:var(--t-small)!important;justify-content:center;color:var(--fg)!important}
 :is(#view-task,#view-overview,#view-lineage,#view-churn,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b) :is(.cx-note,.cx-src,.src,.p3-def){font-size:var(--t-small)!important;color:var(--muted);line-height:1.5}
@@ -3107,9 +3107,9 @@ main{--v-navy:#1e3a8a;--v-blue:#2563eb;--v-mid:#60a5fa;--v-sky:#bfdbfe;--v-teal:
   --v-ok:#059669;--v-ok-bg:#ecfdf5;--v-ok-ink:#065f46;--v-warn:#d97706;--v-warn-bg:#fffbeb;--v-warn-ink:#92400e;--v-info:#2563eb;--v-info-bg:#eff6ff;--v-info-ink:#1e3a8a;
   --v-qa-bg:#eff6ff;--v-qa-line:#bfdbfe;--v-shade:#fef2f2;--v-good:#059669;--v-bad:#dc2626}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) main{--v-navy:#a9cbef;--v-blue:#60a5fa;--v-mid:#3b82f6;--v-sky:#1e3a5f;--v-teal:#2dd4bf;--v-teal-l:#14b8a6;--v-red:#f87171;--v-red-l:#b45454;--v-amber:#fbbf24;--v-grey:#475569;
-  --v-ink:#e2ebf6;--v-mute:#9fb0c6;--v-line:#28395a;--v-grid:#22324d;--v-axis:#6f819c;--v-ok:#4ade80;--v-ok-bg:#12291f;--v-ok-ink:#a7f3d0;--v-warn:#fbbf24;--v-warn-bg:#2d2412;--v-warn-ink:#fde68a;--v-info:#60a5fa;--v-info-bg:#13233d;--v-info-ink:#bfdbfe;--v-qa-bg:#13233d;--v-qa-line:#2b4a75;--v-shade:#3a1c1a;--v-good:#4ade80;--v-bad:#f87171}}
+  --v-ink:#e2ebf6;--v-bg:#101c30;--v-mute:#9fb0c6;--v-line:#28395a;--v-grid:#22324d;--v-axis:#6f819c;--v-ok:#4ade80;--v-ok-bg:#12291f;--v-ok-ink:#a7f3d0;--v-warn:#fbbf24;--v-warn-bg:#2d2412;--v-warn-ink:#fde68a;--v-info:#60a5fa;--v-info-bg:#13233d;--v-info-ink:#bfdbfe;--v-qa-bg:#13233d;--v-qa-line:#2b4a75;--v-shade:#3a1c1a;--v-good:#4ade80;--v-bad:#f87171}}
 :root[data-theme="dark"] main{--v-navy:#a9cbef;--v-blue:#60a5fa;--v-mid:#3b82f6;--v-sky:#1e3a5f;--v-teal:#2dd4bf;--v-teal-l:#14b8a6;--v-red:#f87171;--v-red-l:#b45454;--v-amber:#fbbf24;--v-grey:#475569;
-  --v-ink:#e2ebf6;--v-mute:#9fb0c6;--v-line:#28395a;--v-grid:#22324d;--v-axis:#6f819c;--v-ok:#4ade80;--v-ok-bg:#12291f;--v-ok-ink:#a7f3d0;--v-warn:#fbbf24;--v-warn-bg:#2d2412;--v-warn-ink:#fde68a;--v-info:#60a5fa;--v-info-bg:#13233d;--v-info-ink:#bfdbfe;--v-qa-bg:#13233d;--v-qa-line:#2b4a75;--v-shade:#3a1c1a;--v-good:#4ade80;--v-bad:#f87171}
+  --v-ink:#e2ebf6;--v-bg:#101c30;--v-mute:#9fb0c6;--v-line:#28395a;--v-grid:#22324d;--v-axis:#6f819c;--v-ok:#4ade80;--v-ok-bg:#12291f;--v-ok-ink:#a7f3d0;--v-warn:#fbbf24;--v-warn-bg:#2d2412;--v-warn-ink:#fde68a;--v-info:#60a5fa;--v-info-bg:#13233d;--v-info-ink:#bfdbfe;--v-qa-bg:#13233d;--v-qa-line:#2b4a75;--v-shade:#3a1c1a;--v-good:#4ade80;--v-bad:#f87171}
 
 /* one column, 900px wide, centred; type: h1 22, h2 17, body 15, small 13, axis 12 */
 :is(#view-p2-active,#view-p2-flow,#view-p2-churn,#view-p2-arpu,#view-p2-trust,#view-p3a,#view-p3a-act,#view-p4,#view-p4-recs,#view-p4-gaps,#view-p5a,#view-p5b){gap:16px!important;font-size:15px;color:var(--v-ink)}
@@ -3199,7 +3199,7 @@ main{--v-navy:#1e3a8a;--v-blue:#2563eb;--v-mid:#60a5fa;--v-sky:#bfdbfe;--v-teal:
 .p23-now{margin:0;text-align:center;font-size:15px;color:var(--v-ink)}
 .p23-now b{color:var(--v-navy)}
 /* plot: max 700 wide, height set by the engine (270 or less) */
-.vz{position:relative;width:100%;max-width:700px;margin:0 auto;min-height:40px}
+.vz{position:relative;width:100%;max-width:900px;margin:0 auto;min-height:40px}
 .vz svg{display:block;width:100%;height:auto;overflow:visible}
 .vz text{font-family:var(--font)}
 .vz .vz-ax{font-size:12px;fill:var(--v-mute)}
@@ -3369,7 +3369,7 @@ main{--sp-a:#1e3a8a;--sp-b:#d97706;--sp-c:#0d9488;--sp-d:#60a5fa;--sp-e:#94a3b8}
     b0.onclick = () => set(false); b1.onclick = () => set(true);
     mount(id + "-split", o.draw);
   }
-  const from = (m) => M.indexOf(m), qtr = (lab, i, narrow) => { const mo = +lab.slice(0, 2); return narrow ? (mo - 1) % 4 === 0 : (mo - 1) % 3 === 0; };
+  const from = (m) => M.indexOf(m), qtr = (lab, i, narrow) => { const mo = +lab.slice(0, 2); return narrow ? (mo - 1) % 4 === 0 : (mo - 1) % 2 === 0; };
 
   /* 2.1: paying subscribers by auto-renew of the paid plan held in the month */
   addSplit("p21-ch1", {
@@ -3394,7 +3394,7 @@ main{--sp-a:#1e3a8a;--sp-b:#d97706;--sp-c:#0d9488;--sp-d:#60a5fa;--sp-e:#94a3b8}
     name: "New by channel", title: "New by Acquisition Channel", cls: "warn",
     concl: "<b>Channel 7 caused half the drop in New subscribers:</b> New count Q1-17: 8,530 a month (Q1-16: 14,294, −40%), and Channel 7 alone fell from 6,179 to 3,131",
     legend: CH.map((c, j) => [CC[j], c]),
-    foot: "Count = average New a month in the quarter · acquisition_channel from users.csv (codes only, no names) · Other = Unknown and small channels · from Q2-15, Q1-15 is the warm-up",
+    foot: "Count = average New a month in the quarter · acquisition_channel from users.csv (codes only, no names) · Other = Unknown and small channels · starts at Q2-15, because in Q1-15 customers from 2014 still look New",
     draw: (el) => chart(el, {
       labels: Q.map((o) => o.q), xShow: (lab, i, narrow) => !narrow || i % 2 === 1, H: 280, gap: 0.62, stacked: true, aria: "New paying subscribers a month by acquisition channel, per quarter",
       y: { min: 0, max: 15000, step: 2500, fmt: (v) => (v ? v / 1000 + "k" : "0") },
@@ -3425,7 +3425,7 @@ main{--sp-a:#1e3a8a;--sp-b:#d97706;--sp-c:#0d9488;--sp-d:#60a5fa;--sp-e:#94a3b8}
   const D = {"m":["2015-01","2015-02","2015-03","2015-04","2015-05","2015-06","2015-07","2015-08","2015-09","2015-10","2015-11","2015-12","2016-01","2016-02","2016-03","2016-04","2016-05","2016-06","2016-07","2016-08","2016-09","2016-10","2016-11","2016-12","2017-01","2017-02","2017-03"],"arpu":{"Auto-renew":[69.9,133.6,138.9,143.2,149.5,123.1,147.1,141.6,137.6,139.9,128.4,138.8,113.8,123.1,119.3,120.5,126.6,120.7,113.1,126.1,123.4,128.9,122.4,125.7,124.7,113.4,134.1],"Manual":[81.1,101.2,115.6,115.0,119.5,114.5,123.6,121.1,119.0,122.7,119.0,123.6,123.6,116.7,123.3,123.1,124.9,122.1,125.9,128.1,122.8,127.7,123.5,127.7,126.3,116.4,131.0]},"payA":[114502.0,117348.0,136377.0,136279.0,119000.0,133126.0,139860.0,145359.0,150221.0,153189.0,164632.0,169904.0,175511.0,184552.0,179449.0,167070.0,169900.0,171844.0,199148.0,207716.0,209792.0,212280.0,215308.0,220205.0,223282.0,226136.0,228537.0],"payM":[16939.0,24821.0,30491.0,36849.0,42139.0,46068.0,49799.0,53161.0,57243.0,60718.0,62891.0,66134.0,69235.0,72900.0,74869.0,72885.0,71757.0,72172.0,72671.0,71844.0,73560.0,73302.0,73800.0,75804.0,76437.0,75661.0,74413.0],"free":{"Channel 3":[356,393,383,163,340,20248,104,344,453,183,1016,1853,517,647,300,126,187,1356,2677,1625,2597,4149,7584,339,550,910,642],"Channel 4":[0,0,0,0,0,1,0,0,0,43,348,1322,349,788,253,41,106,570,1941,2758,4082,10641,17553,268,467,702,456],"Channel 7":[299,154,542,522,368,2622,1251,1579,1607,2073,3227,4015,1321,3099,1013,895,678,668,731,457,509,906,1312,93,118,132,134],"Channel 9":[728,738,823,302,425,15792,225,517,933,316,2048,3475,758,1006,677,261,344,1131,3441,1687,2189,3577,5780,623,901,1272,797],"Other":[346,126,1027,1058,662,4080,2370,3506,3876,4970,7375,8600,3427,5206,2147,2133,1534,1532,1207,1443,1738,2773,4546,310,367,258,241]}};
   const { chart, mount, ml, n0 } = VZ, M = D.m, L = M.map(ml), sum = (a) => a.reduce((s, v) => s + v, 0);
   const tip = (k, v) => `<div>${k}: <strong>${v}</strong></div>`, pc = (a, b) => ((100 * a) / b).toFixed(1) + "%";
-  const qtr = (lab, i, narrow) => { const mo = +lab.slice(0, 2); return narrow ? (mo - 1) % 4 === 0 : (mo - 1) % 3 === 0; };
+  const qtr = (lab, i, narrow) => { const mo = +lab.slice(0, 2); return narrow ? (mo - 1) % 4 === 0 : (mo - 1) % 2 === 0; };
   const vzLg = (items) => `<div class="vz-lg">${items.map(([c, t, ln]) => `<span><i${ln ? ' class="ln"' : ""} style="--c:var(${c})"></i>${t}</span>`).join("")}</div>`;
   const p3Lg = (items) => `<div class="p3-lg">${items.map(([c, t]) => `<span><i style="background:var(${c})"></i>${t}</span>`).join("")}</div>`;
   // adds a "Split by" selector to the box that holds chart #id; the Total view is the page as it is now
@@ -3542,12 +3542,12 @@ main{--sp-a:#1e3a8a;--sp-b:#d97706;--sp-c:#0d9488;--sp-d:#60a5fa;--sp-e:#94a3b8}
   const free = [2045,1795,42743,3950,5946,6869,7585,14014,19265,6372,10746,4390,3456,2849,5257,9997,7970,11115,22046,36775,1633,2403,3274,2270];
   const neu = [9620,8517,8050,11632,12734,11752,14728,13794,12653,17183,14041,11657,6788,8453,9025,11627,10378,7447,7749,7959,9803,8471,8810,8310];
   const NS = "http://www.w3.org/2000/svg", W = 700, H = 260, L = 52, R = 14, T = 14, B = 34, n = free.length, yMax = 50000;
-  const x = (i) => L + (i + 0.5) * (W - L - R) / n, y = (v) => H - B - v / yMax * (H - T - B), bw = (W - L - R) / n * 0.62;
+  const x = (i) => L + (i + 0.5) * (W - L - R) / n, y = (v) => H - B - v / yMax * (H - T - B), bw = (W - L - R) / n * 0.72;
   const lab = (i) => String((i + 3) % 12 + 1).padStart(2, "0") + "-" + (15 + Math.floor((i + 3) / 12));
   let h = "";
   for (let v = 0; v <= yMax; v += 10000) h += `<line class="ax" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" ${v ? 'stroke-dasharray="3 4"' : ""}/><text class="tk" x="${L - 8}" y="${y(v) + 4}" text-anchor="end">${v ? v / 1000 + "k" : 0}</text>`;
   free.forEach((v, i) => { h += `<rect x="${x(i) - bw / 2}" y="${y(v)}" width="${bw}" height="${y(0) - y(v)}" rx="2" fill="#93c5fd"><title>${lab(i)} · free-trial starts ${v.toLocaleString("en-US")} · New ${neu[i].toLocaleString("en-US")}</title></rect>`;
-    if (i % 3 === 0) h += `<line class="ax" x1="${x(i)}" x2="${x(i)}" y1="${H - B}" y2="${H - B + 5}"/><text class="tk" x="${x(i)}" y="${H - B + 19}" text-anchor="middle">${lab(i)}</text>`; });
+    if (i % 2 === 0) h += `<line class="ax" x1="${x(i)}" x2="${x(i)}" y1="${H - B}" y2="${H - B + 5}"/><text class="tk" x="${x(i)}" y="${H - B + 19}" text-anchor="middle">${lab(i)}</text>`; });
   h += `<polyline points="${neu.map((v, i) => x(i) + "," + y(v)).join(" ")}" fill="none" stroke="#ea580c" stroke-width="2.5" stroke-linejoin="round"/>`;
   neu.forEach((v, i) => (h += `<circle cx="${x(i)}" cy="${y(v)}" r="3" fill="#ea580c"/>`));
   [[2, "06-15"], [19, "11-16"]].forEach(([i]) => (h += `<text class="vl" x="${x(i)}" y="${y(free[i]) - 6}" text-anchor="middle">${Math.round(free[i] / 1000)}k</text>`));
