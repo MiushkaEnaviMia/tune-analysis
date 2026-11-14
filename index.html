@@ -905,7 +905,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <div class="coh-f" data-coh></div>
       <div class="v3-tw"><table class="v3-t coh-t" id="p23-coh"></table></div>
       <p class="coh-ins"><b>M2, not M1, is the early signal:</b> in the 16 start months where most users paid from day one, M2 tracks M6 closely (correlation 0.88), M1 hardly (0.33), as a plan bought mid-month still covers M1 · no clear seasonality: the same month a year apart can differ widely (M3 47.9% for 12-15, 78.0% for 12-16) and follows the share that started free</p>
-      <p class="v3-foot"><b>~ Forecast:</b> last real month × the step in the bottom row (median change of up to 12 latest paid start months) · up to 6 months ahead · tested on 03-16 – 02-17: off by 1.4% one month ahead, 6.6% six months ahead</p>
+      <p class="v3-foot"><b>~ Forecast:</b> last real month × the step in the bottom row (median change of up to 12 latest paid start months; M1→M2: 3 latest) · up to 6 months ahead · tested on 03-16 – 02-17: off by 1.4% one month ahead, 6.6% six months ahead</p>
       <p class="v3-foot">Start month = month of the user's first subscription period, free or paid · M1 = the calendar month after it · cell = % of the start month's users with premium access on at least one day of that month (<span class="p22-f" data-go="lineage" title="Computed field: how it is built, tab 1b.1">retention_pct*</span>) · Started free = the first period was a free trial or free period · 01-15 – 03-15 left out: they include customers from before 2015</p>
     </div>
 
@@ -1107,10 +1107,10 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
   /* Simple step-ratio forecast (chain ladder), data through 03-17. Step Mk→Mk+1 = median change from Mk to Mk+1 over the
      latest paid start months that have both months (free-trial start months, Started free >= 50%, left out): 12 for
      retention_pct (stable), 3 for cum_arpu (newer users pay more). Forecast = last real month × (1 + step), chained,
-     shown up to 6 months ahead (04-17 – 09-17). No retention forecast from M1 alone; none for free-trial start months.
+     shown up to 6 months ahead (04-17 – 09-17). Retention M1→M2 step = median of the 3 latest paid start months (12-16 drop is smaller lately). Free-trial start months and 02-17 retention use the same steps, worked out in fill() below.
      FC[start] = [retention_pct forecast M1..M12, cum_arpu forecast M1..M12] (null = real value or no forecast); STEP = the row */
   const FC = {"2016-04":[[null,null,null,null,null,null,null,null,null,null,null,49.9],[null,null,null,null,null,null,null,null,null,null,null,950]],"2016-05":[[null,null,null,null,null,null,null,null,null,null,59.8,59.3],[null,null,null,null,null,null,null,null,null,null,976,1040]],"2016-06":[[null,null,null,null,null,null,null,null,null,54.8,54.3,53.8],[null,null,null,null,null,null,null,null,null,810,867,924]],"2016-07":[[null,null,null,null,null,null,null,null,59.9,59.3,58.7,58.2],[null,null,null,null,null,null,null,null,779,840,899,958]],"2016-08":[[null,null,null,null,null,null,null,51.1,50.5,50.1,49.6,49.2],[null,null,null,null,null,null,null,627,682,735,787,839]],"2016-12":[[null,null,null,75.5,74.1,72.9,71.1,69.8,69.1,null,null,null],[null,null,null,568,653,743,833,915,994,null,null,null]],"2017-01":[[null,null,78.6,76.1,74.6,73.5,71.6,70.4,null,null,null,null],[null,null,495,587,676,768,861,946,null,null,null,null]],"2017-02":[[null,null,null,null,null,null,null,null,null,null,null,null],[null,431,530,628,723,822,922,null,null,null,null,null]]};
-  const STEP = [[null,-3.3,-3.2,-2.0,-1.5,-2.5,-1.8,-1.1,-0.9,-1.0,-0.9],[27.2,23.0,18.5,15.0,13.7,12.1,9.8,8.7,7.8,7.0,6.6]];
+  const STEP = [[-16.8,-3.3,-3.2,-2.0,-1.5,-2.5,-1.8,-1.1,-0.9,-1.0,-0.9],[27.2,23.0,18.5,15.0,13.7,12.1,9.8,8.7,7.8,7.0,6.6]];
   const M = [...Array(12).keys()], S = { a: 0, b: COH.length - 1 };
   const q = (s, p) => { const x = (s.length - 1) * p, i = Math.floor(x); return s[i] + (s[Math.min(i + 1, s.length - 1)] - s[i]) * (x - i); };
   const bg = (t) => t <= 0.5 ? `color-mix(in srgb,var(--coh-mid) ${Math.round(200 * t)}%,var(--coh-lo))` : `color-mix(in srgb,var(--coh-hi) ${Math.round(200 * (t - 0.5))}%,var(--coh-mid))`;
@@ -1118,7 +1118,10 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     const el = document.getElementById(id); if (!el) return;
     const R = COH.slice(S.a, S.b + 1), f = k - 3;
     const Q = M.map((j) => { const s = R.map((r) => r[k][j]).filter((v) => v != null).sort((x, y) => x - y); return s.length >= 4 ? [q(s, 0.25), q(s, 0.75)] : null; });
-    const cell = (v, j, r) => { if (v == null) { const p = FC[r[0]] && FC[r[0]][f][j]; return p == null ? "<td></td>" : `<td class="fc">~${fmt(p)}</td>`; }
+    const cell = (v, j, r) => { if (v == null) { let p = FC[r[0]] && FC[r[0]][f][j];
+        if (p == null && (+r[0].slice(0, 4) - 2017) * 12 + (+r[0].slice(5) - 9) + j + 1 <= 0) {
+          const L = r[k].length - 1; p = r[k][L]; for (let i = L; i < j; i++) p *= 1 + STEP[f][i] / 100; p = f ? Math.round(p) : Math.round(10 * p) / 10; }
+        return p == null ? "<td></td>" : `<td class="fc">~${fmt(p)}</td>`; }
       if (!Q[j]) return `<td>${fmt(v)}</td>`; const [a, b] = Q[j], t = b > a ? Math.min(1, Math.max(0, (v - a) / (b - a))) : 0.5;
       return `<td style="background:${bg(t)}">${fmt(v)}</td>`; };
     el.innerHTML = "<thead><tr><th>Start<br>month</th><th>Users</th><th>Started<br>free</th>" + M.map((j) => `<th>M${j + 1}</th>`).join("") + "</tr></thead><tbody>" +
