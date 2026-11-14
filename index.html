@@ -905,8 +905,17 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <p class="v3-c info"><b>How users start decides how many stay:</b> most start months still have 60–78% of their users at M3, the free-trial months (06-15, 09-16 – 11-16) only 18–41%</p>
       <div class="coh-f" data-coh></div>
       <div class="v3-tw"><table class="v3-t coh-t" id="p23-coh"></table></div>
+      <div class="coh-ch"><h3>Retention at <select data-cm="p23" aria-label="Month after start shown in the chart"></select> by Start Month</h3>
+      <div class="vz-lg"><span><i class="ln" style="--c:var(--v-navy)"></i>Retention (left)</span><span><i class="ln dash" style="--c:var(--v-navy)"></i>~ Forecast</span><span><i class="bar" style="--c:var(--v-sky)"></i>Users who started (right)</span></div>
+      <div class="vz" id="p23-cohch"></div></div>
       <p class="coh-ins"><b>Retention in M2, not M1, shows early who will stay:</b> in the 16 start months where most users paid from day one, M2 moves closely with M6 (correlation 0.88) and M1 hardly does (0.33), because a plan bought mid-month still covers M1 · There is no clear seasonal pattern: the same calendar month a year apart can differ widely (M3 47.9% for 12-15, 78.0% for 12-16), and the difference follows how many users started free</p>
-      <p class="v3-foot"><b>~ Forecast:</b> last real month × the step in the bottom row (median change of up to 12 latest paid start months; M1→M2: 3 latest) · up to 6 months ahead · tested on 03-16 – 02-17: off by 1.4% one month ahead, 6.6% six months ahead</p>
+      <details class="coh-how"><summary>+ How the forecast works</summary><ul>
+        <li><b>Method:</b> each ~ cell = the last real month × the growth step in the bottom row, repeated month by month</li>
+        <li><b>Growth step:</b> the median change from one month to the next in the 12 latest start months where most users paid from day one · M1 → M2 uses the 3 latest, as fewer users now leave after their first month</li>
+        <li><b>Free-trial start months:</b> same steps, as users still there after M2 change like paying users</li>
+        <li><b>Range:</b> up to 6 months past the data (09-17)</li>
+        <li><b>Accuracy:</b> tested on 03-16 – 02-17, off by 1.4% one month ahead and 6.6% six months ahead</li>
+      </ul></details>
       <p class="v3-foot">Start month = month of the user's first subscription period, free or paid · M1 = the calendar month after it · cell = % of the start month's users with premium access on at least one day of that month (<span class="p22-f" data-go="lineage" title="Computed field: how it is built, tab 1b.1">retention_pct*</span>) · Started free = the first period was a free trial or free period · 01-15 – 03-15 left out: they include customers from before 2015</p>
     </div>
 
@@ -1021,7 +1030,16 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <p class="v3-c info"><b>Users who start in a free-trial month bring in far less money:</b> by M12 most start months bring $908–$1,162 per user, but users who started in 06-15 (free trials) only $287 · by M3, users who started in 11-16 brought $127 each, against $479 for 12-16</p>
       <div class="coh-f" data-coh></div>
       <div class="v3-tw"><table class="v3-t coh-t" id="p24-coh"></table></div>
-      <p class="v3-foot"><b>~ Forecast:</b> last real month × the step in the bottom row (median change of the 3 latest paid start months) · up to 6 months ahead · tested on 03-16 – 02-17: off by 0.8% one month ahead, 7.3% six months ahead, usually a little low</p>
+      <div class="coh-ch"><h3>Cumulative ARPU at <select data-cm="p24" aria-label="Month after start shown in the chart"></select> by Start Month</h3>
+      <div class="vz-lg"><span><i class="ln" style="--c:var(--v-navy)"></i>Cumulative ARPU (left)</span><span><i class="ln dash" style="--c:var(--v-navy)"></i>~ Forecast</span><span><i class="bar" style="--c:var(--v-sky)"></i>Users who started (right)</span></div>
+      <div class="vz" id="p24-cohch"></div></div>
+      <details class="coh-how"><summary>+ How the forecast works</summary><ul>
+        <li><b>Method:</b> each ~ cell = the last real month × the growth step in the bottom row, repeated month by month</li>
+        <li><b>Growth step:</b> the median change from one month to the next in the 3 latest start months where most users paid from day one, as newer users pay more</li>
+        <li><b>Free-trial start months:</b> same steps, as users still there after M2 change like paying users</li>
+        <li><b>Range:</b> up to 6 months past the data (09-17)</li>
+        <li><b>Accuracy:</b> tested on 03-16 – 02-17, off by 0.8% one month ahead and 7.3% six months ahead, usually a little low</li>
+      </ul></details>
       <p class="v3-foot">Cell = all payments by the start month's users from their start month to that month ÷ users who started (<span class="p22-f" data-go="lineage" title="Computed field: how it is built, tab 1b.1">cum_arpu*</span>), in $ · payments counted in the month they were made, so an annual plan counts in full when bought · M1 = the calendar month after the start month · 01-15 – 03-15 left out: they include customers from before 2015</p>
     </div>
 
@@ -1095,6 +1113,15 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
   table.v3-t.coh-t td.fc{font-size:12px}
   table.v3-t.coh-t tr.fc-step td{color:var(--v-mute);font-size:12px;border-top:1px solid var(--v-line)}
   table.v3-t.coh-t tr.fc-step td:first-child{text-align:left;font-weight:600}
+  table.v3-t.coh-t tr.fc-step td{color:var(--v-navy);font-weight:600;border:0;box-shadow:inset 0 2px 0 var(--v-navy),inset 0 -2px 0 var(--v-navy)}
+  table.v3-t.coh-t tr.fc-step td:first-child{box-shadow:inset 2px 0 0 var(--v-navy),inset 0 2px 0 var(--v-navy),inset 0 -2px 0 var(--v-navy)}
+  table.v3-t.coh-t tr.fc-step td:last-child{box-shadow:inset -2px 0 0 var(--v-navy),inset 0 2px 0 var(--v-navy),inset 0 -2px 0 var(--v-navy)}
+  .coh-ch{margin:18px 0 6px}
+  .coh-ch h3{text-align:center;font-size:15px;margin:0 0 6px}
+  .coh-ch select{font:inherit;padding:2px 6px;border-radius:8px;border:1px solid var(--v-line);background:var(--surface,#fff);color:var(--v-ink)}
+  .coh-how{max-width:760px;margin:10px auto 4px;font-size:13.5px;color:var(--v-ink)}
+  .v3-card .coh-how summary{cursor:pointer;font-weight:600;color:var(--v-navy);font-size:14px;text-align:left;list-style:none}
+  .coh-how ul{margin:6px 0 0;padding-left:18px;display:grid;gap:3px}
   </style>
   <script>
   /* Cohort tables (2.3 retention, 2.4 cumulative ARPU) from fct_cohort (sql/07_fct_cohort.sql), start months 04-15 – 02-17.
@@ -1115,23 +1142,50 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
   const M = [...Array(12).keys()], S = { a: 0, b: COH.length - 1 };
   const q = (s, p) => { const x = (s.length - 1) * p, i = Math.floor(x); return s[i] + (s[Math.min(i + 1, s.length - 1)] - s[i]) * (x - i); };
   const bg = (t) => t <= 0.5 ? `color-mix(in srgb,var(--coh-mid) ${Math.round(200 * t)}%,var(--coh-lo))` : `color-mix(in srgb,var(--coh-hi) ${Math.round(200 * (t - 0.5))}%,var(--coh-mid))`;
+  /* forecast for start month r, metric k (3 retention, 4 cum_arpu), month index j; null = no forecast */
+  const fcv = (r, k, j) => { const f = k - 3; let p = FC[r[0]] && FC[r[0]][f][j];
+    if (p == null && j >= r[k].length && (+r[0].slice(0, 4) - 2017) * 12 + (+r[0].slice(5) - 9) + j + 1 <= 0) {
+      const L = r[k].length - 1; p = r[k][L]; for (let i = L; i < j; i++) p *= 1 + STEP[f][i] / 100; p = f ? Math.round(p) : Math.round(10 * p) / 10; }
+    return p == null ? null : p; };
+  /* chart under each table: value at the chosen month (M1..M12) by start month, real = solid, forecast = dashed, users = bars */
+  const CM = { p23: 5, p24: 5 };
+  const chartC = (k, key, unit) => (el) => {
+    const R = COH.slice(S.a, S.b + 1), j = CM[key], lab = R.map((r) => ml(r[0]));
+    const real = R.map((r) => r[k][j] ?? null), fc = R.map((r) => (r[k][j] == null ? fcv(r, k, j) : null));
+    const dash = fc.map((v, i) => v ?? ((fc[i - 1] != null || fc[i + 1] != null) ? real[i] : null));
+    const all = [...real, ...fc].filter((v) => v != null), top = all.length ? Math.max(...all) : 1;
+    const st = k === 3 ? 20 : top > 600 ? 200 : 100, mx = k === 3 ? 100 : Math.max(st, Math.ceil(top / st) * st);
+    const fr = R.map((r, i) => (r[2] >= 50 ? i : -1)).filter((i) => i >= 0), grp = [];
+    fr.forEach((i) => (grp.length && grp[grp.length - 1].at(-1) === i - 1 ? grp[grp.length - 1].push(i) : grp.push([i])));
+    const fmt = (v) => (k === 3 ? v.toFixed(1) + "%" : "$" + n0(v));
+    VZ.chart(el, {
+      labels: lab, xShow: VZ.qtr, H: 270, T: 34, aria: `${unit} at M${j + 1} by start month, with users who started`,
+      y: { min: 0, max: mx, step: st, fmt: (v) => (k === 3 ? v + "%" : "$" + v) }, y2: { min: 0, max: 50000, step: 10000, fmt: (v) => (v ? v / 1000 + "k" : "0") },
+      series: [{ type: "bar", axis: "r", values: R.map((r) => r[1]), color: "var(--v-sky)", gap: 0.7 },
+        { type: "line", values: dash, color: "var(--v-navy)", dash: true, w: 2.2 },
+        { type: "line", values: real, color: "var(--v-navy)", w: 2.6, dots: true }],
+      flags: grp.map((g) => { const i = g[Math.floor((g.length - 1) / 2)], v = real[i] ?? fc[i];
+        return v == null ? null : { i, v, below: true, text: "Free trial", short: "Trial", color: "var(--v-amber)", anchor: i > R.length - 4 ? "end" : undefined }; }).filter(Boolean),
+      tip: (i) => `<b>${lab[i]}</b>` + (real[i] != null ? `${unit}: ${fmt(real[i])}` : fc[i] != null ? `${unit}: ~${fmt(fc[i])} <span class="mute">forecast</span>` : `<span class="mute">no data yet</span>`) +
+        `<br>Users who started: ${n0(R[i][1])}` + (R[i][2] >= 50 ? `<br><span class="mute">${R[i][2]}% started free</span>` : ""),
+    });
+  };
   const fill = (id, k, fmt) => {
     const el = document.getElementById(id); if (!el) return;
     const R = COH.slice(S.a, S.b + 1), f = k - 3;
     const Q = M.map((j) => { const s = R.map((r) => r[k][j]).filter((v) => v != null).sort((x, y) => x - y); return s.length >= 4 ? [q(s, 0.25), q(s, 0.75)] : null; });
-    const cell = (v, j, r) => { if (v == null) { let p = FC[r[0]] && FC[r[0]][f][j];
-        if (p == null && (+r[0].slice(0, 4) - 2017) * 12 + (+r[0].slice(5) - 9) + j + 1 <= 0) {
-          const L = r[k].length - 1; p = r[k][L]; for (let i = L; i < j; i++) p *= 1 + STEP[f][i] / 100; p = f ? Math.round(p) : Math.round(10 * p) / 10; }
+    const cell = (v, j, r) => { if (v == null) { const p = fcv(r, k, j);
         return p == null ? "<td></td>" : `<td class="fc">~${fmt(p)}</td>`; }
       if (!Q[j]) return `<td>${fmt(v)}</td>`; const [a, b] = Q[j], t = b > a ? Math.min(1, Math.max(0, (v - a) / (b - a))) : 0.5;
       return `<td style="background:${bg(t)}">${fmt(v)}</td>`; };
     el.innerHTML = "<thead><tr><th>Start<br>month</th><th>Users</th><th>Started<br>free</th>" + M.map((j) => `<th>M${j + 1}</th>`).join("") + "</tr></thead><tbody>" +
       R.map((r) => `<tr><td class="m">${ml(r[0])}</td><td>${n0(r[1])}</td><td${r[2] >= 50 ? ' class="fr"' : ""}>${r[2]}%</td>` + M.map((j) => cell(r[k][j], j, r)).join("") + "</tr>").join("") + "</tbody>" +
-      `<tfoot><tr class="fc-step"><td colspan="3">Forecast step</td><td></td>` + STEP[f].map((g) => g == null ? "<td></td>" : `<td>${g > 0 ? "+" : "−"}${Math.abs(g).toFixed(1)}%</td>`).join("") + "</tr></tfoot>";
+      `<tfoot><tr class="fc-step"><td colspan="3">Forecast growth steps</td><td></td>` + STEP[f].map((g) => g == null ? "<td></td>" : `<td>${g > 0 ? "+" : "−"}${Math.abs(g).toFixed(1)}%</td>`).join("") + "</tr></tfoot>";
   };
   const draw = () => {
     fill("p23-coh", 3, (v) => v.toFixed(1) + "%");
     fill("p24-coh", 4, (v) => "$" + n0(v));
+    if (typeof CH !== "undefined") CH.forEach(([id, fn]) => { const el = document.getElementById(id); if (el && el.clientWidth) fn(el); });
     document.querySelectorAll("[data-coh] select").forEach((s) => (s.value = S[s.dataset.k]));
   };
   const opts = COH.map((r, i) => `<option value="${i}">${ml(r[0])}</option>`).join("");
@@ -1140,6 +1194,11 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       `<span class="lg"><span><i style="background:var(--coh-lo)"></i>Low</span><span><i style="background:var(--coh-mid)"></i>Middle</span><span><i style="background:var(--coh-hi)"></i>High</span><span>within each month column, for the start months shown</span><span class="fc">~ Forecast</span></span>`;
     f.querySelectorAll("select").forEach((s) => (s.onchange = () => { S[s.dataset.k] = +s.value; if (S.a > S.b) S[s.dataset.k === "a" ? "b" : "a"] = +s.value; draw(); }));
   });
+  const mopts = M.map((j) => `<option value="${j}">M${j + 1}</option>`).join("");
+  var CH = [["p23-cohch", chartC(3, "p23", "Retention")], ["p24-cohch", chartC(4, "p24", "Cumulative ARPU")]];
+  CH.forEach(([id, fn]) => VZ.mount(id, fn));
+  document.querySelectorAll("select[data-cm]").forEach((s) => { s.innerHTML = mopts; s.value = CM[s.dataset.cm];
+    s.onchange = () => { CM[s.dataset.cm] = +s.value; const el = document.getElementById(s.dataset.cm + "-cohch"); if (el && el.clientWidth) CH.find((c) => c[0] === el.id)[1](el); }; });
   draw();
   })();
   </script>
