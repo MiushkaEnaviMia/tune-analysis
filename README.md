@@ -43,6 +43,7 @@ Optional:
 
 - **Part 3b:** free trials and price points, the deep dive we did not choose.
 - **Forecast further ahead:** the cohort tables (tabs [2.3](https://miushkaenavimia.github.io/tune-analysis/#p2-churn) and [2.4](https://miushkaenavimia.github.io/tune-analysis/#p2-arpu)) forecast up to 6 months past the data (09-17). Filling every start month to M12 needs a method tested further ahead.
+- **Explain the unusual jumps in the cohort tables:** only the 07-16 rise (payment method 39 back) is boxed and explained in [tab 2.3](https://miushkaenavimia.github.io/tune-analysis/#p2-churn); other jumps, such as the 12-16 drop in free-trial start months, need their own analysis.
 - **Go deeper on the validation checks** on [tab 1b.1](https://miushkaenavimia.github.io/tune-analysis/#lineage): more checks per table, run automatically after every build.
 - **Test the SQL explorer properly:** every table, large results, phones and slow browsers.
 - **Go deeper on the engineering base layers** (RAW, BASE, STAGING), with automated tests at each step.
