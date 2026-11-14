@@ -1420,19 +1420,17 @@ def qspan(q, meaning):
     return f'<span class="q" title="{E(meaning)}">{q}</span>'
 
 
-english = f"""<header><h1>Tune Data-Quality Report</h1>
-<p class="lede">Part 1a. {len(ISSUES)} issues in the raw billing exports, ranked by how much each would change the answers to leadership's questions.
-Every number is computed from DuckDB at build time, and every detection query is re-run and matches its check.</p></header>
-<section><h2>Raw tables</h2><div class="scroll totals"><table><thead><tr><th>Table</th><th>Rows</th><th>Users</th></tr></thead><tbody>{tot_rows}</tbody></table></div></section>
+english = f"""<header><h1>1a · Data Quality — {len(ISSUES)} Issues, {sum(i['sev'] == 'Critical' for i in ISSUES)} Would Change a Headline Answer</h1></header>
+<section><div class="bref"><b>Q</b><span>Profile the four files</span></div><h2>Raw tables</h2><div class="scroll totals"><table><thead><tr><th>Table</th><th>Rows</th><th>Users</th></tr></thead><tbody>{tot_rows}</tbody></table></div></section>
 <section id="legend"><h2>How to read this report</h2>
 {legend_cards}
 </section>
-<section><div class="bref"><b>1a · Rank</b><span>Rank the issues by how much they affect the answers leadership is asking for</span></div><h2>Ranked issues</h2>
+<section><div class="bref"><b>Q</b><span>Rank the issues by how much they affect the answers leadership is asking for</span></div><h2>Ranked issues</h2>
 <p class="tnote"><b>What the rank is based on:</b> severity, i.e. how much the answers to the four leadership questions (Q1-Q4) would change if the issue were ignored, as the brief asks. Within the same severity, Data Bugs come first, because they cannot be fully fixed.
 <span class="hk"><i class="hk-b"></i>Asked in the brief</span><span class="hk"><i class="hk-a"></i>Added by us</span></p>
 {chip_row()}
 {ranked_table()}</section>
-<section><div class="bref"><b>1a · Each issue</b><span>What it is and the query, how big it is (rows, users, %), why it matters, what we decided</span></div><h2>Issue detail</h2><p class="lede">Each issue: what is broken, why it matters, and the decision. The query and the two options are folded under each one.</p>
+<section><div class="bref"><b>Q</b><span>For each issue, state what it is and how you found it (the query), how big it is in rows, users and percent, why it matters for the analysis, and what you decided to do about it</span></div><h2>Issue detail</h2>
 <div class="cards">{"".join(card(i) for i in ISSUES)}</div></section>
 <section><h2>Checked and not an issue</h2><div class="scroll"><table class="notissues"><thead><tr><th>Check</th><th>What</th><th>Finding</th></tr></thead><tbody>{not_rows}</tbody></table></div></section>
 <section><h2>Second-opinion review (Gemini)</h2><p class="lede">An independent AI review of the same files; every number it gave was re-run in DuckDB before being accepted.</p>

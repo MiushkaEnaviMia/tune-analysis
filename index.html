@@ -420,24 +420,24 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
   <!-- LINEAGE -->
   <section class="view lin" id="view-lineage" hidden>
     <div style="display:grid;gap:6px">
-      <h1>Data model</h1>
-      <p class="lede">How the clean tables are built from the raw files. Click a table to see what it holds and where its data comes from and goes to</p>
+      <h1>1b · Clean Layer — Six Layers, Each Built Only From the Ones Before It</h1>
       <div class="legend"><span><i class="sw" style="background:var(--src)"></i>Source file</span><span><i class="sw" style="background:var(--raw)"></i>Raw table (as delivered)</span><span><i class="sw" style="background:var(--clean)"></i>Clean table</span><span>Arrows: data flows top to bottom</span></div>
     </div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>Build reproducible SQL that produces the clean layer</span></div>
     <div class="card lin-sec" style="gap:10px"><h2>How the database is built, and why in this order</h2><p>Six layers, in this order. Each one only reads the layers before it. <span class='mono'>churn_labels</span> needs no cleaning (no duplicates, no invalid values), so it is used as delivered</p><div class="layers"><div class="ly"><i class="n">1 →</i><b>RAW</b><span>Each file copied as-is, one table per file</span><span class="why">Why first: the untouched copy everything is checked against</span></div><div class="ly"><i class="n">2 →</i><b>BASE</b><span>The two transaction exports combined, plus <span class='mono'>src_file</span> / <span class='mono'>src_row</span></span><span class="why">Why separate: neither export is complete alone, and RAW stays 1:1 with the files</span></div><div class="ly"><i class="n">3 →</i><b>DATA QUALITY CHECK</b><span>Measures the problems, fixes nothing</span><span class="why">Why before cleaning: duplicates must be counted before they are removed</span></div><div class="ly"><i class="n">4 →</i><b>STAGING</b><span>Cleans the data: <span class='mono'>stg_transactions</span>, <span class='mono'>stg_users</span></span><span class="why">Why here: one place for every cleaning rule, before anything is counted</span></div><div class="ly"><i class="n">5 →</i><b>SUBSCRIPTIONS</b><span>Events become subscription periods: <span class='mono'>fct_subscription</span></span><span class="why">Why here: the brief asks about subscriptions, not single events</span></div><div class="ly"><i class="n">6</i><b>USERS</b><span>One row per user: <span class='mono'>dim_user</span></span><span class="why">Why last: it needs every source, and its derived fields come from the subscriptions</span></div></div></div>
     <div class="lin-wrap">
       <div class="dag-col"><div class="card dag" id="dag"></div><div class="dag-tg"><button type="button" class="btn" id="dag-more" aria-expanded="false">+ Show downstream marts</button><span>Parts 1c, 2 and 3 tables built on <span class="mono">dim_user</span> and <span class="mono">fct_subscription</span></span></div></div>
       <aside class="card side" id="lin-side"><p class="lede">Select a table on the map</p></aside>
     </div>
     <div class="lin-doc">
-    <div class="brief-ref sub-ref"><b>1b · Tables</b><span>dim_user, and a subscription table with dates, plan, price, discount, auto-renew, cancel, upgrade/downgrade</span></div>
+    <div class="brief-ref sub-ref"><b>Q</b><span><span class="mono">dim_user</span>, and a subscription table with start and end dates, plan length, list price, amount paid, discount, auto-renew, cancelled, and upgrade or downgrade</span></div>
     <div class="card lin-sec"><h2>The two clean tables</h2>
     <div class="two-t">
     <div><h3 class="mono">dim_user</h3><p>One row per user: 1,800,905 users (every user seen in the registry, the transactions or the labels)</p><p>Cleaned: <code class='mono'>age</code>, <code class='mono'>age_band</code>, <code class='mono'>gender</code>, <code class='mono'>registered_date</code></p><p>Derived: <code class='mono'>first_paid_date</code>, <code class='mono'>n_episodes</code>, <code class='mono'>lifetime_paid</code>, <code class='mono'>is_payer</code>, <code class='mono'>ever_annual</code>, <code class='mono'>status_at_data_end</code></p></div>
     <div><h3 class="mono">fct_subscription</h3><p>One row per subscription period (one purchase and the cancels that follow it): 5,501,434 periods in 748,144 episodes</p><p>Fields: <code class='mono'>start_date</code>, <code class='mono'>end_date</code>, <code class='mono'>plan_days</code>, <code class='mono'>list_price</code>, <code class='mono'>amount_paid</code>, <code class='mono'>discount_amount</code>, <code class='mono'>is_auto_renew</code>, <code class='mono'>is_cancelled</code></p><p>Derived: <code class='mono'>episode_id</code>, <code class='mono'>change_vs_prev</code> (upgrade, downgrade, free_to_paid…), <code class='mono'>covered_start</code> / <code class='mono'>covered_end</code></p></div>
     </div>
     <p class="note">Built by <code class='mono'>sql/00_load_raw.sql</code> … <code class='mono'>sql/04_dim_user.sql</code>, run in order by <code class='mono'>run_all.py</code>; two full runs give identical tables</p></div>
-    <div class="brief-ref sub-ref"><b>1b · Grain</b><span>Choose the subscription table's grain and explain why</span></div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>You choose the grain and explain why</span></div>
     <div class="card lin-sec"><h2>Grain: Period + episode_id</h2>
     <p class="lede">Chosen: <code class="mono">fct_subscription</code> has one row per billing period, and every row carries <code class="mono">episode_id</code></p>
     <h3>Why Period + episode_id</h3>
@@ -463,7 +463,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     <tr><td>C: User-day</td><td>one day of access</td><td>No</td><td>Only by allocation</td><td>Natural</td><td>Too big; no plan detail</td></tr>
     </tbody></table></div>
     <p class="note">Key fact behind the dates: <code class="mono">expires_at</code> is the membership expiry after the event, not the plan’s own end. An early renewal stacks its days on top of the old expiry, so each period also gets non-overlapping <code class="mono">covered_start</code> / <code class="mono">covered_end</code> (0 overlaps). A new episode starts when the gap after expiry is more than 30 days</p></div>
-    <div class="brief-ref sub-ref"><b>1b · Rules</b><span>Document the rules for duplicates, overlapping or conflicting transactions, cancellations, and implausible values</span></div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>Document your rules for duplicates, overlapping or conflicting transactions, cancellations, and implausible values</span></div>
     <div class="card lin-sec"><h2>Cleaning rules: the brief's four groups</h2><p>What each rule does and how many rows it touches, from the build scripts</p><div class="scroll"><table class="grid rules"><thead><tr><th>Group</th><th>Rule</th><th>Result</th><th>SQL</th></tr></thead><tbody>
 <tr><td><span class="ctag duplicates">Duplicates</span></td><td class="l"><b>Exact copies</b> of a whole row inside one export: dropped, the lowest <code class='mono'>src_row</code> is kept (T7)<br><b>Same event in both exports</b>: the export_2 row is kept, the export_1 expiry is saved as <code class='mono'>expires_at_asof_feb</code> (T4)<br>Not treated as duplicates: different events on the same user and day, and stacked purchases (T24), because user + day is not a key</td><td class="l">832 + 747 rows removed<br>5,727,342 → 5,725,763 events</td><td class="mono">02_stg_transactions</td></tr>
 <tr><td><span class="ctag overlapping">Overlapping</span></td><td class="l"><b>Early renewals</b>: a renewal bought before the old expiry adds its days on top of it, so the periods overlap. Each period gets <code class='mono'>covered_start</code> / <code class='mono'>covered_end</code>, which never overlap, and it stays in the same episode (renewing early = retained)<br><b>Several purchases in one month</b>: <code class='mono'>fct_user_month</code> has one row per user and month, built from the covered days, so a user is counted once<br><b>Same-day events</b>: a fixed order, cancel → purchase → expiry → <code class='mono'>src_row</code> (<code class='mono'>event_seq</code>)</td><td class="l">1,216,557 periods with <code class='mono'>is_early_renewal</code> = 1; 0 overlaps<br>104,977 user-months with 2+ purchases; 0 duplicate rows<br>151,932 events on a busy day</td><td class="mono">02_stg_transactions, 03_fct_subscription, 05_fct_user_month</td></tr>
@@ -514,14 +514,13 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
   <section class="view cx" id="view-churn" hidden>
     <header class="cx-head">
       <div>
-        <h1>1c · Churn Definition Validation</h1>
-        <p class="cx-sub">Our SQL version of the 03-17 churn rule, compared with billing's <span class="mono">churn_labels.csv</span> (241,665 users)</p>
+        <h1>1c · Churn Definition Validation — Our Rule Matches 96.5% of Clean Cases, 13.6% of Billing's Labels Are Wrong</h1>
       </div>
       
     </header>
 
+    <div class="brief-ref sub-ref"><b>Q</b><span>Implement the churn definition on your clean layer and compare it with <span class="mono">churn_labels</span></span></div>
     <div class="qa">
-    <p class="qa-q"><b>Q</b> Does our churn rule agree with billing's <span class="mono">churn_labels</span>, where and why do they disagree, and what can't this data tell us?</p>
     <div class="cx-bottom qa-a">
       <p><b class="qa-l">Answer:</b> <b>Mostly yes on clean cases, but 13.6% of billing's labels are wrong</b></p><p><span class="mono">churn_labels.csv</span> matches 96.5% on clean 03-17 cases, yet 32,953 labels (13.6%) are systematic errors, most of all 97.7% of 90+ day upgrades flagged as churned</p><p><b>Decision:</b> Do <b>not</b> use <span class="mono">churn_labels.csv</span> for Parts 2 &amp; 3; we use our own validated SQL churn rule instead (<span class="mono">fct_user_month</span>)</p>
     </div>
@@ -535,7 +534,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
 
 
     <div class="cx-two">
-      <div class="sub-col"><div class="brief-ref sub-ref"><b>1c · Agreement</b><span>Report agreement, including a confusion matrix</span></div>
+      <div class="sub-col"><div class="brief-ref sub-ref"><b>Q</b><span>Report agreement, including a confusion matrix</span></div>
     <div class="card cx-panel">
         <h2 class="cx-h">Confusion Matrix (205,213 observable shared users)</h2>
         <div class="scroll"><table class="cx-cm">
@@ -547,7 +546,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
         </table></div>
         <p class="cx-note">* Left out: 10,740 users (4.4%) whose 30-day window ends in April, after the data stops · 25,712 (10.6%) who appear only in billing's labels · 6,065 (2.7% of ours) whose plan expired on 1 March, which billing left out</p>
       </div></div>
-      <div class="sub-col"><div class="brief-ref sub-ref"><b>1c · Disagreements</b><span>Where and why our rule and the labels disagree</span></div>
+      <div class="sub-col"><div class="brief-ref sub-ref"><b>Q</b><span>Explain where and why your implementation and the labels disagree</span></div>
     <div class="card cx-panel">
         <h2 class="cx-h">Billing Errors by Reason</h2>
         <p class="cx-lead"><b>Over half of billing's errors (53%) come from one bug:</b> it ignored <span class="mono">export_2</span>, so February renewals were missed</p>
@@ -558,7 +557,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
     </div>
     </div>
 
-    <div class="brief-ref sub-ref"><b>1c · Limits</b><span>State plainly what this data cannot determine</span></div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>State plainly anything you can't determine from this data</span></div>
     <div class="card cx-panel">
       <h2 class="cx-h">What this data cannot tell us</h2>
       <ul class="cx-lim">
@@ -709,12 +708,10 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
   <!-- 2.1 -->
   <section class="view cx v3" id="view-p2-active" data-own-brief="1" hidden>
     <div class="card v3-head">
-      <span class="v3-tag">Brief 2.1 · Active subscribers over time</span>
       <h1>2.1 · Active Subscribers — Almost All Pay, Growth Is Slowing</h1>
-      <p>Paying and all active subscribers per month (01-15 – 03-17)</p>
     </div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>Active subscribers over time: define the metric precisely, then compute it</span></div>
     <div class="qa">
-      <p class="qa-q">How have active subscribers changed over time?</p>
       <div class="qa-a">
       <p><b class="qa-l">Answer:</b> <b>Active subscribers keep growing and almost all pay (99.1% in 03-17), but growth has slowed from 5.6% a month in 2015 to 0.8% in 2017</b></p><p>Share paying 03-17: <b>99.1%</b> (03-16: 95.8%, <b class="chg-good">+3%</b>) · paying growth a month, Avg 01-17 – 03-17: <b>0.8%</b> (Avg 04-16 – 03-17: 1.5%, <b class="chg-bad">−49%</b>)</p>
     </div>
@@ -772,12 +769,10 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
   <!-- 2.2 -->
   <section class="view cx v3" id="view-p2-flow" data-own-brief="1" hidden>
     <div class="card v3-head p22-head">
-      <span class="v3-tag">Brief 2.2 · New vs Renewing vs Reactivated</span>
       <h1>2.2 · Subscriber Mix — Renewing Carries Growth as New Shrinks</h1>
-      <p>Quarterly mix and monthly trends, 02-15 – 03-17</p>
     </div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>New vs renewing vs reactivated subscribers: define each precisely, then compute it</span></div>
     <div class="qa">
-      <p class="qa-q">Each month, how many paying subscribers are New, Renewing or Reactivated, and how has the mix shifted over time?</p>
       <div class="qa-a">
       <p><b class="qa-l">Answer:</b> <b>96.1% of paying subscribers in 03-17 are Renewing, 2.7% New and 1.2% Reactivated; New is shrinking, so the mix keeps shifting toward Renewing</b></p><p>Renewing grows in both count and share, New falls in both, and Reactivated stays at 1–3% of paying outside two billing-gap months</p>
     </div>
@@ -866,12 +861,10 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
   <!-- 2.3 -->
   <section class="view cx v3" id="view-p2-churn" data-own-brief="1" hidden>
     <div class="card v3-head">
-      <span class="v3-tag">Brief 2.3 · Monthly churn rate</span>
       <h1>2.3 · Monthly Churn — Stable and Edging Down</h1>
-      <p>Share of paying subscribers who left each month, by subscriber type (02-15 – 02-17)</p>
     </div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>Monthly churn rate: define it precisely, then compute it</span></div>
     <div class="qa">
-      <p class="qa-q">How has the monthly churn rate changed over time?</p>
       <div class="qa-a">
       <p><b class="qa-l">Answer:</b> <b>Monthly churn is stable and edging down: fewer paying subscribers leave each month than a year before</b></p><p>Average churn share a month, Avg 03-16 – 02-17: <b data-r30="3.9%">4.3%</b> (Avg 02-15 – 02-16: <span data-r30="4.5%">5.0%</span>, <b class="chg-good" data-r30="−13%">−14%</b>) · averages leave out the <span data-r30="two billing-gap months (04-15, 03-16)">three billing-gap months (04-15, 01-16, 03-16)</span>, where the charge failed on the company's side and most users paid again</p>
     </div>
@@ -978,18 +971,15 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
   <!-- 2.4 -->
   <section class="view cx v3" id="view-p2-arpu" data-own-brief="1" hidden>
     <div class="card v3-head">
-      <span class="v3-tag">Brief 2.4 · Revenue, ARPU and discount depth</span>
       <h1>2.4 · Revenue, ARPU &amp; Discount Depth — Revenue Grows Because More People Pay</h1>
-      <p>Revenue, ARPU, ARPPU and discounts by month, in $ (02-15 – 03-17)</p>
     </div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>ARPU (and anything else you think revenue needs), plus discount depth over time</span></div>
     <div class="qa">
-      <p class="qa-q">How have revenue, ARPU and discount depth changed over time, and what drives revenue?</p>
       <div class="qa-a">
       <p><b class="qa-l">Answer:</b> <b>Revenue grew mostly because more people pay, not because each pays more, and discounts did not drive it</b></p><p>Revenue <b class="chg-good">+24%</b> (Q1-17 vs Q1-16): about 2/3 from more active subscribers, the rest from a higher share paying (96% → 99%) and ARPPU, revenue per paying subscriber (<b>+4%</b>, $119 → $124)</p><p>ARPU fell from 2015 to 2016 and then stayed about flat · discounts ended in 11-15, before both quarters</p>
     </div>
     </div>
     
-    <div class="brief-ref sub-ref"><b>2.4 · Revenue</b><span>Where revenue growth comes from, and revenue per month</span></div>
     <div class="card v3-card">
       <h2>Where Revenue Growth Comes From (Q1-17 vs Q1-16)</h2>
       <p class="v3-c ok"><b>About 2/3 of the growth is more active subscribers:</b> revenue +24% = active subscribers +15% × share paying +4% × ARPPU +4%</p>
@@ -1010,7 +1000,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <div class="vz" id="p24-ch1"></div>
     </div>
 
-    <div class="brief-ref sub-ref"><b>2.4 · ARPU</b><span>Revenue per active subscriber and per paying subscriber over time</span></div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>ARPU</span></div>
     <div class="card v3-card">
       <h2>ARPU: Revenue per Active Subscriber</h2>
       <p class="v3-c warn"><b>ARPU fell from 2015 to 2016 and then stayed flat:</b> ARPU Avg 2016: $118 a month (Avg 2015: $129, −8%), Q1-17: $123</p>
@@ -1043,7 +1033,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <p class="v3-foot">Cell = all payments by the start month's users from their start month to that month ÷ users who started (<span class="p22-f" data-go="lineage" title="Computed field: how it is built, tab 1b.1">cum_arpu*</span>), in $ · payments counted in the month they were made, so an annual plan counts in full when bought · M1 = the calendar month after the start month · 01-15 – 03-15 left out: they include customers from before 2015</p>
     </div>
 
-        <div class="brief-ref sub-ref"><b>2.4 · What else revenue needs</b><span>Auto-renew: the share of paying subscribers whose plan renews by itself</span></div>
+        <div class="brief-ref sub-ref"><b>Q</b><span>Anything else you think revenue needs</span></div>
     <div class="card v3-card">
       <h2>Auto-renew: Count and Share of Paying Subscribers</h2>
       <p class="v3-c ok"><b>3 in 4 paying subscribers now renew automatically:</b> Auto-renew share 75% (228,537 of 302,950) in 03-17, up from a low of 70% in 04-16</p>
@@ -1052,7 +1042,7 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
       <p class="v3-foot">Why it matters: monthly Auto-renew subscribers leave 2.7% a month, Pays by hand 19.6% (see 2.3) · 01-15 left out: payments before 2015 are missing</p>
     </div>
 
-    <div class="brief-ref sub-ref"><b>2.4 · Discount depth</b><span>How much paid purchases were discounted</span></div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>Discount depth over time</span></div>
     <div class="card v3-card">
       <h2>Discount Depth: Share of Paid Purchases Discounted</h2>
       <p class="v3-c ok"><b>Discounts ended in 11-15, so they did not drive revenue growth:</b> the share of paid purchases with a discount fell from 9.0% in 02-15 to 0.01% in 11-15 and has stayed under 0.1% since</p>
@@ -1206,12 +1196,10 @@ footer{max-width:1500px;margin:0 auto;padding-block:0 32px;color:var(--muted);fo
   <!-- 2.5 -->
   <section class="view cx v3" id="view-p2-trust" data-own-brief="1" hidden>
     <div class="card v3-head">
-      <span class="v3-tag">Brief 2.5 · What we don't trust, and why</span>
       <h1>2.5 · What We Don't Trust — Seven Periods Flagged</h1>
-      <p>Seven periods where a data problem makes the charts in 2.1–2.4 misleading, and what we can't measure because of it (01-15 – 03-17)</p>
     </div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>Call out anything in these series that you don't trust, and say why</span></div>
     <div class="qa">
-      <p class="qa-q">Which months or metrics in 2.1–2.4 can't be read as they are, and why?</p>
       <div class="qa-a">
       <p><b class="qa-l">Answer:</b> <b>Seven periods: five we don't trust (red), two we use with care (amber)</b></p>
       <p>Some months have data problems: the files start on 01-01-15, payment providers had billing gaps and an outage, prices are missing in 2015, and the data ends in 03-17. Read as they are, they show false churn spikes, false New and wrong revenue, so we keep them in the charts, mark them, and leave the red ones out of averages and trends</p>
@@ -1551,12 +1539,10 @@ const P23_TYPE = [["2015-02",1.99,2249,15.49,1943,0.09,4],["2015-03",2.33,2673,1
   <section class="view cx p3" id="view-p3a" hidden>
     <header class="cx-head"><div>
       <h1>3a · What Drives Churn — How People Pay, Not Who They Are</h1>
-      <p class="cx-sub">Churn at each renewal, by plan length, payment method, auto-renew, channel, age band, city and tenure · 01-16 – 03-17</p>
     </div></header>
 
-    <div class="brief-ref sub-ref"><b>3 · Choice</b><span>Choose one: (a) churn drivers or (b) free trials and price points · we chose (a)</span></div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>Segment churn by plan length, payment method, auto-renew, acquisition channel, age band, city and tenure: which factors matter most?</span></div>
     <div class="qa">
-    <p class="qa-q">Which factors matter most, and which only look like they matter because of confounding?</p>
     <div class="cx-bottom qa-a">
       <p><b class="qa-l">Answer:</b> <b>Churn is driven by how people pay and how new they are, while age, city and channel only look important because of confounding</b></p><p>Churn gap with the same auto-renew and plan mix: <span data-r30="auto-renew <b>4.5×</b>, payment method <b>4.4×</b>, tenure (first renewal) <b>3.5×</b> · age drops from 3.9× to <b>1.3×</b>">payment method <b>5.2×</b>, auto-renew <b>3.9×</b>, tenure (first renewal) <b>2.8×</b> · age drops from 3.6× to <b>1.3×</b></span> once people have the same auto-renew setting and plan length</p>
     </div>
@@ -1568,7 +1554,6 @@ const P23_TYPE = [["2015-02",1.99,2249,15.49,1943,0.09,4],["2015-03",2.33,2673,1
       <div class="card cx-kpi grey"><b data-r30="16.5%">17.1%</b><h3>First Renewal</h3><span class="vd bad" data-r30="Bad: over 4× the rate after a year">Bad: about 4× the rate after a year</span><span>Leave at their first renewal · <span data-r30="3.8%">4.2%</span> after a year</span></div>
     </div>
 
-    <div class="brief-ref sub-ref"><b>3a · Segments and matter most</b><span>Segment churn by plan length, payment method, auto-renew, channel, age band, city and tenure: which factors matter most</span></div>
     <div class="card p3-card">
       <h2 class="p3-ct">Churn Gap by Factor: Raw vs Same Payment Mix</h2>
       <p class="p3-cc"><b>Only three factors still matter once auto-renew and plan mix are the same:</b> <span data-r30="auto-renew 4.5×, payment method 4.4×, tenure 3.5×; age drops from 3.9× to 1.3×">payment method 5.2×, auto-renew 3.9×, tenure 2.8×; age drops from 3.6× to 1.3×</span></p>
@@ -1577,7 +1562,7 @@ const P23_TYPE = [["2015-02",1.99,2249,15.49,1943,0.09,4],["2015-03",2.33,2673,1
       <p class="cx-note">Gap = churn in the factor's highest-churn group ÷ its lowest-churn group · Grey: raw gap · Blue: gap with the same auto-renew and plan mix · groups with fewer than 10,000 renewals left out</p>
     </div>
 
-    <div class="brief-ref sub-ref"><b>3a · Confounding</b><span>Which factors only look like they matter because of confounding</span></div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>Which factors only look like they matter because of confounding?</span></div>
     <div class="p3-two">
       <div class="card p3-card">
         <h2 class="p3-ct">Age: Churn by Age Band</h2>
@@ -1593,7 +1578,7 @@ const P23_TYPE = [["2015-02",1.99,2249,15.49,1943,0.09,4],["2015-03",2.33,2673,1
       </div>
     </div>
 
-    <div class="brief-ref sub-ref"><b>3a · Segment: tenure</b><span>Churn by tenure, a factor that still matters with the same payment mix</span></div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>Segment churn by tenure</span></div>
     <div class="card p3-card">
       <h2 class="p3-ct">Tenure: Churn by Months Since First Payment</h2>
       <p class="p3-cc warn"><b>The first renewal is the riskiest moment:</b> <span data-r30="16.5% leave at their first renewal vs about 4% later; even on auto-renew 8.7% vs about 2%">17.1% leave at their first renewal vs about 4.5% later; even on auto-renew 9.6% vs about 2.5%</span></p>
@@ -1602,7 +1587,7 @@ const P23_TYPE = [["2015-02",1.99,2249,15.49,1943,0.09,4],["2015-03",2.33,2673,1
       <p class="cx-note">Tenure = months since the user's first paid subscription. Users who paid before 2015 show a shorter tenure than they really have</p>
     </div>
 
-    <div class="brief-ref sub-ref"><b>3a · Segment: plan length</b><span>Churn by plan length, per renewal and per month</span></div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>Segment churn by plan length</span></div>
     <details class="card lin-sec fold"><summary><h2>+ Plan length: per renewal vs per month</h2></summary><div class="fold-in">
       <div class="p3-card">
       <h2 class="p3-ct">Plan Length: Per Renewal vs Per Month (Pays by hand)</h2>
@@ -1627,12 +1612,10 @@ const P23_TYPE = [["2015-02",1.99,2249,15.49,1943,0.09,4],["2015-03",2.33,2673,1
   <section class="view cx p3" id="view-p3a-act" hidden>
     <header class="cx-head"><div>
       <h1>3a · What We Would Act On — Payment and the First Renewal</h1>
-      <p class="cx-sub">Three moves aimed at the churn drivers that still matter once the payment mix is evened out, and what we would leave alone (01-16 – 02-17)</p>
     </div></header>
 
-    <div class="brief-ref sub-ref"><b>3a · Act on</b><span>What would you act on?</span></div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>What would you act on?</span></div>
     <div class="qa">
-    <p class="qa-q">What would we act on?</p>
     <div class="cx-bottom qa-a">
       <p><b class="qa-l">Answer:</b> <b>We would act on payment and the first month, not on the audience, keeping up to <span data-r30="~13,000">~16,000</span> subscribers a year</b></p><p><b>Move people who pay by hand to auto-renew</b>, <b>win the first renewal</b> and <b>catch payment failures early</b> · <span data-r30="~13,000 = about <b>4%</b>">~16,000 = about <b>5%</b></span> of today's 303,000 paying base, if each move lands as estimated</p>
     </div>
@@ -1905,22 +1888,20 @@ const P23_TYPE = [["2015-02",1.99,2249,15.49,1943,0.09,4],["2015-03",2.33,2673,1
   <section class="view cx p5" id="view-p5a" hidden>
     <header class="cx-head">
       <div>
-        <h1>5a · Annual-Plan Promotion Test</h1>
-        <p class="cx-sub">Offer 30-day subscribers a discounted annual plan at renewal · baselines from <span class="mono">fct_subscription</span></p>
+        <h1>5a · Annual-Plan Promotion Test — A 50/50 Offer at Renewal, Judged on 12-Month Revenue</h1>
       </div>
     </header>
 
+    <div class="brief-ref sub-ref"><b>Q</b><span>Design the test</span></div>
     <div class="qa">
-      <p class="qa-q">How do we test a discounted annual plan for 30-day subscribers at renewal?</p>
       <div class="qa-a">
         <p><b class="qa-l">Answer:</b> <b>A 50 / 50 randomised offer at renewal, judged on 12-month net revenue per assigned user</b></p>
         <p>Risk: auto-renew users already renew 97.9%, so the discount may only give money back</p>
       </div>
     </div>
 
-    <div class="brief-ref sub-ref"><b>5a · Unit and eligibility</b><span>Unit of randomization and eligibility</span></div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>Unit of randomization and eligibility</span></div>
     <div class="qa">
-      <p class="qa-q">What is randomised, and who is eligible?</p>
       <div class="qa-a"><div class="scroll"><table class="cx-tbl p5-st">
         <tbody>
           <tr><td><b>Unit</b></td><td>The user, assigned once, so no one sees both offers</td></tr>
@@ -1931,9 +1912,8 @@ const P23_TYPE = [["2015-02",1.99,2249,15.49,1943,0.09,4],["2015-03",2.33,2673,1
       </table></div></div>
     </div>
 
-    <div class="brief-ref sub-ref"><b>5a · Metrics</b><span>Primary metric and guardrail metrics</span></div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>Primary metric and guardrail metrics</span></div>
     <div class="qa">
-      <p class="qa-q">What is the primary metric, and what are the guardrails?</p>
       <div class="qa-a"><div class="scroll"><table class="cx-tbl p5-st">
         <thead><tr><th>Metric</th><th>Baseline</th><th>Why</th></tr></thead>
         <tbody>
@@ -1946,9 +1926,8 @@ const P23_TYPE = [["2015-02",1.99,2249,15.49,1943,0.09,4],["2015-03",2.33,2673,1
       </table></div></div>
     </div>
 
-    <div class="brief-ref sub-ref"><b>5a · Sample size</b><span>Sample-size logic, using baselines computed from this data</span></div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>Sample-size logic, using baselines computed from this data</span></div>
     <div class="qa">
-      <p class="qa-q">How many users do we need, based on this data?</p>
       <div class="qa-a">
         <p><b>One month of renewals is enough: 233,800 users reach renewal each month</b></p>
         <div class="scroll"><table class="cx-tbl">
@@ -1963,9 +1942,8 @@ const P23_TYPE = [["2015-02",1.99,2249,15.49,1943,0.09,4],["2015-03",2.33,2673,1
       </div>
     </div>
 
-    <div class="brief-ref sub-ref"><b>5a · Duration</b><span>Duration, and annual plans that pay upfront but show retention a year later</span></div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>Duration, and how to handle annual plans that pay upfront but only reveal their retention a year later</span></div>
     <div class="qa">
-      <p class="qa-q">How long does it run, and how do we judge a plan that pays upfront but shows retention a year later?</p>
       <div class="qa-a">
         <p><b>Decide on earned revenue at month 3, confirm with cash at month 12</b></p>
         <div class="scroll"><table class="cx-tbl p5-st">
@@ -1980,9 +1958,8 @@ const P23_TYPE = [["2015-02",1.99,2249,15.49,1943,0.09,4],["2015-03",2.33,2673,1
       </div>
     </div>
 
-    <div class="brief-ref sub-ref"><b>5a · SQL</b><span>Optional: the SQL to analyze the test</span></div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>Optional: the SQL you would run to analyze it</span></div>
     <div class="qa">
-      <p class="qa-q">What SQL would analyze it?</p>
       <div class="qa-a">
         <p>Joins <span class="mono">experiment_assignments</span> to our clean layer; tested on a fake assignment</p>
         <details class="p5-sql"><summary>Show the SQL</summary>
@@ -2026,14 +2003,12 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
     </style>
     <header class="cx-head">
       <div>
-        <h1>5b · AI Process Log</h1>
-        <p class="cx-sub">No AI number went in until a DuckDB query on the full data confirmed it</p>
+        <h1>5b · AI Process Log — 5 AI Mistakes Caught by Checking Against the Data</h1>
       </div>
     </header>
 
-    <div class="brief-ref sub-ref"><b>5b · Tools</b><span>Which tools you used, and for what</span></div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>Which tools you used, and for what</span></div>
     <div class="qa">
-      <p class="qa-q">Which tools were used, and for what?</p>
       <div class="qa-a p5b-tools">
                 <p><b>Claude Code</b> matched the model to the task: <b>Opus 5.5</b> built the pipeline, queries, reports and site; <b>Fable</b> took a few very complex tasks; <b>Sonnet 5.5</b>, a lighter model, a narrow side task. About 115 sub-sessions ran several at a time, most started fresh with a short brief to keep context small. <b>Auto mode</b> and <b>bypass permissions</b> let them run without stopping for approval. <b>Plan mode</b> reviewed the plan before any code was written, and <b>memory files</b> carried decisions between sessions</p>
         <p><b>Gemini</b> was the second opinion: a critical review of 1a and of the churn window, drafts of page and chart design, and sharper wording, for example the 2.2 definitions and the chart conclusions</p>
@@ -2041,9 +2016,8 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
       </div>
     </div>
 
-    <div class="brief-ref sub-ref"><b>5b · Prompts</b><span>The key prompts, or a representative sample</span></div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>The key prompts, or a representative sample</span></div>
     <div class="qa">
-      <p class="qa-q">Which prompts steered the work?</p>
       <div class="qa-a">
         <p><b>Three prompts that steered the work. Both AIs had to think critically, not simply agree with me. The two Claude prompts sum up, in their sharpest form, the rules set at the start and the checks run near the end</b></p>
         <div class="scroll"><table class="cx-tbl p5-w"><colgroup><col style="width:44%"><col style="width:28%"><col style="width:28%"></colgroup>
@@ -2056,9 +2030,8 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
       </table></div></div>
     </div>
 
-    <div class="brief-ref sub-ref"><b>5b · AI mistakes</b><span>At least two cases where the AI was wrong, how each was caught, what changed</span></div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>At least two concrete cases where the AI was wrong, how you caught each one, and what you changed</span></div>
     <div class="qa">
-      <p class="qa-q">Where was the AI wrong, how was it caught, and what changed?</p>
       <div class="qa-a">
         <p><b>5 mistakes that would have changed the answers: 3 caught by me, 2 by Claude re-checking against the data</b></p>
         <div class="scroll"><table class="cx-tbl p5-w"><colgroup><col style="width:30%"><col style="width:26%"><col style="width:24%"><col style="width:20%"></colgroup>
@@ -2070,13 +2043,16 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
           <tr><td><span class="tag c">Claude</span>"Plan type doesn't change the churn window", because it looked at one renewal curve for everyone instead of splitting it by how people pay</td><td data-l="Could cause">One 30-day window for everyone, so auto-renew churn would have been reported as 2.2% instead of 2.7%</td><td data-l="Caught">Me: <span class="p5b-q">"You were wrong, payment type changes it. Test 1 or 7 days for auto-renew, 14–30 days by hand, split by plan length"</span></td><td data-l="Changed">3 days for auto-renew, 30 days for paying by hand</td></tr>
           <tr><td><span class="tag c">Claude</span>Ranked billing's churn labels as Medium, because it didn't re-read the brief's rule: rank issues by their impact on leadership's answers</td><td data-l="Could cause">The churn file leadership most likely already uses, with 13.6% of its labels wrong, would have looked like a minor issue. Two more issues were also ranked too low or left out: 2015 plan length, and early renewals (578,644 rows that look like churn but aren't)</td><td data-l="Caught">Me: <span class="p5b-q">"A churn file with wrong users is an error leadership already sees. Why isn't it #1? Check for other ranking mistakes"</span></td><td data-l="Changed">Labels are now issue #1. 2015 plan length moved to Critical. Early renewals added at High</td></tr>
         </tbody>
-      </table></div></div>
+      </table></div>
+        <p>No AI number went in until a DuckDB query on the full data confirmed it</p></div>
     </div>
     <p class="cx-src">Full log, including smaller mistakes: <a class="code" href="https://github.com/MiushkaEnaviMia/tune-analysis/blob/main/reports/07_ai_log.md" target="_blank" rel="noopener">reports/07_ai_log.md ↗</a></p>
   </section>
 
   <!-- EXPLORER -->
   <section class="view" id="view-explorer" hidden>
+    <div class="brief-ref sub-ref"><b>Q</b><span>The core modeling should be in SQL we can run</span></div>
+    <div class="qa"><div class="cx-bottom qa-a"><p><b>Run any SQL here, on the broken files or on the clean layer, right in the browser</b></p></div></div>
     <div class="ex-top">
       <div class="mode" role="group" aria-label="Data version">
         <button type="button" class="raw" data-mode="raw" id="mode-raw"><i class="sw" style="background:var(--raw)"></i>Broken data</button>
@@ -2156,11 +2132,10 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
       .p4-two .p3-plot{min-height:40px}
     </style>
     <div style="display:grid;gap:6px">
-      <h1>4.1 · Executive Summary</h1>
-      <p class="lede">For the CEO and the Head of Growth: the bottom line first, then the evidence for each of the four questions</p>
+      <h1>4.1 · Executive Summary — Healthy but Slowing, Keeping Subscribers Is the Biggest Lever</h1>
     </div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>Address the four questions as far as the analysis supports them</span></div>
     <div class="qa">
-    <p class="qa-q">How healthy is the base, what drives churn, did trials and prices work, and should we push annual plans?</p>
     <div class="card p4-bl qa-a">
       <p><b class="qa-l">Answer:</b> <b>The base is healthy but growth is slowing, and the biggest lever is keeping subscribers, not finding new ones</b></p><p>Churn comes from how people pay and from the first renewal, so we recommend auto-renew by default, a stronger first month and daily checks for failed payments (4.2) · free trials show no clear lift in New subscribers (not fully measured) · annual plans look better but need the 5a test before we push them</p>
     </div>
@@ -2168,8 +2143,7 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
     </div>
 
     <div class="p4-qh">
-      <div class="brief-ref sub-ref"><b>4 · Q1 Health</b><span>How healthy is the subscriber base, and how is it trending?</span></div>
-      <h2>1 · How healthy is the base? <span class="p4-st yes">Answered</span></h2>
+      <div class="brief-ref sub-ref"><b>Q</b><span>How healthy is the subscriber base, and how is it trending?</span><span class="p4-st yes">Answered</span></div>
       <p class="ans"><b>Healthy and still growing, but growth is slowing: paying subscribers +19% in a year, down from +52%</b></p>
     </div>
     <div class="p4-two">
@@ -2198,8 +2172,7 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
     </div>
 
     <div class="p4-qh">
-      <div class="brief-ref sub-ref"><b>4 · Q2 Churn</b><span>What drives churn?</span></div>
-      <h2>2 · What drives churn? <span class="p4-st yes">Answered</span></h2>
+      <div class="brief-ref sub-ref"><b>Q</b><span>What drives churn?</span><span class="p4-st yes">Answered</span></div>
       <p class="ans"><b>How people pay and how new they are; age, city and channel only look like drivers</b></p>
     </div>
     <div class="p4-two">
@@ -2226,8 +2199,7 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
     </div>
 
     <div class="p4-qh">
-      <div class="brief-ref sub-ref"><b>4 · Q3 Trials and prices</b><span>Did the free trials and price points work?</span></div>
-      <h2>3 · Did free trials and prices work? <span class="p4-st part">Partly</span></h2>
+      <div class="brief-ref sub-ref"><b>Q</b><span>Did the free trials and price points work?</span><span class="p4-st part">Partly</span></div>
       <p class="ans"><b>Not proven: the two free-trial waves brought few paying users, and price discounts ended in 11-15</b></p>
     </div>
     <div class="p4-two">
@@ -2253,8 +2225,7 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
     </div>
 
     <div class="p4-qh">
-      <div class="brief-ref sub-ref"><b>4 · Q4 Annual plans</b><span>Should we push annual plans harder?</span></div>
-      <h2>4 · Push annual plans harder? <span class="p4-st part">Partly</span></h2>
+      <div class="brief-ref sub-ref"><b>Q</b><span>Should we push annual plans harder?</span><span class="p4-st part">Partly</span></div>
       <p class="ans"><b>Promising, but test first: annual plans lose far fewer people a month, but committed users are the ones who choose them</b></p>
     </div>
     <div class="p4-two">
@@ -2284,17 +2255,15 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
 
   <section class="view p4" id="view-p4-recs" hidden>
     <div style="display:grid;gap:6px">
-      <h1>4.2 · Three Recommendations</h1>
-      <p class="lede">Each with the impact we expect, how sure we are, and what would change our mind</p>
+      <h1>4.2 · Three Recommendations — Auto-Renew by Default, Win the First Renewal, Catch Failed Payments</h1>
     </div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>Give three recommendations, each with the quantified impact, how confident you are, and what evidence would change your mind</span></div>
     <div class="qa">
-    <p class="qa-q">Which three moves do we recommend, with impact, confidence and what would change our mind?</p>
     <div class="cx-bottom qa-a">
       <p><b class="qa-l">Answer:</b> <b>Three moves: auto-renew by default, win the first renewal and catch payment failures early, together keeping up to <span data-r30="~13,000">~16,000</span> subscribers a year</b></p><p><span data-r30="~13,000 = about 4%">~16,000 = about 5%</span> of today's 303,000 paying subscribers, if each move works as estimated</p>
     </div>
     <div class="cr-tg"></div>
     </div>
-    <div class="brief-ref sub-ref"><b>4 · Three recommendations</b><span>Each with the quantified impact, how confident we are, and what evidence would change our mind</span></div>
     <div class="card p4-fig" style="max-width:1100px;width:100%;margin-inline:auto">
       <h2>The Three Moves</h2>
       <p class="so"><b>Payment failures are the biggest single win,</b> and all three moves target groups that churn at least twice as much as the rest (4.1)</p>
@@ -2312,16 +2281,14 @@ from g t join g c on c.is_auto_renew = t.is_auto_renew and t.variant = 'treatmen
 
   <section class="view p4" id="view-p4-gaps" hidden>
     <div style="display:grid;gap:6px">
-      <h1>4.3 · What We Can't Answer Yet</h1>
-      <p class="lede">Where the data stops, and what it would take to close each gap</p>
+      <h1>4.3 · What We Can't Answer Yet — Two of Four: Free Trials and Prices, and Annual Plans</h1>
     </div>
+    <div class="brief-ref sub-ref"><b>Q</b><span>Say which questions you can't answer yet, and what it would take</span></div>
     <div class="qa">
-    <p class="qa-q">Which questions can't we answer yet, and what would it take?</p>
     <div class="cx-bottom qa-a">
       <p><b class="qa-l">Answer:</b> <b>Two of the four questions can't be fully answered yet: free trials and prices, and annual plans</b></p><p><b>Free trials and prices</b> need their own analysis (the deep dive chose churn drivers) · <b>annual plans</b> need the 12-month test in 5a · health of the base and churn drivers are answered in full</p>
     </div>
     </div>
-    <div class="brief-ref sub-ref"><b>4 · Can't answer yet</b><span>Which questions we can't answer yet, and what it would take</span></div>
     <div class="card scroll"><table class="grid">
       <thead><tr><th>Question</th><th>Status</th><th>What is missing</th><th>What it would take</th></tr></thead>
       <tbody>
@@ -3029,15 +2996,9 @@ main>.view:not(.p21){max-width:1280px;margin-inline:auto}
     if (head) {
       const card = document.createElement("div");
       card.className = "card vhead";
-      card.innerHTML = `<span class="vtag">${k} · ${t}</span>`;
       head.before(card);
       card.append(...head.querySelectorAll(":scope > h1, :scope > p, :scope > div > h1, :scope > div > p, :scope > .legend"));
       head.remove();
-    } else {
-      const tag = document.createElement("div");
-      tag.className = "brief-ref";
-      tag.innerHTML = `<b>${k}</b><span>${t}</span>`;
-      v.prepend(tag);
     }
   }
 })();
@@ -3620,8 +3581,11 @@ main{--sp-a:#1e3a8a;--sp-b:#d97706;--sp-c:#0d9488;--sp-d:#60a5fa;--sp-e:#94a3b8}
 details.brief-fold{max-width:900px!important;width:100%;margin:0 auto!important;box-sizing:border-box;padding:12px 16px!important;border:1px solid var(--line);border-radius:12px;background:var(--surface);font-size:15px}
 .view.view details.brief-fold>summary{color:var(--navy)!important;font-size:15px!important;line-height:1.4;cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;font-weight:700;color:var(--navy)}
 details.brief-fold>summary::-webkit-details-marker{display:none}
-details.brief-fold>summary::after{content:"Show ▾";margin-left:auto;font-size:13px;font-weight:600;color:var(--accent)}
-details.brief-fold[open]>summary::after{content:"Hide ▴"}
+details.brief-fold{border-style:dashed!important;background:transparent!important;padding:8px 16px!important}
+.view.view details.brief-fold>summary:not(#_){font-weight:600;color:var(--muted)!important;font-size:14px!important}
+.view.view details.brief-fold[open]>summary:not(#_){color:var(--navy)!important}
+#view-explorer{overflow-x:clip}
+.brief-ref .p4-st{margin-left:4px}
 details.brief-fold .bf-in{display:grid;gap:8px;margin-top:10px;line-height:1.5}
 details.brief-fold .bf-in p,details.brief-fold .bf-in ul{margin:0}
 details.brief-fold .bf-in ul{padding-left:20px;display:grid;gap:4px}
@@ -3654,8 +3618,9 @@ details.brief-fold .bf-in blockquote{margin:0;padding:6px 12px;border-left:3px s
     if (!v || v.querySelector(":scope > details.brief-fold")) continue;
     const d = document.createElement("details");
     d.className = "brief-fold";
-    d.innerHTML = `<summary>📋 The task from the brief</summary><div class="bf-in">${html}</div>`;
-    v.prepend(d);
+    d.innerHTML = `<summary>+ The full question from the brief</summary><div class="bf-in">${html}</div>`;
+    const head = v.querySelector(":scope > .vhead, :scope > .v3-head");
+    if (head) head.after(d); else v.prepend(d);
   }
 })();
 </script>
